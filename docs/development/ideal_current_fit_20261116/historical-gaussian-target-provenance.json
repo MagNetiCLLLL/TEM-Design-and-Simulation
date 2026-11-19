@@ -1,0 +1,56 @@
+{
+  "schema": "historical-gaussian-target-provenance-v1",
+  "created_utc": "2026-11-16T22:27:42.892245+00:00",
+  "historical_git_commit": "05e4a8da9f7a79d49e89b5add8011a190d1366e6",
+  "native_round_lens_sources": [
+    {
+      "path": "src/temsim/optics/objective_lens.py",
+      "historical_sha256": "150ac94e89b9d090520b722097d35be3687b601bb4daade6ed50fff821464ac3",
+      "current_sha256": "150ac94e89b9d090520b722097d35be3687b601bb4daade6ed50fff821464ac3",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/round_lens.py",
+      "historical_sha256": "ded7853ef889b069ad141f61c1ac5949e1aba951703b6ed674c3ac149ee28e75",
+      "current_sha256": "ded7853ef889b069ad141f61c1ac5949e1aba951703b6ed674c3ac149ee28e75",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/mini_condenser.py",
+      "historical_sha256": "9f57beead3d3039514d2336c2b3a78f3f1b5660addb07379fa2877e796e2a239",
+      "current_sha256": "9f57beead3d3039514d2336c2b3a78f3f1b5660addb07379fa2877e796e2a239",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/diffraction_lens.py",
+      "historical_sha256": "03ad3ffa19f4e5ad2510b7533df6dd34b679b5787452a1a38059b2bfa4e51f94",
+      "current_sha256": "03ad3ffa19f4e5ad2510b7533df6dd34b679b5787452a1a38059b2bfa4e51f94",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/intermediate_lens.py",
+      "historical_sha256": "556ad3cb4037f9f138d341c0adb0e6077e549f598d0c5d04e8844ab766b241cd",
+      "current_sha256": "556ad3cb4037f9f138d341c0adb0e6077e549f598d0c5d04e8844ab766b241cd",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/projector_lens_p1.py",
+      "historical_sha256": "4bf3ea801045882fffdac263c9b1817e16d94b5b6d37189b8762867f30d1d536",
+      "current_sha256": "4bf3ea801045882fffdac263c9b1817e16d94b5b6d37189b8762867f30d1d536",
+      "identical_after_line_end_normalization": true
+    },
+    {
+      "path": "src/temsim/optics/projector_lens_p2.py",
+      "historical_sha256": "b39869ed50134723c7f3d07f96030c37a5cb3a373a21f5476b5c874835fa948f",
+      "current_sha256": "b39869ed50134723c7f3d07f96030c37a5cb3a373a21f5476b5c874835fa948f",
+      "identical_after_line_end_normalization": true
+    }
+  ],
+  "column_manifest_diff_numstat": "349\t0\tconfigs/instruments/column/C3_ProbeCorrector.toml",
+  "historical_explicit_inputs": "outputs/finite-field-normal-qualification-20261027/baseline-n49-h005.inputs.json",
+  "historical_explicit_inputs_sha256": "02ff9fcc45632251a94d398369b7b0bb172416740764cf0b45051849adb39d77",
+  "target_coefficients": "round-lens-field-match/captured-field-coefficients.json",
+  "target_coefficients_sha256": "1e6520726857efc7427fc5dcfb15723c1a861d6bea9294a0a0f926729e7ed8f2",
+  "scope": "Existing native round-lens source laws and explicit field controls. This is field-reference provenance, not new particle, coherent or hardware qualification.",
+  "candidate_policy": "Independent geometry and winding-distribution design authorized by the user; original source arrays and default optical configuration remain untouched."
+}

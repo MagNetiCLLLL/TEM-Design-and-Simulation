@@ -1,0 +1,95 @@
+{
+  "status": "PASSED_BOUNDED_CONFIGURATION_AND_FIELD_CONSUMER_CHECKS",
+  "scope": "Official no-propagation workflow admission, memory estimation, worker construction and typed magnetic capture only. No source emission, Gun/column transport, specimen interaction or coherent calculation.",
+  "implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "source_input_digest": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+  "quality_checks": 6,
+  "cases": [
+    {
+      "case": "unchanged",
+      "detached_pose": {},
+      "source_count": 1024,
+      "controls_equal_to_original": true,
+      "input_digest_stable_during_capture": true,
+      "typed_round_lens_count": 13,
+      "typed_potential_roundtrip_identical": true,
+      "exact_sample_roundtrip_identical": true,
+      "numerical_potential_digest": "64159a1be1face29f83d917e5e9c08839be4a0aa850927e650d4a74b40b28282",
+      "qualities": [
+        {
+          "quality": "Preview",
+          "memory_estimate_bytes": 621424128,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        },
+        {
+          "quality": "High accuracy",
+          "memory_estimate_bytes": 797306368,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        }
+      ]
+    },
+    {
+      "case": "detached-objective-offset-x",
+      "detached_pose": {
+        "offset_x_mm": 0.001
+      },
+      "source_count": 1024,
+      "controls_equal_to_original": true,
+      "input_digest_stable_during_capture": true,
+      "typed_round_lens_count": 13,
+      "typed_potential_roundtrip_identical": true,
+      "exact_sample_roundtrip_identical": true,
+      "numerical_potential_digest": "c04062a392bd782f3cf753ad0de04bad2dd580b50a9068b6d99d87c4f1b5249b",
+      "qualities": [
+        {
+          "quality": "Preview",
+          "memory_estimate_bytes": 669153792,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        },
+        {
+          "quality": "High accuracy",
+          "memory_estimate_bytes": 985053696,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        }
+      ]
+    },
+    {
+      "case": "detached-objective-tilt-y",
+      "detached_pose": {
+        "rotation_y_mrad": 0.1
+      },
+      "source_count": 1024,
+      "controls_equal_to_original": true,
+      "input_digest_stable_during_capture": true,
+      "typed_round_lens_count": 13,
+      "typed_potential_roundtrip_identical": true,
+      "exact_sample_roundtrip_identical": true,
+      "numerical_potential_digest": "772731e5d5e2a7f63d94a3fd7a22b9bf86e1b372dd75a4a11ff2321cb9c47a6b",
+      "qualities": [
+        {
+          "quality": "Preview",
+          "memory_estimate_bytes": 669154816,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        },
+        {
+          "quality": "High accuracy",
+          "memory_estimate_bytes": 985153024,
+          "within_24_gib_budget": true,
+          "official_worker_constructed": true,
+          "worker_run_invoked": false
+        }
+      ]
+    }
+  ],
+  "physical_worker_result_scope": "Interrupted Preview Gun only; full Gun/Preview and High accuracy transport remain incomplete and unqualified."
+}

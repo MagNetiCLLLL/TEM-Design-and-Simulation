@@ -160,7 +160,7 @@ def tube_solids(row):
     if slots:
         shape = difference(shape, *(slot["shape"] for slot in slots))
     return (SolidSpec(row["key"], "body", "nonmagnetic_housing", shape,
-        status=row[STATUS], note=str(row[SOURCE]) + " Solver vacuum ID and equivalent boundary are unchanged; side-entry slots are material-only reconstruction, not a 3D electric-field solution.",
+        status=row[STATUS], note=str(row[SOURCE]) + " The side-entry slots describe the material around the beam passage. The passive tube material is a model assumption. Its alloy and magnetic contact at the upper objective require independent evidence.",
         parameters={PROFILE: row[PROFILE], CLEARANCE: row[CLEARANCE],
             SLOT_KEYS: row[SLOT_KEYS], "aperture_slots": [{key: value for key, value in slot.items() if key != "shape"} for slot in slots],
             "inner_diameter_mm": 2*inner}),)

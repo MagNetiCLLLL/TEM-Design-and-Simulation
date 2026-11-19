@@ -210,6 +210,22 @@ def _dimensions(part, by_key=None):
             fields.append(DimensionSpec(path, label, _number(value, str(path)), unit))
 
     for name, value in part.items():
+        if name.startswith(('transverse_winding_','ideal_transverse_','multipole_winding_','ideal_multipole_')):
+            meaning=describe_parameter(part,('parts',part['key'],name),by_key=by_key)
+            append(value,('parts',part['key'],name),meaning.label,meaning.unit)
+            continue
+        if name in {'hexapole_winding_turn_count_per_coil', 'hexapole_winding_wire_cross_section_mm2'}:
+            meaning = describe_parameter(part, ('parts',part['key'],name), by_key=by_key)
+            append(value, ('parts',part['key'],name), meaning.label, meaning.unit)
+            continue
+        if name == "winding_turn_count" and part.get("mechanical_profile") == "magnetic_excitation_coil":
+            meaning = describe_parameter(part, ("parts",part["key"],name), by_key=by_key)
+            append(value, ("parts",part["key"],name), meaning.label, meaning.unit)
+            continue
+        if name == "winding_wire_cross_section_mm2":
+            meaning = describe_parameter(part, ("parts",part["key"],name), by_key=by_key)
+            append(value, ("parts",part["key"],name), meaning.label, meaning.unit)
+            continue
         if is_custom_mechanical_part(part) and name == "vacuum_inner_diameter_mm":
             # Required schema context, not a material bore or active cutoff.
             # The complete TOML remains available in All parameters.
@@ -224,6 +240,44 @@ def _dimensions(part, by_key=None):
             continue
         append(value, ("parts", part["key"], name),
                name.removesuffix("_" + unit).replace("_", " ").capitalize(), unit)
+    if (part.get("mechanical_profile") == "magnetic_excitation_coil"
+            and "winding_wire_cross_section_mm2" in part and "winding_wire_diameter_mm" not in part):
+        from temsim.coil_winding import resolve_wire_diameter_mm
+        try:
+            diameter = resolve_wire_diameter_mm(part)
+        except (TypeError, ValueError, OverflowError):
+            diameter = None  # Invalid drafts must remain inspectable.
+        if diameter is not None:
+            fields.append(DimensionSpec(("derived",part["key"],"winding_wire_diameter_mm"),
+                "Equivalent conductor diameter",diameter,"mm",editable=False,
+                reason="Computed from the saved conductor metal cross-section. Edit metal area in Dimensions or Configure winding; the envelope remains fixed."))
+    if part.get("mechanical_profile") == "magnetic_excitation_coil":
+        fields = [replace(item,editable=False,
+            reason="Read-only conductor diameter. Edit conductor metal cross-section in Dimensions or Configure winding; legacy diameter values remain readable.")
+            if item.path[-1] == "winding_wire_diameter_mm" else item for item in fields]
+    area = part.get('hexapole_winding_wire_cross_section_mm2')
+    if (isinstance(area, Real) and not isinstance(area, bool) and math.isfinite(area) and area > 0
+            and 'multipole_winding_geometry_status' not in part):
+        fields.append(DimensionSpec(('derived',part['key'],'hexapole_winding_wire_diameter_mm'),
+            'Derived radial-winding conductor diameter',2*math.sqrt(area/math.pi),'mm',editable=False,
+            reason='Calculated from conductor metal area. Edit per-coil turns and metal area; native multipole strength is separate.'))
+    area=part.get('transverse_winding_wire_cross_section_mm2')
+    if isinstance(area,Real) and not isinstance(area,bool) and math.isfinite(area) and area>0:
+        fields.append(DimensionSpec(('derived',part['key'],'transverse_winding_wire_diameter_mm'),
+            'Derived transverse conductor diameter',2*math.sqrt(area/math.pi),'mm',editable=False,
+            reason='Calculated from conductor metal area. Edit area or insulation; the winding envelope stays fixed.'))
+    if 'multipole_winding_geometry_status' in part:
+        from temsim.multipole_winding import area_field
+        area=part.get(area_field(part))
+        if isinstance(area,Real) and not isinstance(area,bool) and math.isfinite(area) and area>0:
+            fields.append(DimensionSpec(('derived',part['key'],'multipole_winding_wire_diameter_mm'),
+                'Derived multipole conductor diameter',2*math.sqrt(area/math.pi),'mm',editable=False,
+                reason='Calculated from conductor metal area. Edit area or insulation; the original winding allocation remains fixed.'))
+    fields=[replace(item,editable=False,
+        reason='Read-only saved calibration reference. Configure winding edits signed current biases in amperes without refitting this matrix.')
+        if len(item.path)>2 and (item.path[2] in {'ideal_transverse_current_matrix_a_per_unit',
+            'ideal_transverse_calibration_reference_energy_ev','ideal_multipole_current_matrix_a_per_unit'}
+            or item.path[2].startswith('ideal_multipole_calibration_reference_')) else item for item in fields]
     parent = (by_key or {}).get(part.get("parent_key"), {})
     source_fields = [f"{side}_yoke_{edge}_local_z_mm" for side in ("upper", "lower") for edge in ("start", "end")]
     # Introspection must work even while the draft's dimensions are invalid.
@@ -283,6 +337,14 @@ def _extent(part):
 
 
 def _pole_section(part, start, end):
+    from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE, recessed_objective_section
+
+    profile = radial_profile_mm(part, end - start)
+    if profile is not None:
+        return ([(start + z, outer) for z, _, outer in profile]
+                + [(start + z, inner) for z, inner, _ in reversed(profile)])
+    if part.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+        return recessed_objective_section(part, start, end)
     get = lambda field: _number(part[field], field)
     length = end - start
     bore, outer, tip = (get(field) / 2 for field in
@@ -491,7 +553,9 @@ def _join_meshes(pieces):
 def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
     # Saved channel envelopes (or even an explicit CAD base) do not establish
     # material ownership. Keep their metadata available without making solids.
-    if non_material_role(part):
+    from temsim.multipole_winding import multipole_winding_definition
+    winding_only=multipole_winding_definition(part,by_key)
+    if non_material_role(part) and winding_only is None:
         return (), (f"{part['key']}: {representation_note(part)}",)
     from temsim.part_model_features import apply_model_features, annotate_legacy_mesh, validate_model_3d
     validate_model_3d(part)

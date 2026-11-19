@@ -1,0 +1,23 @@
+{
+  "status": "PREPARED_NO_PHYSICAL_EXECUTION",
+  "reference_source_identity": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "reference_source_files": 781,
+  "reference_source_bytes_unchanged": true,
+  "original_fixed_1024_input_bytes_unchanged": true,
+  "new_finite_source_trials": 0,
+  "checks": {
+    "reference_preview_and_high_request_preparation": "Passed including all 1099 input graph nodes; reference-preparation-final/plan.json",
+    "mock_complete_result_and_input_guard_contracts": "5 passed; validation-contract-final.xml",
+    "pure_array_energy_clock_gun_prefix_cases": "4 passed; readout-array-check/checks.json"
+  },
+  "scripts": {
+    "run_particle_validation.py": "dbc90eb1d4bdc7bcf8dc9d2093a6b0de8d6c4d6022106a3402fc4f2bf754fd8f",
+    "inspect_particle_profile.py": "d8563e148c33bb06f6e2c4d40984490f8c0bbfecc240bfa35169297ee3407bd9",
+    "check_runner_readouts.py": "63cd69ade32bb7fa1c5348cf0ad4387efcbb083b7a93297ab0231b26f0a99a6d",
+    "test_validation_contract.py": "381f03fee1a788a6d627b0f9e56bba200801fa1091e9989356ffb9c12bed7c31"
+  },
+  "pending": "Root source freeze identity and explicit actual-execution authorization; no current-solver full Gun or physical quality verification has been run.",
+  "archive_contract": "Each result slot formally captures and archives all actual branches before source-cache writes or diagnostics.",
+  "quality_scope": "Normal Preview/High can resolve different automatic scan fields; all resolved ratios, commands and actual runtime are recorded. Fixed-field validation is separate.",
+  "supersedes_preparation_receipt": "preparation-receipt.json; retained unchanged"
+}

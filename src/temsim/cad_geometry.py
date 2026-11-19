@@ -35,6 +35,10 @@ class SolidSpec:
 
     @property
     def color(self):
+        if self.material == "insulator" and "winding_geometry" in self.parameters:
+            # Retain the complete material domain while making buried wires
+            # visible in both the native display and colored STEP assembly.
+            return (*MATERIAL_COLORS["insulator"][:3], .22)
         if "copper" in self.material or "winding" in self.material:
             return MATERIAL_COLORS["copper_winding"]
         if "soft_magnetic" in self.material:
@@ -48,6 +52,19 @@ def revolve(section):
 
 def annulus(start, end, inner, outer):
     return revolve([(start, inner), (start, outer), (end, outer), (end, inner)])
+
+
+def torus(major_radius, wire_radius, center_z):
+    """An analytic circular wire turn about the local Z axis, in millimetres."""
+    return {"kind": "torus", "major_radius_mm": major_radius,
+            "minor_radius_mm": wire_radius, "center_z_mm": center_z}
+
+
+def winding_insulation(start, end, inner, outer, wire_radius, turns):
+    """The complete annular pack minus all circular wire sections."""
+    return {"kind": "round_winding_insulation", "start_mm": start, "end_mm": end,
+            "inner_mm": inner, "outer_mm": outer, "wire_radius_mm": wire_radius,
+            "turns_rz_mm": [list(turn) for turn in turns]}
 
 
 def box(center, size):

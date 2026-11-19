@@ -1,0 +1,325 @@
+{
+  "status": "PASS_READ_ONLY_INPUT_AND_BOUNDARY_REVIEW",
+  "created_utc": "2026-11-14T15:15:24.365908+00:00",
+  "scope": "Actual runner input preparation with emission/transport entry points forbidden; no particle, source or wave calculation",
+  "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "runner_sha256": "70e948522d8412b09776633a9ff4288c63886d59110dab47932c25b55170b220",
+  "baseline_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "baseline_graph_digest": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+  "manifest_verification": {
+    "input.json": {
+      "sha256": "a4d6e96ca7a91ff1f116f5205c8daf959c9706e396f3a0fafcfb226017372eaa",
+      "bytes": 2185198,
+      "identical_to_original": true
+    },
+    "request.json": {
+      "sha256": "763e9d1e866be8a1361bd477f49ed985606b9ae9519fca7c50ed6c8c5c309407",
+      "bytes": 4219,
+      "identical_to_original": true
+    },
+    "independent-expected-emission.npz": {
+      "sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4",
+      "bytes": 81987,
+      "identical_to_original": true
+    },
+    "independent-emission-report.json": {
+      "sha256": "22da3fe9e8cc2b86d7446b8984c53a74b0b9301c0f7254e8ec97907a581280ed",
+      "bytes": 661,
+      "identical_to_original": true
+    },
+    "bounded-interruption-receipt.json": {
+      "sha256": "873a2078d7f27d28811b3c2a57bb9cfb6357828ca6a264bb119272eb7a06d2a4",
+      "bytes": 809,
+      "identical_to_original": true
+    }
+  },
+  "source_array_fingerprints": {
+    "x_m": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "d73d2d3d9d9127384e7cfc4e13e8da0d592ae2fe096e5dd6fab1af21902106b7"
+    },
+    "y_m": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "0f5030effdd57397d1d44dbf4ca7e5b74a22eba6262534f97ad4bb3415246571"
+    },
+    "tx_rad": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "58becb544628706118015032551947efe49f5e9f9f1b10e7a515e5c2389f9190"
+    },
+    "ty_rad": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "60c563def2d91d949522f8e1000d6e5502dcac57da46782c079b4d771897b601"
+    },
+    "energy_offset_ev": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "c29241bf27ac78049bcb3ce9f66f5d4af371febff6d38657603f694aabb07777"
+    },
+    "ray_id": {
+      "shape": [
+        1024
+      ],
+      "dtype": "int64",
+      "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    "weight": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+    },
+    "position_m": {
+      "shape": [
+        1024,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+    },
+    "direction": {
+      "shape": [
+        1024,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "b891753e21b4c1dd26210d497e7837d86f81aba7bf50637bb772eac24c65e4c1"
+    },
+    "normal": {
+      "shape": [
+        1024,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "bfe9ad68d70dea35d2d7518fde148979c730047d0feeb7648c0534faacab4f92"
+    },
+    "emission_time_s": {
+      "shape": [
+        1024
+      ],
+      "dtype": "float64",
+      "sha256": "9f1dcbc35c350d6027f98be0f5c8b43b42ca52b7604459c0c42be3aa88913d47"
+    }
+  },
+  "preserved_source_statistics": {
+    "positive_particles": 1024,
+    "unique_ids": 1024,
+    "weight_sum": 1.0,
+    "uniform_1_over_N": true,
+    "energy_min_ev": 0.015094567656436075,
+    "energy_max_ev": 0.7013491466779715,
+    "mean_ev": 0.2982540757418952,
+    "rms_equivalent_fwhm_ev": 0.29689411902037804,
+    "scope": "Preserved arrays only; no new emission or propagation"
+  },
+  "quality_preparations": {
+    "Preview": {
+      "gun_and_optical_controls_equal": true,
+      "specimen_graph_equal": true,
+      "assembly_and_boundaries_graph_equal": true,
+      "source_count": 1024,
+      "energy_width_ev": 0.3,
+      "step_mm": 0.5,
+      "history_step_mm": 2.0,
+      "gun_trace_step_mm": 0.2,
+      "preparation": {
+        "original_inputs": {
+          "schema": "wave-input-graph-compatibility-v1",
+          "physical_inputs_unchanged": true,
+          "metadata_migrations": []
+        },
+        "numerical_preparation": {
+          "schema": "gui-request-numerical-preparation-v1",
+          "quality": "Preview",
+          "requested_step_mm": 0.5,
+          "applied_step_mm": 0.5,
+          "high_accuracy_maximum_step_mm": null,
+          "changed": false,
+          "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+        },
+        "history_step_mm": 2.0,
+        "original_snapshot_id": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+        "execution_snapshot_id": "50d8a398003747719a1063c18d0ac4c9ee2b5c9891939f1ee7371e9455956ca3",
+        "original_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+        "execution_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35"
+      }
+    },
+    "High accuracy": {
+      "gun_and_optical_controls_equal": true,
+      "specimen_graph_equal": true,
+      "assembly_and_boundaries_graph_equal": true,
+      "source_count": 1024,
+      "energy_width_ev": 0.3,
+      "step_mm": 0.05,
+      "history_step_mm": 0.5,
+      "gun_trace_step_mm": 0.2,
+      "preparation": {
+        "original_inputs": {
+          "schema": "wave-input-graph-compatibility-v1",
+          "physical_inputs_unchanged": true,
+          "metadata_migrations": []
+        },
+        "numerical_preparation": {
+          "schema": "gui-request-numerical-preparation-v1",
+          "quality": "High accuracy",
+          "requested_step_mm": 0.5,
+          "applied_step_mm": 0.05,
+          "high_accuracy_maximum_step_mm": 0.05,
+          "changed": true,
+          "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+        },
+        "history_step_mm": 0.5,
+        "original_snapshot_id": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+        "execution_snapshot_id": "dd03277c5e436190a24c07729d1f041f76f0f5c5a543a252b92dd47d8c31e15b",
+        "original_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+        "execution_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35"
+      }
+    }
+  },
+  "fixed_controls_digest": "f0136546d15d70e269667f26d1cfcbce26aef98df0e4374a09ba620d8164b87f",
+  "optical_lenses_equal_recorded_defaults": true,
+  "captured_scope": {
+    "condenser_lens_keys": [
+      "condenser_lens_1",
+      "condenser_lens_2",
+      "condenser_lens_3"
+    ],
+    "probe_corrector_installed": true,
+    "specimen_inserted": false,
+    "inactive_specimen_thickness_nm": 5.0,
+    "sample_reference_z_mm": 1599.2,
+    "gun_exit_z_mm": 450.0,
+    "Si_material_scan": false,
+    "coherent_calculation": false
+  },
+  "tracked_defaults": {
+    "files": [
+      "configs/design_candidates/README.md",
+      "configs/design_candidates/matched_tip_d95_20260915.json",
+      "configs/design_candidates/matched_tip_d95_20260915_flat.temwp",
+      "configs/design_candidates/matched_tip_d95_20260915_r500.temwp",
+      "configs/design_candidates/nanoprobe_large_angle_descan_position_angle_20261018.temwp",
+      "configs/design_candidates/nanoprobe_large_angle_descan_position_angle_20261018.toml",
+      "configs/design_candidates/nanoprobe_normal_descan_position_angle_20261018.temwp",
+      "configs/design_candidates/nanoprobe_normal_descan_position_angle_20261018.toml",
+      "configs/detectors/eds/EDS.toml",
+      "configs/environments/cell_window_materials.toml",
+      "configs/environments/vacuum_map.toml",
+      "configs/instruments/beam_blanker/ElectrostaticBeamBlanker.toml",
+      "configs/instruments/catalog.toml",
+      "configs/instruments/column/C2.toml",
+      "configs/instruments/column/C3.toml",
+      "configs/instruments/column/C3_BCOR.toml",
+      "configs/instruments/column/C3_ImageCorrector.toml",
+      "configs/instruments/column/C3_ProbeCorrector.toml",
+      "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "configs/instruments/gun/FEG.toml",
+      "configs/instruments/gun/FEG_Mono.toml",
+      "configs/instruments/gun/Thermionic.toml",
+      "configs/instruments/project_and_recording_system/EnergyFilter.toml",
+      "configs/instruments/project_and_recording_system/NoEnergyFilter.toml",
+      "configs/materials/lens_defaults.toml",
+      "configs/materials/magnetic/femm_pure_iron.toml",
+      "configs/operating_modes/catalog.toml",
+      "configs/operating_modes/illumination_targets.toml",
+      "configs/operating_modes/topology_references.toml",
+      "configs/physics/eds/bote_salvat.json",
+      "configs/sources/FEG_tip.toml",
+      "configs/sources/cold_feg_tip.toml",
+      "configs/specimen_supports/catalog.toml",
+      "configs/specimens/00_vacuum.toml",
+      "configs/specimens/10_si_110.toml",
+      "configs/specimens/20_au_001.toml",
+      "configs/specimens/30_amorphous_carbon.toml",
+      "configs/specimens/Si.cif",
+      "configs/subassemblies/detector_chamber.toml",
+      "configs/subassemblies/energy_filter.toml",
+      "configs/subassemblies/projector_stack.toml",
+      "configs/subassemblies/sample_stage.toml",
+      "profiles/README.md",
+      "profiles/feg-nanoprobe-300kv-12p87mrad-energy-20261110.json",
+      "profiles/feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp",
+      "profiles/feg-nanoprobe-300kv-zero-fwhm-20261110.temwp",
+      "profiles/particle_tip_30mrad_20260915.temwp",
+      "profiles/particle_tip_surface_30mrad_769_custom_draft.toml",
+      "profiles/particle_tip_surface_30mrad_769_ideal_draft.toml"
+    ],
+    "count": 50,
+    "diffs_vs_HEAD": []
+  },
+  "tracked_named_tolerance_files": {
+    "files": [
+      "tests/test_geometry_gun_implicit_tolerance.py"
+    ],
+    "diffs_vs_HEAD": []
+  },
+  "native_criteria": {
+    "optics/electron_gun/tracing.py": {
+      "original": {
+        "ANALYTIC_MAXIMUM_RELATIVE_IMPULSE": 0.025,
+        "GEOMETRY_IMPLICIT_TOLERANCE": 1e-13,
+        "GEOMETRY_TOTAL_RELATIVE_MOMENTUM": 1e-06,
+        "GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM": 1e-05,
+        "GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION": 1e-05,
+        "GEOMETRY_MOMENTUM_NORM_FLOOR": 1e-30,
+        "GEOMETRY_XY_ABSOLUTE_POSITION_M": 1e-13,
+        "GEOMETRY_XY_RELATIVE_POSITION": 1e-06,
+        "GEOMETRY_XYZ_ABSOLUTE_POSITION_M": 1e-13,
+        "GEOMETRY_XYZ_RELATIVE_STEP": 1e-05,
+        "GEOMETRY_STEP_MAXIMUM_RETRIES": 32
+      },
+      "current": {
+        "ANALYTIC_MAXIMUM_RELATIVE_IMPULSE": 0.025,
+        "GEOMETRY_IMPLICIT_TOLERANCE": 1e-13,
+        "GEOMETRY_TOTAL_RELATIVE_MOMENTUM": 1e-06,
+        "GEOMETRY_TRANSVERSE_RELATIVE_MOMENTUM": 1e-05,
+        "GEOMETRY_TRANSVERSE_MOMENTUM_FLOOR_FRACTION": 1e-05,
+        "GEOMETRY_MOMENTUM_NORM_FLOOR": 1e-30,
+        "GEOMETRY_XY_ABSOLUTE_POSITION_M": 1e-13,
+        "GEOMETRY_XY_RELATIVE_POSITION": 1e-06,
+        "GEOMETRY_XYZ_ABSOLUTE_POSITION_M": 1e-13,
+        "GEOMETRY_XYZ_RELATIVE_STEP": 1e-05,
+        "GEOMETRY_STEP_MAXIMUM_RETRIES": 32
+      },
+      "exact_literals_equal": true
+    },
+    "physics/discrete_gradient.py": {
+      "original": {
+        "ITERATION_TOLERANCE": 1e-11,
+        "MAXIMUM_ITERATIONS": 64,
+        "NORMALIZED_MOMENTUM_FLOOR": 1e-09
+      },
+      "current": {
+        "ITERATION_TOLERANCE": 1e-11,
+        "MAXIMUM_ITERATIONS": 64,
+        "NORMALIZED_MOMENTUM_FLOOR": 1e-09
+      },
+      "exact_literals_equal": true
+    }
+  },
+  "readme_review": {
+    "path": "F:\\tem_simulator_v2\\docs\\development\\copper_gun_speed_20261114\\README.md",
+    "sha256": "14566f4baca0e4629e60fadc5fef862f436c8f690985c68e21287af0ef92bba9",
+    "issues": [],
+    "note": "Three-condenser probe-corrector optical reference. Uninserted 5 nm placeholder is not a 10 nm Si material result."
+  },
+  "limits": [
+    "Preparation is not completed Preview/High accuracy transport or convergence proof.",
+    "Actual run receipts must still match their executed emission arrays against these preserved expectations."
+  ]
+}

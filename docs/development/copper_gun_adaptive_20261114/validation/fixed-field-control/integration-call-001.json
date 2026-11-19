@@ -1,0 +1,17 @@
+{
+  "scope": "incident",
+  "plan_signature": "30f6e1aba49e77e9b2da2abf0c1453d77437cd43e882c445f4046f29970360ef",
+  "start_z_mm": 450.0,
+  "stop_z_mm": 1599.2,
+  "actual_resume_z_mm": 450.0,
+  "start_index": 0,
+  "integration_nodes": 2578,
+  "z_mm": {
+    "dtype": "<f8",
+    "shape": [
+      2578
+    ],
+    "sha256": "25253c49c70558c21db14ec41ec1bfc248b3601823a23235ba809fb87758bea2"
+  },
+  "actual_operator_witness_digest": "1146c2766ad13b8fdc73808642ff19776f80eb691e3b1853251c4bc260954d7f"
+}

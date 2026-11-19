@@ -1,0 +1,766 @@
+{
+  "schema": "fixed-envelope-hp-current-reachability-evidence-v1",
+  "baseline": "Only original archived v3 geometry and native old-working-point target; prior resized candidates are historical and excluded",
+  "physical_inputs_invariant": true,
+  "project_sources_or_defaults_changed": false,
+  "source_emission_executed": false,
+  "particle_transport_executed": false,
+  "wave_calculation_executed": false,
+  "resistance_or_constant_power_model_used": false,
+  "parent_report_sha256": "46791acce75bd23a997b2c8337471732d5163ed243cef4552854ba76e759ba41",
+  "normalization_and_count_contract": [
+    "Each HP retains six physical radial coils and exactly two physical turns per coil, metal .02 mm2, original poses and all original winding bounds.",
+    "Each complete closed subgroup has integer N1 and one prescribed current. No point on one unbranched loop receives a different current without a return path.",
+    "Gauss nodes are normalized integration samples, never additional physical turns, independently driven circuits or emitted particles.",
+    "For a normalized pack split at fractional volume p, the original uniform N2*I current density is restored by I1=2*p*I and I2=2*(1-p)*I. Equal currents restore it only for p=.5.",
+    "The current uniform-pack field and the actual rounded-wire CAD are different spatial resolutions. Neither may be silently relabeled as the other."
+  ],
+  "native_representation_findings": [
+    "Simple radial and nested-coordinate partitions need twelve radial_rectangle descriptors: six in group x and six in group y, with the same archived angular datum and separate currents.",
+    "The internal low-level source must use turn_count_per_coil=1 per descriptor; enclosing physical metadata must retain the parent N2. Passing N2 again would double-count the physical winding.",
+    "The union of complementary cell exclusions is exactly the original occupied pack, including zero-current cells. Preserve the original full parent domain separately for provenance and material exclusion.",
+    "The existing exact-axis proof can validate each complete sixfold group. Do not weaken pose, callback, finite-query, domain, source ownership or cache guards.",
+    "The saved 1x1 native current calibration cannot silently become a two-circuit control. A distinct segmented source recipe must store the two current circuits, original owner and parent winding count.",
+    "Nested partitions are closed homogenized paths, but the unchanged actual CAD turns do not lie on a unique common original nested fraction. That branch has no certified physical turn assignment.",
+    "Arbitrary independently driven cells or currents along only one axial side require additional closed circuits/return paths or a changed conductor topology. They are not merely a finer quadrature of the same two turns."
+  ],
+  "sources": [
+    {
+      "key": "probe_hp2_hexapole",
+      "original_capture_geometry_identical": true,
+      "original_geometry_sha256": "62aabab43f0152c2185344ad7e0fd352e6347c59e6650751da658d6455b1aac9",
+      "fixed_physical_turns_per_radial_coil": 2,
+      "metal_cross_section_mm2": 0.02,
+      "radial_enamel_mm": 0.005,
+      "complete_original_coil_descriptors": [
+        {
+          "azimuth_deg": 30.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 1,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 90.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 2,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 150.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 3,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 210.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 4,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 270.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 5,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 330.0,
+          "center_z_mm": 1144.5,
+          "coil_index": 6,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.74,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.736,
+          "window_width_mm": 6.885
+        }
+      ],
+      "occupied_parent_domain": "Exactly original pack; full window/outer/radial bounds remain unchanged",
+      "actual_unchanged_CAD_turns": [
+        {
+          "radial_x_mm": 25.1515,
+          "corner_offset_mm": 1.001
+        },
+        {
+          "radial_x_mm": 27.1535,
+          "corner_offset_mm": 1.001
+        }
+      ],
+      "best_membership_preserving_pack_partition": {
+        "kind": "radial",
+        "cut_fraction": 0.3669298095009042,
+        "cut_radius_mm": 25.236311738413725,
+        "fraction_bounds": [
+          0.36692642789837104,
+          0.633073572101629
+        ],
+        "fit": {
+          "currents_a": [
+            -629703.0519996508,
+            956437.6269279363
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.21192890541933296,
+            0.00709044223157932
+          ],
+          "condition_number": 29.889377629430044,
+          "column_normalized_condition_number": 25.867624296524458,
+          "normalized_column_correlation": 0.9970155222096534,
+          "relative_l2": 0.5286906439026193,
+          "cancellation_amplification_l2": 13.102987194907437,
+          "reference_weighted_norm": 19512.21523089227
+        },
+        "physical_turns_per_group": [
+          1,
+          1
+        ],
+        "internal_numerical_turns_parameter": 1,
+        "cell_descriptors": [
+          {
+            "azimuth_deg": 30.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 1,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 90.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 2,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 150.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 3,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 210.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 4,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 270.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 5,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 330.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 6,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.236311738413725,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 30.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 7,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 90.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 8,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 150.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 9,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 210.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 10,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 270.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 11,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 330.0,
+            "center_z_mm": 1144.5,
+            "coil_index": 12,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.74,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.236311738413725,
+            "station_index": 0,
+            "window_height_mm": 8.736,
+            "window_width_mm": 6.885
+          }
+        ],
+        "quadrature24x48_to32x64_max_vector_over_native_peak": 2.5768967286036805e-13,
+        "original_uniform_pack_reconstruction_max_vector_over_native_peak": 4.457319337964271e-14
+      },
+      "unchanged_actual_CAD_two_current_global_linear_fit": {
+        "fit": {
+          "currents_a": [
+            -1353432.7513662945,
+            1734326.1770636663
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.171489945366413,
+            0.0037923170244004477
+          ],
+          "condition_number": 45.22036113094341,
+          "column_normalized_condition_number": 42.91368016116935,
+          "normalized_column_correlation": 0.998914567770194,
+          "relative_l2": 0.534222105505318,
+          "cancellation_amplification_l2": 21.967395828279567,
+          "reference_weighted_norm": 19512.21523089227
+        },
+        "full_axial_half_span_mm": 1600,
+        "certificate": "For these two fixed finite-conductor closed circuits and this weighted axial H target, unconstrained linear least squares gives the global minimum over all two signed current amplitudes. This does not prove a bound for arbitrary different current-density topologies.",
+        "finite_wire_and_path_refinement_max_vector_over_native_peak": 1.0698292746879863e-13
+      },
+      "finding": "No tested fixed-envelope two-group model reproduces the old narrow Gaussian H(z). These currents are diagnostic best fits, not an accepted working point or image/probe qualification."
+    },
+    {
+      "key": "probe_hp1_hexapole",
+      "original_capture_geometry_identical": true,
+      "original_geometry_sha256": "97e92694c32727c6cb540676de9ddc292e91fbc6fd9d40ff9d94a5210fecdf55",
+      "fixed_physical_turns_per_radial_coil": 2,
+      "metal_cross_section_mm2": 0.02,
+      "radial_enamel_mm": 0.005,
+      "complete_original_coil_descriptors": [
+        {
+          "azimuth_deg": 27.592867137067643,
+          "center_z_mm": 1300.85,
+          "coil_index": 1,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 87.59286713706764,
+          "center_z_mm": 1300.85,
+          "coil_index": 2,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 147.59286713706763,
+          "center_z_mm": 1300.85,
+          "coil_index": 3,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 207.59286713706763,
+          "center_z_mm": 1300.85,
+          "coil_index": 4,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 267.5928671370676,
+          "center_z_mm": 1300.85,
+          "coil_index": 5,
+          "current_sign": 1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        },
+        {
+          "azimuth_deg": 327.5928671370676,
+          "center_z_mm": 1300.85,
+          "coil_index": 6,
+          "current_sign": -1,
+          "family": "radial_rectangle",
+          "group": "x",
+          "outer_height_mm": 12.67,
+          "outer_width_mm": 12.24,
+          "radial_end_mm": 29.595,
+          "radial_start_mm": 22.71,
+          "station_index": 0,
+          "window_height_mm": 8.688,
+          "window_width_mm": 6.885
+        }
+      ],
+      "occupied_parent_domain": "Exactly original pack; full window/outer/radial bounds remain unchanged",
+      "actual_unchanged_CAD_turns": [
+        {
+          "radial_x_mm": 25.157,
+          "corner_offset_mm": 0.9954999999999998
+        },
+        {
+          "radial_x_mm": 27.148,
+          "corner_offset_mm": 0.9954999999999998
+        }
+      ],
+      "best_membership_preserving_pack_partition": {
+        "kind": "radial",
+        "cut_fraction": 0.36772860720049627,
+        "cut_radius_mm": 25.241811460575416,
+        "fraction_bounds": [
+          0.36772526595211125,
+          0.6322747340478887
+        ],
+        "fit": {
+          "currents_a": [
+            -446546.7959195026,
+            647260.8153985754
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.2107526681499655,
+            0.007062701464641324
+          ],
+          "condition_number": 29.840234534204324,
+          "column_normalized_condition_number": 25.823336464147758,
+          "normalized_column_correlation": 0.9970052918266615,
+          "relative_l2": 0.26233048224533867,
+          "cancellation_amplification_l2": 10.293656221508815,
+          "reference_weighted_norm": 15077.809422856468
+        },
+        "physical_turns_per_group": [
+          1,
+          1
+        ],
+        "internal_numerical_turns_parameter": 1,
+        "cell_descriptors": [
+          {
+            "azimuth_deg": 27.592867137067643,
+            "center_z_mm": 1300.85,
+            "coil_index": 1,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 87.59286713706764,
+            "center_z_mm": 1300.85,
+            "coil_index": 2,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 147.59286713706763,
+            "center_z_mm": 1300.85,
+            "coil_index": 3,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 207.59286713706763,
+            "center_z_mm": 1300.85,
+            "coil_index": 4,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 267.5928671370676,
+            "center_z_mm": 1300.85,
+            "coil_index": 5,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 327.5928671370676,
+            "center_z_mm": 1300.85,
+            "coil_index": 6,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "x",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 25.241811460575416,
+            "radial_start_mm": 22.71,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 27.592867137067643,
+            "center_z_mm": 1300.85,
+            "coil_index": 7,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 87.59286713706764,
+            "center_z_mm": 1300.85,
+            "coil_index": 8,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 147.59286713706763,
+            "center_z_mm": 1300.85,
+            "coil_index": 9,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 207.59286713706763,
+            "center_z_mm": 1300.85,
+            "coil_index": 10,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 267.5928671370676,
+            "center_z_mm": 1300.85,
+            "coil_index": 11,
+            "current_sign": 1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          },
+          {
+            "azimuth_deg": 327.5928671370676,
+            "center_z_mm": 1300.85,
+            "coil_index": 12,
+            "current_sign": -1,
+            "family": "radial_rectangle",
+            "group": "y",
+            "outer_height_mm": 12.67,
+            "outer_width_mm": 12.24,
+            "radial_end_mm": 29.595,
+            "radial_start_mm": 25.241811460575416,
+            "station_index": 0,
+            "window_height_mm": 8.688,
+            "window_width_mm": 6.885
+          }
+        ],
+        "quadrature24x48_to32x64_max_vector_over_native_peak": 2.6612890861762267e-13,
+        "original_uniform_pack_reconstruction_max_vector_over_native_peak": 3.102717098467943e-14
+      },
+      "unchanged_actual_CAD_two_current_global_linear_fit": {
+        "fit": {
+          "currents_a": [
+            -968746.6622928125,
+            1207229.7983246215
+          ],
+          "rank": 2,
+          "singular_values": [
+            0.17038578223990755,
+            0.0037541430848202074
+          ],
+          "condition_number": 45.386065046070996,
+          "column_normalized_condition_number": 43.09421502603812,
+          "normalized_column_correlation": 0.9989236382524322,
+          "relative_l2": 0.2692959536124354,
+          "cancellation_amplification_l2": 17.515203159933897,
+          "reference_weighted_norm": 15077.809422856468
+        },
+        "full_axial_half_span_mm": 1600,
+        "certificate": "For these two fixed finite-conductor closed circuits and this weighted axial H target, unconstrained linear least squares gives the global minimum over all two signed current amplitudes. This does not prove a bound for arbitrary different current-density topologies.",
+        "finite_wire_and_path_refinement_max_vector_over_native_peak": 1.1107597648330656e-13
+      },
+      "finding": "No tested fixed-envelope two-group model reproduces the old narrow Gaussian H(z). These currents are diagnostic best fits, not an accepted working point or image/probe qualification."
+    }
+  ],
+  "joint_both_HP_full_tail_current_fit": {
+    "original_uniform_pack_two_groups_per_HP": {
+      "current_order": [
+        "probe_hp2_hexapole:group1",
+        "probe_hp2_hexapole:group2",
+        "probe_hp1_hexapole:group1",
+        "probe_hp1_hexapole:group2"
+      ],
+      "currents_a": [
+        -629717.9678583486,
+        956465.0988491247,
+        -446570.6295926152,
+        647304.6879400762
+      ],
+      "rank": 4,
+      "relative_l2": 0.44803624654199,
+      "condition_number": 30.00678548219286,
+      "scope": "Joint four-current global Hn/Hs fit with both full axial tails and original relative station positions; all geometry fixed"
+    },
+    "unchanged_actual_two_turns_per_HP": {
+      "current_order": [
+        "probe_hp2_hexapole:group1",
+        "probe_hp2_hexapole:group2",
+        "probe_hp1_hexapole:group1",
+        "probe_hp1_hexapole:group2"
+      ],
+      "currents_a": [
+        -1353468.8439186695,
+        1734378.0678310487,
+        -968803.9513242326,
+        1207311.9677828883
+      ],
+      "rank": 4,
+      "relative_l2": 0.45365391787245174,
+      "condition_number": 45.680189473216615,
+      "scope": "Joint four-current global Hn/Hs fit with both full axial tails and original relative station positions; all geometry fixed"
+    }
+  },
+  "status": "FIELD_MATCH_UNQUALIFIED_WITH_TWO_FIXED_CLOSED_CURRENT_GROUPS"
+}

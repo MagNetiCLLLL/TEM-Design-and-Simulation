@@ -1,0 +1,62 @@
+{
+  "status": "READY",
+  "package": "F:\\tem_simulator_v2\\src\\temsim\\__init__.py",
+  "runner_sha256": "70e948522d8412b09776633a9ff4288c63886d59110dab47932c25b55170b220",
+  "arguments": {
+    "input_directory": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-input",
+    "package_root": "F:\\tem_simulator_v2\\src",
+    "baseline_profile": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-native-64\\preview",
+    "output": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024",
+    "quality": "both",
+    "maximum_accepted_steps": 0,
+    "maximum_wall_seconds": 0,
+    "artifact_gib": 32,
+    "cprofile": false,
+    "execute": true
+  },
+  "quality_preparations": {
+    "Preview": {
+      "original_inputs": {
+        "schema": "wave-input-graph-compatibility-v1",
+        "physical_inputs_unchanged": true,
+        "metadata_migrations": []
+      },
+      "numerical_preparation": {
+        "schema": "gui-request-numerical-preparation-v1",
+        "quality": "Preview",
+        "requested_step_mm": 0.5,
+        "applied_step_mm": 0.5,
+        "high_accuracy_maximum_step_mm": null,
+        "changed": false,
+        "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+      },
+      "history_step_mm": 2.0,
+      "original_snapshot_id": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+      "execution_snapshot_id": "50d8a398003747719a1063c18d0ac4c9ee2b5c9891939f1ee7371e9455956ca3",
+      "original_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+      "execution_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35"
+    },
+    "High accuracy": {
+      "original_inputs": {
+        "schema": "wave-input-graph-compatibility-v1",
+        "physical_inputs_unchanged": true,
+        "metadata_migrations": []
+      },
+      "numerical_preparation": {
+        "schema": "gui-request-numerical-preparation-v1",
+        "quality": "High accuracy",
+        "requested_step_mm": 0.5,
+        "applied_step_mm": 0.05,
+        "high_accuracy_maximum_step_mm": 0.05,
+        "changed": true,
+        "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+      },
+      "history_step_mm": 0.5,
+      "original_snapshot_id": "216a8096f6dda87ac1e2ff720de6ea3901be884fc30d5ac3f9ec969704f6ef66",
+      "execution_snapshot_id": "dd03277c5e436190a24c07729d1f041f76f0f5c5a543a252b92dd47d8c31e15b",
+      "original_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+      "execution_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35"
+    }
+  },
+  "scope": "Fixed old copper-coil 1024/0.3eV source. Same optics, boundaries and error gates. Official GUI quality numerics; no wave calculations."
+}

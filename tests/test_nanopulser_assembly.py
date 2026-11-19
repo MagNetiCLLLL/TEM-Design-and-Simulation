@@ -112,15 +112,27 @@ def test_physical_layout_exposes_installed_electrostatic_blanker():
     assert by_key[NANOPULSER_APERTURE].field_model.kind == "hard_aperture"
     assert by_key[NANOPULSER_APERTURE].effective_aperture_radius_mm == 0.1
     assert state.sample.upper_surface_z_mm == pytest.approx(original_upper + 80., abs=1e-10)
+    installed = configuration.resolved_assembly
+    assert layout_configuration_from_state(state).resolved_assembly is installed
+
     state.nanopulser.installed = False
     apply_physical_layout_to_state(state)
     assert NANOPULSER_DEFLECTOR not in {item.key for item in state._resolved_optics_layout}
     assert state.sample.upper_surface_z_mm == pytest.approx(original_upper, abs=1e-10)
+    removed = layout_configuration_from_state(state)
+    assert "beam_blanker" not in dict(removed.resolved_assembly.selected_module_paths)
+    assert {NANOPULSER_DEFLECTOR, NANOPULSER_APERTURE}.isdisjoint(item.key for item in build_optics_layout(removed))
+
     state.nanopulser.installed = True
     captured = layout_configuration_from_state(state, assembly=original_assembly)
     assert captured.resolved_assembly is original_assembly
     assert not captured.nanopulser_installed
     assert NANOPULSER_DEFLECTOR not in {item.key for item in build_optics_layout(captured)}
+
+    restored = layout_configuration_from_state(state, assembly=installed)
+    assert restored.resolved_assembly is installed
+    assert restored.nanopulser_installed and state.nanopulser.installed
+    assert NANOPULSER_DEFLECTOR in {item.key for item in build_optics_layout(restored)}
 
 
 def test_blanker_toml_geometry_rebuild_preserves_operating_settings(tmp_path: Path):
@@ -145,6 +157,11 @@ def test_blanker_toml_geometry_rebuild_preserves_operating_settings(tmp_path: Pa
         layout_configuration_from_state(state, assembly_root=root),
     )
     catalog.apply(state, selection)
+    for installed in (False, True):
+        state.nanopulser.installed = installed
+        configuration = layout_configuration_from_state(state)
+        assert configuration.resolved_assembly.root == root
+        assert ("beam_blanker" in dict(configuration.resolved_assembly.selected_module_paths)) == installed
     assert state.nanopulser.plate_length_mm == 8.0
     assert state.nanopulser.plate_gap_mm == 0.8
     assert state.nanopulser.aperture_radius_mm == 0.08

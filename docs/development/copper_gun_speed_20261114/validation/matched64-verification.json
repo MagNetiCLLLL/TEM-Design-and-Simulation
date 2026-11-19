@@ -1,0 +1,2484 @@
+{
+  "schema": "gun-profile-readonly-verification-v1",
+  "physical_execution": false,
+  "baseline": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-native-64\\preview",
+    "status": "BOUNDED_GUN_PROFILE_ONLY",
+    "original_receipt": {
+      "quality": "Preview",
+      "elapsed_seconds": 137.27484230000118,
+      "errors": [],
+      "persistence_errors": [],
+      "cancellation_reason": "accepted-step diagnostic bound",
+      "completed_result_count": 0,
+      "execution_implementation": "c197071873ef1b00b06cf320c28c29fd4e578e0003d5a2bf6304a32b06c426f5",
+      "implementation_unchanged": true
+    },
+    "original_failure_preserved": true,
+    "counts": {
+      "traces": 1,
+      "surface_step_calls": 64,
+      "attempts": 64,
+      "cached_full_uses": 0,
+      "static_step_calls": 192,
+      "static_step_full": 64,
+      "static_step_half": 64,
+      "static_step_fine": 64,
+      "accepted_steps": 64
+    },
+    "actual_source_verification": [
+      {
+        "trace": 1,
+        "field": "ray_id",
+        "exact_bytes_equal": true,
+        "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+      },
+      {
+        "trace": 1,
+        "field": "weight",
+        "exact_bytes_equal": true,
+        "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+      },
+      {
+        "trace": 1,
+        "field": "launch_energy_ev",
+        "exact_bytes_equal": true,
+        "sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+      },
+      {
+        "trace": 1,
+        "field": "launch_momentum_kg_m_per_s",
+        "exact_bytes_equal": true,
+        "sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a"
+      },
+      {
+        "trace": 1,
+        "field": "launch_position_m",
+        "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235",
+        "matches_declared_surface_coordinates": true,
+        "scope": "Actual native launch coordinates; exact declared flat-source comparison"
+      }
+    ],
+    "accepted_gate_summary": {
+      "total_momentum": {
+        "maximum_accepted_ratio": 1.794493614535666e-09,
+        "every_accepted_gate_finite": true
+      },
+      "xyz_position": {
+        "maximum_accepted_ratio": 5.9450839035831925e-09,
+        "every_accepted_gate_finite": true
+      },
+      "transverse_momentum": {
+        "maximum_accepted_ratio": 1.7852884301444645e-07,
+        "every_accepted_gate_finite": true
+      },
+      "xy_position": {
+        "maximum_accepted_ratio": 5.686494801729329e-09,
+        "every_accepted_gate_finite": true
+      }
+    },
+    "static_step_seconds": {
+      "full": 45.05631069999981,
+      "half": 45.2075599999971,
+      "fine": 44.999174899990976
+    },
+    "dispatch": [],
+    "profiler_total_seconds": 137.0796382000003,
+    "cumulative_profile_functions": [
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\backend_execution.py",
+        "line": 33,
+        "name": "wrapped",
+        "calls": 1,
+        "internal_seconds": 2.0600000000000003e-05,
+        "cumulative_seconds": 137.08587690000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\input_io.py",
+        "line": 195,
+        "name": "wrapped",
+        "calls": 26,
+        "internal_seconds": 0.0013432000000000001,
+        "cumulative_seconds": 137.0202985
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\gui\\calculation_controller.py",
+        "line": 494,
+        "name": "run",
+        "calls": 1,
+        "internal_seconds": 0.0001531,
+        "cumulative_seconds": 137.0202112
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\simulation.py",
+        "line": 369,
+        "name": "run",
+        "calls": 1,
+        "internal_seconds": 9.88e-05,
+        "cumulative_seconds": 136.7964102
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\backend_execution.py",
+        "line": 47,
+        "name": "wrapped",
+        "calls": 1,
+        "internal_seconds": 9e-06,
+        "cumulative_seconds": 136.7525392
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\optics\\electron_gun\\source.py",
+        "line": 6,
+        "name": "trace_source_to_exit",
+        "calls": 1,
+        "internal_seconds": 6.560000000000001e-05,
+        "cumulative_seconds": 136.7525151
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\optics\\electron_gun\\field_emission.py",
+        "line": 862,
+        "name": "trace_to_exit",
+        "calls": 1,
+        "internal_seconds": 3.41e-05,
+        "cumulative_seconds": 135.7232926
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 60,
+        "name": "trace_feg_to_exit",
+        "calls": 1,
+        "internal_seconds": 4.4200000000000004e-05,
+        "cumulative_seconds": 135.68723440000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 156,
+        "name": "_trace_feg_to_exit",
+        "calls": 1,
+        "internal_seconds": 0.015628200000000002,
+        "cumulative_seconds": 135.6353655
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 846,
+        "name": "_surface_step",
+        "calls": 64,
+        "internal_seconds": 0.0076527,
+        "cumulative_seconds": 135.3025139
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\gun_step_diagnostics.py",
+        "line": 84,
+        "name": "time_static_step",
+        "calls": 192,
+        "internal_seconds": 0.0032407,
+        "cumulative_seconds": 135.26485530000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\static_energy_lorentz.py",
+        "line": 27,
+        "name": "static_energy_step",
+        "calls": 192,
+        "internal_seconds": 0.031691000000000004,
+        "cumulative_seconds": 135.261348
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\instrument_magnetic.py",
+        "line": 209,
+        "name": "field_at_global_positions_t",
+        "calls": 384,
+        "internal_seconds": 0.2991516,
+        "cumulative_seconds": 134.93441280000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\frozen_copper_coil_field.py",
+        "line": 112,
+        "name": "field_at_global_positions_t",
+        "calls": 4992,
+        "internal_seconds": 0.010669900000000001,
+        "cumulative_seconds": 134.4979284
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\copper_coil_field_provider.py",
+        "line": 88,
+        "name": "field_at_global_positions_t",
+        "calls": 4992,
+        "internal_seconds": 0.021584600000000002,
+        "cumulative_seconds": 134.4872585
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\annular_coil_potential.py",
+        "line": 294,
+        "name": "field_at_global_positions_t",
+        "calls": 5376,
+        "internal_seconds": 0.07422150000000001,
+        "cumulative_seconds": 134.4591397
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\annular_coil_potential.py",
+        "line": 260,
+        "name": "_sample_local",
+        "calls": 5376,
+        "internal_seconds": 0.37414220000000004,
+        "cumulative_seconds": 133.62582210000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\annular_coil_potential.py",
+        "line": 220,
+        "name": "_axis_coefficients",
+        "calls": 5376,
+        "internal_seconds": 1.6054154,
+        "cumulative_seconds": 132.9610791
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\annular_coil_potential.py",
+        "line": 193,
+        "name": "axial_derivatives",
+        "calls": 5376,
+        "internal_seconds": 106.014784,
+        "cumulative_seconds": 131.2168535
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numpy\\polynomial\\polynomial.py",
+        "line": 662,
+        "name": "polyval",
+        "calls": 129024,
+        "internal_seconds": 21.1033711,
+        "cumulative_seconds": 21.361855300000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numpy\\_core\\fromnumeric.py",
+        "line": 2304,
+        "name": "sum",
+        "calls": 135081,
+        "internal_seconds": 0.2740655,
+        "cumulative_seconds": 3.1973141000000003
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numpy\\_core\\fromnumeric.py",
+        "line": 66,
+        "name": "_wrapreduction",
+        "calls": 135854,
+        "internal_seconds": 0.3331713,
+        "cumulative_seconds": 2.8708392000000003
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'reduce' of 'numpy.ufunc' objects>",
+        "calls": 203476,
+        "internal_seconds": 2.6797225,
+        "cumulative_seconds": 2.6797225
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\incremental_particles.py",
+        "line": 78,
+        "name": "source_metadata",
+        "calls": 1,
+        "internal_seconds": 0.0012774000000000001,
+        "cumulative_seconds": 0.7896476
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\incremental_particles.py",
+        "line": 125,
+        "name": "column_input_digest",
+        "calls": 1,
+        "internal_seconds": 0.0014998000000000001,
+        "cumulative_seconds": 0.7075945
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<built-in method builtins.isinstance>",
+        "calls": 1204157,
+        "internal_seconds": 0.2122445,
+        "cumulative_seconds": 0.4148507
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\annular_coil_potential.py",
+        "line": 166,
+        "name": "_local",
+        "calls": 5376,
+        "internal_seconds": 0.1473845,
+        "cumulative_seconds": 0.39100870000000004
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\instrument_snapshot.py",
+        "line": 496,
+        "name": "capture_instrument_snapshot",
+        "calls": 1,
+        "internal_seconds": 6.840000000000001e-05,
+        "cumulative_seconds": 0.3855565
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<built-in method builtins.next>",
+        "calls": 2910,
+        "internal_seconds": 0.0031233000000000003,
+        "cumulative_seconds": 0.36326240000000004
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numpy\\lib\\_arraysetops_impl.py",
+        "line": 145,
+        "name": "unique",
+        "calls": 5376,
+        "internal_seconds": 0.017418200000000002,
+        "cumulative_seconds": 0.3607501
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\contextlib.py",
+        "line": 132,
+        "name": "__enter__",
+        "calls": 35,
+        "internal_seconds": 5.4000000000000005e-05,
+        "cumulative_seconds": 0.35927210000000004
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\physics\\lens_field_provider.py",
+        "line": 127,
+        "name": "vectors_local_to_global",
+        "calls": 5376,
+        "internal_seconds": 0.2464742,
+        "cumulative_seconds": 0.35791
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numpy\\lib\\_arraysetops_impl.py",
+        "line": 350,
+        "name": "_unique1d",
+        "calls": 5376,
+        "internal_seconds": 0.1242516,
+        "cumulative_seconds": 0.3399512
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\immutable_json.py",
+        "line": 20,
+        "name": "freeze_json",
+        "calls": 150387,
+        "internal_seconds": 0.12455870000000001,
+        "cumulative_seconds": 0.3328855
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\baseline-package\\temsim\\immutable_json.py",
+        "line": 52,
+        "name": "<genexpr>",
+        "calls": 128778,
+        "internal_seconds": 0.0278517,
+        "cumulative_seconds": 0.32979620000000004
+      }
+    ],
+    "raw_files": {
+      "observer.json": {
+        "bytes": 141454,
+        "sha256": "a9689e1ed5d60bc308833073ab2179f00b1976024e77e4b3ee2a5da9b3edb748"
+      },
+      "observer-arrays.npz": {
+        "bytes": 6173226,
+        "sha256": "43917065fefbd3a19d20d8337f2516d5cf2b9b0b54487ded35d355f440887057"
+      },
+      "cprofile.prof": {
+        "bytes": 356212,
+        "sha256": "d625c4e3a225454a65918e19905b1464e66030bc2bcfad4a425153cd20a97b9f"
+      },
+      "execution-receipt.json": {
+        "bytes": 344,
+        "sha256": "f2d55eb5746d120a71f16e8217cdc132714a602ea9aa7ee50e43dcbd0a42ae62"
+      }
+    },
+    "limitation": "64 accepted pre-boundary Gun steps; no complete Gun, Preview, High accuracy or restart checkpoint"
+  },
+  "candidate": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-native-64\\preview",
+    "status": "BOUNDED_GUN_PROFILE_ONLY",
+    "original_receipt": {
+      "quality": "Preview",
+      "elapsed_seconds": 26.902766000001066,
+      "errors": [],
+      "persistence_errors": [],
+      "cancellation_reason": "accepted-step diagnostic bound",
+      "completed_result_count": 0,
+      "execution_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+      "implementation_unchanged": true
+    },
+    "original_failure_preserved": false,
+    "counts": {
+      "traces": 1,
+      "surface_step_calls": 64,
+      "attempts": 64,
+      "cached_full_uses": 0,
+      "static_step_calls": 192,
+      "static_step_full": 64,
+      "static_step_half": 64,
+      "static_step_fine": 64,
+      "accepted_steps": 64
+    },
+    "actual_source_verification": [
+      {
+        "trace": 1,
+        "field": "ray_id",
+        "exact_bytes_equal": true,
+        "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+      },
+      {
+        "trace": 1,
+        "field": "weight",
+        "exact_bytes_equal": true,
+        "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+      },
+      {
+        "trace": 1,
+        "field": "launch_energy_ev",
+        "exact_bytes_equal": true,
+        "sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+      },
+      {
+        "trace": 1,
+        "field": "launch_momentum_kg_m_per_s",
+        "exact_bytes_equal": true,
+        "sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a"
+      },
+      {
+        "trace": 1,
+        "field": "launch_position_m",
+        "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235",
+        "matches_declared_surface_coordinates": true,
+        "scope": "Actual native launch coordinates; exact declared flat-source comparison"
+      }
+    ],
+    "accepted_gate_summary": {
+      "total_momentum": {
+        "maximum_accepted_ratio": 1.7722073238926248e-09,
+        "every_accepted_gate_finite": true
+      },
+      "xyz_position": {
+        "maximum_accepted_ratio": 5.9450839035831925e-09,
+        "every_accepted_gate_finite": true
+      },
+      "transverse_momentum": {
+        "maximum_accepted_ratio": 1.7855475113762803e-07,
+        "every_accepted_gate_finite": true
+      },
+      "xy_position": {
+        "maximum_accepted_ratio": 5.686494801729329e-09,
+        "every_accepted_gate_finite": true
+      }
+    },
+    "static_step_seconds": {
+      "full": 15.484005900001648,
+      "half": 4.76668499999505,
+      "fine": 4.790069999997286
+    },
+    "dispatch": [
+      {
+        "name": "grounded_copper_dg",
+        "used": true,
+        "reason": "",
+        "count": 192
+      },
+      {
+        "name": "grounded_dg",
+        "used": true,
+        "reason": "",
+        "count": 192
+      }
+    ],
+    "profiler_total_seconds": 26.535254599999895,
+    "cumulative_profile_functions": [
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\backend_execution.py",
+        "line": 33,
+        "name": "wrapped",
+        "calls": 1,
+        "internal_seconds": 2.19e-05,
+        "cumulative_seconds": 26.547131800000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\input_io.py",
+        "line": 195,
+        "name": "wrapped",
+        "calls": 26,
+        "internal_seconds": 0.0010561000000000001,
+        "cumulative_seconds": 26.4807682
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\gui\\calculation_controller.py",
+        "line": 494,
+        "name": "run",
+        "calls": 1,
+        "internal_seconds": 0.0003798,
+        "cumulative_seconds": 26.480703100000003
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\simulation.py",
+        "line": 369,
+        "name": "run",
+        "calls": 1,
+        "internal_seconds": 7.350000000000001e-05,
+        "cumulative_seconds": 26.320342200000002
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\backend_execution.py",
+        "line": 47,
+        "name": "wrapped",
+        "calls": 1,
+        "internal_seconds": 8.6e-06,
+        "cumulative_seconds": 26.2836938
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\optics\\electron_gun\\source.py",
+        "line": 6,
+        "name": "trace_source_to_exit",
+        "calls": 1,
+        "internal_seconds": 4.53e-05,
+        "cumulative_seconds": 26.283669000000003
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\contextlib.py",
+        "line": 141,
+        "name": "__exit__",
+        "calls": 29974,
+        "internal_seconds": 0.0149919,
+        "cumulative_seconds": 25.4567139
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\optics\\electron_gun\\field_emission.py",
+        "line": 862,
+        "name": "trace_to_exit",
+        "calls": 1,
+        "internal_seconds": 2.33e-05,
+        "cumulative_seconds": 25.4433721
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 60,
+        "name": "trace_feg_to_exit",
+        "calls": 1,
+        "internal_seconds": 4.39e-05,
+        "cumulative_seconds": 25.416823800000003
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\grounded_particle_step.py",
+        "line": 87,
+        "name": "gun_step_workers",
+        "calls": 2,
+        "internal_seconds": 4.05e-05,
+        "cumulative_seconds": 25.172834400000003
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'throw' of 'generator' objects>",
+        "calls": 119,
+        "internal_seconds": 0.0001242,
+        "cumulative_seconds": 25.1551669
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\grounded_particle_step.py",
+        "line": 82,
+        "name": "close",
+        "calls": 1,
+        "internal_seconds": 4.1e-05,
+        "cumulative_seconds": 25.1522383
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\concurrent\\futures\\thread.py",
+        "line": 219,
+        "name": "shutdown",
+        "calls": 1,
+        "internal_seconds": 0.0001685,
+        "cumulative_seconds": 25.1521678
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 1115,
+        "name": "join",
+        "calls": 4,
+        "internal_seconds": 0.0001806,
+        "cumulative_seconds": 24.854895900000002
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'get' of '_queue.SimpleQueue' objects>",
+        "calls": 1536,
+        "internal_seconds": 0.0275897,
+        "cumulative_seconds": 24.825931
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'acquire' of '_thread.lock' objects>",
+        "calls": 3046,
+        "internal_seconds": 0.0075097,
+        "cumulative_seconds": 24.823887600000003
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 1153,
+        "name": "_wait_for_tstate_lock",
+        "calls": 4,
+        "internal_seconds": 2.3100000000000002e-05,
+        "cumulative_seconds": 24.817183
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 1016,
+        "name": "_bootstrap",
+        "calls": 4,
+        "internal_seconds": 5.910000000000001e-05,
+        "cumulative_seconds": 24.8170202
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 1056,
+        "name": "_bootstrap_inner",
+        "calls": 4,
+        "internal_seconds": 2.57e-05,
+        "cumulative_seconds": 24.8169454
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 999,
+        "name": "run",
+        "calls": 4,
+        "internal_seconds": 3.34e-05,
+        "cumulative_seconds": 24.8169383
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\concurrent\\futures\\thread.py",
+        "line": 69,
+        "name": "_worker",
+        "calls": 4,
+        "internal_seconds": 0.0002743,
+        "cumulative_seconds": 24.8169295
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 156,
+        "name": "_trace_feg_to_exit",
+        "calls": 1,
+        "internal_seconds": 0.0124455,
+        "cumulative_seconds": 24.814938
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\optics\\electron_gun\\tracing.py",
+        "line": 846,
+        "name": "_surface_step",
+        "calls": 64,
+        "internal_seconds": 0.0080002,
+        "cumulative_seconds": 24.737445800000003
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\gun_step_diagnostics.py",
+        "line": 84,
+        "name": "time_static_step",
+        "calls": 192,
+        "internal_seconds": 0.001734,
+        "cumulative_seconds": 24.7047282
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\static_energy_lorentz.py",
+        "line": 27,
+        "name": "static_energy_step",
+        "calls": 192,
+        "internal_seconds": 0.0054922,
+        "cumulative_seconds": 24.7018637
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\grounded_particle_step.py",
+        "line": 256,
+        "name": "try_step",
+        "calls": 192,
+        "internal_seconds": 0.0211854,
+        "cumulative_seconds": 24.692074
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\src\\temsim\\physics\\grounded_particle_step.py",
+        "line": 39,
+        "name": "step",
+        "calls": 192,
+        "internal_seconds": 0.0415926,
+        "cumulative_seconds": 24.6538472
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\concurrent\\futures\\_base.py",
+        "line": 428,
+        "name": "result",
+        "calls": 1536,
+        "internal_seconds": 0.005939000000000001,
+        "cumulative_seconds": 24.5454629
+      },
+      {
+        "file": "C:\\Users\\54019\\anaconda3\\Lib\\threading.py",
+        "line": 323,
+        "name": "wait",
+        "calls": 739,
+        "internal_seconds": 0.0136577,
+        "cumulative_seconds": 24.537700200000003
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numba\\core\\dispatcher.py",
+        "line": 342,
+        "name": "_compile_for_args",
+        "calls": 7,
+        "internal_seconds": 0.0001292,
+        "cumulative_seconds": 10.6272655
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numba\\core\\dispatcher.py",
+        "line": 860,
+        "name": "compile",
+        "calls": 306,
+        "internal_seconds": 0.0034828000000000003,
+        "cumulative_seconds": 10.601415900000001
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numba\\core\\compiler_lock.py",
+        "line": 32,
+        "name": "_acquire_compile_lock",
+        "calls": 3175,
+        "internal_seconds": 0.008113500000000001,
+        "cumulative_seconds": 10.3122024
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numba\\core\\compiler_lock.py",
+        "line": 19,
+        "name": "__enter__",
+        "calls": 3505,
+        "internal_seconds": 0.001142,
+        "cumulative_seconds": 10.2932389
+      },
+      {
+        "file": "F:\\tem_simulator_v2\\.venv\\Lib\\site-packages\\numba\\core\\compiler_lock.py",
+        "line": 11,
+        "name": "acquire",
+        "calls": 3505,
+        "internal_seconds": 0.0031181000000000004,
+        "cumulative_seconds": 10.2931696
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'acquire' of '_thread.RLock' objects>",
+        "calls": 46757,
+        "internal_seconds": 0.011142,
+        "cumulative_seconds": 10.2919041
+      }
+    ],
+    "raw_files": {
+      "observer.json": {
+        "bytes": 142039,
+        "sha256": "8c6ea56ac6c16561b7e6c90eee1728b685a534ef8ea738638548c7d499ab0cdd"
+      },
+      "observer-arrays.npz": {
+        "bytes": 6173245,
+        "sha256": "c6bc4f7fab12f11471334b834eac9be5a371e09ec3947904c90db7f7b09cc428"
+      },
+      "cprofile.prof": {
+        "bytes": 979940,
+        "sha256": "50b0ac80d354e322544403e80b9fe03d3f53c6c6efc10710d547390fbb1c9810"
+      },
+      "execution-receipt.json": {
+        "bytes": 344,
+        "sha256": "e6539e338a3feb77ad4bf78561f331efe54c5f0b63870fcc35c0aa1e458b8cfc"
+      }
+    },
+    "limitation": "64 accepted pre-boundary Gun steps; no complete Gun, Preview, High accuracy or restart checkpoint"
+  },
+  "comparison": {
+    "same_array_keys": true,
+    "arrays": {
+      "snapshot_00000_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00000_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 4.587504098098563e-16
+      },
+      "snapshot_00000_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      },
+      "snapshot_00000_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_vector_difference": 0.0
+      },
+      "snapshot_00000_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      },
+      "snapshot_00001_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00001_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 3.8017289322454113e-16
+      },
+      "snapshot_00001_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.1359030627651384e-25
+      },
+      "snapshot_00001_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 4.587504098098563e-16
+      },
+      "snapshot_00001_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      },
+      "snapshot_00002_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00002_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 4.592150495207036e-16
+      },
+      "snapshot_00002_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-25
+      },
+      "snapshot_00002_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 3.8017289322454113e-16
+      },
+      "snapshot_00002_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.1359030627651384e-25
+      },
+      "snapshot_00003_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00003_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 7.654903055248893e-16
+      },
+      "snapshot_00003_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-25
+      },
+      "snapshot_00003_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3775324423698682e-40,
+        "maximum_relative_vector_difference": 4.592150495207036e-16
+      },
+      "snapshot_00003_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-25
+      },
+      "snapshot_00004_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00004_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.0429888000000533e-15
+      },
+      "snapshot_00004_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-24
+      },
+      "snapshot_00004_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 7.654903055248893e-16
+      },
+      "snapshot_00004_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-25
+      },
+      "snapshot_00005_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00005_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.0254952891850294e-15
+      },
+      "snapshot_00005_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.481541837659083e-24
+      },
+      "snapshot_00005_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.0429888000000533e-15
+      },
+      "snapshot_00005_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-24
+      },
+      "snapshot_00006_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00006_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.7550648847397363e-40,
+        "maximum_relative_vector_difference": 1.0081631559302063e-15
+      },
+      "snapshot_00006_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.481541837659083e-24
+      },
+      "snapshot_00006_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.0254952891850294e-15
+      },
+      "snapshot_00006_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.481541837659083e-24
+      },
+      "snapshot_00007_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00007_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.18919446594462e-15
+      },
+      "snapshot_00007_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.308722450212111e-24
+      },
+      "snapshot_00007_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.7550648847397363e-40,
+        "maximum_relative_vector_difference": 1.0081631559302063e-15
+      },
+      "snapshot_00007_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.481541837659083e-24
+      },
+      "snapshot_00008_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00008_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.7550648847397363e-40,
+        "maximum_relative_vector_difference": 9.739948165598713e-16
+      },
+      "snapshot_00008_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.963083675318166e-24
+      },
+      "snapshot_00008_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.18919446594462e-15
+      },
+      "snapshot_00008_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.308722450212111e-24
+      },
+      "snapshot_00009_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00009_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.1485969395772827e-15
+      },
+      "snapshot_00009_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.790264287871194e-24
+      },
+      "snapshot_00009_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.7550648847397363e-40,
+        "maximum_relative_vector_difference": 9.739948165598713e-16
+      },
+      "snapshot_00009_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.963083675318166e-24
+      },
+      "snapshot_00010_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00010_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.1286069704300854e-15
+      },
+      "snapshot_00010_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 6.617444900424222e-24
+      },
+      "snapshot_00010_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.1485969395772827e-15
+      },
+      "snapshot_00010_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.790264287871194e-24
+      },
+      "snapshot_00011_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00011_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.6734198463196485e-40,
+        "maximum_relative_vector_difference": 1.108826709654633e-15
+      },
+      "snapshot_00011_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-24
+      },
+      "snapshot_00011_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2958874039497803e-40,
+        "maximum_relative_vector_difference": 1.1286069704300854e-15
+      },
+      "snapshot_00011_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 6.617444900424222e-24
+      },
+      "snapshot_00012_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00012_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.6734198463196485e-40,
+        "maximum_relative_vector_difference": 1.0371055772869452e-15
+      },
+      "snapshot_00012_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.926167350636332e-24
+      },
+      "snapshot_00012_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.6734198463196485e-40,
+        "maximum_relative_vector_difference": 1.108826709654633e-15
+      },
+      "snapshot_00012_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.271806125530277e-24
+      },
+      "snapshot_00013_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00013_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.248223360973908e-15
+      },
+      "snapshot_00013_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.926167350636332e-24
+      },
+      "snapshot_00013_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.6734198463196485e-40,
+        "maximum_relative_vector_difference": 1.0371055772869452e-15
+      },
+      "snapshot_00013_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.926167350636332e-24
+      },
+      "snapshot_00014_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00014_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.4083434610567327e-15
+      },
+      "snapshot_00014_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1580528575742387e-23
+      },
+      "snapshot_00014_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.248223360973908e-15
+      },
+      "snapshot_00014_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.926167350636332e-24
+      },
+      "snapshot_00015_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00015_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.395485099137134e-15
+      },
+      "snapshot_00015_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3234889800848443e-23
+      },
+      "snapshot_00015_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.4083434610567327e-15
+      },
+      "snapshot_00015_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1580528575742387e-23
+      },
+      "snapshot_00016_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00016_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.5553651027402387e-15
+      },
+      "snapshot_00016_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-23
+      },
+      "snapshot_00016_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.395485099137134e-15
+      },
+      "snapshot_00016_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3234889800848443e-23
+      },
+      "snapshot_00017_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00017_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.7119144161752334e-15
+      },
+      "snapshot_00017_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-23
+      },
+      "snapshot_00017_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.5553651027402387e-15
+      },
+      "snapshot_00017_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-23
+      },
+      "snapshot_00018_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00018_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.6955535808320896e-15
+      },
+      "snapshot_00018_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.9852334701272664e-23
+      },
+      "snapshot_00018_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.7119144161752334e-15
+      },
+      "snapshot_00018_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6543612251060553e-23
+      },
+      "snapshot_00019_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00019_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.847015517747829e-15
+      },
+      "snapshot_00019_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.9852334701272664e-23
+      },
+      "snapshot_00019_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.6955535808320896e-15
+      },
+      "snapshot_00019_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.9852334701272664e-23
+      },
+      "snapshot_00020_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00020_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.6625732478076496e-15
+      },
+      "snapshot_00020_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3161057151484775e-23
+      },
+      "snapshot_00020_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.847015517747829e-15
+      },
+      "snapshot_00020_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.9852334701272664e-23
+      },
+      "snapshot_00021_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00021_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.810558838584361e-15
+      },
+      "snapshot_00021_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3161057151484775e-23
+      },
+      "snapshot_00021_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.5917748078995606e-40,
+        "maximum_relative_vector_difference": 1.6625732478076496e-15
+      },
+      "snapshot_00021_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3161057151484775e-23
+      },
+      "snapshot_00022_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00022_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.6292776849855512e-15
+      },
+      "snapshot_00022_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.6469779601696886e-23
+      },
+      "snapshot_00022_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.810558838584361e-15
+      },
+      "snapshot_00022_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3161057151484775e-23
+      },
+      "snapshot_00023_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00023_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.7737753505514477e-15
+      },
+      "snapshot_00023_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9778502051908996e-23
+      },
+      "snapshot_00023_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.6292776849855512e-15
+      },
+      "snapshot_00023_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.6469779601696886e-23
+      },
+      "snapshot_00024_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00024_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.969307250269429e-40,
+        "maximum_relative_vector_difference": 2.0744144471572728e-15
+      },
+      "snapshot_00024_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.3087224502121107e-23
+      },
+      "snapshot_00024_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.050952288689517e-40,
+        "maximum_relative_vector_difference": 1.7737753505514477e-15
+      },
+      "snapshot_00024_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9778502051908996e-23
+      },
+      "snapshot_00025_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00025_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.8945883956037805e-15
+      },
+      "snapshot_00025_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00025_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.969307250269429e-40,
+        "maximum_relative_vector_difference": 2.0744144471572728e-15
+      },
+      "snapshot_00025_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.3087224502121107e-23
+      },
+      "snapshot_00026_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00026_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.969307250269429e-40,
+        "maximum_relative_vector_difference": 1.8742661882355283e-15
+      },
+      "snapshot_00026_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00026_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.510129769479473e-40,
+        "maximum_relative_vector_difference": 1.8945883956037805e-15
+      },
+      "snapshot_00026_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00027_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00027_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 2.0083737718607995e-15
+      },
+      "snapshot_00027_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00027_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.969307250269429e-40,
+        "maximum_relative_vector_difference": 1.8742661882355283e-15
+      },
+      "snapshot_00027_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00028_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00028_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 2.1481837408087262e-15
+      },
+      "snapshot_00028_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.632211430296955e-23
+      },
+      "snapshot_00028_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 2.0083737718607995e-15
+      },
+      "snapshot_00028_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.970466940254533e-23
+      },
+      "snapshot_00029_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00029_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 2.1312538367907176e-15
+      },
+      "snapshot_00029_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.632211430296955e-23
+      },
+      "snapshot_00029_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 2.1481837408087262e-15
+      },
+      "snapshot_00029_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.632211430296955e-23
+      },
+      "snapshot_00030_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00030_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.9418017348747827e-15
+      },
+      "snapshot_00030_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.955700410381799e-23
+      },
+      "snapshot_00030_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 2.1312538367907176e-15
+      },
+      "snapshot_00030_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 4.632211430296955e-23
+      },
+      "snapshot_00031_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00031_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.9195235654734726e-15
+      },
+      "snapshot_00031_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 6.617444900424221e-23
+      },
+      "snapshot_00031_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.9418017348747827e-15
+      },
+      "snapshot_00031_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 5.955700410381799e-23
+      },
+      "snapshot_00032_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00032_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.8972128372282384e-15
+      },
+      "snapshot_00032_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00032_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.9195235654734726e-15
+      },
+      "snapshot_00032_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 6.617444900424221e-23
+      },
+      "snapshot_00033_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00033_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.8748762324456862e-15
+      },
+      "snapshot_00033_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00033_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.8972128372282384e-15
+      },
+      "snapshot_00033_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00034_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00034_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 2.0225981263718852e-15
+      },
+      "snapshot_00034_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00034_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 1.8748762324456862e-15
+      },
+      "snapshot_00034_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00035_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00035_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 1.991196755289686e-15
+      },
+      "snapshot_00035_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00035_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 8.265194654219209e-40,
+        "maximum_relative_vector_difference": 2.0225981263718852e-15
+      },
+      "snapshot_00035_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00036_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00036_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1938614500538858e-39,
+        "maximum_relative_vector_difference": 2.471722113758102e-15
+      },
+      "snapshot_00036_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00036_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.183549615799121e-40,
+        "maximum_relative_vector_difference": 1.991196755289686e-15
+      },
+      "snapshot_00036_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00037_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00037_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.279767395341914e-15
+      },
+      "snapshot_00037_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00037_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1938614500538858e-39,
+        "maximum_relative_vector_difference": 2.471722113758102e-15
+      },
+      "snapshot_00037_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00038_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00038_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.588573349196658e-15
+      },
+      "snapshot_00038_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00038_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.279767395341914e-15
+      },
+      "snapshot_00038_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00039_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00039_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.3771650017136122e-15
+      },
+      "snapshot_00039_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00039_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.588573349196658e-15
+      },
+      "snapshot_00039_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.279189390466644e-23
+      },
+      "snapshot_00040_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00040_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.338632058078288e-15
+      },
+      "snapshot_00040_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00040_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.3771650017136122e-15
+      },
+      "snapshot_00040_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00041_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00041_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.7933562953135576e-15
+      },
+      "snapshot_00041_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00041_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.338632058078288e-15
+      },
+      "snapshot_00041_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00042_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00042_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 3.0705489170309393e-15
+      },
+      "snapshot_00042_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00042_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 2.7933562953135576e-15
+      },
+      "snapshot_00042_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00043_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00043_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.701707392684292e-15
+      },
+      "snapshot_00043_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.26442286059391e-23
+      },
+      "snapshot_00043_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0101904577379033e-39,
+        "maximum_relative_vector_difference": 3.0705489170309393e-15
+      },
+      "snapshot_00043_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 7.940933880509066e-23
+      },
+      "snapshot_00044_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00044_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.6564873110345426e-15
+      },
+      "snapshot_00044_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.26442286059391e-23
+      },
+      "snapshot_00044_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.701707392684292e-15
+      },
+      "snapshot_00044_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.26442286059391e-23
+      },
+      "snapshot_00045_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00045_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.3141217699591006e-15
+      },
+      "snapshot_00045_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0587911840678754e-22
+      },
+      "snapshot_00045_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.6564873110345426e-15
+      },
+      "snapshot_00045_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 9.26442286059391e-23
+      },
+      "snapshot_00046_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00046_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.285696946211877e-39,
+        "maximum_relative_vector_difference": 2.6708284124397254e-15
+      },
+      "snapshot_00046_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3234889800848443e-22
+      },
+      "snapshot_00046_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.1020259538958945e-39,
+        "maximum_relative_vector_difference": 2.3141217699591006e-15
+      },
+      "snapshot_00046_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.0587911840678754e-22
+      },
+      "snapshot_00047_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00047_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.285696946211877e-39,
+        "maximum_relative_vector_difference": 2.6179126491594548e-15
+      },
+      "snapshot_00047_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4558378780933287e-22
+      },
+      "snapshot_00047_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.285696946211877e-39,
+        "maximum_relative_vector_difference": 2.6708284124397254e-15
+      },
+      "snapshot_00047_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.3234889800848443e-22
+      },
+      "snapshot_00048_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00048_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4693679385278594e-39,
+        "maximum_relative_vector_difference": 2.959188730750027e-15
+      },
+      "snapshot_00048_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4558378780933287e-22
+      },
+      "snapshot_00048_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.285696946211877e-39,
+        "maximum_relative_vector_difference": 2.6179126491594548e-15
+      },
+      "snapshot_00048_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4558378780933287e-22
+      },
+      "snapshot_00049_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00049_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4693679385278594e-39,
+        "maximum_relative_vector_difference": 2.9263936164274347e-15
+      },
+      "snapshot_00049_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.5881867761018131e-22
+      },
+      "snapshot_00049_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4693679385278594e-39,
+        "maximum_relative_vector_difference": 2.959188730750027e-15
+      },
+      "snapshot_00049_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4558378780933287e-22
+      },
+      "snapshot_00050_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00050_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.2552150992413775e-15
+      },
+      "snapshot_00050_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.5881867761018131e-22
+      },
+      "snapshot_00050_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.4693679385278594e-39,
+        "maximum_relative_vector_difference": 2.9263936164274347e-15
+      },
+      "snapshot_00050_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.5881867761018131e-22
+      },
+      "snapshot_00051_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00051_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.218165204693251e-15
+      },
+      "snapshot_00051_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.7205356741102976e-22
+      },
+      "snapshot_00051_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.2552150992413775e-15
+      },
+      "snapshot_00051_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.5881867761018131e-22
+      },
+      "snapshot_00052_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00052_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.181054242015567e-15
+      },
+      "snapshot_00052_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.852884572118782e-22
+      },
+      "snapshot_00052_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.218165204693251e-15
+      },
+      "snapshot_00052_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.7205356741102976e-22
+      },
+      "snapshot_00053_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00053_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.744874427001833e-39,
+        "maximum_relative_vector_difference": 3.318554142227378e-15
+      },
+      "snapshot_00053_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.117582368135751e-22
+      },
+      "snapshot_00053_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.181054242015567e-15
+      },
+      "snapshot_00053_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.852884572118782e-22
+      },
+      "snapshot_00054_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00054_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.106693924356802e-15
+      },
+      "snapshot_00054_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2499312661442353e-22
+      },
+      "snapshot_00054_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.744874427001833e-39,
+        "maximum_relative_vector_difference": 3.318554142227378e-15
+      },
+      "snapshot_00054_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.117582368135751e-22
+      },
+      "snapshot_00055_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00055_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.8722589473145294e-15
+      },
+      "snapshot_00055_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00055_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.106693924356802e-15
+      },
+      "snapshot_00055_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.2499312661442353e-22
+      },
+      "snapshot_00056_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00056_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.8355950542223372e-15
+      },
+      "snapshot_00056_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00056_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.8722589473145294e-15
+      },
+      "snapshot_00056_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00057_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00057_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.7989734069379413e-15
+      },
+      "snapshot_00057_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00057_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.8355950542223372e-15
+      },
+      "snapshot_00057_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00058_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00058_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.762405151654259e-15
+      },
+      "snapshot_00058_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00058_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.7989734069379413e-15
+      },
+      "snapshot_00058_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00059_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00059_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.954834621466892e-15
+      },
+      "snapshot_00059_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00059_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.762405151654259e-15
+      },
+      "snapshot_00059_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.3822801641527197e-22
+      },
+      "snapshot_00060_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00060_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.909271697693771e-15
+      },
+      "snapshot_00060_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00060_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.954834621466892e-15
+      },
+      "snapshot_00060_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00061_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00061_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.0549388165201236e-15
+      },
+      "snapshot_00061_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00061_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 2.909271697693771e-15
+      },
+      "snapshot_00061_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00062_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00062_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.0069823371952088e-15
+      },
+      "snapshot_00062_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.1763735522036263e-22
+      },
+      "snapshot_00062_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.0549388165201236e-15
+      },
+      "snapshot_00062_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 2.9116757561866574e-22
+      },
+      "snapshot_00063_active": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "snapshot_00063_end_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.9285454193178154e-39,
+        "maximum_relative_vector_difference": 2.967573026619615e-15
+      },
+      "snapshot_00063_end_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.705769144237564e-22
+      },
+      "snapshot_00063_start_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 1.6530389308438418e-39,
+        "maximum_relative_vector_difference": 3.0069823371952088e-15
+      },
+      "snapshot_00063_start_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": false,
+        "maximum_absolute_difference": 3.1763735522036263e-22
+      },
+      "trace_0001_launch_energy_ev": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      },
+      "trace_0001_launch_momentum_kg_m_per_s": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0,
+        "maximum_relative_vector_difference": 0.0
+      },
+      "trace_0001_launch_position_m": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      },
+      "trace_0001_ray_id": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true
+      },
+      "trace_0001_weight": {
+        "same_dtype_shape": true,
+        "exact_bytes_equal": true,
+        "maximum_absolute_difference": 0.0
+      }
+    },
+    "all_initial_source_arrays_exact": true,
+    "accepted_snapshot_metadata_equal": false,
+    "scope": "Actual saved starts/endpoints and decisions; no interpolation, refocusing or tolerance admission inferred"
+  }
+}

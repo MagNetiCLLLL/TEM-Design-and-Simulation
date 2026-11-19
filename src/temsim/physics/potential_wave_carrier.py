@@ -86,6 +86,8 @@ def _admit(snapshot, *, electric_reference=None):
     retarded = type(snapshot) is RetardedPotentialSlice
     if type(snapshot) is not ElectromagneticPotentialSnapshot and not retarded:
         raise ValueError("Carrier propagation requires an immutable potential snapshot")
+    from temsim.physics.transverse_coil_wave_policy import require_transverse_coil_wave_admission
+    require_transverse_coil_wave_admission(snapshot)
     for row in snapshot.contributions:
         if row.kind == "electric" and electric_reference is not None:
             from temsim.physics.electric_wave_reference import ElectrostaticWaveReference, electric_rows

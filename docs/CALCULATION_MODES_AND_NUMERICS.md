@@ -1,12 +1,19 @@
 # Calculation models and independent numerical controls
 
+The current [calculation scope matrix](CALCULATION_SCOPE_MATRIX.md) separates
+field sources, trajectory equations, GUI request paths, material/wave products
+and execution backends. It also records the classical-only restriction for
+**Ideal prescribed-current coils in vacuum** and the mixed-wave CUDA policy.
+Historical Tip-wave controls/operators below
+must not be read as newly available production workflows.
+
 The **Simulation** menu separates the column model from numerical resolution.
 Changing a label does not reinterpret a saved model key or reset the electrical
 operating point.
 
 | Menu category | Saved key | Meaning |
 | --- | --- | --- |
-| Ideal Optics | `ideal_thin` | Fast particle transport with optical actions at declared planes instead of resolved field thickness or magnetic materials. Component positions and apertures remain meaningful. |
+| Ideal Optics | `ideal_thin` | Thin-lens approximation: fast particle transport with optical actions at declared planes instead of resolved field thickness or magnetic materials. Component positions and apertures remain meaningful. |
 | Finite-Field Optics / Shared potentials and geometry | `unified` | Particle and coherent column execution consume one immutable potential and finite geometry definition. Natural field aberrations replace empirical screens in that interval. Unsupported configurations fail explicitly. |
 | Finite-Field Optics / Parameterized fields (legacy) | `ideal` | The existing finite analytical fields, configured aberrations, multipoles and actual electron energies. The historical key retains its original behavior. |
 | Finite-Field Optics / Analytical Field (compatibility) | `analytical` | Existing profile alias for the parameterized finite-field laws. The saved key remains unchanged. |
@@ -33,27 +40,30 @@ studying distributed projection fields. Existing profiles are not rewritten.
 
 Fresh desktop windows select `unified`. Its actual gun exit is handed to the
 shared field/geometry runtime; the gun itself retains its source and acceleration
-model. The CPU wave adapter includes the retained static electric gun tail in
-its electromagnetic forward operator. Native axial scan coils use an explicit
-retarded reference-wavefront approximation, including induced electric work;
-this is not a time-domain pulse calculation. Unknown field domains, B-only maps,
-unqualified temporal drives and raster flybacks remain explicit errors. An exactly
-constant grounded-downstream potential can be referenced to the executed gun
-kinetic energy while preserving its radial validity domain. Admission messages
-identify unsupported configurations and retain previous plots as stale.
+model. Classical shared-potential particles retain the electric gun tail,
+actual energy and flight time, and admitted prescribed scan fields including
+induced electric work. Unknown field domains, B-only maps and unsupported
+temporal configurations fail explicitly. New coherent work instead starts
+from a local mixed-state lift at the exact specimen upper face, requires usable
+CUDA, and rejects dynamic downstream fields. Retained historical Tip-wave
+operator descriptions do not enable that retired source chain.
 
 The standard source state has nonzero time-dependent AC/Descan scan commands;
-these are not parked automatically. Both particle and coherent runs capture an
-emission epoch and advance their own flight-time references. Automatic scan
+these are not parked automatically. Particles retain their actual emission
+epoch and flight times. Local stationary mixed waves retain those clocks as
+source ancestry and do not infer a longitudinal time-energy state. Automatic scan
 calibration measures the finite-coil response of the shared-potential executor.
-Exactly zero dynamic amplitudes are
-admissible as static fields even if the enable flag remains set. Finite-volume
-particle material transport, raster products, legacy coherent imaging and the
-dispersive filter still have unmigrated internal consumers and are rejected by
-the shared-potential product gate. Their existing High accuracy, Sample,
-Scanning Image and Illuminating Image workflows remain in explicit legacy
-execution. An inserted sample does not block a specimen-free optical ray
-reference. The new Electron beam adapter has its own potential/material gate.
+Exactly zero dynamic amplitudes are admissible as static fields even if the
+enable flag remains set. Finite-volume particle material transport and the
+dispersive filter still have unmigrated consumers and are rejected by the
+shared-potential product gate. Ordinary shared-potential STEM admits the
+explicit `projected_atoms` Gaussian intensity closure/local affine raster,
+not finite-volume material paths or coherent 4D-STEM. The separate mixed CUDA
+scan has its own source/material/field qualification. Legacy Tip-wave-dependent
+Illuminating Image/STEM products remain retired. An inserted sample does not
+block a specimen-free optical `rays` reference; a normal GUI physical Preview
+section extending through that material is a different request and is
+currently rejected in `unified`. See the scope matrix for these entry points.
 Direct Alignment, canonical conjugacy calibration and the DF geometry design
 tool also require explicit legacy execution until their diagnostics are
 qualified against the shared potentials. They do not fit or retune the new
@@ -101,8 +111,11 @@ The shared-field particle executor retains complete history when it fits its
 2 GiB history budget. Otherwise production requests retain existing integration
 nodes at the requested display spacing, all scientific checkpoints, physical
 faces and receiver-adjacent nodes. Every integration step and original particle
-is still executed. If this retained history also exceeds the budget, the request
-is rejected. Plot-node waist markers remain sampling dependent; use explicitly
+is still executed. Under the production automatic policy, if the retained
+population still exceeds the per-batch history budget, bounded slices of the
+same original population are executed and assembled into a complete result.
+Single-particle and total-publication memory gates can still reject a request.
+Plot-node waist markers remain sampling dependent; use explicitly
 executed observation planes for precise probe focus measurements.
 
 **Run high-accuracy once** continues to calculate trajectories and retain the
@@ -147,6 +160,10 @@ when a segment is split at that plane.
 > New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
 > Existing inputs, numeric results and archives remain unchanged and readable;
 > Tip-origin propagation and continuation are rejected before CUDA or cache reuse.
+> The remaining TipWaveRequest/source-wavefront details in this section are
+> historical operator documentation. Current mixed-wave and mixed-raster work
+> requires usable CUDA, uses a local source and one stationary mean wavelength,
+> and has the distinct material/field limits in the scope matrix.
 
 The **Coherent settings** toolbar button and **Simulation > Coherent: grid,
 energy and memory** open the Electron beam page. Its **Coherent numerical
@@ -210,11 +227,11 @@ The receipt records attempted shapes and both physical padding margins. This
 reduces unnecessary empty padding without changing the field, normalizing
 intensity, relaxing a guard or establishing unknown exterior source tails.
 
-The unified carrier can use the selected CUDA policy for its complete residual
-exponential; geometry, canonical charts and field sampling remain on the CPU.
-Only resource failures permit a complete retry from the same entrance under a
-policy that allows CPU fallback. Explicit Require GPU, cancellation and physical
-admission gates retain their meaning. Checkpoints remain host arrays.
+Historical carrier operators retain device-policy implementations and CPU
+reference operators. They do not authorize CPU execution for new mixed coherent
+work: the current public CUDA gate prohibits CPU coherent fallback. Geometry,
+canonical charts and field preparation can still be CPU stages, and checkpoints
+can remain host arrays, without changing that coherent-execution requirement.
 
 Coherent propagation is unavailable in `ideal_thin`. The interface reports
 **Select Finite-Field Optics** and leaves the chosen mode unchanged. Selecting a

@@ -20,6 +20,61 @@ This policy applies throughout the repository.
 - Maintenance fixes must not silently retune lenses or refocus deliberate
   perturbations. Keep physical interception and absolute particle weights.
 
+## Scanning model policy
+
+- New Scanning Image work uses particle scanning or mixed particle-wave
+  scanning. Do not add a separate pure coherent scan or revive coherent
+  propagation from the physical Tip.
+- Mixed scanning transports the actual finite particle source through the
+  selected column fields to the specimen entrance, then introduces the
+  declared near-specimen coherence model and propagates its wave components
+  through the specimen. Preserve particle identities, weights, energies,
+  clipping and captured optical inputs at that handoff.
+- Coherent wave operators remain part of the mixed calculation; they do not
+  make it a pure coherent source model. This distinction does not waive CUDA
+  requirements, field-model admission or numerical qualification.
+
+## Fixed physical winding counts
+
+- Treat photo-constrained, measured or explicitly assumed winding turn counts as
+  fixed physical inputs unless the user explicitly authorizes a bounded model
+  adjustment. Preserve the original reference and distinguish a changed model
+  count from measured regions or symmetry assumptions. The current nominal-area
+  adjustment permits at most 20% change from its saved original counts.
+- In ideal prescribed-current coil calibration, change current or its electrical
+  reference to match a chosen field-strength condition. Do not increase turns,
+  enlarge the winding envelope or invent a wire diameter to compensate for a
+  mismatch. Report field-shape and focus differences separately.
+- A split winding's explicit per-interval turn counts remain fixed when its
+  geometry changes. Unknown wire size may retain envelope CAD; it must not
+  prevent a known turn count from defining an ideal electrical source.
+- Winding CAD accepts conductor metal cross-sectional area as the user-facing
+  size input; wire diameter is a derived read-only value. Preserve legacy
+  diameter records when loading old inputs.
+- On an explicit turn-count or conductor-area edit, repack the conductors and
+  fill the remaining allocated winding volume with insulation. Keep the winding
+  ID, OD and axial envelope fixed; reject an impossible layout rather than
+  shrinking conductors, dropping turns or enlarging the envelope.
+
+## Internal signed currents in ideal coils
+
+- Internal forward/reverse current groups apply only to Ideal prescribed-current
+  coils in vacuum (`unified` with `round_lens_field_model = "copper_coil"`).
+  Do not add resistance, constant-power, heating or magnetic-material constraints
+  to this calculation. Other field models retain their existing behavior.
+- Use the current default winding geometry as the baseline. Preserve its inner
+  and outer diameters, axial intervals, physical turns, conductor area and poses.
+  Partition its existing current-bearing cross-section instead of moving,
+  shrinking or adding windings. Earlier resized candidates remain historical
+  studies, not the baseline for this restricted calculation.
+- A group must represent complete closed turns or closed subwindings. Do not
+  assign different steady currents to successive pieces of one continuous wire.
+  Keep physical turn counts separate from numerical integration nodes, and
+  retain reverse turns in the physical inventory even if signed NI cancels.
+- Preserve the source distribution, beam boundaries and solver tolerances.
+  Check actual specimen-surface probe focus after field fitting; matching an
+  axial field alone does not qualify focus or aberration correction.
+
 ## Minimum sampling for new physical trials
 
 - As requested on 2026-10-29, every new finite-source physical calculation,

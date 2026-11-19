@@ -170,6 +170,8 @@ def propagate_static_magnetic_wave(snapshot, amplitude, x_m, y_m, z_m, *, energy
     """
     if type(snapshot) is not ElectromagneticPotentialSnapshot:
         raise ValueError("Wave execution requires a supported immutable potential snapshot")
+    from temsim.physics.transverse_coil_wave_policy import require_transverse_coil_wave_admission
+    require_transverse_coil_wave_admission(snapshot)
     if any(row.kind != "magnetic" for row in snapshot.contributions):
         raise ValueError("This static magnetic operator does not admit electric acceleration")
     for row in snapshot.contributions:

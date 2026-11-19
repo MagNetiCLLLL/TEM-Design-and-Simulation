@@ -1,0 +1,65 @@
+{
+  "implementation": "a8ada5d2abaff887661e5e19fb78b10e9ceb56899c9c8736d0c2bd945aa3b200",
+  "scope": "Component, configuration, pure geometry and isolated exact STEP checks; no finite-source beam or coherent calculation.",
+  "tests": 472,
+  "failures": 0,
+  "errors": 0,
+  "files": [
+    {
+      "file": "final-regressions.xml",
+      "original": "outputs\\ideal-winding-20261115\\validation\\final-regressions.xml",
+      "bytes": 70791,
+      "sha256": "0ddda03db143e7be40a49a355bf5cacb0dd641d964e10eb0c4391387ae9ad39d"
+    },
+    {
+      "file": "final-regressions.log",
+      "original": "outputs\\ideal-winding-20261115\\validation\\final-regressions.log",
+      "bytes": 1398,
+      "sha256": "1696b104ada8694887c3f4c403f54bdf432daf311a0d471c2d8c2582d3a64607"
+    },
+    {
+      "file": "example-step.log",
+      "original": "outputs\\ideal-winding-20261115\\validation\\example-step.log",
+      "bytes": 259,
+      "sha256": "6ab9313b4bf82530b54b9170911e8f1e87af7419519cf8de706e9118d4e19151"
+    },
+    {
+      "file": "example-100-turn-definition.json",
+      "original": "outputs\\ideal-winding-20261115\\example-100-turns\\definition.json",
+      "bytes": 19447,
+      "sha256": "36678424fbb98e3d9d920a386414f1580fc64b1fe1775670267da2a33c27d326"
+    },
+    {
+      "file": "cad-to-ideal-field.png",
+      "original": "outputs\\ideal-winding-20261115\\example-100-turns\\cad-to-ideal-field.png",
+      "bytes": 127199,
+      "sha256": "610ae9479dec7b1a5d8a88b7c629d52941ae600484bdb31c3a36bab8d7e60540"
+    },
+    {
+      "file": "configuration-dialog.png",
+      "original": "outputs\\ideal-winding-20261115\\example-100-turns\\configuration-dialog.png",
+      "bytes": 69212,
+      "sha256": "0f1692d614b753f23e4943bda1c958a95785256f0124b781427aecc814bff755"
+    },
+    {
+      "file": "example-step-manifest.json",
+      "original": "outputs\\ideal-winding-20261115\\example-100-turns\\step\\step-manifest.json",
+      "bytes": 284872,
+      "sha256": "d6b6102505fb42790ccf15ef292cf4683039270adfa51fee9a486c76a3fc4e6b"
+    }
+  ],
+  "local_step_exports": [
+    {
+      "path": "outputs\\ideal-winding-20261115\\example-100-turns\\step\\synthetic_100_turn_winding__example_winding.step",
+      "sha256": "176271394606f67726a348df4fecb980431b547bdbfdb9c94c03756adfe9919c",
+      "bytes": 840390,
+      "leaf_count": 101
+    },
+    {
+      "path": "outputs\\ideal-winding-20261115\\example-100-turns\\step\\synthetic_100_turn_winding.step",
+      "sha256": "d57d5eda560dedb9116f54c2618b39b489ce940fc2d45502a1b018a70594c2bf",
+      "bytes": 842289,
+      "leaf_count": 101
+    }
+  ]
+}

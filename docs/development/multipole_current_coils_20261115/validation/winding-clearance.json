@@ -1,0 +1,633 @@
+{
+  "status": "passed",
+  "scope": "Analytical complete-pack radial/angular/axial bounds and one bounded metal intersection; not whole-instrument manufacturing validation",
+  "installed_multipole_hosts": 40,
+  "co_located_multipole_pairs": 4,
+  "minimum_co_located_pack_gap_mm": 0.8876930002072463,
+  "bounded_metal_check": {
+    "components": [
+      "image_qpol_quadrupole",
+      "image_hpol_hexapole"
+    ],
+    "turns_per_coil": 63,
+    "tested_wire_index": 1,
+    "tested_coil_index": 1,
+    "angular_segments": 16,
+    "individual_volume_mm3": [
+      0.3908139371327033,
+      0.3445554367400095
+    ],
+    "intersection_volume_mm3": 0.0
+  },
+  "all_installed_host_bounds": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        25.9,
+        30.31276421416046,
+        1035.8000000000002,
+        1040.0
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "aa906008952e237fef53a8e7dc5a769bac6f02695889c0780f1c313d2044cb8d"
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        20.200000000000003,
+        25.012306999792752,
+        1035.8000000000002,
+        1040.0
+      ],
+      "minimum_angular_pack_gap_deg": 8.332617005666442,
+      "source_snapshot_sha256": "aa906008952e237fef53a8e7dc5a769bac6f02695889c0780f1c313d2044cb8d"
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1187.0,
+        1217.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "aa906008952e237fef53a8e7dc5a769bac6f02695889c0780f1c313d2044cb8d"
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "component": "image_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1331.0,
+        1361.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "aa906008952e237fef53a8e7dc5a769bac6f02695889c0780f1c313d2044cb8d"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        25.9,
+        30.31276421416046,
+        1035.8000000000002,
+        1040.0
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        20.200000000000003,
+        25.012306999792752,
+        1035.8000000000002,
+        1040.0
+      ],
+      "minimum_angular_pack_gap_deg": 8.332617005666442,
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1187.0,
+        1217.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "component": "image_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1331.0,
+        1361.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "f84f3c65332d9d92cc2597bea15e7de3a374827f3f246e90988bbf62cab4fb75"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_qph2_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        673.0749999999999,
+        683.225
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.22115856482011,
+        688.13,
+        700.87
+      ],
+      "minimum_angular_pack_gap_deg": 29.835882146936164,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_hpc_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        745.775,
+        755.9250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_qpc_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        760.275,
+        770.4250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_qph1_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        829.39,
+        839.61
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.22115856482011,
+        844.5149999999999,
+        857.185
+      ],
+      "minimum_angular_pack_gap_deg": 29.83588214693615,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        862.09,
+        872.3100000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "component": "probe_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        876.675,
+        886.825
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "bd8c04ce2174924e3cda520a26b5e88c2722bee2f23da78b6eec3aaa06623a21"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_qph2_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        673.0749999999999,
+        683.225
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.221158564820115,
+        688.13,
+        700.87
+      ],
+      "minimum_angular_pack_gap_deg": 29.835882146936164,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_hpc_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        745.775,
+        755.9250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_qpc_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        760.275,
+        770.4250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_qph1_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        829.39,
+        839.61
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.221158564820115,
+        844.5149999999999,
+        857.185
+      ],
+      "minimum_angular_pack_gap_deg": 29.835882146936136,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        862.09,
+        872.3100000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "probe_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        876.675,
+        886.825
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        25.9,
+        30.31276421416046,
+        1359.8000000000002,
+        1364.0
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        20.200000000000003,
+        25.012306999792752,
+        1359.8000000000002,
+        1364.0
+      ],
+      "minimum_angular_pack_gap_deg": 8.332617005666442,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1511.0,
+        1541.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "component": "image_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1655.0,
+        1685.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "0648869f124eb9299b220644a80069eaf19ee4675da16e3a7f257ceebbd0087b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_qph2_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        673.0749999999999,
+        683.225
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.221158564820115,
+        688.13,
+        700.87
+      ],
+      "minimum_angular_pack_gap_deg": 29.835882146936164,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_hpc_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        745.775,
+        755.9250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_qpc_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        760.275,
+        770.4250000000001
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_qph1_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        829.39,
+        839.61
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        22.71,
+        30.221158564820115,
+        844.5149999999999,
+        857.185
+      ],
+      "minimum_angular_pack_gap_deg": 29.835882146936136,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.453948559871048,
+        862.09,
+        872.3100000000001
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "probe_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        19.35,
+        28.87103352369327,
+        876.675,
+        886.825
+      ],
+      "minimum_angular_pack_gap_deg": 8.33261700566645,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_hpol_hexapole",
+      "cylindrical_bounds_mm": [
+        25.9,
+        30.31276421416046,
+        1359.8000000000002,
+        1364.0
+      ],
+      "minimum_angular_pack_gap_deg": 5.802417954359402,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_qpol_quadrupole",
+      "cylindrical_bounds_mm": [
+        20.200000000000003,
+        25.012306999792752,
+        1359.8000000000002,
+        1364.0
+      ],
+      "minimum_angular_pack_gap_deg": 8.332617005666442,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_hp1_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1511.0,
+        1541.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "component": "image_hp2_hexapole",
+      "cylindrical_bounds_mm": [
+        28.080000000000002,
+        64.65420351377009,
+        1655.0,
+        1685.8000000000002
+      ],
+      "minimum_angular_pack_gap_deg": 10.41743820571022,
+      "source_snapshot_sha256": "9d4e5ba2675f2df0bb8a7fd5150b66e4886d4f3cca65da3c69f81740aecd828c"
+    }
+  ],
+  "co_located_pack_pairs": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "components": [
+        "image_hpol_hexapole",
+        "image_qpol_quadrupole"
+      ],
+      "axial_pack_overlap_mm": 4.199999999999818,
+      "global_radial_pack_gap_mm": 0.8876930002072463,
+      "rectangular_corner_included": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "components": [
+        "image_hpol_hexapole",
+        "image_qpol_quadrupole"
+      ],
+      "axial_pack_overlap_mm": 4.199999999999818,
+      "global_radial_pack_gap_mm": 0.8876930002072463,
+      "rectangular_corner_included": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "components": [
+        "image_hpol_hexapole",
+        "image_qpol_quadrupole"
+      ],
+      "axial_pack_overlap_mm": 4.199999999999818,
+      "global_radial_pack_gap_mm": 0.8876930002072463,
+      "rectangular_corner_included": true
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "components": [
+        "image_hpol_hexapole",
+        "image_qpol_quadrupole"
+      ],
+      "axial_pack_overlap_mm": 4.199999999999818,
+      "global_radial_pack_gap_mm": 0.8876930002072463,
+      "rectangular_corner_included": true
+    }
+  ],
+  "HP_DPH_winding_pack_pairs": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "multipole": "image_hp1_hexapole",
+      "deflector": "image_dph1_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "multipole": "image_hp2_hexapole",
+      "deflector": "image_dph2_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "multipole": "image_hp1_hexapole",
+      "deflector": "image_dph1_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "multipole": "image_hp2_hexapole",
+      "deflector": "image_dph2_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "multipole": "probe_hp2_hexapole",
+      "deflector": "probe_dph2_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "multipole": "probe_hp1_hexapole",
+      "deflector": "probe_dph1_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "multipole": "probe_hp2_hexapole",
+      "deflector": "probe_dph2_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "multipole": "probe_hp1_hexapole",
+      "deflector": "probe_dph1_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "multipole": "image_hp1_hexapole",
+      "deflector": "image_dph1_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "multipole": "image_hp2_hexapole",
+      "deflector": "image_dph2_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "multipole": "probe_hp2_hexapole",
+      "deflector": "probe_dph2_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "multipole": "probe_hp1_hexapole",
+      "deflector": "probe_dph1_coils",
+      "radial_winding_pack_gap_mm": 10.81
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "multipole": "image_hp1_hexapole",
+      "deflector": "image_dph1_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "multipole": "image_hp2_hexapole",
+      "deflector": "image_dph2_coils",
+      "radial_winding_pack_gap_mm": 1.0800000000000018
+    }
+  ],
+  "particle_or_wave_executed": false
+}

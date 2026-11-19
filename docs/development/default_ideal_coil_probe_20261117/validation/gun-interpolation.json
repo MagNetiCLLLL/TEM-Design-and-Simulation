@@ -1,0 +1,41 @@
+{
+  "originals": 2048,
+  "identical_fields": [
+    "ray_id",
+    "weight",
+    "alive",
+    "blocked_z_mm",
+    "blocked_key",
+    "emission_position_m",
+    "emission_direction",
+    "emission_normal",
+    "emission_ray_id",
+    "emitted_current_a"
+  ],
+  "max_absolute_difference": {
+    "x_m": 2.388726951978365e-11,
+    "y_m": 3.153774848706741e-11,
+    "tx_rad": 7.388859571959056e-11,
+    "ty_rad": 6.703684775649348e-11,
+    "energy_offset_ev": 3.236345946788788e-08,
+    "flight_time_s": 1.2364025366556183e-17
+  },
+  "input_digest": "2b44f3463eed22ffdf78e99feb5e77160c76b2df54ac6a72c71e6cdabe463ae7",
+  "native_sha256": "7ef4ec0f419f8fccebd1ca2f5497300f9353f5b7d2460021d7d7fa3af58b4488",
+  "table_sha256": "5341357721db87bf4164ab841a9fd69e03af9e752a63f26b9ea50447170da019",
+  "field_validation": {
+    "schema": "study-magnetic-gun-table-v1",
+    "coefficient_sha256": "a38372e899050faa2b20d57dd5b79db90f591afd1b0096023ec62924a508cfb2",
+    "z_bounds_m": [
+      -0.001,
+      0.453
+    ],
+    "spacing_mm": 0.5,
+    "xy_halfwidth_m": 5e-05,
+    "check_points": 2048,
+    "max_check_error_t": 3.3433293117735774e-15,
+    "evaluation_calls": 130846,
+    "native_fallback_points": 0,
+    "maximum_executed_radius_m": 1.0663858669636015e-06
+  }
+}

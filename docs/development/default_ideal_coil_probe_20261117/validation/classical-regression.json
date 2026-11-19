@@ -1,0 +1,28 @@
+{
+  "scope": "Targeted ideal winding, multipole field, source, focus, topology, GUI and archived admission regression",
+  "counts": {
+    "tests": 220,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "cases_by_module": {
+    "test_ideal_current_segments": 18,
+    "test_ideal_current_segment_plumbing": 8,
+    "test_beam_quantile_boundary": 27,
+    "test_phase_space_statistics": 4,
+    "test_measure_probe_waist": 63,
+    "test_direct_focus_topology": 22,
+    "test_finite_waist_regions": 30,
+    "test_hybrid_exit": 10,
+    "test_multipole_coil_field": 26,
+    "test_incremental_gun_persistence": 8,
+    "test_ideal_current_segments_gui": 4
+  },
+  "command_options": [
+    "-o",
+    "addopts=-p no:zarr",
+    "-q"
+  ],
+  "solver_commit": "e0a9b00"
+}

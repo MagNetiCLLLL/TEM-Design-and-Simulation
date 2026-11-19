@@ -314,8 +314,13 @@ def current_eds_assembly():
     from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
     from temsim.optics.column import default_state
 
-    return AssemblyCatalog().apply(default_state(), AssemblySelection(
+    assembly = AssemblyCatalog().apply(default_state(), AssemblySelection(
         "FEG", "C3 + Probe Corrector", "No Energy Filter"))
+    # Keep the installed objective, its poles and EDS in their shared module frame.
+    keys = {"objective_lens", "objective_upper_pole", "objective_lower_pole",
+            "objective_lens_excitation_coil", "eds_detector_system"}
+    return replace(assembly, parts=tuple(part for part in assembly.parts if part.key in keys),
+                   vacuum_liner_segments=())
 
 
 @pytest.fixture(scope="module")
@@ -366,8 +371,9 @@ def test_magnetic_overlay_reuses_eds_material_with_one_unit_conversion_and_no_ne
     assert not overlay.errors and not overlay.meshes and not overlay.source_mesh_keys
     assert len(selected) == len(local) == 18
     assert len({(mesh.key, mesh.region) for mesh in selected}) == 18
-    assert len([mesh for mesh in overlay.select_component("objective_lens")
-                if mesh.key == "eds_detector_system"]) == 18
+    objective_meshes = overlay.select_component("objective_lens")
+    assert {"objective_upper_pole", "objective_lower_pole"} <= {mesh.key for mesh in objective_meshes}
+    assert len([mesh for mesh in objective_meshes if mesh.key == "eds_detector_system"]) == 18
     for mesh, source in zip(selected, local, strict=True):
         np.testing.assert_array_equal(mesh.vertices, source.vertices * 1e-3)
         np.testing.assert_array_equal(mesh.faces, source.faces)

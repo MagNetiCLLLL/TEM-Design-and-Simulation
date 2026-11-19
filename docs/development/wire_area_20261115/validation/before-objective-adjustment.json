@@ -1,0 +1,1054 @@
+{
+  "configs/instruments/column/C2.toml": {
+    "sha256": "1b81d61fa0f5d7aff9613f37b41438b41479ee005c82e8d884c7bf75d543f9ce",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.233028526278,
+      "order": 9,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 365.0,
+      "local_center_z_mm": 575.2,
+      "local_end_z_mm": 785.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 573.85,
+      "lower_field_reference_local_z_mm": 576.55,
+      "virtual_reference_local_z_mm": 575.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 367.5,
+      "upper_yoke_end_local_z_mm": 522.5,
+      "lower_yoke_start_local_z_mm": 627.9,
+      "lower_yoke_end_local_z_mm": 782.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 589.4536907227932,
+      "nominal_image_plane_local_z_mm": 731.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 34,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 494.20000000000005,
+      "local_center_z_mm": 575.2,
+      "local_end_z_mm": 656.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3.toml": {
+    "sha256": "ca3e41a770a8b449d1bc1290a8d813a0757540816608e442d82fecadedfa1ff1",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.2330285262774,
+      "order": 14,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 615.0,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 1035.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 823.85,
+      "lower_field_reference_local_z_mm": 826.55,
+      "virtual_reference_local_z_mm": 825.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 617.5,
+      "upper_yoke_end_local_z_mm": 772.5,
+      "lower_yoke_start_local_z_mm": 877.9,
+      "lower_yoke_end_local_z_mm": 1032.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 839.4536907227932,
+      "nominal_image_plane_local_z_mm": 981.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 42,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 744.2,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 906.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3_BCOR.toml": {
+    "sha256": "51d4104fc2dc8e682d546b0d8c7099b2c67b0c3e18d031e75fb5abb31c2a2890",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.2330285262774,
+      "order": 12,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 615.0,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 1035.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 823.85,
+      "lower_field_reference_local_z_mm": 826.55,
+      "virtual_reference_local_z_mm": 825.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 617.5,
+      "upper_yoke_end_local_z_mm": 772.5,
+      "lower_yoke_start_local_z_mm": 877.9,
+      "lower_yoke_end_local_z_mm": 1032.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 839.4536907227932,
+      "nominal_image_plane_local_z_mm": 981.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 86,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 744.2,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 906.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3_ImageCorrector.toml": {
+    "sha256": "a9c887b9e1a02603ff2cdfe20b31b1f4cb8cc8775da55d4ce1e1bb80d048e4ba",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.2330285262774,
+      "order": 14,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0000000000001,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 615.0,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 1035.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 823.85,
+      "lower_field_reference_local_z_mm": 826.55,
+      "virtual_reference_local_z_mm": 825.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 617.5,
+      "upper_yoke_end_local_z_mm": 772.5,
+      "lower_yoke_start_local_z_mm": 877.9,
+      "lower_yoke_end_local_z_mm": 1032.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 839.4536907227932,
+      "nominal_image_plane_local_z_mm": 981.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440.000000000004 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 87,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 744.2,
+      "local_center_z_mm": 825.2,
+      "local_end_z_mm": 906.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3_ProbeCorrector.toml": {
+    "sha256": "8b3a5f4e791c890fadc0ed4b350f9bf6a793c17fb2a4f42b3b6a64d10bffa101",
+    "objective": {
+      "order": 32,
+      "key": "objective_lens",
+      "ideal_coil_current_a_at_100_percent": 1575.2330285262728,
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Selected on 2026-11-15: current-only calibration of the ideal vacuum winding field to the original Gaussian Objective contribution Bz=1.113835009791199 T at the unchanged specimen upper surface z=1599.1999975 mm. Upper and lower each retain 586 turns; the original envelope and quadrature order 12 are unchanged. At the standard Nanoprobe/Diffraction excitation 68.97810600833917 percent and polarity +1, each series winding carries 1086.565908295224 A. No pole-piece response, thermal/current rating or focus qualification is implied. The legacy 3000 A-turn record remains historical and inactive for this explicit-current source."
+        }
+      },
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 939.0,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1359.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 1147.85,
+      "lower_field_reference_local_z_mm": 1150.55,
+      "virtual_reference_local_z_mm": 1149.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 941.5,
+      "upper_yoke_end_local_z_mm": 1096.5,
+      "lower_yoke_start_local_z_mm": 1201.9,
+      "lower_yoke_end_local_z_mm": 1356.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 1163.4536907227932,
+      "nominal_image_plane_local_z_mm": 1305.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "order": 71,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "winding_turn_count": 1172,
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "Upper winding: approximately 586 copper cross-sections counted in the user-provided cut-face photograph on 2026-11-15, with one cross-section treated as one turn. The image count is estimated at 580-590. Lower winding: 586 turns by the user's explicit symmetry assumption, not a separate measurement. Total 1172 turns is fixed for ideal-current calibration; wire diameter is unknown."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "Increasing-Z current-bearing intervals are upper then lower. Upper 586 is the adopted photo estimate; lower 586 is the user-authorized symmetry assumption. Preserve these counts when fitting current or changing interval lengths."
+        }
+      },
+      "name": "Objective Lens Excitation Coil",
+      "mechanical_objective_upper_end_structure": "insulated_upper_winding_end_cooling_plates",
+      "mechanical_objective_upper_end_insulation_thickness_mm": 0.2,
+      "mechanical_objective_upper_end_inner_insulation_thickness_mm": 0.2,
+      "mechanical_objective_upper_end_cooling_plate_thickness_mm": 1.0,
+      "mechanical_objective_upper_end_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_objective_upper_end_geometry_source": "JP2967966B2 Fig. 8 supports insulated winding end cooling plates. The 0.2 mm end/bore insulation and 1 mm passive plates are engineering allocations. Upper material endpoints follow the parent yoke and inset, not the legacy coil envelope. The field solver retains its existing homogenized winding envelope; these CAD subdivisions do not create new field sources. Cooling circuits, fastening details and the complete magnetic return path remain unverified.",
+      "mechanical_objective_upper_end_geometry_source_urls": [
+        "https://patents.google.com/patent/JP2967966B2/en"
+      ],
+      "branch": "common",
+      "local_start_z_mm": 1068.2,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1230.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+    "sha256": "7bfeeac8ad31f2fb777154d94b735092ac7319d67ed2ca622aa304ac64ee1e1a",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.233028526273,
+      "order": 30,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 939.0,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1359.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 1147.85,
+      "lower_field_reference_local_z_mm": 1150.55,
+      "virtual_reference_local_z_mm": 1149.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 941.5,
+      "upper_yoke_end_local_z_mm": 1096.5,
+      "lower_yoke_start_local_z_mm": 1201.9,
+      "lower_yoke_end_local_z_mm": 1356.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 1163.4536907227932,
+      "nominal_image_plane_local_z_mm": 1305.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 115,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 1068.2,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1230.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  },
+  "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+    "sha256": "6fe982cf559557fc494ce186ef278dc7c2d664ba1a60659299a403c8904ece8e",
+    "objective": {
+      "parameter_metadata": {
+        "ideal_coil_current_a_at_100_percent": {
+          "source_kind": "user_defined",
+          "source_note": "Current-only ideal-vacuum calibration on 2026-11-15 at the original specimen upper surface, offset -2.4999999368446879e-06 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 1.614766009458916 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source."
+        }
+      },
+      "ideal_coil_current_a_at_100_percent": 1575.233028526273,
+      "order": 32,
+      "key": "objective_lens",
+      "air_core_reference_ampere_turns": 3000.0,
+      "air_core_reference_status": "engineering_reference_not_oem_not_particle_qualified",
+      "air_core_reference_source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+      "air_core_reference_source_urls": [
+        "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "gaussian_reference_coil_length_mm": 290.0,
+      "name": "Objective Lens Assembly",
+      "branch": "common",
+      "local_start_z_mm": 939.0,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1359.4,
+      "length_mm": 420.4,
+      "vacuum_inner_diameter_mm": 5.76,
+      "upper_field_reference_local_z_mm": 1147.85,
+      "lower_field_reference_local_z_mm": 1150.55,
+      "virtual_reference_local_z_mm": 1149.2,
+      "mechanical_outer_diameter_mm": 180.0,
+      "upper_yoke_start_local_z_mm": 941.5,
+      "upper_yoke_end_local_z_mm": 1096.5,
+      "lower_yoke_start_local_z_mm": 1201.9,
+      "lower_yoke_end_local_z_mm": 1356.9,
+      "s_twin_pole_gap_mm": 5.4,
+      "nominal_voltage_kv": 300.0,
+      "nominal_focal_length_mm": 2.8,
+      "spherical_aberration_mm": 1.2,
+      "nominal_back_focal_plane_local_z_mm": 1163.4536907227932,
+      "nominal_image_plane_local_z_mm": 1305.316738548523,
+      "nominal_excitation_percent": 30.42591940608605,
+      "maximum_excitation_percent": 100.0,
+      "upper_peak_field_t": 0.884453999912932,
+      "lower_peak_field_t": 0.884453999912932,
+      "upper_field_half_width_mm": 24.0,
+      "lower_field_half_width_mm": 24.0,
+      "upper_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "upper_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "upper_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "lower_field_profile_amplitudes": [
+        0.09,
+        0.82,
+        0.09
+      ],
+      "lower_field_profile_offsets": [
+        -1.0,
+        0.0,
+        1.0
+      ],
+      "lower_field_profile_sigmas": [
+        0.9,
+        0.55,
+        0.9
+      ],
+      "chromatic_aberration_mm": 2.0,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "container",
+      "mechanical_overlap_reason": "Nested mechanical envelope inside the Objective Lens assembly.",
+      "mechanical_profile": "magnetic_lens_assembly",
+      "offset_x_mm": 0.0,
+      "offset_y_mm": 0.0,
+      "offset_z_mm": 0.0,
+      "rotation_x_mrad": 0.0,
+      "rotation_y_mrad": 0.0,
+      "rotation_z_mrad": 0.0,
+      "mechanical_access_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/spectra-ultra-ds0361-materials-science-datasheet.pdf",
+        "https://www.thermofisher.com/us/en/home/electron-microscopy/products/transmission-electron-microscopes/spectra/instruments/spectra-200-tem.html"
+      ],
+      "mechanical_access_geometry_source": "Symmetric wide-gap objective reconstruction: public reference designs specify a 5.4 mm pole gap and couple a wide-gap objective to a >4.45 sr EDS array. The 8.0 mm pole-tip OD and 27.5584 mm nose are a non-OEM centre-ray clearance design: the conical surface is parallel to the 32.06 degree user-dataset reference ray and leaves 0.3109 mm radial clearance in the axisymmetric meridional model. This does not establish clearance for the unpublished reference-detector active-face/collimator shape or its complete solid-angle acceptance. Dimensions other than the 5.4 mm anchor are simulator assumptions, not OEM measurements.",
+      "mechanical_access_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_axial_inset_mm": 5.0,
+      "mechanical_pole_mounting_geometry_source_urls": [
+        "https://assets.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-Z-Datasheet.pdf",
+        "https://documents.thermofisher.com/TFS-Assets/MSD/Datasheets/Themis-S-TEM-Datasheet.pdf",
+        "https://patents.google.com/patent/US20150021476A1/en"
+      ],
+      "mechanical_pole_mounting_geometry_source": "Public column literature identifies a symmetric objective and dual-coil topology; patent US20150021476A1 supports a precision magnetic insert mounted inside a primary yoke. The 12 mm straight shank, 60 mm shank/coil interface and 36 mm radial winding thickness are non-OEM simulator reconstruction values directed by the supplied cross-section sketch.",
+      "mechanical_pole_mounting_geometry_status": "engineering_reconstruction_not_oem",
+      "mechanical_coil_radial_thickness_mm": 36.0,
+      "mechanical_part_role": "optical_parent",
+      "field_polarity": 1,
+      "field_polarity_status": "provisional_model_assumption",
+      "field_polarity_source": "Provisional common-column sign convention; physical coil direction is not confirmed by manufacturer service data."
+    },
+    "coil": {
+      "parameter_metadata": {
+        "winding_turn_count": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        },
+        "winding_interval_turn_counts": {
+          "source_kind": "estimated",
+          "source_note": "User-authorized engineering estimate on 2026-11-15: N=round_half_up(1172 * 10440 / 10440)=1172. Use original winding-pack R-Z cross-sectional area, assuming equal turn density to the Objective reference (upper 586 photo estimate, lower 586 symmetry assumption). Not a measured or OEM turn count. Counts are fixed after this explicit estimate; wire diameter remains unknown. Geometry edits do not re-estimate turns automatically."
+        }
+      },
+      "winding_interval_turn_counts": [
+        586,
+        586
+      ],
+      "winding_turn_count": 1172,
+      "order": 116,
+      "key": "objective_lens_excitation_coil",
+      "coil_ampere_turn_fraction": 1.0,
+      "name": "Objective Lens Excitation Coil",
+      "branch": "common",
+      "local_start_z_mm": 1068.2,
+      "local_center_z_mm": 1149.2,
+      "local_end_z_mm": 1230.2,
+      "length_mm": 162.0,
+      "vacuum_inner_diameter_mm": 5.76,
+      "mechanical_inner_diameter_mm": 60.0,
+      "mechanical_outer_diameter_mm": 132.0,
+      "mechanical_profile": "magnetic_excitation_coil",
+      "mechanical_part_role": "excitation_coil",
+      "material_class": "insulated_copper_winding",
+      "mechanical_only": true,
+      "mechanical_overlap_group": "objective_assembly",
+      "mechanical_overlap_role": "member",
+      "mechanical_overlap_reason": "Concentric independent mechanical layer inside the Objective Lens assembly.",
+      "parent_key": "objective_lens",
+      "field_source_key": "objective_lens"
+    }
+  }
+}

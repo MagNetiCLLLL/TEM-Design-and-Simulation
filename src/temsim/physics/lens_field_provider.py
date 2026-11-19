@@ -27,6 +27,7 @@ from typing import Mapping
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 from scipy.optimize import minimize_scalar
+from temsim.pole_geometry import RECESSED_FIELDS
 
 
 class FieldMapError(ValueError):
@@ -209,6 +210,7 @@ _GEOMETRY_ATTRIBUTES = (
 )
 
 _PART_GEOMETRY_FIELDS = frozenset({
+    *RECESSED_FIELDS,
     "local_start_z_mm",
     "local_center_z_mm",
     "local_end_z_mm",
@@ -233,6 +235,11 @@ _PART_GEOMETRY_FIELDS = frozenset({
     "magnetic_lens_keys",
     "field_source_key",
     "coil_ampere_turn_fraction",
+    "winding_turn_count",
+    "winding_interval_turn_counts",
+    "winding_wire_diameter_mm",
+    "winding_wire_cross_section_mm2",
+    "ideal_coil_current_a_at_100_percent",
     "magnetic_part_role",
     "upper_yoke_start_local_z_mm", "upper_yoke_end_local_z_mm",
     "lower_yoke_start_local_z_mm", "lower_yoke_end_local_z_mm",
@@ -1621,6 +1628,14 @@ class GeometryAwareAnalyticFieldProvider:
         return field.reshape(positions.shape)
 
 
+def field_map_recipe(descriptor):
+    """Read a map recipe without activating a dormant ideal-current profile."""
+    if not isinstance(descriptor, Mapping):
+        return descriptor
+    from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+    return {key: value for key, value in descriptor.items() if key not in CURRENT_RECIPE_FIELDS} or None
+
+
 def bind_imported_lens_field_map(
     state,
     lens_key: str,
@@ -1646,7 +1661,14 @@ def bind_imported_lens_field_map(
     if not isinstance(descriptors, dict):
         descriptors = {}
         setattr(state, "lens_field_map_descriptors", descriptors)
-    descriptors[str(lens_key)] = field_map_descriptor(field_map, binding)
+    from copy import deepcopy
+    from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+    previous = descriptors.get(str(lens_key), {})
+    descriptor = field_map_descriptor(field_map, binding)
+    for field in CURRENT_RECIPE_FIELDS:
+        if field in previous:
+            descriptor[field] = deepcopy(previous[field])
+    descriptors[str(lens_key)] = descriptor
     cache = getattr(state, "_runtime_lens_field_provider_cache", None)
     if isinstance(cache, dict):
         cache.pop(str(lens_key), None)
@@ -1659,7 +1681,14 @@ def clear_imported_lens_field_map(state, lens_key: str) -> None:
         registry.pop(str(lens_key), None)
     descriptors = getattr(state, "lens_field_map_descriptors", None)
     if isinstance(descriptors, dict):
-        descriptors.pop(str(lens_key), None)
+        from copy import deepcopy
+        from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
+        previous = descriptors.get(str(lens_key), {})
+        retained = {field: deepcopy(previous[field]) for field in CURRENT_RECIPE_FIELDS if field in previous}
+        if retained:
+            descriptors[str(lens_key)] = retained
+        else:
+            descriptors.pop(str(lens_key), None)
     cache = getattr(state, "_runtime_lens_field_provider_cache", None)
     if isinstance(cache, dict):
         cache.pop(str(lens_key), None)
@@ -1703,7 +1732,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     from temsim.round_lens_models import validate_round_lens_selection, gaussian_geometry_scale
     model, _ = validate_round_lens_selection(getattr(state, "round_lens_field_model", "gaussian"),
         getattr(state, "gaussian_geometry_coupling", "fixed_calibration"), selected_mode)
-    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
+    descriptor = field_map_recipe(getattr(state, "lens_field_map_descriptors", {}).get(key, {})) or {}
     needs_legacy = model != "copper_coil" and ("source_path" in descriptor or
         key in (getattr(state, "_lens_field_map_bindings", {}) or {}))
     current = lens_geometry_binding(state, key, native_provider, map_compatibility=needs_legacy)
@@ -1769,9 +1798,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
     if not isinstance(diagnostics, dict):
         diagnostics = {}
         setattr(state, "_field_provider_diagnostics", diagnostics)
-    descriptor = getattr(state, "lens_field_map_descriptors", {}).get(
-        key, None
-    )
+    descriptor = field_map_recipe(getattr(state, "lens_field_map_descriptors", {}).get(key))
     if not uses_field_maps(state):
         provider = GeometryAwareAnalyticFieldProvider(
             key, native_provider, current, f"selected_{selected_mode}_model",
@@ -1814,7 +1841,7 @@ def resolve_runtime_lens_field_provider(state, lens_key: str, native_provider):
             "geometry_fingerprint": current.geometry_fingerprint,
             "assembly_fingerprint": current.assembly_fingerprint,
             "source_sha256": imported.provenance.source_sha256,
-            "descriptor_fingerprint": _fingerprint(descriptor),
+            "descriptor_fingerprint": _fingerprint(getattr(state, "lens_field_map_descriptors", {}).get(key)),
             "excitation_scaling": scaling,
             "divergence_within_tolerance": (
                 imported.validation.divergence_within_tolerance
@@ -2056,6 +2083,10 @@ class FrozenAnalyticField:
 
 
 def freeze_vector_provider(provider):
+    from temsim.physics.copper_coil_field_provider import CopperCoilFieldProvider
+    from temsim.physics.frozen_copper_coil_field import FrozenCopperCoilField
+    if type(provider) is CopperCoilFieldProvider:
+        return FrozenCopperCoilField.from_provider(provider)
     if isinstance(provider, MappedLensFieldProvider):
         return FrozenMappedField.from_provider(provider)
     if isinstance(provider, GeometryAwareAnalyticFieldProvider):

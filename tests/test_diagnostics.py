@@ -34,7 +34,10 @@ def _preview_result():
 
 
 def test_physical_layout_records_use_resolved_geometry_and_optical_references():
-    _state, result = _preview_result()
+    state = default_state()
+    catalog = AssemblyCatalog()
+    assembly = catalog.apply(state, catalog.default_selection())
+    result = SimpleNamespace(assembly=assembly, layout=apply_physical_layout_to_state(state))
 
     records = physical_layout_records(result)
     objective = next(item for item in records if item.key == "objective_lens")
@@ -154,19 +157,18 @@ def test_physical_layout_records_use_resolved_geometry_and_optical_references():
         }
         and item.profile == "magnetic_pole_piece"
     ]
-    assert {
-        item.pole_piece_geometry_style for item in objective_poles
-    } == {"objective_vertical_back_inserted_shank_tapered_nose"}
+    upper, lower = sorted(objective_poles, key=lambda item: item.start_z_mm)
+    assert upper.pole_piece_geometry_style == "objective_recessed_back_compound_nose"
+    assert lower.pole_piece_geometry_style == "objective_vertical_back_inserted_shank_tapered_nose"
+    assert (upper.pole_stem_outer_diameter_mm, upper.pole_mounting_shank_inner_diameter_mm,
+            upper.pole_vacuum_connector_axial_length_mm) == pytest.approx((22., 7.2, 1.5))
+    assert (lower.pole_stem_outer_diameter_mm, lower.pole_mounting_shank_inner_diameter_mm,
+            lower.pole_vacuum_connector_axial_length_mm) == pytest.approx((60., 5.76, 6.))
     assert all(
-        item.pole_stem_outer_diameter_mm == pytest.approx(60.0)
-        and item.pole_mounting_shank_inner_diameter_mm
-        == pytest.approx(5.76)
-        and item.pole_mounting_shank_axial_length_mm
+        item.pole_mounting_shank_axial_length_mm
         == pytest.approx(12.0)
         and item.pole_vacuum_connector_outer_diameter_mm
         == pytest.approx(19.2)
-        and item.pole_vacuum_connector_axial_length_mm
-        == pytest.approx(6.0)
         for item in objective_poles
     )
     cartridge = by_key["c1_c2_pole_piece_cartridge"]

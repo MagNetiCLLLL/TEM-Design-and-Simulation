@@ -1,0 +1,688 @@
+"""New adaptive-Gun 1024-particle profile or official full ray validation.
+
+Preparation never emits particles. A bounded profile cancels through the existing
+worker cancellation contract and is not a completed Preview/High calculation.
+"""
+from __future__ import annotations
+
+import argparse
+import cProfile
+from datetime import datetime, timezone
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import pstats
+import shutil
+import sys
+from threading import Event
+from time import perf_counter
+import traceback
+
+
+ROOT = Path(__file__).resolve().parents[2]
+CASE = Path(__file__).resolve().parent
+
+
+def digest(path):
+    value = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(8*1024**2), b""):
+            value.update(block)
+    return value.hexdigest()
+
+
+def write_json(path, value):
+    # Evidence is new-only, including failure receipts.
+    with Path(path).open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2, allow_nan=False, default=json_scalar)
+
+
+def json_scalar(value):
+    if hasattr(value, "item"):
+        return value.item()
+    if isinstance(value, Path):
+        return str(value)
+    raise TypeError(f"Not a JSON scalar: {type(value).__name__}")
+
+
+def log(message):
+    print(f"{datetime.now(timezone.utc).isoformat(timespec='seconds')} {message}", flush=True)
+
+
+class DiagnosticCancellation:
+    """Set the normal cancellation flag after accepted steps; no new end plane."""
+    def __init__(self, observer, maximum_steps, maximum_seconds):
+        self.event = Event()
+        self.observer = observer
+        self.maximum_steps = maximum_steps
+        self.maximum_seconds = maximum_seconds
+        self.started = perf_counter()
+        self.reason = None
+
+    def is_set(self):
+        if self.maximum_steps and self.observer.accepted_steps >= self.maximum_steps:
+            self.reason = "accepted-step diagnostic bound"
+            self.event.set()
+        if self.maximum_seconds and perf_counter()-self.started >= self.maximum_seconds:
+            self.reason = "wall-time diagnostic bound"
+            self.event.set()
+        return self.event.is_set()
+
+    def set(self):
+        self.event.set()
+
+
+def copy_frozen_inputs(source, destination):
+    manifest = json.loads((source / "manifest.json").read_text(encoding="utf-8"))
+    destination.mkdir()
+    for name, row in manifest["files"].items():
+        if Path(name).name != name:
+            raise ValueError("Input manifest contains an unsupported filename")
+        original = source / name
+        if digest(original) != row["sha256"]:
+            raise ValueError(f"Frozen baseline input changed: {name}")
+        shutil.copyfile(original, destination / name)
+    shutil.copyfile(source / "manifest.json", destination / "manifest.json")
+    return manifest
+
+
+def verify_observed_source(observer, reference_path):
+    import numpy as np
+    from temsim.physics.relativistic_lorentz import momentum_from_kinetic_energy_ev
+
+    if not observer.traces:
+        raise ValueError("No actual original source was observed")
+    checks = []
+    with np.load(reference_path, allow_pickle=False) as reference:
+        for index, trace in enumerate(observer.traces, 1):
+            if trace["original_positive_count"] != 1024 or trace["original_count"] != 1024:
+                raise ValueError("Actual source is not exactly 1024 original positive-current particles")
+            prefix = f"trace_{index:04d}_"
+            values = observer.source_arrays
+            expected_energy = .3 + reference["energy_offset_ev"]
+            # This frozen input is the flat Halton source. The native tracer
+            # passes raw tx/ty/1 into momentum_from_kinetic_energy_ev. Its
+            # display reference has already normalized that direction; using
+            # it here would normalize twice and introduce one-ULP differences.
+            direction = np.column_stack((reference["tx_rad"], reference["ty_rad"], np.ones(1024)))
+            if np.any(reference["position_m"][:, 2] != 0.) or not np.array_equal(
+                    reference["normal"], np.tile([0., 0., 1.], (1024, 1))):
+                raise ValueError("This validation runner requires the captured flat source")
+            expected_momentum = momentum_from_kinetic_energy_ev(expected_energy, direction)
+            pairs = [("ray_id", reference["ray_id"]), ("weight", reference["weight"]),
+                ("launch_energy_ev", expected_energy),
+                ("launch_momentum_kg_m_per_s", expected_momentum)]
+            for field, expected in pairs:
+                actual = values[prefix+field]
+                equal = actual.dtype == expected.dtype and actual.shape == expected.shape and actual.tobytes() == expected.tobytes()
+                checks.append(dict(trace=index, field=field, exact_bytes_equal=equal,
+                    sha256=hashlib.sha256(actual.tobytes()).hexdigest()))
+                if not equal:
+                    raise ValueError(f"Original source changed: trace {index}, {field}")
+            if np.unique(values[prefix+"ray_id"]).size != 1024:
+                raise ValueError("Observed original IDs are not unique")
+            # A grounded surface mesh may map declared surface coordinates to
+            # the solved boundary. Save actual starts without mislabelling that
+            # existing native projection as a change of the emitted source.
+            checks.append(dict(trace=index, field="launch_position_m",
+                sha256=hashlib.sha256(values[prefix+"launch_position_m"].tobytes()).hexdigest(),
+                matches_declared_surface_coordinates=bool(np.array_equal(
+                    values[prefix+"launch_position_m"], reference["position_m"])),
+                scope="Actual native launch coordinates; exact declared flat-source comparison"))
+    return checks
+
+
+def physical_controls(state):
+    """Declared gun, lens and other optical hardware settings, including off parts."""
+    from temsim.calculation_cache import live_lens_parameters
+    from temsim.immutable_json import freeze_json, thaw_json
+
+    controls = dict(gun=state.electron_gun.to_dict(), simulation_mode=state.simulation_mode)
+    for name in ("lenses", "apertures", "stigmators", "deflectors", "corrector_elements"):
+        controls[name] = [live_lens_parameters(component) for component in getattr(state, name, ())]
+    for component in controls["corrector_elements"]:
+        if component["key"] in {"ac_deflector", "descan_deflector"}:
+            # Existing operating serializers/cache explicitly identify these
+            # two gains as derived readbacks of automatic 2x2 calibration.
+            component.pop("lower_coil_gain")
+    return thaw_json(freeze_json(controls))
+
+
+def scan_resolution(state):
+    """Save the full actually resolved drives, beyond the public readbacks."""
+    from temsim.physics.scan_preparation import _resolved_values
+    ac, descan = state.ac_deflector, state.descan_deflector
+    def plain(value):
+        from collections.abc import Mapping
+        import numpy as np
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+        if isinstance(value, np.generic):
+            return value.item()
+        if isinstance(value, Mapping):
+            return {str(key): plain(item) for key, item in value.items()}
+        if isinstance(value, (tuple, list)):
+            return [plain(item) for item in value]
+        return value
+    return plain(dict(resolved_values=_resolved_values(state),
+        lower_gain_readbacks=[ac.lower_coil_gain, descan.lower_coil_gain],
+        ac_ratio=ac.pure_shift_lower_ratio_matrix, descan_ratio=descan.image_plane_lower_ratio_matrix,
+        ac_commands_mrad=ac.scan_command_matrix_mrad, descan_commands_mrad=descan.scan_command_matrix_mrad,
+        ac_coil_maps=ac.coil_kick_matrices(), descan_coil_maps=descan.coil_kick_matrices(),
+        field_receipt=getattr(ac, "_scan_execution_receipt", None)))
+
+
+def independent_graph(state):
+    """All captured inputs, excluding explicit normal quality/calibration outputs."""
+    from copy import deepcopy
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.immutable_json import thaw_json
+    from temsim.physics.scan_preparation import _resolved_values
+    graph = deepcopy(thaw_json(encode_instrument(state)))
+    resolved = dict(zip(("ac_deflector", "descan_deflector"), _resolved_values(state)))
+    quality_outputs = {"_optical_tuning", "_particle_tuning", "_tuning_quality",
+        "_tuning_boundary_probes", "_tuning_surface_probes"}
+    for node in graph["nodes"]:
+        values = node.get("attributes")
+        if not isinstance(values, dict):
+            # Exact immutable records such as LayoutResult use item tuples,
+            # not model attributes. Preserve those complete nodes verbatim.
+            continue
+        remove = set(quality_outputs)
+        if values.get("key") in resolved:
+            remove.update(name for name in resolved[values["key"]] if name.startswith("_"))
+            remove.add("lower_coil_gain")
+        for name in remove:
+            values.pop(name, None)
+        node["fields"] = [name for name in node["fields"] if name not in remove]
+    return graph
+
+
+def preserve_complete_result(result, destination, archive_gib):
+    """Formal full archive first; source seed/statistics cannot lose post arrays."""
+    import numpy as np
+    from zipfile import ZIP_DEFLATED
+    from temsim.physics.completed_particle_section import capture_completed_particle_section
+    from temsim.particle_section_io import save_section_result
+    archive = destination / "complete-result.temsim"
+    try:
+        if result.simulation.section_checkpoint is None:
+            if not capture_completed_particle_section(result):
+                raise ValueError("Official completed-section capture rejected the actual result")
+        package = save_section_result(result, archive,
+            maximum_unpacked_bytes=archive_gib*1024**3,
+            compression=ZIP_DEFLATED, compresslevel=1)
+    except Exception:
+        arrays = {}
+        for index, branch in enumerate((result.simulation.incident, *result.simulation.branches.values())):
+            for name in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev",
+                    "alive", "blocked_z", "ray_weight", "source_ray_id"):
+                value = getattr(branch, name, None)
+                if value is not None:
+                    arrays[f"branch_{index:03d}_{name}"] = value
+        np.savez_compressed(destination / "formal-save-failed-actual-arrays.npz", **arrays)
+        raise
+    write_json(destination / "formal-archive-receipt.json", dict(path=str(archive.resolve()),
+        sha256=digest(archive), bytes=archive.stat().st_size, package_digest=package.digest,
+        scope="Formal typed result graph, including all actual Gun, incident and post branches, saved before diagnostics"))
+    log(f"Complete real result archived before diagnostics: {archive.name}")
+    return archive
+
+
+def verify_completed_source(result, reference_path):
+    """Compare the real retained emission phase, never regenerate a source."""
+    import numpy as np
+    gun = result.simulation.gun_trace
+    phase = gun.emission_phase
+    reference = gun.emission_reference
+    if phase is None or reference is None:
+        raise ValueError("Completed native Gun has no retained original emission phase/reference")
+    checks = []
+    with np.load(reference_path, allow_pickle=False) as expected:
+        for field in ("x_m", "y_m", "tx_rad", "ty_rad", "energy_offset_ev", "ray_id", "weight", "emission_time_s"):
+            actual = np.asarray(phase[field])
+            desired = expected[field]
+            same = actual.dtype == desired.dtype and actual.shape == desired.shape and actual.tobytes() == desired.tobytes()
+            checks.append(dict(field=field, exact_bytes_equal=same,
+                sha256=hashlib.sha256(actual.tobytes()).hexdigest()))
+            if not same:
+                raise ValueError(f"Completed original emission changed: {field}")
+        for field in ("ray_id", "position_m", "direction", "normal"):
+            actual = np.asarray(reference[field])
+            desired = expected[field]
+            same = actual.dtype == desired.dtype and actual.shape == desired.shape and actual.tobytes() == desired.tobytes()
+            checks.append(dict(reference_field=field, exact_bytes_equal=same,
+                sha256=hashlib.sha256(actual.tobytes()).hexdigest()))
+            if not same:
+                raise ValueError(f"Completed original emission reference changed: {field}")
+    return checks
+
+
+def bind_baseline_source_observation(observer, baseline_profile, destination, quality):
+    """Compare actual initial phase to the executed baseline before DG work.
+
+    This wrapper lives only on the ContextVar diagnostics object, never State,
+    Gun or a numerical operator. The unchanged native begin_trace runs first.
+    """
+    import numpy as np
+    baseline_path = baseline_profile / "observer-arrays.npz"
+    with np.load(baseline_path, allow_pickle=False) as stored:
+        reference = {key: stored[key] for key in stored.files if key.startswith("trace_0001_")}
+    if not reference:
+        raise ValueError("Executed baseline has no actual original launch arrays")
+    original = observer.begin_trace
+
+    def begin_trace(*args, **kwargs):
+        original(*args, **kwargs)
+        index = len(observer.traces)
+        rows = []
+        for baseline_key, expected in reference.items():
+            field = baseline_key.removeprefix("trace_0001_")
+            actual = observer.source_arrays[f"trace_{index:04d}_{field}"]
+            same = actual.dtype == expected.dtype and actual.shape == expected.shape and actual.tobytes() == expected.tobytes()
+            rows.append(dict(field=field, exact_bytes_equal=same,
+                baseline_sha256=hashlib.sha256(expected.tobytes()).hexdigest(),
+                actual_sha256=hashlib.sha256(actual.tobytes()).hexdigest()))
+        report = dict(trace=index, source_arrays=rows, baseline=str(baseline_path.resolve()),
+            baseline_file_sha256=digest(baseline_path),
+            all_actual_launch_bytes_equal=all(row["exact_bytes_equal"] for row in rows),
+            scope="Executed original IDs, weights, launch coordinates, momentum and energy compared before first DG step")
+        write_json(destination / f"source-initialization-{index:04d}.json", report)
+        if not report["all_actual_launch_bytes_equal"]:
+            raise ValueError("Actual original launch state differs from the executed fixed-1024 baseline")
+        log(f"{quality}: all actual launch bytes match the executed baseline before first DG step")
+
+    observer.begin_trace = begin_trace
+
+
+def completed_summary(result):
+    """Called only after the official recoverable incident seed is on disk."""
+    import numpy as np
+    gun = result.simulation.gun_trace
+    branch = result.simulation.incident
+    weights = np.asarray(branch.ray_weight)
+    alive = np.asarray(branch.alive, bool)
+    selected = weights[alive & (weights > 0)]
+    effective = float(selected.sum()**2 / np.sum(selected*selected)) if selected.size else 0.
+    history = gun.equal_time_history
+    return dict(original_count=len(gun.exit_bundle.ray_id),
+        original_positive_count=int(np.count_nonzero(gun.exit_bundle.weight > 0)),
+        gun_exit_surviving=int(np.count_nonzero(gun.exit_bundle.alive)),
+        incident_surviving_positive=int(selected.size), incident_effective_count=effective,
+        gun_emitted_current_a=float(gun.emitted_current_a),
+        incident_source_weight_sum=float(np.sum(weights)),
+        incident_surviving_source_fraction=float(selected.sum()),
+        incident_z_range_mm=[float(branch.z[0]), float(branch.z[-1])],
+        equal_time_history_saved=history is not None,
+        equal_time_frames=0 if history is None else len(history.time_s),
+        performance=result.performance,
+        scope="Complete optical-reference ray workflow; not material scattering, coherent or scan qualification")
+
+
+def verify_native_outputs(result, destination):
+    """Read executed clocks/energies/losses after the recoverable seed is safe."""
+    import numpy as np
+    from temsim.physics.particle_energy import energy_survival_mask, validate_kinetic_energy_array
+    from temsim.physics.simulation import validate_incident_flight_times
+
+    simulation = result.simulation
+    gun = simulation.gun_trace
+    complete_clocks = validate_incident_flight_times(simulation)
+    if not complete_clocks:
+        raise ValueError("Completed calculation lacks complete original Gun/incident/checkpoint clocks")
+    write_json(destination / "gun-electrostatic-model-report.json", gun.electrostatic_model_report)
+    arrays, branch_reports = {}, []
+    for index, (key, branch) in enumerate((("incident", simulation.incident), *simulation.branches.items())):
+        prefix = f"branch_{index:03d}_"
+        required = energy_survival_mask(branch, branch.z)
+        # Incident drawing rows prepend the Gun's first-crossing history.
+        # Production intentionally retains NaN kinetic energy there; only the
+        # actual Gun exit and executed column have plane-specific energies.
+        # Do not invent nominal energies or impose Z-monotonic clocks on a
+        # turning Gun first-crossing history.
+        execution_start = float(simulation.incident_plan.z_mm[0]) if key == "incident" else float(branch.z[0])
+        executed_rows = np.asarray(branch.z) >= execution_start
+        native_required = required & executed_rows[:, None]
+        energy = np.asarray(branch.kinetic_energy_ev)
+        validate_kinetic_energy_array(energy, np.shape(branch.x), key, allow_unknown=True, required=native_required)
+        clock = np.asarray(branch.flight_time_s)
+        if clock.shape != np.shape(branch.x) or clock.dtype != np.dtype(np.float64):
+            raise ValueError(f"{key} has missing or misaligned executed clocks")
+        if np.any(~np.isfinite(clock[native_required])) or np.any(clock[native_required] < 0):
+            raise ValueError(f"{key} has an invalid clock before a physical stop")
+        pairs = native_required[1:] & native_required[:-1] & np.isfinite(clock[1:]) & np.isfinite(clock[:-1])
+        increments = np.diff(clock, axis=0)[pairs]
+        if np.any(increments < 0.):
+            raise ValueError(f"{key} has decreasing executed column flight times before a physical stop")
+        selected_energy, selected_clock = energy[native_required], clock[native_required]
+        weights = np.asarray(branch.ray_weight, dtype=np.float64)
+        alive = np.asarray(branch.alive, dtype=bool)
+        losses = {}
+        for stop in sorted(set(str(value) for value in branch.blocked_key)):
+            mask = ~alive & np.asarray([str(value) == stop for value in branch.blocked_key])
+            if np.any(mask):
+                losses[stop or "unlabelled"] = float(np.sum(weights[mask]))
+        total, surviving, lost = float(weights.sum()), float(weights[alive].sum()), float(weights[~alive].sum())
+        branch_reports.append(dict(key=key, name=branch.name, shape=list(energy.shape),
+            executed_start_z_mm=execution_start,
+            required_executed_physical_points=int(np.count_nonzero(native_required)),
+            retained_unknown_gun_prefix_energy_points=int(np.count_nonzero(
+                ~executed_rows[:, None] & np.isnan(energy))) if key == "incident" else 0,
+            executed_energy_finite_before_stop=True,
+            energy_range_ev=[float(selected_energy.min()), float(selected_energy.max())] if selected_energy.size else None,
+            clock_range_s=[float(selected_clock.min()), float(selected_clock.max())] if selected_clock.size else None,
+            clock_adjacent_monotonic=bool(np.all(increments >= 0)),
+            negative_clock_increment_count=int(np.count_nonzero(increments < 0)),
+            minimum_clock_increment_s=float(increments.min()) if increments.size else None,
+            source_weight_sum=total, surviving_source_fraction=surviving,
+            lost_source_fraction=lost, loss_by_first_block_key=losses,
+            source_weight_ledger_residual=total-surviving-lost,
+            physical_path_multiplier=float(branch.weight),
+            transmitted_current_a=float(gun.emitted_current_a)*float(branch.weight)*surviving,
+            z_range_mm=[float(branch.z[0]), float(branch.z[-1])]))
+        for field in ("z", "kinetic_energy_ev", "flight_time_s", "alive", "blocked_z", "ray_weight", "source_ray_id"):
+            value = getattr(branch, field, None)
+            if value is not None:
+                arrays[prefix+field] = value
+    arrays.update(gun_exit_flight_time_s=gun.exit_bundle.flight_time_s,
+        gun_first_crossing_flight_time_s=gun.flight_time_s,
+        gun_first_crossing_z_mm=gun.z_mm,
+        gun_exit_alive=gun.exit_bundle.alive,
+        gun_exit_ray_id=gun.exit_bundle.ray_id, gun_exit_weight=gun.exit_bundle.weight)
+    history = gun.equal_time_history
+    common_time_increasing = None
+    if history is not None:
+        arrays["gun_equal_time_s"] = history.time_s
+        common_time_increasing = bool(np.all(np.diff(history.time_s) > 0))
+        if not common_time_increasing:
+            raise ValueError("Native Gun common-time history is not strictly increasing")
+    np.savez_compressed(destination / "executed-energy-clock-loss-arrays.npz", **arrays)
+    report = dict(validate_incident_flight_times=True,
+        original_source_weight_sum=float(np.sum(gun.emission_phase["weight"])),
+        gun_emitted_current_a=float(gun.emitted_current_a),
+        gun_exit_surviving_fraction=float(np.sum(gun.exit_bundle.weight[gun.exit_bundle.alive])),
+        gun_exit_surviving_current_a=float(gun.emitted_current_a)*float(np.sum(gun.exit_bundle.weight[gun.exit_bundle.alive])),
+        gun_equal_time_common_clock_strictly_increasing=common_time_increasing,
+        branches=branch_reports,
+        scope="Executed positive column energies/clocks only before physical stops. Unknown Gun-prefix plotting energies remain NaN. Gun exit energy uses its native electrostatic report. Native Gun first-crossing times may be non-monotonic for turning trajectories; the common-time Gun clock and downstream column clocks are checked separately. Branch readouts are separate paths and must not be added as independent source currents. No source-current restoration.")
+    write_json(destination / "executed-energy-clock-loss-verification.json", report)
+    return report
+
+
+def prepare_quality(old, quality):
+    from dataclasses import replace
+    from temsim.calculation_cache import calculation_signatures, state_model_signature
+    from temsim.calculation_manifest import capture_calculation_manifest
+    from temsim.calculation_workflow import admit_workflow, workflow_signatures
+    from temsim.gui.calculation_request import apply_request_numerics, request_numerical_preparation
+    from temsim.instrument_snapshot import capture_instrument_snapshot, decode_instrument
+    from temsim.physics.wave_input_compatibility import compare_wave_input_graphs
+
+    state = decode_instrument(old.graph)
+    old._verify_external_inputs(state)
+    unchanged = compare_wave_input_graphs(old.graph, capture_instrument_snapshot(state).graph)
+    from temsim.vacuum import bind_gun_environment
+    bind_gun_environment(state)
+    controls_before = physical_controls(state)
+    requested_step = float(state.step_mm)
+    state = apply_request_numerics(state, quality, 1024, requested_step)
+    if state.electron_gun.emitter.ray_count != 1024:
+        raise ValueError("Official request preparation changed the fixed source count")
+    if float(state.electron_gun.emitter.energy_spread_fwhm_ev) != .3:
+        raise ValueError("Expected unchanged 0.3 eV source distribution")
+    if controls_before != physical_controls(state):
+        raise ValueError("Quality request preparation altered gun or optical hardware settings")
+    admit_workflow(state, "rays")
+    signatures = workflow_signatures(calculation_signatures(state), "rays")
+    manifest = replace(capture_calculation_manifest(state), calculation_signatures=signatures)
+    snapshot = capture_instrument_snapshot(state)
+    return state, manifest, snapshot, state_model_signature(state), signatures, dict(
+        original_inputs=unchanged, numerical_preparation=request_numerical_preparation(quality, requested_step),
+        history_step_mm=float(state.history_step_mm), original_snapshot_id=old.digest,
+        execution_snapshot_id=snapshot.digest, original_implementation=old.implementation,
+        execution_implementation=snapshot.implementation)
+
+
+def run_quality(args, quality, prepared, destination, existing_result):
+    import numpy as np
+    from PySide6.QtCore import Qt
+    from temsim.artifact_store import ArtifactStore
+    from temsim.calculation_manifest import solver_source_identity
+    from temsim.gui.calculation_controller import CalculationWorker
+    from temsim.physics.gun_step_diagnostics import GunStepDiagnostics, observe_gun_steps
+    from temsim.immutable_json import json_digest
+
+    state, manifest, snapshot, model_signature, signatures, preparation = prepared
+    destination.mkdir()
+    controls_before = physical_controls(state)
+    graph_before = independent_graph(state)
+    write_json(destination / "physical-controls-before.json", controls_before)
+    write_json(destination / "independent-input-graph-before.json", graph_before)
+    write_json(destination / "scan-resolution-before.json", scan_resolution(state))
+    write_json(destination / "input.json", snapshot.to_dict())
+    write_json(destination / "manifest.json", manifest.to_dict())
+    write_json(destination / "request.json", preparation)
+    observer = GunStepDiagnostics(snapshot_stride=1 if args.maximum_accepted_steps else 250,
+        maximum_snapshots=64 if args.maximum_accepted_steps else 16)
+    if args.baseline_profile is not None:
+        bind_baseline_source_observation(observer, args.baseline_profile, destination, quality)
+    cancellation = DiagnosticCancellation(observer, args.maximum_accepted_steps, args.maximum_wall_seconds)
+    store = ArtifactStore(destination / "incident-checkpoint", quota_bytes=args.artifact_gib*1024**3)
+    worker = CalculationWorker(1, quality, state, model_signature=model_signature,
+        request_signatures=signatures, existing_result=existing_result, workflow="rays",
+        calculation_manifest=manifest, artifact_store=store,
+        numerical_preparation=preparation["numerical_preparation"])
+    worker.cancel_event = cancellation
+    capture, errors, persistence_errors = [], [], []
+    archives = []
+
+    def on_result(generation, reported_quality, result, elapsed):
+        # Keep the real object, then formally archive every branch BEFORE
+        # source-cache writes, control guards, diagnostic reports or plotting.
+        capture.append((result, elapsed))
+        try:
+            archives.append(preserve_complete_result(result, destination, args.artifact_gib))
+        except Exception:
+            persistence_errors.append("Full result archive: "+traceback.format_exc())
+        try:
+            identity = store.put_incident_simulation_seed(manifest, result.simulation)
+            write_json(destination / "recoverable-seed.json", dict(identity=identity,
+                manifest_digest=manifest.digest, path=str(store.root),
+                scope="Official complete incident/Gun numeric restart codec, no invented source state"))
+            log(f"{quality}: recoverable Gun/incident persisted: {identity}")
+        except Exception:
+            persistence_errors.append(traceback.format_exc())
+
+    worker.signals.result.connect(on_result, Qt.ConnectionType.DirectConnection)
+    worker.signals.error.connect(lambda *values: errors.append(str(values[-1])), Qt.ConnectionType.DirectConnection)
+    worker.signals.progress.connect(lambda generation, reported_quality, done, total, stage:
+        log(f"{quality}: {done}/{total} {stage}"), Qt.ConnectionType.DirectConnection)
+    profiler = cProfile.Profile()
+    log(f"{quality}: starting {'bounded profile' if args.maximum_accepted_steps or args.maximum_wall_seconds else 'complete ray workflow'}")
+    started = perf_counter()
+    try:
+        with observe_gun_steps(observer):
+            if args.cprofile:
+                profiler.enable()
+            try:
+                worker.run()
+            finally:
+                if args.cprofile:
+                    profiler.disable()
+    finally:
+        # A completed result is already in the official store before these
+        # observer-only outputs are attempted.
+        if args.cprofile:
+            profiler.dump_stats(str(destination / "cprofile.prof"))
+            text = io.StringIO()
+            pstats.Stats(profiler, stream=text).strip_dirs().sort_stats("cumulative").print_stats(100)
+            (destination / "cprofile.txt").write_text(text.getvalue(), encoding="utf-8")
+        np.savez_compressed(destination / "observer-arrays.npz", **observer.arrays())
+        write_json(destination / "observer.json", observer.report())
+        write_json(destination / "execution-receipt.json", dict(quality=quality,
+            elapsed_seconds=perf_counter()-started, errors=errors,
+            persistence_errors=persistence_errors, cancellation_reason=cancellation.reason,
+            completed_result_count=len(capture), execution_implementation=solver_source_identity(),
+            implementation_unchanged=solver_source_identity()==snapshot.implementation))
+
+    if persistence_errors:
+        raise RuntimeError("Official result persistence failed; inspect execution receipt")
+    if errors:
+        raise RuntimeError("; ".join(errors))
+    if solver_source_identity() != snapshot.implementation:
+        raise RuntimeError("Source implementation changed during execution")
+    controls_after = physical_controls(state)
+    write_json(destination / "physical-controls-after.json", controls_after)
+    write_json(destination / "scan-resolution-after.json", scan_resolution(state))
+    graph_after = independent_graph(state)
+    write_json(destination / "independent-input-graph-after.json", graph_after)
+    if controls_after != controls_before:
+        raise RuntimeError("Gun or optical hardware settings changed during execution")
+    if json_digest(graph_after) != json_digest(graph_before):
+        raise RuntimeError("An independent instrument input, source boundary or tolerance changed during execution")
+    if observer.traces:
+        source_checks = verify_observed_source(observer, args.output / "frozen-input" / "independent-expected-emission.npz")
+        write_json(destination / "source-verification.json", source_checks)
+    elif not capture:
+        raise RuntimeError("Execution stopped before observing the actual source")
+    if capture:
+        result, elapsed = capture[0]
+        if len(archives) != 1:
+            raise RuntimeError("Completed numerical result has no complete formal archive")
+        runtime = result.simulation.incident_plan.unified_runtime
+        write_json(destination / "actual-unified-runtime.json", runtime.to_dict())
+        from temsim.particle_section_io import load_section_result
+        log(f"{quality}: verifying the complete formal archive before final readouts")
+        loaded = load_section_result(archives[0], maximum_unpacked_bytes=args.artifact_gib*1024**3)
+        if set(loaded.simulation.branches) != set(result.simulation.branches):
+            raise RuntimeError("Complete archive omitted a real post branch")
+        for key, branch in result.simulation.branches.items():
+            for field in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev",
+                    "alive", "blocked_z", "ray_weight", "source_ray_id"):
+                np.testing.assert_array_equal(getattr(branch, field), getattr(loaded.simulation.branches[key], field))
+        write_json(destination / "completed-source-verification.json", verify_completed_source(result,
+            args.output / "frozen-input" / "independent-expected-emission.npz"))
+        restored = store.get_incident_simulation_seed(manifest)
+        if restored is None:
+            raise RuntimeError("Official incident checkpoint did not restore")
+        for name in ("x_m", "y_m", "tx_rad", "ty_rad", "energy_offset_ev", "ray_id", "weight"):
+            np.testing.assert_array_equal(getattr(result.simulation.gun_trace.exit_bundle, name),
+                getattr(restored.gun_trace.exit_bundle, name))
+        summary = completed_summary(result)
+        physical_outputs = verify_native_outputs(result, destination)
+        summary.update(status="COMPLETE_RAY_WORKFLOW", quality=quality, worker_elapsed_seconds=elapsed,
+            official_incident_roundtrip=True,
+            formal_complete_archive_roundtrip_exact=True,
+            actual_runtime_digest=runtime.digest,
+            actual_field_numerical_digest=runtime.snapshot.numerical_digest,
+            only_current_process_new_solver_results_reused=True,
+            source_count_growth=False,
+            quality_field_scope="Normal Preview and High accuracy resolve automatic scan drives differently; this is not fixed-field quality convergence. Full actual drive matrices/runtime are saved.",
+            independent_energy_clock_loss_verification="executed-energy-clock-loss-verification.json",
+            validate_incident_flight_times=physical_outputs["validate_incident_flight_times"],
+            gun_and_optical_controls_unchanged=True, original_source_exact_bytes_unchanged=True,
+            reused_previous_gun=existing_result is not None and
+                result.simulation.gun_trace is existing_result.simulation.gun_trace)
+        write_json(destination / "summary.json", summary)
+        return result
+    if cancellation.reason:
+        write_json(destination / "summary.json", dict(status="BOUNDED_GUN_PROFILE_ONLY",
+            quality=quality, accepted_steps=observer.accepted_steps, cancellation_reason=cancellation.reason,
+            scope="Actual source and accepted pre-boundary steps; no completed Gun/Preview/High claim or restart checkpoint"))
+        return None
+    raise RuntimeError("Worker returned without result, cancellation, or recorded error")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input-directory", type=Path, default=CASE / "baseline-input")
+    parser.add_argument("--package-root", type=Path, default=ROOT / "src")
+    parser.add_argument("--expected-implementation", default="",
+        help="Required exact frozen solver source identity for actual execution")
+    parser.add_argument("--baseline-profile", type=Path, default=ROOT / "outputs" / "copper-gun-speed-20261114" / "baseline-native-64" / "preview",
+        help="Saved actual baseline initial-state arrays; read-only comparison before the first DG step")
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--quality", choices=("Preview", "High accuracy", "both"), default="Preview")
+    parser.add_argument("--maximum-accepted-steps", type=int, default=0)
+    parser.add_argument("--maximum-wall-seconds", type=float, default=0)
+    parser.add_argument("--artifact-gib", type=int, default=32)
+    parser.add_argument("--cprofile", action="store_true")
+    parser.add_argument("--execute", action="store_true", help="Explicitly launch actual particle calculations")
+    args = parser.parse_args()
+    if args.maximum_accepted_steps < 0 or args.maximum_wall_seconds < 0 or args.artifact_gib < 1:
+        parser.error("Diagnostic bounds must be nonnegative and artifact budget positive")
+    if args.quality == "both" and (args.maximum_accepted_steps or args.maximum_wall_seconds):
+        parser.error("A bounded diagnostic profile must select one quality")
+    if args.execute and len(args.expected_implementation) != 64:
+        parser.error("Actual execution requires the explicitly reviewed --expected-implementation SHA256")
+    args.output = args.output.resolve()
+    args.output.mkdir(parents=True, exist_ok=False)
+    try:
+        copy_frozen_inputs(args.input_directory.resolve(), args.output / "frozen-input")
+        sys.path.insert(0, str(args.package_root.resolve()))
+        # Keep all interpreter/JIT caches in the new case. A reference import
+        # cannot populate the frozen package or borrow working-tree kernels.
+        sys.pycache_prefix = str(args.output / "runtime-cache" / "python")
+        os.environ["NUMBA_CACHE_DIR"] = str(args.output / "runtime-cache" / "numba")
+        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+        os.environ["TEMSIM_PROJECT_ROOT"] = str(ROOT)
+        from PySide6.QtCore import QCoreApplication
+        import temsim
+        from temsim.instrument_snapshot import InstrumentSnapshot
+        from temsim.calculation_manifest import solver_source_identity
+        implementation = solver_source_identity()
+        if args.expected_implementation and implementation != args.expected_implementation:
+            raise ValueError("Imported solver source does not match the explicitly frozen execution identity")
+        app = QCoreApplication.instance() or QCoreApplication([])
+        old = InstrumentSnapshot.from_dict(json.loads((args.output / "frozen-input" / "input.json").read_text(encoding="utf-8")))
+        qualities = ("Preview", "High accuracy") if args.quality == "both" else (args.quality,)
+        prepared = [(quality, prepare_quality(old, quality)) for quality in qualities]
+        if solver_source_identity() != implementation:
+            raise ValueError("Solver source changed during request preparation")
+        for quality, values in prepared:
+            prefix = quality.lower().replace(" ", "-")
+            write_json(args.output / f"{prefix}-prepared-independent-inputs.json", independent_graph(values[0]))
+            write_json(args.output / f"{prefix}-prepared-controls.json", physical_controls(values[0]))
+            write_json(args.output / f"{prefix}-initial-scan-resolution.json", scan_resolution(values[0]))
+        from temsim.optics.electron_gun.tracing import geometry_step_criteria
+        write_json(args.output / "plan.json", dict(status="READY" if args.execute else "PREPARED_NO_PHYSICAL_EXECUTION",
+            package=str(Path(temsim.__file__).resolve()),
+            runner_sha256=digest(__file__), arguments=vars(args),
+            quality_preparations={quality: values[-1] for quality, values in prepared},
+            execution_implementation=implementation,
+            actual_gun_step_criteria=geometry_step_criteria(),
+            cache_policy="Fresh per-run Python/Numba cache directories; source/reference package bytes remain separate",
+            persistence_policy="Formal complete result archive first, official incident seed second, all diagnostics afterwards",
+            independent_control_policy="Exactly AC/Descan lower_coil_gain are derived readbacks; all resolved drive matrices and actual runtime fields are recorded separately",
+            quality_scope="Normal Preview and High automatic scan fields can differ; no fixed-field convergence claim",
+            scope="Fixed original copper-coil 1024/0.3eV source. Same independent optics and source boundaries. Fresh process/new solver Gun, current-process High reuse only. Official GUI quality numerics; no wave calculations."))
+        if not args.execute:
+            log("Prepared and verified inputs only; no source emission or propagation")
+            return 0
+        existing = None
+        for quality, values in prepared:
+            existing = run_quality(args, quality, values, args.output / quality.lower().replace(" ", "-"), existing)
+        if args.quality == "both":
+            import numpy as np
+            first = json.loads((args.output / "preview" / "summary.json").read_text(encoding="utf-8"))
+            second = json.loads((args.output / "high-accuracy" / "summary.json").read_text(encoding="utf-8"))
+            write_json(args.output / "quality-comparison.json", dict(
+                preview_field_numerical_digest=first["actual_field_numerical_digest"],
+                high_field_numerical_digest=second["actual_field_numerical_digest"],
+                actual_fields_equal=first["actual_field_numerical_digest"]==second["actual_field_numerical_digest"],
+                both_complete_formal_archives_verified=True,
+                scope="Normal user quality paths, including automatic drive resolution; distinct field digests do not establish fixed-field numerical convergence"))
+        log("Requested validation finished; inspect scope and status in each summary")
+        return 0
+    except Exception:
+        detail = traceback.format_exc()
+        write_json(args.output / "failure.json", dict(status="FAILED", error=detail,
+            scope="No claim beyond already persisted result/observer evidence"))
+        print(detail, file=sys.stderr, flush=True)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

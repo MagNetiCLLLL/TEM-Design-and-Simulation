@@ -1,0 +1,2316 @@
+{
+  "reference": "Current Gaussian coefficients restored from the v3 boundary; not automatically the historical October 27 map",
+  "boundary": "F:\\tem_simulator_v2\\outputs\\ideal-coil-si110-scan-20261116\\mixed-run-v3\\validated-particle-boundary",
+  "gaussian": {
+    "condenser_lens_1": {
+      "lens_key": "condenser_lens_1",
+      "terms_t_m": [
+        [
+          0.08999008972969108,
+          0.4928571428571428,
+          0.006428571428571429
+        ],
+        [
+          0.8199097064260743,
+          0.5,
+          0.00392857142857143
+        ],
+        [
+          0.08999008972969108,
+          0.5071428571428572,
+          0.006428571428571429
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        447.85714285714283,
+        552.1428571428571
+      ],
+      "radial_support_m": 0.01
+    },
+    "condenser_lens_2": {
+      "lens_key": "condenser_lens_2",
+      "terms_t_m": [
+        [
+          0.016782767260433082,
+          0.6375000000000001,
+          0.01125
+        ],
+        [
+          0.15290965726172365,
+          0.65,
+          0.006875000000000001
+        ],
+        [
+          0.016782767260433082,
+          0.6625,
+          0.01125
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        558.75,
+        741.25
+      ],
+      "radial_support_m": 0.01
+    },
+    "condenser_lens_3": {
+      "lens_key": "condenser_lens_3",
+      "terms_t_m": [
+        [
+          0.005365376989642905,
+          0.906,
+          0.0081
+        ],
+        [
+          0.04888454590563535,
+          0.915,
+          0.00495
+        ],
+        [
+          0.005365376989642905,
+          0.924,
+          0.0081
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        849.3,
+        980.7
+      ],
+      "radial_support_m": 0.009000000000000001
+    },
+    "adapter_lens": {
+      "lens_key": "adapter_lens",
+      "terms_t_m": [
+        [
+          0.00108,
+          1.0812000000000002,
+          0.0063
+        ],
+        [
+          0.00984,
+          1.0882,
+          0.0038500000000000006
+        ],
+        [
+          0.00108,
+          1.0952000000000002,
+          0.0063
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1037.1000000000001,
+        1139.3
+      ],
+      "radial_support_m": 0.01
+    },
+    "probe_tl22_lens": {
+      "lens_key": "probe_tl22_lens",
+      "terms_t_m": [
+        [
+          -0.02859581026143905,
+          1.16035,
+          0.0054
+        ],
+        [
+          -0.26053960460422243,
+          1.16635,
+          0.0033000000000000004
+        ],
+        [
+          -0.02859581026143905,
+          1.17235,
+          0.0054
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1122.55,
+        1210.1499999999999
+      ],
+      "radial_support_m": 0.01
+    },
+    "probe_tl21_lens": {
+      "lens_key": "probe_tl21_lens",
+      "terms_t_m": [
+        [
+          0.026858249402341453,
+          1.2439500000000001,
+          0.0054
+        ],
+        [
+          0.24470849455466656,
+          1.2499500000000001,
+          0.0033000000000000004
+        ],
+        [
+          0.026858249402341453,
+          1.2559500000000001,
+          0.0054
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1206.15,
+        1293.75
+      ],
+      "radial_support_m": 0.01
+    },
+    "probe_tl12_lens": {
+      "lens_key": "probe_tl12_lens",
+      "terms_t_m": [
+        [
+          0.017822256560829853,
+          1.3593,
+          0.0063
+        ],
+        [
+          0.16238055977644975,
+          1.3663,
+          0.0038500000000000006
+        ],
+        [
+          0.017822256560829853,
+          1.3733,
+          0.0063
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1315.2,
+        1417.3999999999999
+      ],
+      "radial_support_m": 0.01
+    },
+    "mini_condenser": {
+      "lens_key": "mini_condenser",
+      "terms_t_m": [
+        [
+          -0.01777401879975168,
+          1.5145,
+          0.007200000000000001
+        ],
+        [
+          -0.16194106017551532,
+          1.5225,
+          0.0044
+        ],
+        [
+          -0.01777401879975168,
+          1.5305,
+          0.007200000000000001
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1464.1,
+        1580.9
+      ],
+      "radial_support_m": 0.01
+    },
+    "objective_lens": {
+      "lens_key": "objective_lens",
+      "terms_t_m": [
+        [
+          0.054907165588944436,
+          1.5738500000000002,
+          0.0216
+        ],
+        [
+          0.5002652864770494,
+          1.5978500000000002,
+          0.013200000000000002
+        ],
+        [
+          0.054907165588944436,
+          1.6218500000000002,
+          0.0216
+        ],
+        [
+          0.054907165588944436,
+          1.57655,
+          0.0216
+        ],
+        [
+          0.5002652864770494,
+          1.60055,
+          0.013200000000000002
+        ],
+        [
+          0.054907165588944436,
+          1.62455,
+          0.0216
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1422.65,
+        1775.75
+      ],
+      "radial_support_m": 0.024
+    },
+    "diffraction_lens": {
+      "lens_key": "diffraction_lens",
+      "terms_t_m": [
+        [
+          0.009839891608088786,
+          1.8849,
+          0.0108
+        ],
+        [
+          0.08965234576258671,
+          1.8969,
+          0.006600000000000001
+        ],
+        [
+          0.009839891608088786,
+          1.9089,
+          0.0108
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1809.3000000000002,
+        1984.5
+      ],
+      "radial_support_m": 0.012
+    },
+    "intermediate_lens": {
+      "lens_key": "intermediate_lens",
+      "terms_t_m": [
+        [
+          2.6223723312457133e-05,
+          2.0519000000000003,
+          0.0135
+        ],
+        [
+          0.00023892725684683164,
+          2.0669,
+          0.00825
+        ],
+        [
+          2.6223723312457133e-05,
+          2.0819,
+          0.0135
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        1957.4,
+        2176.4
+      ],
+      "radial_support_m": 0.015
+    },
+    "projector_lens_1": {
+      "lens_key": "projector_lens_1",
+      "terms_t_m": [
+        [
+          0.012138811248766975,
+          2.2289000000000003,
+          0.0162
+        ],
+        [
+          0.11059805804432132,
+          2.2469,
+          0.0099
+        ],
+        [
+          0.012138811248766975,
+          2.2649000000000004,
+          0.0162
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        2115.5,
+        2378.3
+      ],
+      "radial_support_m": 0.018000000000000002
+    },
+    "projector_lens_2": {
+      "lens_key": "projector_lens_2",
+      "terms_t_m": [
+        [
+          0.0031839073129922243,
+          2.4294000000000002,
+          0.018000000000000002
+        ],
+        [
+          0.029008933296151375,
+          2.4494000000000002,
+          0.011
+        ],
+        [
+          0.0031839073129922243,
+          2.4694000000000003,
+          0.018000000000000002
+        ]
+      ],
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "native_support_mm": [
+        2303.4,
+        2595.4
+      ],
+      "radial_support_m": 0.02
+    }
+  },
+  "ideal_current_coils": {
+    "condenser_lens_1": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "condenser_lens_1",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+              "inner_radius_m": 0.048,
+              "outer_radius_m": 0.078,
+              "length_m": 0.09,
+              "ampere_turns": 112304.34232788287,
+              "center_z_m": 0.5,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "8272e9a3d831cc3b032965d65d3ddff1ad05082d660331b94eef95d552a9a00b"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 51.666666666666664,
+          "geometry_fingerprint": "88757030479d8121a6d1965e89da8fa429f86c1dc132ccd8880fb6b66eb2fd41",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 217363.2432152572,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 112304.34232788287,
+            "current_a": 374.34780775960957,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 217363.2432152572,
+            "reference_current_a": 724.5441440508573,
+            "total_turn_count": 300,
+            "winding_reference_ampere_turns": {
+              "condenser_lens_1_excitation_coil": 217363.2432152572
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 112304.34232788287,
+                "homogenized_cross_section_mm2": 2700.0,
+                "homogenized_current_density_a_per_mm2": 41.59420086217884,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  41.59420086217884
+                ],
+                "interval_turn_counts": [
+                  300
+                ],
+                "key": "condenser_lens_1_excitation_coil",
+                "mean_diameter_mm": 126.0,
+                "turn_count": 300,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "41382852cee0d69369e8cc5b5d559ac77077ffe510dfb5e66d531dc51f5743da"
+    },
+    "condenser_lens_2": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "condenser_lens_2",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+              "inner_radius_m": 0.048,
+              "outer_radius_m": 0.078,
+              "length_m": 0.162,
+              "ampere_turns": 27917.95958400784,
+              "center_z_m": 0.65,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "c9d472179567764db799ec3498b25ab7c0a655e6022d849773a794ba42e17d7d"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 13.899040164772698,
+          "geometry_fingerprint": "5497a748f6feae08e985ed4c248e77accb185444cd3774502a08c84daf1d2071",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 200862.50023772343,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 27917.95958400784,
+            "current_a": 51.69992515557007,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 200862.50023772343,
+            "reference_current_a": 371.9675930328212,
+            "total_turn_count": 540,
+            "winding_reference_ampere_turns": {
+              "condenser_lens_2_excitation_coil": 200862.50023772343
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 27917.95958400784,
+                "homogenized_cross_section_mm2": 4860.0,
+                "homogenized_current_density_a_per_mm2": 5.744436128396675,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  5.744436128396675
+                ],
+                "interval_turn_counts": [
+                  540
+                ],
+                "key": "condenser_lens_2_excitation_coil",
+                "mean_diameter_mm": 126.0,
+                "turn_count": 540,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "8c7fcc00a2d99437421f31e99e02a9ac3bdd5372a44a512dc5d37fa81d878c29"
+    },
+    "condenser_lens_3": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "condenser_lens_3",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+              "inner_radius_m": 0.048,
+              "outer_radius_m": 0.078,
+              "length_m": 0.153,
+              "ampere_turns": 8616.727476907055,
+              "center_z_m": 0.915,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "26089ddbd1760a5f6f4d85f3c6ecc1b1469dc6b2e5292426fcccb29119f81da1"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 15.68823681182136,
+          "geometry_fingerprint": "a287585f75d8cf83738e2e890ae2a3916e5ffa8fe3ddfd1da0319eb2fbafa94a",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 54924.766755268516,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 8616.727476907055,
+            "current_a": 16.895544072366775,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 54924.766755268516,
+            "reference_current_a": 107.6956210887618,
+            "total_turn_count": 510,
+            "winding_reference_ampere_turns": {
+              "condenser_lens_3_excitation_coil": 54924.766755268516
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 8616.727476907055,
+                "homogenized_cross_section_mm2": 4590.0,
+                "homogenized_current_density_a_per_mm2": 1.8772826747074194,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  1.8772826747074194
+                ],
+                "interval_turn_counts": [
+                  510
+                ],
+                "key": "condenser_lens_3_excitation_coil",
+                "mean_diameter_mm": 126.0,
+                "turn_count": 510,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "2aa06097d164280f82218ed5c226a9900e3fda5e15d783d2d3c8ed5a22f7ef3c"
+    },
+    "adapter_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "adapter_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+              "inner_radius_m": 0.039165,
+              "outer_radius_m": 0.045525,
+              "length_m": 0.03275999999999976,
+              "ampere_turns": 794.1899762785762,
+              "center_z_m": 1.0882,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "85d03053ffbe02231a7e3ba6f29329a92a586a365ddab910115d12c64aafb583"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 10.0,
+          "geometry_fingerprint": "7fee0bfc361526c3017a24d89e742166672d75933cafa809a8617572faff8446",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 7941.8997627857625,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 794.1899762785763,
+            "current_a": 34.52999896863375,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 7941.8997627857625,
+            "reference_current_a": 345.2999896863375,
+            "total_turn_count": 23,
+            "winding_reference_ampere_turns": {
+              "adapter_lens_excitation_coil": 7941.8997627857625
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 794.1899762785762,
+                "homogenized_cross_section_mm2": 208.35359999999847,
+                "homogenized_current_density_a_per_mm2": 3.8117410799649347,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  3.8117410799649347
+                ],
+                "interval_turn_counts": [
+                  23
+                ],
+                "key": "adapter_lens_excitation_coil",
+                "mean_diameter_mm": 84.69,
+                "turn_count": 23,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "2175cabf2d6b5c89608938638db34bc43f6c168dd6427b304e9fe2048e560022"
+    },
+    "probe_tl22_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "probe_tl22_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+              "inner_radius_m": 0.039165,
+              "outer_radius_m": 0.04675547125,
+              "length_m": 0.022950000000000047,
+              "ampere_turns": -20576.609950309306,
+              "center_z_m": 1.16635,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "9deba1e56fb139d9948afb26c9af7fb7f9fa161607e0b3f6b090db96bee25229"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 59.93152503582202,
+          "geometry_fingerprint": "8e589186e4c3fc6f6a7f15dc1c4b55be2343b4483343b4d003781786e346064d",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": -1,
+          "reference_ampere_turns_at_100_percent": 34333.53304126725,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": -20576.609950309306,
+            "current_a": -1082.979471068911,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 34333.53304126725,
+            "reference_current_a": 1807.0280548035394,
+            "total_turn_count": 19,
+            "winding_reference_ampere_turns": {
+              "probe_tl22_lens_excitation_coil": 34333.53304126725
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": -20576.609950309306,
+                "homogenized_cross_section_mm2": 174.20131518750034,
+                "homogenized_current_density_a_per_mm2": -118.11971642212815,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  -118.11971642212815
+                ],
+                "interval_turn_counts": [
+                  19
+                ],
+                "key": "probe_tl22_lens_excitation_coil",
+                "mean_diameter_mm": 85.92047124999999,
+                "turn_count": 19,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "7d5ce9c87b500b5161658254b32c04c65b3181fafd58a3ce2be6bb019719a202"
+    },
+    "probe_tl21_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "probe_tl21_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+              "inner_radius_m": 0.039165,
+              "outer_radius_m": 0.04665823795,
+              "length_m": 0.022950000000000272,
+              "ampere_turns": 19306.905625342,
+              "center_z_m": 1.2499500000000001,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "47f5ffa31c2510c852fd55f4e36a687824c97869a2c9036e3b8119d06170b5b9"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 59.95527906841963,
+          "geometry_fingerprint": "097a006e886665e7cbe217c6cb0c0fa4dccac5957cbb4999c6cd6223d9532c01",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 32202.177898812526,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 19306.905625342,
+            "current_a": 1016.1529276495789,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 32202.177898812526,
+            "reference_current_a": 1694.851468358554,
+            "total_turn_count": 19,
+            "winding_reference_ampere_turns": {
+              "probe_tl21_lens_excitation_coil": 32202.177898812526
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 19306.905625342,
+                "homogenized_cross_section_mm2": 171.96981095250206,
+                "homogenized_current_density_a_per_mm2": 112.2691565362862,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  112.2691565362862
+                ],
+                "interval_turn_counts": [
+                  19
+                ],
+                "key": "probe_tl21_lens_excitation_coil",
+                "mean_diameter_mm": 85.82323794999999,
+                "turn_count": 19,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "ce8c3b39e5198bb8748612a83923214015ccb268dad377a357ddd67a2bac359d"
+    },
+    "probe_tl12_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "probe_tl12_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+              "inner_radius_m": 0.039165,
+              "outer_radius_m": 0.046814999999999996,
+              "length_m": 0.022860000000000127,
+              "ampere_turns": 12828.816877028825,
+              "center_z_m": 1.3663,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "b376ff2227c073ffd52db13362238fbb2f0342cc6f003f29902cbe054544e5f3"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 36.004558708747176,
+          "geometry_fingerprint": "68fc2a645c7da6a14e59982949c76a22ab29711004ffc7d0550941331147657c",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 35631.09044275582,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 12828.816877028823,
+            "current_a": 675.200888264675,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 35631.09044275582,
+            "reference_current_a": 1875.3205496187275,
+            "total_turn_count": 19,
+            "winding_reference_ampere_turns": {
+              "probe_tl12_lens_excitation_coil": 35631.09044275582
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 12828.816877028825,
+                "homogenized_cross_section_mm2": 174.87900000000093,
+                "homogenized_current_density_a_per_mm2": 73.35824699951827,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  73.35824699951827
+                ],
+                "interval_turn_counts": [
+                  19
+                ],
+                "key": "probe_tl12_lens_excitation_coil",
+                "mean_diameter_mm": 85.97999999999999,
+                "turn_count": 19,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "7b763c4dd7cdbb203f864e592aac0b9dc96fc7a8cefcdd1e67deb49f88c62135"
+    },
+    "mini_condenser": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "mini_condenser",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+              "inner_radius_m": 0.017,
+              "outer_radius_m": 0.025500000000000002,
+              "length_m": 0.018000000000000002,
+              "ampere_turns": -6594.096942944777,
+              "center_z_m": 1.5225,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "65b9fc8afd6be965261f07e47fc4bee9e864234ebec602f409a08460c925cc98"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 43.88646617222637,
+          "geometry_fingerprint": "7a52bf401ff302191c2a2118c034ed62f19a50afeb7036adc7d9cd322fc871a4",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": -1,
+          "reference_ampere_turns_at_100_percent": 15025.354096789553,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": -6594.096942944777,
+            "current_a": -387.8880554673398,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 15025.354096789553,
+            "reference_current_a": 883.8443586346796,
+            "total_turn_count": 17,
+            "winding_reference_ampere_turns": {
+              "mini_condenser_excitation_coil": 15025.354096789553
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": -6594.096942944777,
+                "homogenized_cross_section_mm2": 153.0,
+                "homogenized_current_density_a_per_mm2": -43.09867282970443,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  -43.09867282970443
+                ],
+                "interval_turn_counts": [
+                  17
+                ],
+                "key": "mini_condenser_excitation_coil",
+                "mean_diameter_mm": 42.5,
+                "turn_count": 17,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "4c1cd77cc98628e4559c2d62b1d732096f3c63a734780f36afbfeb6b6c1b2c8b"
+    },
+    "objective_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "objective_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "objective_lens:objective_lens_excitation_coil:0",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.145,
+              "ampere_turns": 636727.6222610013,
+              "center_z_m": 1.469,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "59af931c26cb1a9a39dde426e01271755032830f4aa624606e880debc87d2026"
+          },
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "objective_lens:objective_lens_excitation_coil:1",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.145,
+              "ampere_turns": 636727.6222610013,
+              "center_z_m": 1.7294,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "9775c62098c0c62a73c581f7a6264cb3db2d12261c8ae777e158ca6f7cc3d976"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 68.97810600833917,
+          "geometry_fingerprint": "8f74ad6b63ec7b87a043051c16799076269070e57357659217ee3e683997c4bd",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 1846173.1094327918,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 1273455.2445220025,
+            "current_a": 1097.8062452775885,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 1846173.1094327918,
+            "reference_current_a": 1591.5285426144758,
+            "total_turn_count": 1160,
+            "winding_reference_ampere_turns": {
+              "objective_lens_excitation_coil": 1846173.1094327918
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 1273455.2445220025,
+                "homogenized_cross_section_mm2": 10440.0,
+                "homogenized_current_density_a_per_mm2": 121.97847169750982,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  121.97847169750982,
+                  121.97847169750982
+                ],
+                "interval_turn_counts": [
+                  580,
+                  580
+                ],
+                "key": "objective_lens_excitation_coil",
+                "mean_diameter_mm": 96.0,
+                "turn_count": 1160,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "24219ce7a8737f182a19444887b34d6d2f0eff1165134bb71bce2feca24d7f66"
+    },
+    "diffraction_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "diffraction_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.09,
+              "ampere_turns": 10426.642582298635,
+              "center_z_m": 1.8969,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "3092e76e7d162bdc49413bba0188bf925874897e91db4d244787c037cc0f4893"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 14.577617197168571,
+          "geometry_fingerprint": "93a0bde115fe7753d15b5eeb39fb0015c7dcff3f7649c099d5653fb5664f8ea2",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 71525.01291036655,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 10426.642582298635,
+            "current_a": 28.962896061940654,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 71525.01291036655,
+            "reference_current_a": 198.68059141768487,
+            "total_turn_count": 360,
+            "winding_reference_ampere_turns": {
+              "diffraction_lens_excitation_coil": 71525.01291036655
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 10426.642582298635,
+                "homogenized_cross_section_mm2": 3240.0,
+                "homogenized_current_density_a_per_mm2": 3.21809956243785,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  3.21809956243785
+                ],
+                "interval_turn_counts": [
+                  360
+                ],
+                "key": "diffraction_lens_excitation_coil",
+                "mean_diameter_mm": 96.0,
+                "turn_count": 360,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "774b917f6f38b207dfdd7d8fa67c8cdd01d836d8586b9f4a19d36ed53384dd5e"
+    },
+    "intermediate_lens": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "intermediate_lens",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.162,
+              "ampere_turns": 40.10403491833047,
+              "center_z_m": 2.0669,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "813d89d043f7ed0aeb411d29b3a85f9d502a7d158559c965c00f088c083a8f8a"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 0.035082657259397326,
+          "geometry_fingerprint": "7f1d1256b1a3f7a4575aa752ffc543958a0f4dd797c6646ddd57cd682eadb300",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 114312.99123611311,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 40.10403491833046,
+            "current_a": 0.06188894277520134,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 114312.99123611311,
+            "reference_current_a": 176.40893709276716,
+            "total_turn_count": 648,
+            "winding_reference_ampere_turns": {
+              "intermediate_lens_excitation_coil": 114312.99123611311
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 40.10403491833047,
+                "homogenized_cross_section_mm2": 5832.0,
+                "homogenized_current_density_a_per_mm2": 0.006876549197244594,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  0.006876549197244594
+                ],
+                "interval_turn_counts": [
+                  648
+                ],
+                "key": "intermediate_lens_excitation_coil",
+                "mean_diameter_mm": 96.0,
+                "turn_count": 648,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "e2cf2cb397da11e53c3b73c794ce8e57a67497192c91900efb36afd5996714d7"
+    },
+    "projector_lens_1": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "projector_lens_1",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.108,
+              "ampere_turns": 14180.516445383828,
+              "center_z_m": 2.2469,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "07c4954fff24cdd1f11fe74f6562b51f73d3d66c8543f36bb2ad658e7ea14b31"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 32.1132572718703,
+          "geometry_fingerprint": "3025fc8bf11ec1872c2a3fdaf68e2025c6fa56187618d452bc3a041490e13188",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 44157.82654911587,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 14180.516445383828,
+            "current_a": 32.8252695494996,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 44157.82654911587,
+            "reference_current_a": 102.21719108591635,
+            "total_turn_count": 432,
+            "winding_reference_ampere_turns": {
+              "projector_lens_1_excitation_coil": 44157.82654911587
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 14180.516445383828,
+                "homogenized_cross_section_mm2": 3888.0,
+                "homogenized_current_density_a_per_mm2": 3.6472521721666222,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  3.6472521721666222
+                ],
+                "interval_turn_counts": [
+                  432
+                ],
+                "key": "projector_lens_1_excitation_coil",
+                "mean_diameter_mm": 96.0,
+                "turn_count": 432,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "ae52ef1b65b805235337004d2506e2e8dba9e76449f9857e30e2a8f8f6aafe7c"
+    },
+    "projector_lens_2": {
+      "metadata": {
+        "schema": "installed-copper-coil-potential-v1",
+        "source_id": "projector_lens_2",
+        "coils": [
+          {
+            "metadata": {
+              "schema": "air-core-annular-coil-potential-v1",
+              "source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+              "inner_radius_m": 0.03,
+              "outer_radius_m": 0.066,
+              "length_m": 0.162,
+              "ampere_turns": 4869.160970605275,
+              "center_z_m": 2.4494000000000002,
+              "registration": {
+                "origin_global_m": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "rotation_local_to_global": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "quadrature_order": 12,
+              "permeability_h_per_m": 1.25663706127e-06,
+              "relative_permeability": 1.0,
+              "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+              "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+              "axial_domain": "all_z",
+              "domain": "Finite vacuum XYZ excluding closed winding volume",
+              "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+              "derivative_order": 2,
+              "units": {
+                "position": "m",
+                "A": "T m",
+                "B": "T",
+                "ampere_turns": "A turn"
+              },
+              "empirical_aberrations_applied": false,
+              "pole_piece_magnetism": false,
+              "wave_admission": false,
+              "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+            },
+            "digest": "3bad02b0d426c983ad81354335478d95676efb268be11c6030500a86bc0aec98"
+          }
+        ],
+        "provenance": {
+          "current_distribution": "Each owned winding has N times prescribed series current; fixed interval turns when declared, otherwise split in proportion to occupied axial length; uniform within each original interval",
+          "enabled": true,
+          "excitation_percent": 9.826874422815507,
+          "geometry_fingerprint": "211b04c563c25404cf9d1ad7ed6eca6b117b4d9a23fcbc683cb6fdf0ab43d644",
+          "legacy_reference_record": {
+            "active": false,
+            "ampere_turns_at_100_percent": 3000.0,
+            "source": "Engineering initialization: 3000 A turns at 100% excitation for the independent air-core model; not a measured or OEM winding/current calibration and not inherited from Gaussian tuning. Uniform rectangular winding cross-section with mu_r=1. Turn count and individual conductor current are not specified.",
+            "source_urls": [
+              "https://web.mit.edu/6.013_book/www/chapter8/8.2.html",
+              "https://patents.google.com/patent/US20150021476A1/en"
+            ],
+            "status": "engineering_reference_not_oem_not_particle_qualified"
+          },
+          "polarity": 1,
+          "reference_ampere_turns_at_100_percent": 49549.43719745029,
+          "reference_source": "Explicit saved turn counts and prescribed electrical current; not an inferred or measured winding calibration",
+          "reference_source_urls": [],
+          "reference_status": "user_defined_winding_current_not_oem_not_particle_qualified",
+          "source_registration_policy": "Project optical registration: owner translations and assembly azimuth place the magnetic source; optical tilts rotate its source axis. Material CAD follows its separate mechanical registration; an optical tilt does not imply a mechanically tilted copper winding.",
+          "winding_current_definition": {
+            "ampere_turns": 4869.160970605275,
+            "current_a": 7.514137300316783,
+            "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+            "method": "explicit_winding_turns_and_prescribed_current_v1",
+            "reference_ampere_turns": 49549.43719745029,
+            "reference_current_a": 76.46518086026279,
+            "total_turn_count": 648,
+            "winding_reference_ampere_turns": {
+              "projector_lens_2_excitation_coil": 49549.43719745029
+            },
+            "windings": [
+              {
+                "conductor_cross_section_mm2": null,
+                "equivalent_current_a": 4869.160970605275,
+                "homogenized_cross_section_mm2": 5832.0,
+                "homogenized_current_density_a_per_mm2": 0.8349041444796425,
+                "interval_homogenized_current_density_a_per_mm2": [
+                  0.8349041444796425
+                ],
+                "interval_turn_counts": [
+                  648
+                ],
+                "key": "projector_lens_2_excitation_coil",
+                "mean_diameter_mm": 96.0,
+                "turn_count": 648,
+                "wire_cross_section_mm2": null,
+                "wire_diameter_mm": null
+              }
+            ]
+          },
+          "winding_material": "Copper, relative permeability one; pole pieces ignored magnetically"
+        },
+        "axial_domain": "all_z",
+        "empirical_aberrations_applied": false,
+        "pole_piece_magnetism": false,
+        "derivative_order": 2,
+        "wave_admission": false
+      },
+      "digest": "4eb77733599eb6c341c8946edd432d0a39f3cd2ff651dc3fb8bda33894b92a4a"
+    }
+  }
+}

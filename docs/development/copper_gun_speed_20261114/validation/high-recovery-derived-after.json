@@ -1,0 +1,1224 @@
+{
+  "official_resolved_values": [
+    {
+      "_pure_shift_angular_residual": 1.2532403198730036e-17,
+      "_pure_shift_calibrated": true,
+      "_pure_shift_lower_ratio_matrix": [
+        [
+          -0.94191669502793,
+          0.08817529240807963
+        ],
+        [
+          -0.08817529240807964,
+          -0.94191669502793
+        ]
+      ],
+      "_scan_command_matrix_mrad": [
+        [
+          4.224843613206161e-05,
+          -4.280547685776907e-06
+        ],
+        [
+          4.280547685776907e-06,
+          4.224843613206161e-05
+        ]
+      ],
+      "_scan_scale_calibrated": true,
+      "_scan_scale_residual": 5.818288433937898e-18,
+      "lower_coil_gain": -0.470958347513965,
+      "scan_amplitude_x_mrad": 0.1,
+      "scan_amplitude_y_mrad": 0.1,
+      "_pure_shift_angle_target": "canonical",
+      "_scan_execution_receipt": {
+        "model": "shared-potential-finite-coil-response-v1",
+        "source_z_mm": 1380.0000000000002,
+        "perturbation_rad": 1e-06,
+        "maximum_step_mm": 0.05,
+        "reference_kinetic_energy_ev": 300000.0,
+        "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+        "response_dependencies": {
+          "kind": "executed-query-box",
+          "bounds_m": [
+            [
+              -3.675834800524712e-07,
+              -3.675834800524712e-07,
+              1.3800000000000003
+            ],
+            [
+              3.675834800524712e-07,
+              3.675834800524712e-07,
+              1.8244
+            ]
+          ],
+          "payload_digest": "688ff735355cea2955353959315a343b44dd5c9a8b438b79d4b98ee034e94dd8"
+        },
+        "scope": "Local DC chief derivatives; not a source or finite-beam qualification",
+        "trace_receipts": [
+          {
+            "coil_perturbations_rad": {},
+            "empirical_aberrations_applied": false,
+            "field_digest": "5e4760b6f871988aed5cdb3e98b30ef4e1957da29e8b5ab5a789dca87bbd2526",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:0": [
+                1e-06,
+                0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "c34337274e7723cdba33457690c7acfa9624a54e6598422422e10647b077bbe4",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "269078e7be806e06c135d6c9e4701ae4869f2b3c8ec4f5462361d1bafd37e6a5",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                -2.1359674200504163e-08,
+                1.3800000000000003
+              ],
+              [
+                3.675834800524712e-07,
+                1.9389019971268112e-08,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:0": [
+                -1e-06,
+                -0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "eb920c6c36a3d637e406ca7c53e46870a1b1f27ad79ae3a2db9429d5d9048e21",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "17dd91a6971cb4a328d165ec9c7ea0493b18e1f7bce6b647cebf6ea30e3974f2",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -3.675834800524712e-07,
+                -1.9389019971268112e-08,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                2.1359674200504163e-08,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:0": [
+                0.0,
+                1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "c64197fc79e99e91d372c38c675f6e05c8891e370c7875694f244f7f519f73d1",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "bd16343597bec3775e615d40a8101554921b2656febc2c666d3d4c23a175ebc3",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -1.9389019971268112e-08,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                2.1359674200504163e-08,
+                3.675834800524712e-07,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:0": [
+                -0.0,
+                -1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "20db6f47b53148393960ea130352f4fc7f58e092cb4fea3fbb883035bbc8c4f0",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "ccf34dfb79134bab4120b75a7d09a7283be0c743006b7f00987851fea9983c68",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -2.1359674200504163e-08,
+                -3.675834800524712e-07,
+                1.3800000000000003
+              ],
+              [
+                1.9389019971268112e-08,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:1": [
+                1e-06,
+                0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "cdb7bd4bb9210161e1ab6e520d9a789b16f9b6ca0e2b2ce6ec046efb5d4e8ec7",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "01efd313e706540f7d152ddcea104b5e39639b4c6675c4f5e9fd196d71b19b53",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                -4.013774126002132e-08,
+                1.3800000000000003
+              ],
+              [
+                3.5700988082568696e-07,
+                7.2794818953603844e-09,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:1": [
+                -1e-06,
+                -0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "44e53c9395f45753924dcab18445196bf03b17d2c927777f21d30845169a4410",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "687eb2580e407d50c2cf77ddb1f691877f83a4d055e6b340ac651a671aef69fa",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -3.5700988082568696e-07,
+                -7.2794818953603844e-09,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                4.013774126002132e-08,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:1": [
+                0.0,
+                1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "4704e28fbe536394902bbdb8a72969fe637b905688213089998fcf742ccdec60",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "10577fdef4500c8b95e97f9b8eeaf9fc429607d35a809d3b8e7503e04b139052",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -7.2794818953603844e-09,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                4.013774126002132e-08,
+                3.5700988082568696e-07,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "ac_deflector:1": [
+                -0.0,
+                -1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "b66de53d5cc838f0bf726959519579f37b458d589be997ced3cb7519e8430448",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "eca9c7ee1eb8d847b05d6c233e476128c943274c28ef42dbb27b0b7a46e57ecf",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -4.013774126002132e-08,
+                -3.5700988082568696e-07,
+                1.3800000000000003
+              ],
+              [
+                7.2794818953603844e-09,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:0": [
+                1e-06,
+                0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "b0a391bad6f8b547bca6021397b1ea9205575143030235942bf830e89c5881a2",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "dedad84a43c0d0980f8619f0a5409a521c2c3351b9d88ab475f05bc98afb784d",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                1.4844790958481902e-07,
+                1.8488370400862225e-08,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:0": [
+                -1e-06,
+                -0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "af0039be8dffc9db3a4392cc4c567e4efcef375eb4cda06ea955725bc246a413",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "7850ddb826c73c0e860b17270177ac000e1c94dbc3776bbd1241ef62b01f87b8",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -1.4844790958481902e-07,
+                -1.8488370400862225e-08,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:0": [
+                0.0,
+                1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "6dc5dc76caaeee5774acb4d01a6199ad4df95297dad29560effe6cdc38fe751a",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "881aa721508d37fb6ac414d328cd6b53292aced05391600eb4d0dbe4ca6e127e",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -1.8488370400862225e-08,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                1.4844790958481902e-07,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:0": [
+                -0.0,
+                -1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "97a091fa0b6c69ad217b09b98cd70a37e15bc3dabb2fed3a1c19fc0e27906847",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "447a817917e6a1f0de7a3779aad5234a5bc3602d8f1457be00e1c24e42e1fbe9",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                -1.4844790958481902e-07,
+                1.3800000000000003
+              ],
+              [
+                1.8488370400862225e-08,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:1": [
+                1e-06,
+                0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "c517a973c36ebc9f738a2dca7fd15f362cc15e89f0cf283179da4694b90f670e",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "499fb3c9d7de4ddae2d3bf78f136e17de0febda89867a2cc4067f32dd8707764",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                1.2407024694463564e-07,
+                1.311977964826936e-08,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:1": [
+                -1e-06,
+                -0.0
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "9af98aee4e60829113b53fa616dc7539419c27394b5c78f83a3ef15f36f09d0b",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "36515c619fed326d3884ad9adbccf4d8bc08e3000b0c043c5140618a6a44567f",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -1.2407024694463564e-07,
+                -1.311977964826936e-08,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                0.0,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:1": [
+                0.0,
+                1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "6fd6ae54e82ec43998158416fd28017cbdf7e7171bc19e09a3ec70276df5f973",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "add465aadf5d6deecd03913e650404eac499a2434adbfb2aeb0ef0aa6a033302",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                -1.311977964826936e-08,
+                0.0,
+                1.3800000000000003
+              ],
+              [
+                0.0,
+                1.2407024694463564e-07,
+                1.8244
+              ]
+            ]
+          },
+          {
+            "coil_perturbations_rad": {
+              "image_diffraction_deflector:1": [
+                -0.0,
+                -1e-06
+              ]
+            },
+            "empirical_aberrations_applied": false,
+            "field_digest": "91b11449fa2131f0b7b06ec04c3ffe77682d75f201516cbe8d5ac4c4c0982074",
+            "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+            "history_policy": "exact_checkpoints",
+            "maximum_step_m": 5e-05,
+            "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+            "runtime_digest": "e9ec9125c8e94418183cdf609b95d677dd36f2ce26e9efd652b9863a9743a7a1",
+            "scope": "Supplied differential phase-space probes; not an electron source",
+            "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+            "swept_bounds_m": [
+              [
+                0.0,
+                -1.2407024694463564e-07,
+                1.3800000000000003
+              ],
+              [
+                1.311977964826936e-08,
+                0.0,
+                1.8244
+              ]
+            ]
+          }
+        ],
+        "execution": {
+          "mode": "independent_processes",
+          "workers": 4,
+          "trace_count": 17,
+          "wall_seconds": 774.4478901000002,
+          "algorithm": "unchanged scalar Lorentz RK4; ordered independent physical-coil perturbations"
+        },
+        "response_cache": {
+          "key": "24f5029a45c430036f812e47f2e9ac347fe3dacdcd8d12ddd22df165fd2f97b2",
+          "hit": true,
+          "source": "disk",
+          "scope": "Exact frozen field, geometry and response-numerics dependencies; original measurement receipts retained"
+        },
+        "status": "executed_shared_potential_response",
+        "ac_recalibrated": true,
+        "sample_z_mm": 1599.2,
+        "descan_target_z_mm": 1824.4,
+        "sample_position_relative_residual": 5.818288433937898e-18,
+        "commands_identity": "325e6801e2e9748afefe061334b4e98c38c93b14dd0bd0970f73affd631edf0a"
+      }
+    },
+    {
+      "_image_plane_calibrated": true,
+      "_image_plane_lower_ratio_matrix": [
+        [
+          -0.9599012525815908,
+          0.035946462846095005
+        ],
+        [
+          -0.03594646284609501,
+          -0.9599012525815908
+        ]
+      ],
+      "_image_plane_residual": 4.683971035199807e-16,
+      "_image_plane_target_key": "selected_area_aperture",
+      "_image_plane_target_z_mm": 1824.4,
+      "_scan_command_matrix_mrad": [
+        [
+          -4.224843613206161e-05,
+          4.280547685776907e-06
+        ],
+        [
+          -4.280547685776907e-06,
+          -4.224843613206161e-05
+        ]
+      ],
+      "_scan_scale_calibrated": true,
+      "_scan_scale_residual": 4.683971035199807e-16,
+      "lower_coil_gain": -0.4799506262907954,
+      "scan_amplitude_x_mrad": -0.1,
+      "scan_amplitude_y_mrad": -0.1,
+      "_calibrated_constraint": "position",
+      "scan_frame_period_s": 1.0,
+      "scan_pixels_x": 64,
+      "scan_lines": 64,
+      "scan_pixel_size_nm": 0.02
+    }
+  ],
+  "ac_lower_coil_gain": -0.470958347513965,
+  "descan_lower_coil_gain": -0.4799506262907954,
+  "ac_ratio": [
+    [
+      -0.94191669502793,
+      0.08817529240807963
+    ],
+    [
+      -0.08817529240807964,
+      -0.94191669502793
+    ]
+  ],
+  "descan_ratio": [
+    [
+      -0.9599012525815908,
+      0.035946462846095005
+    ],
+    [
+      -0.03594646284609501,
+      -0.9599012525815908
+    ]
+  ],
+  "ac_command_matrix_mrad": [
+    [
+      4.224843613206161e-05,
+      -4.280547685776907e-06
+    ],
+    [
+      4.280547685776907e-06,
+      4.224843613206161e-05
+    ]
+  ],
+  "descan_command_matrix_mrad": [
+    [
+      -4.224843613206161e-05,
+      4.280547685776907e-06
+    ],
+    [
+      -4.280547685776907e-06,
+      -4.224843613206161e-05
+    ]
+  ],
+  "ac_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        -0.470958347513965,
+        0.044087646204039814
+      ],
+      [
+        -0.04408764620403982,
+        -0.470958347513965
+      ]
+    ]
+  ],
+  "descan_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        -0.4799506262907954,
+        0.017973231423047503
+      ],
+      [
+        -0.017973231423047506,
+        -0.4799506262907954
+      ]
+    ]
+  ],
+  "execution_receipt": {
+    "model": "shared-potential-finite-coil-response-v1",
+    "source_z_mm": 1380.0000000000002,
+    "perturbation_rad": 1e-06,
+    "maximum_step_mm": 0.05,
+    "reference_kinetic_energy_ev": 300000.0,
+    "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+    "response_dependencies": {
+      "kind": "executed-query-box",
+      "bounds_m": [
+        [
+          -3.675834800524712e-07,
+          -3.675834800524712e-07,
+          1.3800000000000003
+        ],
+        [
+          3.675834800524712e-07,
+          3.675834800524712e-07,
+          1.8244
+        ]
+      ],
+      "payload_digest": "688ff735355cea2955353959315a343b44dd5c9a8b438b79d4b98ee034e94dd8"
+    },
+    "scope": "Local DC chief derivatives; not a source or finite-beam qualification",
+    "trace_receipts": [
+      {
+        "coil_perturbations_rad": {},
+        "empirical_aberrations_applied": false,
+        "field_digest": "5e4760b6f871988aed5cdb3e98b30ef4e1957da29e8b5ab5a789dca87bbd2526",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:0": [
+            1e-06,
+            0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "c34337274e7723cdba33457690c7acfa9624a54e6598422422e10647b077bbe4",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "269078e7be806e06c135d6c9e4701ae4869f2b3c8ec4f5462361d1bafd37e6a5",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            -2.1359674200504163e-08,
+            1.3800000000000003
+          ],
+          [
+            3.675834800524712e-07,
+            1.9389019971268112e-08,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:0": [
+            -1e-06,
+            -0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "eb920c6c36a3d637e406ca7c53e46870a1b1f27ad79ae3a2db9429d5d9048e21",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "17dd91a6971cb4a328d165ec9c7ea0493b18e1f7bce6b647cebf6ea30e3974f2",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -3.675834800524712e-07,
+            -1.9389019971268112e-08,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            2.1359674200504163e-08,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:0": [
+            0.0,
+            1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "c64197fc79e99e91d372c38c675f6e05c8891e370c7875694f244f7f519f73d1",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "bd16343597bec3775e615d40a8101554921b2656febc2c666d3d4c23a175ebc3",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -1.9389019971268112e-08,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            2.1359674200504163e-08,
+            3.675834800524712e-07,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:0": [
+            -0.0,
+            -1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "20db6f47b53148393960ea130352f4fc7f58e092cb4fea3fbb883035bbc8c4f0",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "ccf34dfb79134bab4120b75a7d09a7283be0c743006b7f00987851fea9983c68",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -2.1359674200504163e-08,
+            -3.675834800524712e-07,
+            1.3800000000000003
+          ],
+          [
+            1.9389019971268112e-08,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:1": [
+            1e-06,
+            0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "cdb7bd4bb9210161e1ab6e520d9a789b16f9b6ca0e2b2ce6ec046efb5d4e8ec7",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "01efd313e706540f7d152ddcea104b5e39639b4c6675c4f5e9fd196d71b19b53",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            -4.013774126002132e-08,
+            1.3800000000000003
+          ],
+          [
+            3.5700988082568696e-07,
+            7.2794818953603844e-09,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:1": [
+            -1e-06,
+            -0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "44e53c9395f45753924dcab18445196bf03b17d2c927777f21d30845169a4410",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "687eb2580e407d50c2cf77ddb1f691877f83a4d055e6b340ac651a671aef69fa",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -3.5700988082568696e-07,
+            -7.2794818953603844e-09,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            4.013774126002132e-08,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:1": [
+            0.0,
+            1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "4704e28fbe536394902bbdb8a72969fe637b905688213089998fcf742ccdec60",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "10577fdef4500c8b95e97f9b8eeaf9fc429607d35a809d3b8e7503e04b139052",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -7.2794818953603844e-09,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            4.013774126002132e-08,
+            3.5700988082568696e-07,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "ac_deflector:1": [
+            -0.0,
+            -1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "b66de53d5cc838f0bf726959519579f37b458d589be997ced3cb7519e8430448",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "eca9c7ee1eb8d847b05d6c233e476128c943274c28ef42dbb27b0b7a46e57ecf",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -4.013774126002132e-08,
+            -3.5700988082568696e-07,
+            1.3800000000000003
+          ],
+          [
+            7.2794818953603844e-09,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:0": [
+            1e-06,
+            0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "b0a391bad6f8b547bca6021397b1ea9205575143030235942bf830e89c5881a2",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "dedad84a43c0d0980f8619f0a5409a521c2c3351b9d88ab475f05bc98afb784d",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            1.4844790958481902e-07,
+            1.8488370400862225e-08,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:0": [
+            -1e-06,
+            -0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "af0039be8dffc9db3a4392cc4c567e4efcef375eb4cda06ea955725bc246a413",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "7850ddb826c73c0e860b17270177ac000e1c94dbc3776bbd1241ef62b01f87b8",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -1.4844790958481902e-07,
+            -1.8488370400862225e-08,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:0": [
+            0.0,
+            1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "6dc5dc76caaeee5774acb4d01a6199ad4df95297dad29560effe6cdc38fe751a",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "881aa721508d37fb6ac414d328cd6b53292aced05391600eb4d0dbe4ca6e127e",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -1.8488370400862225e-08,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            1.4844790958481902e-07,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:0": [
+            -0.0,
+            -1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "97a091fa0b6c69ad217b09b98cd70a37e15bc3dabb2fed3a1c19fc0e27906847",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "447a817917e6a1f0de7a3779aad5234a5bc3602d8f1457be00e1c24e42e1fbe9",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            -1.4844790958481902e-07,
+            1.3800000000000003
+          ],
+          [
+            1.8488370400862225e-08,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:1": [
+            1e-06,
+            0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "c517a973c36ebc9f738a2dca7fd15f362cc15e89f0cf283179da4694b90f670e",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "499fb3c9d7de4ddae2d3bf78f136e17de0febda89867a2cc4067f32dd8707764",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            1.2407024694463564e-07,
+            1.311977964826936e-08,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:1": [
+            -1e-06,
+            -0.0
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "9af98aee4e60829113b53fa616dc7539419c27394b5c78f83a3ef15f36f09d0b",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "36515c619fed326d3884ad9adbccf4d8bc08e3000b0c043c5140618a6a44567f",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -1.2407024694463564e-07,
+            -1.311977964826936e-08,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            0.0,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:1": [
+            0.0,
+            1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "6fd6ae54e82ec43998158416fd28017cbdf7e7171bc19e09a3ec70276df5f973",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "add465aadf5d6deecd03913e650404eac499a2434adbfb2aeb0ef0aa6a033302",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            -1.311977964826936e-08,
+            0.0,
+            1.3800000000000003
+          ],
+          [
+            0.0,
+            1.2407024694463564e-07,
+            1.8244
+          ]
+        ]
+      },
+      {
+        "coil_perturbations_rad": {
+          "image_diffraction_deflector:1": [
+            -0.0,
+            -1e-06
+          ]
+        },
+        "empirical_aberrations_applied": false,
+        "field_digest": "91b11449fa2131f0b7b06ec04c3ffe77682d75f201516cbe8d5ac4c4c0982074",
+        "geometry_digest": "a16db1e78f93e308f23cfe3a5103ac5af888f605fa3fee967be0427c0e6755d5",
+        "history_policy": "exact_checkpoints",
+        "maximum_step_m": 5e-05,
+        "parent_runtime_digest": "f0800ffb173f780069278a45a994213627420c8df321c8256668f8dc5a789c22",
+        "runtime_digest": "e9ec9125c8e94418183cdf609b95d677dd36f2ce26e9efd652b9863a9743a7a1",
+        "scope": "Supplied differential phase-space probes; not an electron source",
+        "source_identity": "8e17fe78abd94224cca1d8a120a05135e32636e1bf041e83bc3eef22bbb9ee19",
+        "swept_bounds_m": [
+          [
+            0.0,
+            -1.2407024694463564e-07,
+            1.3800000000000003
+          ],
+          [
+            1.311977964826936e-08,
+            0.0,
+            1.8244
+          ]
+        ]
+      }
+    ],
+    "execution": {
+      "mode": "independent_processes",
+      "workers": 4,
+      "trace_count": 17,
+      "wall_seconds": 774.4478901000002,
+      "algorithm": "unchanged scalar Lorentz RK4; ordered independent physical-coil perturbations"
+    },
+    "response_cache": {
+      "key": "24f5029a45c430036f812e47f2e9ac347fe3dacdcd8d12ddd22df165fd2f97b2",
+      "hit": true,
+      "source": "disk",
+      "scope": "Exact frozen field, geometry and response-numerics dependencies; original measurement receipts retained"
+    },
+    "status": "executed_shared_potential_response",
+    "ac_recalibrated": true,
+    "sample_z_mm": 1599.2,
+    "descan_target_z_mm": 1824.4,
+    "sample_position_relative_residual": 5.818288433937898e-18,
+    "commands_identity": "325e6801e2e9748afefe061334b4e98c38c93b14dd0bd0970f73affd631edf0a"
+  }
+}

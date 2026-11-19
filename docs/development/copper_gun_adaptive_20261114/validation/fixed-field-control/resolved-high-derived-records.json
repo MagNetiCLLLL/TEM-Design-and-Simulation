@@ -1,0 +1,157 @@
+{
+  "official_resolved_values": [
+    {
+      "_pure_shift_angle_target": "canonical",
+      "_pure_shift_angular_residual": 1.2532403198730036e-17,
+      "_pure_shift_calibrated": true,
+      "_pure_shift_lower_ratio_matrix": [
+        [
+          -0.94191669502793,
+          0.08817529240807963
+        ],
+        [
+          -0.08817529240807964,
+          -0.94191669502793
+        ]
+      ],
+      "_scan_command_matrix_mrad": [
+        [
+          4.224843613206161e-05,
+          -4.280547685776907e-06
+        ],
+        [
+          4.280547685776907e-06,
+          4.224843613206161e-05
+        ]
+      ],
+      "_scan_scale_calibrated": true,
+      "_scan_scale_residual": 5.818288433937898e-18,
+      "lower_coil_gain": -0.470958347513965,
+      "scan_amplitude_x_mrad": 0.1,
+      "scan_amplitude_y_mrad": 0.1
+    },
+    {
+      "_calibrated_constraint": "position",
+      "_image_plane_calibrated": true,
+      "_image_plane_lower_ratio_matrix": [
+        [
+          -0.9599012525815908,
+          0.035946462846095005
+        ],
+        [
+          -0.03594646284609501,
+          -0.9599012525815908
+        ]
+      ],
+      "_image_plane_residual": 4.683971035199807e-16,
+      "_image_plane_target_key": "selected_area_aperture",
+      "_image_plane_target_z_mm": 1824.4,
+      "_scan_command_matrix_mrad": [
+        [
+          -4.224843613206161e-05,
+          4.280547685776907e-06
+        ],
+        [
+          -4.280547685776907e-06,
+          -4.224843613206161e-05
+        ]
+      ],
+      "_scan_scale_calibrated": true,
+      "_scan_scale_residual": 4.683971035199807e-16,
+      "lower_coil_gain": -0.4799506262907954,
+      "scan_amplitude_x_mrad": -0.1,
+      "scan_amplitude_y_mrad": -0.1,
+      "scan_frame_period_s": 1.0,
+      "scan_pixels_x": 64,
+      "scan_lines": 64,
+      "scan_pixel_size_nm": 0.02
+    }
+  ],
+  "ac_lower_coil_gain": -0.470958347513965,
+  "descan_lower_coil_gain": -0.4799506262907954,
+  "ac_ratio": [
+    [
+      -0.94191669502793,
+      0.08817529240807963
+    ],
+    [
+      -0.08817529240807964,
+      -0.94191669502793
+    ]
+  ],
+  "descan_ratio": [
+    [
+      -0.9599012525815908,
+      0.035946462846095005
+    ],
+    [
+      -0.03594646284609501,
+      -0.9599012525815908
+    ]
+  ],
+  "ac_commands_mrad": [
+    [
+      4.224843613206161e-05,
+      -4.280547685776907e-06
+    ],
+    [
+      4.280547685776907e-06,
+      4.224843613206161e-05
+    ]
+  ],
+  "descan_commands_mrad": [
+    [
+      -4.224843613206161e-05,
+      4.280547685776907e-06
+    ],
+    [
+      -4.280547685776907e-06,
+      -4.224843613206161e-05
+    ]
+  ],
+  "ac_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        -0.470958347513965,
+        0.044087646204039814
+      ],
+      [
+        -0.04408764620403982,
+        -0.470958347513965
+      ]
+    ]
+  ],
+  "descan_coil_maps": [
+    [
+      [
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    [
+      [
+        -0.4799506262907954,
+        0.017973231423047503
+      ],
+      [
+        -0.017973231423047506,
+        -0.4799506262907954
+      ]
+    ]
+  ],
+  "execution_receipt": null
+}

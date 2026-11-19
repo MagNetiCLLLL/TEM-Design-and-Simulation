@@ -169,7 +169,7 @@ class AnnularCoilPotential:
             raise ValueError("Annular coil positions must be finite real XYZ metres")
         local = self.registration.positions_global_to_local_m(np.asarray(points, float))
         if self.contains_winding_local(local).any():
-            raise ValueError("Vacuum field query intersects the excluded copper winding volume")
+            raise ValueError("Vacuum field query intersects the excluded winding volume")
         return local
 
     def contains_winding_local(self, local):
@@ -190,9 +190,22 @@ class AnnularCoilPotential:
         furthest = np.maximum(np.abs(low[:2]), np.abs(high[:2]))
         if (high[2] >= self.center_z_m-self.length_m/2 and low[2] <= self.center_z_m+self.length_m/2
                 and np.linalg.norm(nearest) <= self.outer_radius_m and np.linalg.norm(furthest) >= self.inner_radius_m):
-            raise ValueError("Annular coil swept box may intersect excluded copper winding")
+            raise ValueError("Annular coil swept box may intersect excluded winding")
 
     def axial_derivatives(self, local_z_m, maximum_order=0):
+        """Use the same polynomial/loop law, with strict NumPy fallback."""
+        if type(maximum_order) is not int or not 0 <= maximum_order <= 12:
+            raise ValueError("Annular axis derivative order must be an integer in [0, 12]")
+        z = np.asarray(local_z_m)
+        if z.dtype.kind not in "iuf" or not np.isfinite(z).all():
+            raise ValueError("Annular axis coordinates must be finite real metres")
+        z = np.asarray(z, float)
+        from temsim.physics.compiled_annular_coil import compiled_axis_derivatives
+        result = compiled_axis_derivatives(z, self._loops, maximum_order)
+        return self.axial_derivatives_numpy(z, maximum_order) if result is None else result
+
+    def axial_derivatives_numpy(self, local_z_m, maximum_order=0):
+        """Original direct-power NumPy operator, retained as the strict reference."""
         if type(maximum_order) is not int or not 0 <= maximum_order <= 12:
             raise ValueError("Annular axis derivative order must be an integer in [0, 12]")
         z = np.asarray(local_z_m)

@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="25" skipped="0" tests="87" time="35.080" timestamp="2026-11-15T16:53:14.032717+00:00" hostname="Royal_Gray"><testcase classname="tests.test_coil_winding_dialog" name="test_unknown_legacy_winding_has_no_guessed_turn_wire_or_current_defaults" time="1.309" /><testcase classname="tests.test_coil_winding_dialog" name="test_packing_and_signed_operating_current_use_original_envelope_without_mutation" time="0.253" /><testcase classname="tests.test_coil_winding_dialog" name="test_missing_polarity_and_disconnected_runtime_are_explicit" time="0.243" /><testcase classname="tests.test_coil_winding_dialog" name="test_disabled_excitation_and_explicit_zero_reference_current_are_supported" time="0.247" /><testcase classname="tests.test_coil_winding_dialog" name="test_fixed_turns_and_large_current_are_valid_without_inventing_wire_diameter" time="0.243" /><testcase classname="tests.test_coil_winding_dialog" name="test_saved_current_prefill_roundtrips_exactly_without_an_edit[1575.2330285262728]" time="0.246" /><testcase classname="tests.test_coil_winding_dialog" name="test_saved_current_prefill_roundtrips_exactly_without_an_edit[1.2345678901234567e+100]" time="0.251" /><testcase classname="tests.test_coil_winding_dialog" name="test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C2.toml-condenser_lens_1_excitation_coil]" time="0.302" /><testcase classname="tests.test_coil_winding_dialog" name="test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C3_ProbeCorrector.toml-probe_tl21_lens_excitation_coil]" time="0.301" /><testcase classname="tests.test_coil_winding_dialog" name="test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C3_BCOR.toml-image_tl31_lens_excitation_coil]" time="0.294" /><testcase classname="tests.test_coil_winding_dialog" name="test_catalog_round_lens_families_share_winding_action_and_current_inputs[project_and_recording_system/EnergyFilter.toml-projector_lens_2_excitation_coil]" time="0.266" /><testcase classname="tests.test_coil_winding_dialog" name="test_split_turns_remain_fixed_when_current_changes_and_total_must_match" time="0.219" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586]" time="0.246" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586, 586, 1]" time="0.224" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586, -586]" time="0.219" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586, 585]" time="0.221" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586.0, 586]" time="0.222" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_interval_turns_do_not_enable_apply[586,]" time="0.240" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes0]" time="0.225" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes1]" time="0.231" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes2]" time="0.227" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes3]" time="0.227" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes4]" time="0.226" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes5]" time="0.234" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes6]" time="0.218" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes7]" time="0.219" /><testcase classname="tests.test_coil_winding_dialog" name="test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes8]" time="0.227" /><testcase classname="tests.test_coil_winding_dialog" name="test_cancel_does_not_call_commit" time="0.226" /><testcase classname="tests.test_coil_winding_dialog" name="test_commit_failure_preserves_dialog_and_success_is_one_explicit_call" time="0.234" /><testcase classname="tests.test_coil_winding_dialog" name="test_round_winding_action_stages_owner_and_coil_as_one_undo_without_saving" time="0.538"><failure message="assert 'signed conductor current -1 A' in 'Operating excitation: 40%. Enter the reference conductor current to calculate the actual current.'&#10; +  where 'Operating excitation: 40%. Enter the reference conductor current to calculate the actual current.' = &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FC9DA400&gt;()&#10; +    where &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FC9DA400&gt; = &lt;PySide6.QtWidgets.QLabel(0x2a8fba37f40, name=&quot;windingActualCurrent&quot;) at 0x000002A8FC9DA400&gt;.text&#10; +      where &lt;PySide6.QtWidgets.QLabel(0x2a8fba37f40, name=&quot;windingActualCurrent&quot;) at 0x000002A8FC9DA400&gt; = &lt;temsim.gui.coil_winding_dialog.WindingConfigurationDialog(0x2a8fbb55e20, name=&quot;windingConfigurationDialog&quot;) at 0x000002A8FC9AFB00&gt;.operating_label">page = &lt;temsim.gui.part_model_editor.PartModelEditorPage(0x2a8f01b4b00, name="partModelEditorPage") at 0x000002A8FB8CBD40&gt;
+qtbot = &lt;pytestqt.qtbot.QtBot object at 0x000002A8F97628D0&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A8F968E9F0&gt;
+
+    def test_round_winding_action_stages_owner_and_coil_as_one_undo_without_saving(page, qtbot, monkeypatch):
+        before = deepcopy(page.session.document)
+        original_bytes = page.session.path.read_bytes()
+        saved_signals = []
+        page.saved.connect(saved_signals.append)
+        assert page.configure_winding_button.isEnabled()
+        calls = []
+        configure = page.session.configure_winding
+    
+        def record(*args, **kwargs):
+            calls.append((args, kwargs))
+            return configure(*args, **kwargs)
+    
+        monkeypatch.setattr(page.session, "configure_winding", record)
+        dialog = page.configure_winding()
+        assert dialog is page._winding_dialog
+        fill(dialog, turns="12", wire="0.2", current="2.5")
+&gt;       assert "signed conductor current -1 A" in dialog.operating_label.text()
+E       assert 'signed conductor current -1 A' in 'Operating excitation: 40%. Enter the reference conductor current to calculate the actual current.'
+E        +  where 'Operating excitation: 40%. Enter the reference conductor current to calculate the actual current.' = &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FC9DA400&gt;()
+E        +    where &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FC9DA400&gt; = &lt;PySide6.QtWidgets.QLabel(0x2a8fba37f40, name="windingActualCurrent") at 0x000002A8FC9DA400&gt;.text
+E        +      where &lt;PySide6.QtWidgets.QLabel(0x2a8fba37f40, name="windingActualCurrent") at 0x000002A8FC9DA400&gt; = &lt;temsim.gui.coil_winding_dialog.WindingConfigurationDialog(0x2a8fbb55e20, name="windingConfigurationDialog") at 0x000002A8FC9AFB00&gt;.operating_label
+
+tests\test_coil_winding_dialog.py:255: AssertionError
+---------------------------- Captured Qt messages -----------------------------
+QtWarningMsg: This plugin does not support propagateSizeHints()</failure></testcase><testcase classname="tests.test_coil_winding_dialog" name="test_dialog_rejects_stale_draft_and_runtime_updates_do_not_mutate_it" time="0.498"><failure message="assert 'signed conductor current 0.5 A' in 'Operating excitation: 20%. Enter the reference conductor current to calculate the actual current.'&#10; +  where 'Operating excitation: 20%. Enter the reference conductor current to calculate the actual current.' = &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FB9B7440&gt;()&#10; +    where &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FB9B7440&gt; = &lt;PySide6.QtWidgets.QLabel(0x2a8fbb9e170, name=&quot;windingActualCurrent&quot;) at 0x000002A8FB9B7440&gt;.text&#10; +      where &lt;PySide6.QtWidgets.QLabel(0x2a8fbb9e170, name=&quot;windingActualCurrent&quot;) at 0x000002A8FB9B7440&gt; = &lt;temsim.gui.coil_winding_dialog.WindingConfigurationDialog(0x2a8f7f9b430, name=&quot;windingConfigurationDialog&quot;) at 0x000002A8FB898D80&gt;.operating_label">page = &lt;temsim.gui.part_model_editor.PartModelEditorPage(0x2a8fba3a100, name="partModelEditorPage") at 0x000002A8F9610F40&gt;
+qtbot = &lt;pytestqt.qtbot.QtBot object at 0x000002A8FB80F620&gt;
+
+    def test_dialog_rejects_stale_draft_and_runtime_updates_do_not_mutate_it(page, qtbot):
+        dialog = page.configure_winding()
+        fill(dialog, wire="0.2")
+        page.set_runtime_values({OWNER: dict(percent=20., polarity=1, enabled=True)})
+&gt;       assert "signed conductor current 0.5 A" in dialog.operating_label.text()
+E       assert 'signed conductor current 0.5 A' in 'Operating excitation: 20%. Enter the reference conductor current to calculate the actual current.'
+E        +  where 'Operating excitation: 20%. Enter the reference conductor current to calculate the actual current.' = &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FB9B7440&gt;()
+E        +    where &lt;built-in method text of PySide6.QtWidgets.QLabel object at 0x000002A8FB9B7440&gt; = &lt;PySide6.QtWidgets.QLabel(0x2a8fbb9e170, name="windingActualCurrent") at 0x000002A8FB9B7440&gt;.text
+E        +      where &lt;PySide6.QtWidgets.QLabel(0x2a8fbb9e170, name="windingActualCurrent") at 0x000002A8FB9B7440&gt; = &lt;temsim.gui.coil_winding_dialog.WindingConfigurationDialog(0x2a8f7f9b430, name="windingConfigurationDialog") at 0x000002A8FB898D80&gt;.operating_label
+
+tests\test_coil_winding_dialog.py:275: AssertionError
+---------------------------- Captured Qt messages -----------------------------
+QtWarningMsg: This plugin does not support propagateSizeHints()</failure></testcase><testcase classname="tests.test_coil_winding_dialog" name="test_round_winding_action_can_clear_known_wire_size_and_undo_as_one_change" time="0.668" /><testcase classname="tests.test_coil_winding_dialog" name="test_action_is_hidden_for_non_winding_and_blocked_by_invalid_editor_input" time="0.543" /><testcase classname="tests.test_part_model_document" name="test_turns_current_and_unknown_wire_size_form_one_atomic_reversible_draft" time="0.529" /><testcase classname="tests.test_part_model_document" name="test_omitted_fixed_interval_counts_are_preserved_and_inconsistent_total_is_rejected" time="0.229" /><testcase classname="tests.test_part_model_document" name="test_fixed_interval_counts_can_be_cleared_only_by_explicit_input" time="0.225" /><testcase classname="tests.test_part_model_document" name="test_winding_noop_preserves_exact_inputs_provenance_and_history" time="0.435" /><testcase classname="tests.test_part_model_document" name="test_manual_current_updates_only_its_source_and_remains_atomic_after_save" time="0.595" /><testcase classname="tests.test_part_model_document" name="test_manual_turn_change_marks_affected_sources_without_recalibrating_current" time="0.605" /><testcase classname="tests.test_part_model_document" name="test_cleared_optional_winding_inputs_and_their_sources_survive_save_reload" time="0.633" /><testcase classname="tests.test_part_model_document" name="test_invalid_batch_preserves_every_value_source_and_undo_state" time="0.426" /><testcase classname="tests.test_part_model_document" name="test_manual_input_source_can_replace_expanded_metadata_tables" time="0.616" /><testcase classname="tests.test_part_model_document" name="test_dimensions_are_staged_across_parts_then_saved_with_comments_retained" time="0.428" /><testcase classname="tests.test_part_model_document" name="test_conflicting_dimensions_stay_as_draft_and_do_not_write" time="0.359" /><testcase classname="tests.test_part_model_document" name="test_undo_redo_revert_and_two_saves_preserve_original_precision" time="0.521" /><testcase classname="tests.test_part_model_document" name="test_invalid_input_does_not_mutate_draft[True]" time="0.204" /><testcase classname="tests.test_part_model_document" name="test_invalid_input_does_not_mutate_draft[70]" time="0.198" /><testcase classname="tests.test_part_model_document" name="test_invalid_input_does_not_mutate_draft[nan]" time="0.204" /><testcase classname="tests.test_part_model_document" name="test_invalid_input_does_not_mutate_draft[inf]" time="0.203" /><testcase classname="tests.test_part_model_document" name="test_physical_lens_pose_virtual_defaults_roundtrip_and_legacy_migration" time="0.535" /><testcase classname="tests.test_part_model_document" name="test_invalid_physical_lens_pose_is_atomic[True]" time="0.201" /><testcase classname="tests.test_part_model_document" name="test_invalid_physical_lens_pose_is_atomic[2.5]" time="0.214" /><testcase classname="tests.test_part_model_document" name="test_invalid_physical_lens_pose_is_atomic[nan]" time="0.213" /><testcase classname="tests.test_part_model_document" name="test_invalid_physical_lens_pose_is_atomic[inf]" time="0.217" /><testcase classname="tests.test_part_model_document" name="test_lens_pose_and_axial_placement_are_one_undoable_operation" time="0.225" /><testcase classname="tests.test_part_model_document" name="test_manifest_editor_exposes_zero_pose_and_preserves_legacy_when_one_angle_changes" time="0.031" /><testcase classname="tests.test_part_model_document" name="test_existing_array_dimensions_are_updated_by_index" time="0.213" /><testcase classname="tests.test_part_model_document" name="test_source_change_is_detected_but_save_copy_can_preserve_draft" time="0.337" /><testcase classname="tests.test_part_model_document" name="test_per_part_material_roundtrip_uses_new_optional_field" time="0.575" /><testcase classname="tests.test_part_model_document" name="test_existing_pole_bore_can_be_enlarged_without_changing_vacuum" time="0.324" /><testcase classname="tests.test_part_model_document" name="test_project_save_failure_keeps_draft" time="0.291" /><testcase classname="tests.test_part_model_document" name="test_non_module_file_and_fixed_centre_edits_are_rejected" time="0.200" /><testcase classname="tests.test_part_model_document" name="test_model_configuration_and_nested_dimensions_are_independent_of_solver_fields" time="0.204"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F4AF71D0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_model_configuration_and_nested_dimensions_are_independent_of_solver_fields(document, model_3d):
+        original = deepcopy(document.part(KEY))
+        expected = deepcopy(model_3d)
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:407: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[negative-size]" time="0.203"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCAD1A60&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('base', 'width_mm'), value = -1.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[zero-scale]" time="0.204"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCA90A70&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('transform', 'scale_xy', 0), value = 0.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[short-slot]" time="0.203"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F6507DD0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', 1, 'length_mm'), value = 1.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[nan]" time="0.207"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FB7EBC50&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', 0, 'diameter_mm'), value = nan
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[overflow]" time="0.204"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCC1B0B0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', 0, 'depth_mm')
+value = 100000000000000000...0000000000000000000
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[negative-index]" time="0.206"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F6693AD0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', -1, 'width_mm'), value = 6.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[missing-index]" time="0.205"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F92FE2A0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', 30, 'diameter_mm'), value = 6.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[boolean-field]" time="0.201"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCC507D0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('features', 0, 'enabled'), value = 1.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_numeric_errors_leave_document_and_history_unchanged[missing-path]" time="0.200"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F672D940&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+suffix = ('transform', 'missing', 0), value = 6.0
+
+    @pytest.mark.parametrize("suffix,value", [
+        (("base", "width_mm"), -1.0),
+        (("transform", "scale_xy", 0), 0.0),
+        (("features", 1, "length_mm"), 1.0),
+        (("features", 0, "diameter_mm"), float("nan")),
+        (("features", 0, "depth_mm"), 10**1000),
+        (("features", -1, "width_mm"), 6.0),
+        (("features", 30, "diameter_mm"), 6.0),
+        (("features", 0, "enabled"), 1.0),
+        (("transform", "missing", 0), 6.0),
+    ], ids=["negative-size", "zero-scale", "short-slot", "nan", "overflow",
+            "negative-index", "missing-index", "boolean-field", "missing-path"])
+    def test_model_numeric_errors_leave_document_and_history_unchanged(document, model_3d, suffix, value):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:439: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_feature_transactions_keep_stable_order_and_undo_as_one_change" time="0.203"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCC51490&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_model_feature_transactions_keep_stable_order_and_undo_as_one_change(document, model_3d):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:448: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_first_model_edit_includes_editable_transform_defaults[update]" time="0.203" /><testcase classname="tests.test_part_model_document" name="test_first_model_edit_includes_editable_transform_defaults[feature]" time="0.208" /><testcase classname="tests.test_part_model_document" name="test_model_removal_undo_redo_and_revert_round_trip_without_empty_table" time="0.197"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FB80F170&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_model_removal_undo_redo_and_revert_round_trip_without_empty_table(document, model_3d):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:495: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_boolean_failure_preserves_schema_valid_draft_and_file[True]" time="0.202"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F6641E20&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...[12.0, 25.0, 40.0]}, 'features': [{'id': 'hole_1', 'kind': 'hole', 'axis': 'z', 'center_mm': [1000.0, 0.0, 0.0], ...}]}
+outside = True
+
+    @pytest.mark.parametrize("outside", [True, False])
+    def test_boolean_failure_preserves_schema_valid_draft_and_file(document, model_3d, outside):
+        feature = model_3d["features"][0]
+        feature["center_mm"] = [1000.0, 0.0, 0.0] if outside else [0.0, 0.0, 0.0]
+        feature["diameter_mm"] = 8.0 if outside else 100.0
+        model_3d["features"] = [feature]
+        before = document.path.read_bytes()
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_boolean_failure_preserves_schema_valid_draft_and_file[False]" time="0.195"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCABF9B0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...': [12.0, 25.0, 40.0]}, 'features': [{'id': 'hole_1', 'kind': 'hole', 'axis': 'z', 'center_mm': [0.0, 0.0, 0.0], ...}]}
+outside = False
+
+    @pytest.mark.parametrize("outside", [True, False])
+    def test_boolean_failure_preserves_schema_valid_draft_and_file(document, model_3d, outside):
+        feature = model_3d["features"][0]
+        feature["center_mm"] = [1000.0, 0.0, 0.0] if outside else [0.0, 0.0, 0.0]
+        feature["diameter_mm"] = 8.0 if outside else 100.0
+        model_3d["features"] = [feature]
+        before = document.path.read_bytes()
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_invalid_schema_replacement_and_duplicate_feature_are_atomic" time="0.206"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F67DD730&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_invalid_schema_replacement_and_duplicate_feature_are_atomic(document, model_3d):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:532: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_project_callback_must_persist_the_validated_draft[False-did not save]" time="0.174"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F67DC5F0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+returned = False, error = 'did not save'
+
+    @pytest.mark.parametrize("returned,error", [(False, "did not save"), (None, "does not match")])
+    def test_project_callback_must_persist_the_validated_draft(document, model_3d, returned, error):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:548: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_project_callback_must_persist_the_validated_draft[None-does not match]" time="0.166"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCAD0D10&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+returned = None, error = 'does not match'
+
+    @pytest.mark.parametrize("returned,error", [(False, "did not save"), (None, "does not match")])
+    def test_project_callback_must_persist_the_validated_draft(document, model_3d, returned, error):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:548: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_source_change_during_validation_prevents_project_callback" time="0.178"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCD48F80&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A8FCDD2420&gt;
+
+    def test_source_change_during_validation_prevents_project_callback(document, model_3d, monkeypatch):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:558: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_external_reload_is_atomic_and_cannot_discard_model_draft" time="0.171"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F68481D0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_external_reload_is_atomic_and_cannot_discard_model_draft(document, model_3d):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:575: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_save_copy_preserves_full_features_after_external_source_edit" time="0.183"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F66B36B0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+tmp_path = WindowsPath('C:/Users/54019/AppData/Local/Temp/pytest-of-Xuzhao_Liu/pytest-3401/test_model_save_copy_preserves0')
+
+    def test_model_save_copy_preserves_full_features_after_external_source_edit(document, model_3d, tmp_path):
+&gt;       document.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:596: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_nested_model_tables_and_feature_arrays_are_replaced_without_stale_values" time="0.238"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8FCE61430&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_nested_model_tables_and_feature_arrays_are_replaced_without_stale_values(document, model_3d):
+        import tomli_w
+    
+        text = document.path.read_text(encoding="utf-8")
+        # Exercise externally authored TOML, including quoted keys, array tables,
+        # retained comments and an unrelated nested table after the model.
+        text = text.replace(f'key = "{KEY}"', f"key = '{KEY}' # stable component key")
+        lines = text.splitlines(keepends=True)
+        _, end = module_manifest._part_span(lines, KEY)
+        expanded = tomli_w.dumps({"parts": [{"model_3d": model_3d}]}).split("\n", 1)[1]
+        expanded = expanded.replace("parts.model_3d", 'parts."model_3d"')
+        expanded = "\n# keep CAD design comment\n" + expanded
+        expanded += '\n[parts.custom_geometry_notes]\nlabel = "keep this table"\n'
+        lines[end:end] = [expanded + "\n"]
+        document.path.write_text("".join(lines), encoding="utf-8")
+&gt;       loaded = PartModelDocument(document.path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_part_model_document.py:623: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:103: in __init__
+    _validate_internal_details(self._baseline["parts"], self._baseline.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_replacement_respects_brackets_and_headers_inside_toml_values" time="0.220"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">document = &lt;temsim.part_model_document.PartModelDocument object at 0x000002A8F677AEA0&gt;
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot]2', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_model_replacement_respects_brackets_and_headers_inside_toml_values(document, model_3d):
+        model_3d["features"][0]["id"] = "hole[1"
+        model_3d["features"][1]["id"] = "slot]2"
+        lines = document.path.read_text(encoding="utf-8").splitlines(keepends=True)
+        start, _ = module_manifest._part_span(lines, KEY)
+        lines[start:start] = [
+            'design_notes = """Do not interpret the following text as a part:\n',
+            '[[parts]]\n',
+            'key = "imaginary_part"\n',
+            '"""\n',
+            'labels = [\n',
+            '  ["model_3d"]\n',
+            ']\n',
+            "model_3d = " + module_manifest._format_toml_value(model_3d) + "\n",
+        ]
+        document.path.write_text("".join(lines), encoding="utf-8")
+&gt;       loaded = PartModelDocument(document.path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_part_model_document.py:657: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:103: in __init__
+    _validate_internal_details(self._baseline["parts"], self._baseline.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'design_notes': 'Do not interpret the following text as a part:\n[[parts]]\nkey = "imaginary_part"\n', 'labels': [['m...slot]2', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}, 'winding_interval_turn_counts': [727], ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase><testcase classname="tests.test_part_model_document" name="test_model_configuration_uses_real_manifest_editor_save_and_validation" time="6.369"><failure message="ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry">tmp_path = WindowsPath('C:/Users/54019/AppData/Local/Temp/pytest-of-Xuzhao_Liu/pytest-3401/test_model_configuration_uses_0')
+model_3d = {'schema_version': 1, 'base': {'kind': 'box', 'width_mm': 40.0, 'height_mm': 30.0, 'length_mm': 50.0}, 'transform': {'...'center_mm': [-8.0, 0.0, 0.0], ...}, {'id': 'slot_1', 'kind': 'slot', 'axis': 'z', 'center_mm': [9.0, 0.0, 0.0], ...}]}
+
+    def test_model_configuration_uses_real_manifest_editor_save_and_validation(tmp_path, model_3d):
+        from temsim.column.state_layout import layout_configuration_from_state
+        from temsim.manifest_editor import ManifestEditor, ManifestTarget
+        from temsim.optics.column import default_state
+    
+        root = tmp_path / "instruments"
+        source_bytes = (INSTRUMENT_CONFIG_ROOT / MODULE).read_bytes()
+        from temsim.shared_tip import copy_catalog_tree
+        copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
+        editor, target = ManifestEditor(root), ManifestTarget(MODULE, KEY)
+        configuration = layout_configuration_from_state(default_state())
+        draft = PartModelDocument(root / MODULE)
+        original = deepcopy(draft.part(KEY))
+&gt;       draft.set_model_3d(KEY, model_3d)
+
+tests\test_part_model_document.py:682: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\temsim\part_model_document.py:541: in set_model_3d
+    self._commit_part(key, candidate)
+src\temsim\part_model_document.py:270: in _commit_part
+    _validate_internal_details(candidate_document["parts"], candidate_document.get("geometry"))
+src\temsim\part_model_document.py:61: in _validate_internal_details
+    resolve_round_winding_geometry(part, by_key)
+src\temsim\cad_round_winding.py:94: in resolve_round_winding_geometry
+    envelope = round_winding_envelope(row, by_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+part = {'winding_interval_turn_counts': [727], 'winding_turn_count': 727, 'order': 27, 'key': 'intermediate_lens_excitation_coil', ...}
+by_key = {'selected_area_aperture': {'order': 1, 'key': 'selected_area_aperture', 'name': 'Selected Area Aperture', 'branch': '...': 4, 'key': 'diffraction_lens_upper_pole', 'name': 'Diffraction Lens Upper Pole Piece', 'branch': 'common', ...}, ...}
+
+    def round_winding_envelope(part, by_key=None) -&gt; dict:
+        """Read the original annular envelope without inventing wire parameters."""
+        row = part_data(part)
+        if row.get("mechanical_profile") != "magnetic_excitation_coil":
+            raise ValueError(f"{row['key']}: detailed round winding is only available for a round excitation coil")
+        if row.get("model_3d", {}).get("base", {}).get("kind", "existing") != "existing":
+&gt;           raise ValueError(f"{row['key']}: round winding inputs require the native annular base geometry")
+E           ValueError: intermediate_lens_excitation_coil: round winding inputs require the native annular base geometry
+
+src\temsim\cad_round_winding.py:75: ValueError</failure></testcase></testsuite></testsuites>

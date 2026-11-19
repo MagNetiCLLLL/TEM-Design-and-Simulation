@@ -1,0 +1,5 @@
+{
+  "status": "FAILED",
+  "error": "Traceback (most recent call last):\n  File \"F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\run_particle_validation.py\", line 515, in main\n    existing = run_quality(args, quality, values, args.output / quality.lower().replace(\" \", \"-\"), existing)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\run_particle_validation.py\", line 438, in run_quality\n    raise RuntimeError(\"Gun or optical hardware settings changed during execution\")\nRuntimeError: Gun or optical hardware settings changed during execution\n",
+  "scope": "No claim beyond already persisted result/observer evidence"
+}

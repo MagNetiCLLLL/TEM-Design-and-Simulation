@@ -180,4 +180,9 @@ def gun_stigmator_solids(part, by_key=None):
                               transformed(shape, rotation=rotation), metadata))
     carrier = difference(annulus(d["start_mm"], d["end_mm"],
                                  d["bore_radius_mm"], d["outer_radius_mm"]), *slots)
+    from temsim.cad_transverse_winding import transverse_winding_solids
+    detailed=transverse_winding_solids(part,by_key)
+    if detailed is not None:
+        parts=[spec for spec in parts if spec.material!='copper_winding']
+        parts.extend(detailed)
     return (spec("slotted_carrier", "insulating_polymer_unspecified", carrier), *parts)

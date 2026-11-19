@@ -19,6 +19,18 @@ from temsim.gui.input_policy import WheelSafeDoubleSpinBox as QDoubleSpinBox
 from temsim.gui.projection_angle_controls import ProjectionAngleControls
 from temsim.gui.transverse_projection import format_projection_angle
 from temsim.field_density_texture import section_grid_axes
+from temsim.round_lens_models import ROUND_LENS_FIELD_MODELS
+
+
+def _field_model_label(model):
+    # Keep captured model identifiers intact; only format their visible names.
+    if model in {"copper_coil", "air_core_annular_copper_coil", "copper_coil_assembly",
+                 "CopperCoilAssemblyPotential", "CopperCoilFieldProvider", "FrozenCopperCoilField",
+                 "ideal_vacuum_transverse_coil", "ideal-vacuum-transverse-coil-potential-v1",
+                 "ideal_transverse_current_coil", "ideal_multipole_current_coil",
+                 "TransverseCoilPotential", "FrozenTransverseCoilField"}:
+        return ROUND_LENS_FIELD_MODELS["copper_coil"]
+    return model
 
 
 @dataclass(frozen=True)
@@ -1082,7 +1094,7 @@ class FieldVectorPage(QWidget):
                 item.setData(Qt.ItemDataRole.UserRole, source.key)
                 item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
                 item.setCheckState(Qt.CheckState.Checked if self._all_sources_intent or source.key in (self._remembered_keys or ()) else Qt.CheckState.Unchecked)
-                item.setToolTip(f"{source.model}\n" + "\n".join(source.notes))
+                item.setToolTip(f"{_field_model_label(source.model)}\n" + "\n".join(source.notes))
                 self.sources.addItem(item)
         self._update_details()
         self.focus_component(self._selected_component)
@@ -1287,7 +1299,7 @@ class FieldVectorPage(QWidget):
             if source.key not in selected:
                 continue
             bound = np.asarray(source.bounds_m) * 1000
-            lines.extend(("", f"{source.label} ({source.key})", f"Model: {source.model}",
+            lines.extend(("", f"{source.label} ({source.key})", f"Model: {_field_model_label(source.model)}",
                           f"Components: {', '.join(source.component_keys)}",
                           f"Enclosing XYZ bounds [mm]: {bound[0].tolist()} to {bound[1].tolist()}",
                           f"Supported: {'yes' if source.supported else 'no; unavailable, not zero'}"))

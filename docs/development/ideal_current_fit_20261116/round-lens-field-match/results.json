@@ -1,0 +1,3211 @@
+{
+  "schema": "read-only-round-lens-field-match-v1",
+  "status": "FIELD_ONLY_NO_PARTICLE_OR_WAVE_QUALIFICATION",
+  "reference": "Current Gaussian coefficients from the exact v3 boundary; historical October 27 coefficient equivalence not assumed",
+  "scope": "All 13 enabled round lens owners. On-axis signed Bz only. Nonround fields, particle trajectories and aberration kicks are not evaluated.",
+  "invariants": "Captured source, controls, fixed physical turns including archived Objective 580+580, envelopes, polarity and tolerances unchanged; no candidate applied",
+  "quadrature": {
+    "domain": "negative infinity to positive infinity",
+    "central_domain_m": [
+      -0.5,
+      3.5
+    ],
+    "central_panel_width_at_most_m": 0.02,
+    "Gauss_orders": [
+      32,
+      48,
+      64
+    ],
+    "tail_transform": "z=-0.5-0.5*u/(1-u) and z=3.5+0.5*u/(1-u), u in [0,1]",
+    "coil_operator": "Original captured 12 by 12 circular-loop quadrature; no change in field tolerance"
+  },
+  "least_squares": {
+    "isolated": "s=<C,G>/<C,C> for each owner over all z; minimizes integral (s*C-G)^2 dz",
+    "power_match": "s=sqrt(integral G^2 dz/integral C^2 dz); preserves isolated integrated paraxial strength but not shape",
+    "joint": "Nonnegative least squares of signed sum of 13 current-scaled basis fields against sum of Gaussian fields; polarity fixed. Zeros are candidate endpoints, not applied inputs.",
+    "joint_power": "Joint LS currents uniformly rescaled to preserve all-round-owner total integral Bz^2, including cross terms; sacrifices the minimum LS error"
+  },
+  "public_axis_admission": {
+    "condenser_lens_1": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "condenser_lens_2": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "condenser_lens_3": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "adapter_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "probe_tl22_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "probe_tl21_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "probe_tl12_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "mini_condenser": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "objective_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "diffraction_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "intermediate_lens": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "projector_lens_1": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    },
+    "projector_lens_2": {
+      "gaussian_axis_max_error_t": 0.0,
+      "ideal_axis_max_error_t": 0.0
+    }
+  },
+  "integration_convergence": [
+    {
+      "order": 32,
+      "versus_order": 64,
+      "max_relative_gaussian_isolated_b2_error": 5.88418203051333e-15,
+      "max_relative_coil_isolated_b2_error": 1.9984014443252818e-15,
+      "maximum_absolute_coil_gram_error_t2_m": 1.7763568394002505e-15,
+      "maximum_relative_b2_centroid_error": 6.661338147750939e-16,
+      "maximum_relative_b2_sigma_error": 3.3306690738754696e-16
+    },
+    {
+      "order": 48,
+      "versus_order": 64,
+      "max_relative_gaussian_isolated_b2_error": 6.439293542825908e-15,
+      "max_relative_coil_isolated_b2_error": 1.9984014443252818e-15,
+      "maximum_absolute_coil_gram_error_t2_m": 2.6645352591003757e-15,
+      "maximum_relative_b2_centroid_error": 4.440892098500626e-16,
+      "maximum_relative_b2_sigma_error": 2.220446049250313e-16
+    }
+  ],
+  "per_lens": {
+    "condenser_lens_1": {
+      "name": "C1 lens",
+      "controls_and_windings": {
+        "excitation_percent": 51.666666666666664,
+        "polarity": 1,
+        "total_turn_count": 300,
+        "interval_turn_counts": [
+          [
+            300
+          ]
+        ],
+        "archived_current_a": 374.34780775960957,
+        "archived_current_at_100_percent_a": 724.5441440508573,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+            "inner_radius_m": 0.048,
+            "outer_radius_m": 0.078,
+            "length_m": 0.09,
+            "ampere_turns": 112304.34232788287,
+            "center_z_m": 0.5,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.006501432091117582,
+        "b2_centroid_z_mm": 500.0,
+        "b2_standard_deviation_mm": 3.3784855045343516,
+        "integral_z_b2_t2_m2": 0.003250716045558791,
+        "integral_z2_b2_t2_m3": 0.0016254322311934969,
+        "peak_magnitude_t": 0.9169923663804393,
+        "signed_peak_bz_t": 0.9169923663804393,
+        "peak_z_mm": 500.0,
+        "local_peaks": [
+          {
+            "z_mm": 500.0,
+            "signed_bz_t": 0.9169923663804393
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            494.9446569064649,
+            505.05534309353504
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 10.110686187070144,
+        "half_maximum_outer_span_mm": 10.110686187070144,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.08186464392632316,
+        "b2_centroid_z_mm": 500.0,
+        "b2_standard_deviation_mm": 42.52188405888022,
+        "integral_z_b2_t2_m2": 0.04093232196316158,
+        "integral_z2_b2_t2_m3": 0.020614181313987148,
+        "peak_magnitude_t": 0.9169923663804399,
+        "signed_peak_bz_t": 0.9169923663804399,
+        "peak_z_mm": 499.9999999999922,
+        "local_peaks": [
+          {
+            "z_mm": 499.9999999999922,
+            "signed_bz_t": 0.9169923663804399
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            437.04865744555957,
+            562.9513425544404
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 125.90268510888086,
+        "half_maximum_outer_span_mm": 125.90268510888086,
+        "specimen_upper_surface_bz_t": 0.00021442121482710108
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.12220203664072057,
+        "current_scale_isolated_integral_b2_match": 0.2818099524810606,
+        "current_scale_whole_column_profile_nnls": 0.12304139457392352,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.9010896743904399,
+        "archived_to_gaussian_integral_b2_ratio": 12.591786360141896,
+        "shape_correlation": 0.43363279247184616,
+        "currents_a": {
+          "archived_current": 374.34780775960957,
+          "isolated_full_profile_ls": 45.74606452021323,
+          "isolated_integral_b2_match": 105.49493791612478,
+          "whole_column_profile_nnls": 46.06027632243339,
+          "whole_column_nnls_then_total_b2_match": 186.69712592753504
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 724.5441440508573,
+          "isolated_full_profile_ls": 88.54077003912239,
+          "isolated_integral_b2_match": 204.18375080540284,
+          "whole_column_profile_nnls": 89.14892191438722,
+          "whole_column_nnls_then_total_b2_match": 361.34927598877755
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          -5.336434962834814e-16,
+          -5.336434962834814e-16,
+          -6.670239162720508e-16
+        ]
+      }
+    },
+    "condenser_lens_2": {
+      "name": "C2 lens",
+      "controls_and_windings": {
+        "excitation_percent": 13.899040164772698,
+        "polarity": 1,
+        "total_turn_count": 540,
+        "interval_turn_counts": [
+          [
+            540
+          ]
+        ],
+        "archived_current_a": 51.69992515557007,
+        "archived_current_at_100_percent_a": 371.9675930328212,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+            "inner_radius_m": 0.048,
+            "outer_radius_m": 0.078,
+            "length_m": 0.162,
+            "ampere_turns": 27917.95958400784,
+            "center_z_m": 0.65,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.0003957171325460915,
+        "b2_centroid_z_mm": 650.0000000000001,
+        "b2_standard_deviation_mm": 5.9123496329350935,
+        "integral_z_b2_t2_m2": 0.00025721613615495954,
+        "integral_z2_b2_t2_m3": 0.00016720432114060354,
+        "peak_magnitude_t": 0.17101515856672264,
+        "signed_peak_bz_t": 0.17101515856672264,
+        "peak_z_mm": 650.0,
+        "local_peaks": [
+          {
+            "z_mm": 650.0,
+            "signed_bz_t": 0.17101515856672264
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            641.1531495863137,
+            658.8468504136863
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 17.693700827372595,
+        "half_maximum_outer_span_mm": 17.693700827372595,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.004157037425961025,
+        "b2_centroid_z_mm": 649.9999999999999,
+        "b2_standard_deviation_mm": 54.577418258426206,
+        "integral_z_b2_t2_m2": 0.002702074326874666,
+        "integral_z2_b2_t2_m3": 0.001768730857333711,
+        "peak_magnitude_t": 0.17101515856672256,
+        "signed_peak_bz_t": 0.17101515856672256,
+        "peak_z_mm": 649.9999999999346,
+        "local_peaks": [
+          {
+            "z_mm": 649.9999999999346,
+            "signed_bz_t": 0.17101515856672256
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            559.7376013286754,
+            740.2623986713247
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 180.52479734264932,
+        "half_maximum_outer_span_mm": 180.52479734264932,
+        "specimen_upper_surface_bz_t": 8.355106729406328e-05
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.14647481650883387,
+        "current_scale_isolated_integral_b2_match": 0.3085321740942575,
+        "current_scale_whole_column_profile_nnls": 0.03326376828868285,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8801221514468998,
+        "archived_to_gaussian_integral_b2_ratio": 10.505073154690436,
+        "shape_correlation": 0.4747472996579131,
+        "currents_a": {
+          "archived_current": 51.69992515557007,
+          "isolated_full_profile_ls": 7.57273705068257,
+          "isolated_integral_b2_match": 15.951090308758427,
+          "whole_column_profile_nnls": 1.7197343309171285,
+          "whole_column_nnls_then_total_b2_match": 6.9706367954367945
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 371.9675930328212,
+          "isolated_full_profile_ls": 54.48388493671508,
+          "isolated_integral_b2_match": 114.7639701710243,
+          "whole_column_profile_nnls": 12.373043825542844,
+          "whole_column_nnls_then_total_b2_match": 50.151929290081235
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          1.9178889623927416e-15,
+          1.896813259509305e-15,
+          1.9452885519156978e-15
+        ]
+      }
+    },
+    "condenser_lens_3": {
+      "name": "C3 lens",
+      "controls_and_windings": {
+        "excitation_percent": 15.68823681182136,
+        "polarity": 1,
+        "total_turn_count": 510,
+        "interval_turn_counts": [
+          [
+            510
+          ]
+        ],
+        "archived_current_a": 16.895544072366775,
+        "archived_current_at_100_percent_a": 107.6956210887618,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+            "inner_radius_m": 0.048,
+            "outer_radius_m": 0.078,
+            "length_m": 0.153,
+            "ampere_turns": 8616.727476907055,
+            "center_z_m": 0.915,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 2.9119954414533574e-05,
+        "b2_centroid_z_mm": 914.9999999999999,
+        "b2_standard_deviation_mm": 4.256891735713276,
+        "integral_z_b2_t2_m2": 2.664475828929822e-05,
+        "integral_z2_b2_t2_m3": 2.438048152110732e-05,
+        "peak_magnitude_t": 0.05467279516038215,
+        "signed_peak_bz_t": 0.05467279516038215,
+        "peak_z_mm": 915.0,
+        "local_peaks": [
+          {
+            "z_mm": 915.0,
+            "signed_bz_t": 0.05467279516038215
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            908.6302677021458,
+            921.3697322978543
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 12.739464595708455,
+        "half_maximum_outer_span_mm": 12.739464595708455,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.0004059993730541703,
+        "b2_centroid_z_mm": 914.9999999999999,
+        "b2_standard_deviation_mm": 52.85979567857779,
+        "integral_z_b2_t2_m2": 0.0003714894263445658,
+        "integral_z2_b2_t2_m3": 0.0003410472515011594,
+        "peak_magnitude_t": 0.054672795160382155,
+        "signed_peak_bz_t": 0.054672795160382155,
+        "peak_z_mm": 914.9999999999778,
+        "local_peaks": [
+          {
+            "z_mm": 914.9999999999778,
+            "signed_bz_t": 0.054672795160382155
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            828.5070320205164,
+            1001.4929679794838
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 172.9859359589674,
+        "half_maximum_outer_span_mm": 172.9859359589674,
+        "specimen_upper_surface_bz_t": 6.909980647528356e-05
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.11063377219251701,
+        "current_scale_isolated_integral_b2_match": 0.26781362252149016,
+        "current_scale_whole_column_profile_nnls": 0.08598342869023437,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.9106857299917996,
+        "archived_to_gaussian_integral_b2_ratio": 13.942307988351063,
+        "shape_correlation": 0.41309986829978906,
+        "currents_a": {
+          "archived_current": 16.895544072366775,
+          "isolated_full_profile_ls": 1.8692177739708569,
+          "isolated_integral_b2_match": 4.524856862492036,
+          "whole_column_profile_nnls": 1.4527368089290607,
+          "whole_column_nnls_then_total_b2_match": 5.888409897013521
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 107.6956210887618,
+          "isolated_full_profile_ls": 11.914772809665703,
+          "isolated_integral_b2_match": 28.842354413483086,
+          "whole_column_profile_nnls": 9.260038756136051,
+          "whole_column_nnls_then_total_b2_match": 37.53391772220382
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          1.0471577553684596e-15,
+          1.1444347053207211e-15,
+          9.727831873454833e-16
+        ]
+      }
+    },
+    "adapter_lens": {
+      "name": "Adapter lens",
+      "controls_and_windings": {
+        "excitation_percent": 10.0,
+        "polarity": 1,
+        "total_turn_count": 23,
+        "interval_turn_counts": [
+          [
+            23
+          ]
+        ],
+        "archived_current_a": 34.52999896863375,
+        "archived_current_at_100_percent_a": 345.2999896863375,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+            "inner_radius_m": 0.039165,
+            "outer_radius_m": 0.045525,
+            "length_m": 0.03275999999999976,
+            "ampere_turns": 794.1899762785762,
+            "center_z_m": 1.0882,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 9.176841855345256e-07,
+        "b2_centroid_z_mm": 1088.2,
+        "b2_standard_deviation_mm": 3.310915794443664,
+        "integral_z_b2_t2_m2": 9.986239306986707e-07,
+        "integral_z2_b2_t2_m3": 1.086712621190283e-06,
+        "peak_magnitude_t": 0.011005120215633272,
+        "signed_peak_bz_t": 0.011005120215633272,
+        "peak_z_mm": 1088.2,
+        "local_peaks": [
+          {
+            "z_mm": 1088.2,
+            "signed_bz_t": 0.011005120215633272
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1083.2457637683358,
+            1093.1542362316643
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 9.908472463328508,
+        "half_maximum_outer_span_mm": 9.908472463328508,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 6.6336220035595396e-06,
+        "b2_centroid_z_mm": 1088.2000000000003,
+        "b2_standard_deviation_mm": 25.759877170662,
+        "integral_z_b2_t2_m2": 7.2187074642734925e-06,
+        "integral_z2_b2_t2_m3": 7.859799343612274e-06,
+        "peak_magnitude_t": 0.011005120215633272,
+        "signed_peak_bz_t": 0.011005120215633272,
+        "peak_z_mm": 1088.2,
+        "local_peaks": [
+          {
+            "z_mm": 1088.2,
+            "signed_bz_t": 0.011005120215633272
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1052.5728554674308,
+            1123.8271445325695
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 71.25428906513866,
+        "half_maximum_outer_span_mm": 71.25428906513866,
+        "specimen_upper_surface_bz_t": 6.662559719624194e-06
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.20974078927844939,
+        "current_scale_isolated_integral_b2_match": 0.37193860965678444,
+        "current_scale_whole_column_profile_nnls": 1.488502494959054,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8258346199553408,
+        "archived_to_gaussian_integral_b2_ratio": 7.228654593950138,
+        "shape_correlation": 0.5639123872404452,
+        "currents_a": {
+          "archived_current": 34.52999896863375,
+          "isolated_full_profile_ls": 7.242349237465286,
+          "isolated_integral_b2_match": 12.843039807843837,
+          "whole_column_profile_nnls": 51.3979896157449,
+          "whole_column_nnls_then_total_b2_match": 208.33259602134123
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 345.2999896863375,
+          "isolated_full_profile_ls": 72.42349237465285,
+          "isolated_integral_b2_match": 128.43039807843837,
+          "whole_column_profile_nnls": 513.9798961574489,
+          "whole_column_nnls_then_total_b2_match": 2083.325960213412
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          -1.8460227616561258e-15,
+          -1.9084502911809792e-15,
+          -1.7537517225434554e-15
+        ]
+      }
+    },
+    "probe_tl22_lens": {
+      "name": "Probe TL22 lens",
+      "controls_and_windings": {
+        "excitation_percent": 59.93152503582202,
+        "polarity": -1,
+        "total_turn_count": 19,
+        "interval_turn_counts": [
+          [
+            19
+          ]
+        ],
+        "archived_current_a": -1082.979471068911,
+        "archived_current_at_100_percent_a": 1807.0280548035394,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+            "inner_radius_m": 0.039165,
+            "outer_radius_m": 0.04675547125,
+            "length_m": 0.022950000000000047,
+            "ampere_turns": -20576.609950309306,
+            "center_z_m": 1.16635,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.0005514469772918331,
+        "b2_centroid_z_mm": 1166.35,
+        "b2_standard_deviation_mm": 2.8379278238088563,
+        "integral_z_b2_t2_m2": 0.0006431801819643295,
+        "integral_z2_b2_t2_m3": 0.0007501776464966943,
+        "peak_magnitude_t": 0.2913891940653052,
+        "signed_peak_bz_t": -0.2913891940653052,
+        "peak_z_mm": 1166.3500019085072,
+        "local_peaks": [
+          {
+            "z_mm": 1166.3500019085072,
+            "signed_bz_t": -0.2913891940653052
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1162.10351180143,
+            1170.59648819857
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 8.492976397139955,
+        "half_maximum_outer_span_mm": 8.492976397139955,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.004490150695887019,
+        "b2_centroid_z_mm": 1166.35,
+        "b2_standard_deviation_mm": 25.420774035725284,
+        "integral_z_b2_t2_m2": 0.005237087264147825,
+        "integral_z2_b2_t2_m3": 0.006111178336649934,
+        "peak_magnitude_t": 0.2913891940653484,
+        "signed_peak_bz_t": -0.2913891940653484,
+        "peak_z_mm": 1166.3500000452707,
+        "local_peaks": [
+          {
+            "z_mm": 1166.3500000452707,
+            "signed_bz_t": -0.2913891940653484
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1131.9458823628129,
+            1200.7541176371872
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 68.80823527437428,
+        "half_maximum_outer_span_mm": 68.80823527437428,
+        "specimen_upper_surface_bz_t": -0.00029102674584997667
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.18686449978743547,
+        "current_scale_isolated_integral_b2_match": 0.35044625383133554,
+        "current_scale_whole_column_profile_nnls": 0.25894882473760694,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8459774264739198,
+        "archived_to_gaussian_integral_b2_ratio": 8.142488545205625,
+        "shape_correlation": 0.5332187111275857,
+        "currents_a": {
+          "archived_current": -1082.979471068911,
+          "isolated_full_profile_ls": -202.37041714135347,
+          "isolated_integral_b2_match": -379.52609861234106,
+          "whole_column_profile_nnls": -280.4362612482497,
+          "whole_column_nnls_then_total_b2_match": -1136.6984343385623
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 1807.0280548035394,
+          "isolated_full_profile_ls": 337.66939356272593,
+          "isolated_integral_b2_match": 633.2662123740257,
+          "whole_column_profile_nnls": 467.9277910592605,
+          "whole_column_nnls_then_total_b2_match": 1896.6619548879153
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          1.7694937055037277e-15,
+          1.6856896448119039e-15,
+          1.3007345124102617e-15
+        ]
+      }
+    },
+    "probe_tl21_lens": {
+      "name": "Probe TL21 lens",
+      "controls_and_windings": {
+        "excitation_percent": 59.95527906841963,
+        "polarity": 1,
+        "total_turn_count": 19,
+        "interval_turn_counts": [
+          [
+            19
+          ]
+        ],
+        "archived_current_a": 1016.1529276495789,
+        "archived_current_at_100_percent_a": 1694.851468358554,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+            "inner_radius_m": 0.039165,
+            "outer_radius_m": 0.04665823795,
+            "length_m": 0.022950000000000272,
+            "ampere_turns": 19306.905625342,
+            "center_z_m": 1.2499500000000001,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.0004864680829517503,
+        "b2_centroid_z_mm": 1249.9500000000003,
+        "b2_standard_deviation_mm": 2.837927823808855,
+        "integral_z_b2_t2_m2": 0.0006080607802855404,
+        "integral_z2_b2_t2_m3": 0.0007600494902512596,
+        "peak_magnitude_t": 0.273683577272393,
+        "signed_peak_bz_t": 0.273683577272393,
+        "peak_z_mm": 1249.949998091493,
+        "local_peaks": [
+          {
+            "z_mm": 1249.949998091493,
+            "signed_bz_t": 0.273683577272393
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1245.70351180143,
+            1254.19648819857
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 8.492976397139955,
+        "half_maximum_outer_span_mm": 8.492976397139955,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.003957303247639492,
+        "b2_centroid_z_mm": 1249.9499999999998,
+        "b2_standard_deviation_mm": 25.39435157151652,
+        "integral_z_b2_t2_m2": 0.0049464311943869825,
+        "integral_z2_b2_t2_m3": 0.006185343629804259,
+        "peak_magnitude_t": 0.27368357727243353,
+        "signed_peak_bz_t": 0.27368357727243353,
+        "peak_z_mm": 1249.9500000453345,
+        "local_peaks": [
+          {
+            "z_mm": 1249.9500000453345,
+            "signed_bz_t": 0.27368357727243353
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1215.5784319199988,
+            1284.3215680800013
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 68.74313616000245,
+        "half_maximum_outer_span_mm": 68.74313616000245,
+        "specimen_upper_surface_bz_t": 0.0005149437809591282
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.18703658689424338,
+        "current_scale_isolated_integral_b2_match": 0.3506125925207605,
+        "current_scale_whole_column_profile_nnls": 0.23700523230281884,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8458274649316198,
+        "archived_to_gaussian_integral_b2_ratio": 8.13476440967658,
+        "shape_correlation": 0.5334565582756945,
+        "currents_a": {
+          "archived_current": 1016.1529276495789,
+          "isolated_full_profile_ls": 190.0577753501703,
+          "isolated_integral_b2_match": 356.27601236077965,
+          "whole_column_profile_nnls": 240.8335606727779,
+          "whole_column_nnls_then_total_b2_match": 976.175941493502
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 1694.851468358554,
+          "isolated_full_profile_ls": 316.9992339344807,
+          "isolated_integral_b2_match": 594.2362672588102,
+          "whole_column_profile_nnls": 401.6886659770927,
+          "whole_column_nnls_then_total_b2_match": 1628.1734597207223
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          -2.8973387435387974e-15,
+          -2.8528784164671667e-15,
+          -3.4235733953390275e-15
+        ]
+      }
+    },
+    "probe_tl12_lens": {
+      "name": "Probe TL12 lens",
+      "controls_and_windings": {
+        "excitation_percent": 36.004558708747176,
+        "polarity": 1,
+        "total_turn_count": 19,
+        "interval_turn_counts": [
+          [
+            19
+          ]
+        ],
+        "archived_current_a": 675.200888264675,
+        "archived_current_at_100_percent_a": 1875.3205496187275,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+            "inner_radius_m": 0.039165,
+            "outer_radius_m": 0.046814999999999996,
+            "length_m": 0.022860000000000127,
+            "ampere_turns": 12828.816877028825,
+            "center_z_m": 1.3663,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.0002499027982737631,
+        "b2_centroid_z_mm": 1366.3000000000002,
+        "b2_standard_deviation_mm": 3.310915794443658,
+        "integral_z_b2_t2_m2": 0.0003414421932814425,
+        "integral_z2_b2_t2_m3": 0.0004665152081557432,
+        "peak_magnitude_t": 0.18160747774610306,
+        "signed_peak_bz_t": 0.18160747774610306,
+        "peak_z_mm": 1366.3000000000002,
+        "local_peaks": [
+          {
+            "z_mm": 1366.3000000000002,
+            "signed_bz_t": 0.18160747774610306
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1361.3457637683357,
+            1371.2542362316644
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 9.908472463328735,
+        "half_maximum_outer_span_mm": 9.908472463328735,
+        "specimen_upper_surface_bz_t": 1.1408472491957656e-281
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.001744522183129135,
+        "b2_centroid_z_mm": 1366.3000000000002,
+        "b2_standard_deviation_mm": 25.431862300672247,
+        "integral_z_b2_t2_m2": 0.0023835406588093378,
+        "integral_z2_b2_t2_m3": 0.0032577599235260246,
+        "peak_magnitude_t": 0.18160747774610309,
+        "signed_peak_bz_t": 0.18160747774610309,
+        "peak_z_mm": 1366.3000000000002,
+        "local_peaks": [
+          {
+            "z_mm": 1366.3000000000002,
+            "signed_bz_t": 0.18160747774610309
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1331.888387072451,
+            1400.7116129275491
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 68.82322585509814,
+        "half_maximum_outer_span_mm": 68.82322585509814,
+        "specimen_upper_surface_bz_t": 0.0011286984447616052
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.21670035891849831,
+        "current_scale_isolated_integral_b2_match": 0.378483813978512,
+        "current_scale_whole_column_profile_nnls": 0.05179312101155755,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.819870817758703,
+        "archived_to_gaussian_integral_b2_ratio": 6.98080291689271,
+        "shape_correlation": 0.5725485500703636,
+        "currents_a": {
+          "archived_current": 675.200888264675,
+          "isolated_full_profile_ls": 146.31627482904395,
+          "isolated_integral_b2_match": 255.5526073920933,
+          "whole_column_profile_nnls": 34.97076131300346,
+          "whole_column_nnls_then_total_b2_match": 141.7477520745071
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 1875.3205496187275,
+          "isolated_full_profile_ls": 406.3826361896138,
+          "isolated_integral_b2_match": 709.7784740519753,
+          "whole_column_profile_nnls": 97.12870416186337,
+          "whole_column_nnls_then_total_b2_match": 393.69390198933337
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          4.338495526959986e-16,
+          1.5876804241235398e-16,
+          3.48606697123007e-16
+        ]
+      }
+    },
+    "mini_condenser": {
+      "name": "Mini Condenser lens",
+      "controls_and_windings": {
+        "excitation_percent": 43.88646617222637,
+        "polarity": -1,
+        "total_turn_count": 17,
+        "interval_turn_counts": [
+          [
+            17
+          ]
+        ],
+        "archived_current_a": -387.8880554673398,
+        "archived_current_at_100_percent_a": 883.8443586346796,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+            "inner_radius_m": 0.017,
+            "outer_radius_m": 0.025500000000000002,
+            "length_m": 0.018000000000000002,
+            "ampere_turns": -6594.096942944777,
+            "center_z_m": 1.5225,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.00028405926170870654,
+        "b2_centroid_z_mm": 1522.5,
+        "b2_standard_deviation_mm": 3.7839037650784637,
+        "integral_z_b2_t2_m2": 0.0004324802259515057,
+        "integral_z2_b2_t2_m3": 0.00065845521115114,
+        "peak_magnitude_t": 0.1811159385242528,
+        "signed_peak_bz_t": -0.1811159385242528,
+        "peak_z_mm": 1522.5,
+        "local_peaks": [
+          {
+            "z_mm": 1522.5,
+            "signed_bz_t": -0.1811159385242528
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1516.8380157352408,
+            1528.1619842647592
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 11.323968529518424,
+        "half_maximum_outer_span_mm": 11.323968529518424,
+        "specimen_upper_surface_bz_t": -3.019696906172182e-22
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.0009072817231085311,
+        "b2_centroid_z_mm": 1522.5,
+        "b2_standard_deviation_mm": 12.982685598872177,
+        "integral_z_b2_t2_m2": 0.0013813364234327385,
+        "integral_z2_b2_t2_m3": 0.0021032376271245103,
+        "peak_magnitude_t": 0.1811159385242529,
+        "signed_peak_bz_t": -0.1811159385242529,
+        "peak_z_mm": 1522.5000000000002,
+        "local_peaks": [
+          {
+            "z_mm": 1522.5000000000002,
+            "signed_bz_t": -0.1811159385242529
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1504.5295327500119,
+            1540.4704672499881
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 35.940934499976265,
+        "half_maximum_outer_span_mm": 35.940934499976265,
+        "specimen_upper_surface_bz_t": -0.003823545439781426
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.4434811298437074,
+        "current_scale_isolated_integral_b2_match": 0.5595429083389611,
+        "current_scale_whole_column_profile_nnls": 0.4881770363125356,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.6097711677372694,
+        "archived_to_gaussian_integral_b2_ratio": 3.1939874716668046,
+        "shape_correlation": 0.7925775186039073,
+        "currents_a": {
+          "archived_current": -387.8880554673398,
+          "isolated_full_profile_ls": -172.02103309153452,
+          "isolated_integral_b2_match": -217.0400106661396,
+          "whole_column_profile_nnls": -189.3580413390784,
+          "whole_column_nnls_then_total_b2_match": -767.5290925698382
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 883.8443586346796,
+          "isolated_full_profile_ls": 391.96829477329464,
+          "isolated_integral_b2_match": 494.5488429494324,
+          "whole_column_profile_nnls": 431.4725195598317,
+          "whole_column_nnls_then_total_b2_match": 1748.897005190111
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          9.542042089771036e-16,
+          1.002776180205823e-15,
+          1.1526091796176073e-15
+        ]
+      }
+    },
+    "objective_lens": {
+      "name": "Objective lens",
+      "controls_and_windings": {
+        "excitation_percent": 68.97810600833917,
+        "polarity": 1,
+        "total_turn_count": 1160,
+        "interval_turn_counts": [
+          [
+            580,
+            580
+          ]
+        ],
+        "archived_current_a": 1097.8062452775885,
+        "archived_current_at_100_percent_a": 1591.5285426144758,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "objective_lens:objective_lens_excitation_coil:0",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.145,
+            "ampere_turns": 636727.6222610013,
+            "center_z_m": 1.469,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          },
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "objective_lens:objective_lens_excitation_coil:1",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.145,
+            "ampere_turns": 636727.6222610013,
+            "center_z_m": 1.7294,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.03240427674651316,
+        "b2_centroid_z_mm": 1599.2,
+        "b2_standard_deviation_mm": 11.40351076116482,
+        "integral_z_b2_t2_m2": 0.05182091937302384,
+        "integral_z2_b2_t2_m3": 0.08287622811535691,
+        "peak_magnitude_t": 1.113835009791217,
+        "signed_peak_bz_t": 1.113835009791217,
+        "peak_z_mm": 1599.200000000001,
+        "local_peaks": [
+          {
+            "z_mm": 1599.200000000001,
+            "signed_bz_t": 1.113835009791217
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1582.1198349763442,
+            1616.2801650236559
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 34.16033004731162,
+        "half_maximum_outer_span_mm": 34.16033004731162,
+        "specimen_upper_surface_bz_t": 1.1138350097911995
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 5.513914218541133,
+        "b2_centroid_z_mm": 1599.2000000000003,
+        "b2_standard_deviation_mm": 136.7107739587668,
+        "integral_z_b2_t2_m2": 8.817851618290982,
+        "integral_z2_b2_t2_m3": 14.20456245886982,
+        "peak_magnitude_t": 4.657584457374019,
+        "signed_peak_bz_t": 4.657584457374019,
+        "peak_z_mm": 1727.9533812303641,
+        "local_peaks": [
+          {
+            "z_mm": 1470.4466187696441,
+            "signed_bz_t": 4.657584457374018
+          },
+          {
+            "z_mm": 1727.9533812303641,
+            "signed_bz_t": 4.657584457374019
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1391.1323370283494,
+            1549.8687530653006
+          ],
+          [
+            1648.5312469346995,
+            1807.2676629716507
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 317.4728320739023,
+        "half_maximum_outer_span_mm": 416.13532594330127,
+        "specimen_upper_surface_bz_t": 1.1138350097911989
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.010635931646618454,
+        "current_scale_isolated_integral_b2_match": 0.07666041458079055,
+        "current_scale_whole_column_profile_nnls": 0.011548528696347551,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.9903287204213495,
+        "archived_to_gaussian_integral_b2_ratio": 170.16007676006686,
+        "shape_correlation": 0.1387408573874787,
+        "currents_a": {
+          "archived_current": 1097.8062452775885,
+          "isolated_full_profile_ls": 11.676192186003284,
+          "isolated_integral_b2_match": 84.15828189236098,
+          "whole_column_profile_nnls": 12.678046926617789,
+          "whole_column_nnls_then_total_b2_match": 51.38820503387099
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 1591.5285426144758,
+          "isolated_full_profile_ls": 16.92738879288985,
+          "isolated_integral_b2_match": 122.0072378939871,
+          "whole_column_profile_nnls": 18.37981304543947,
+          "whole_column_nnls_then_total_b2_match": 74.49929841167047
+        },
+        "photo_586_each_reference_only_equivalent_current_a": {
+          "archived_current": 1086.565908295224,
+          "isolated_full_profile_ls": 11.5566407301739,
+          "isolated_integral_b2_match": 83.29659299926513,
+          "whole_column_profile_nnls": 12.548237572420337,
+          "whole_column_nnls_then_total_b2_match": 50.86204593796105
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          2.1413512661268963e-16,
+          1.339014048353487e-16,
+          3.349039434685111e-16
+        ]
+      }
+    },
+    "diffraction_lens": {
+      "name": "Diffraction lens",
+      "controls_and_windings": {
+        "excitation_percent": 14.577617197168571,
+        "polarity": 1,
+        "total_turn_count": 360,
+        "interval_turn_counts": [
+          [
+            360
+          ]
+        ],
+        "archived_current_a": 28.962896061940654,
+        "archived_current_at_100_percent_a": 198.68059141768487,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.09,
+            "ampere_turns": 10426.642582298635,
+            "center_z_m": 1.8969,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.00013058989465766037,
+        "b2_centroid_z_mm": 1896.8999999999996,
+        "b2_standard_deviation_mm": 5.675855647617698,
+        "integral_z_b2_t2_m2": 0.0002477159711761159,
+        "integral_z2_b2_t2_m3": 0.0004698966327214829,
+        "peak_magnitude_t": 0.10026776857020192,
+        "signed_peak_bz_t": 0.10026776857020192,
+        "peak_z_mm": 1896.9,
+        "local_peaks": [
+          {
+            "z_mm": 1896.9,
+            "signed_bz_t": 0.10026776857020192
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1888.4070236028613,
+            1905.392976397139
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 16.985952794277637,
+        "half_maximum_outer_span_mm": 16.985952794277637,
+        "specimen_upper_surface_bz_t": 1.0806554902587363e-154
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.0008627918417491162,
+        "b2_centroid_z_mm": 1896.9,
+        "b2_standard_deviation_mm": 35.36270941475444,
+        "integral_z_b2_t2_m2": 0.0016366298446138985,
+        "integral_z2_b2_t2_m3": 0.0031056020917521973,
+        "peak_magnitude_t": 0.10026776857020192,
+        "signed_peak_bz_t": 0.10026776857020192,
+        "peak_z_mm": 1896.9000000000003,
+        "local_peaks": [
+          {
+            "z_mm": 1896.9000000000003,
+            "signed_bz_t": 0.10026776857020192
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1842.0157375315102,
+            1951.7842624684897
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 109.76852493697947,
+        "half_maximum_outer_span_mm": 109.76852493697947,
+        "specimen_upper_surface_bz_t": 0.0005965883014106596
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.2300358432796215,
+        "current_scale_isolated_integral_b2_match": 0.3890467313105859,
+        "current_scale_whole_column_profile_nnls": 0.15541166161207665,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8064657922414021,
+        "archived_to_gaussian_integral_b2_ratio": 6.6068806013735655,
+        "shape_correlation": 0.591280750527571,
+        "currents_a": {
+          "archived_current": 28.962896061940654,
+          "isolated_full_profile_ls": 6.6625042194285475,
+          "isolated_integral_b2_match": 11.267920042186253,
+          "whole_column_profile_nnls": 4.501171802084068,
+          "whole_column_nnls_then_total_b2_match": 18.244698161870748
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 198.68059141768487,
+          "isolated_full_profile_ls": 45.70365739006107,
+          "isolated_integral_b2_match": 77.29603466590434,
+          "whole_column_profile_nnls": 30.8772808422925,
+          "whole_column_nnls_then_total_b2_match": 125.15555810735952
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          6.226757679036305e-16,
+          2.1883977995804748e-16,
+          2.307320582840041e-16
+        ]
+      }
+    },
+    "intermediate_lens": {
+      "name": "Intermediate lens",
+      "controls_and_windings": {
+        "excitation_percent": 0.035082657259397326,
+        "polarity": 1,
+        "total_turn_count": 648,
+        "interval_turn_counts": [
+          [
+            648
+          ]
+        ],
+        "archived_current_a": 0.06188894277520134,
+        "archived_current_at_100_percent_a": 176.40893709276716,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.162,
+            "ampere_turns": 40.10403491833047,
+            "center_z_m": 2.0669,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 1.1593849637000725e-09,
+        "b2_centroid_z_mm": 2066.9000000000005,
+        "b2_standard_deviation_mm": 7.094819559522155,
+        "integral_z_b2_t2_m2": 2.39633278147168e-09,
+        "integral_z2_b2_t2_m3": 4.9530385853639776e-09,
+        "peak_magnitude_t": 0.00026721780329175537,
+        "signed_peak_bz_t": 0.00026721780329175537,
+        "peak_z_mm": 2066.9,
+        "local_peaks": [
+          {
+            "z_mm": 2066.9,
+            "signed_bz_t": 0.00026721780329175537
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            2056.2837795035766,
+            2077.5162204964236
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 21.232440992846932,
+        "half_maximum_outer_span_mm": 21.232440992846932,
+        "specimen_upper_surface_bz_t": 1.7377890363380687e-249
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 9.833449360073036e-09,
+        "b2_centroid_z_mm": 2066.9,
+        "b2_standard_deviation_mm": 49.463975447568124,
+        "integral_z_b2_t2_m2": 2.0324756482334958e-08,
+        "integral_z2_b2_t2_m3": 4.203329852507858e-08,
+        "peak_magnitude_t": 0.000267217803291755,
+        "signed_peak_bz_t": 0.000267217803291755,
+        "peak_z_mm": 2066.9,
+        "local_peaks": [
+          {
+            "z_mm": 2066.9,
+            "signed_bz_t": 0.000267217803291755
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            1981.278696565836,
+            2152.5213034341637
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 171.24260686832758,
+        "half_maximum_outer_span_mm": 171.24260686832758,
+        "specimen_upper_surface_bz_t": 6.182484743933018e-07
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.1812151947805239,
+        "current_scale_isolated_integral_b2_match": 0.3433688460883328,
+        "current_scale_whole_column_profile_nnls": 0.0,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.8493956143080915,
+        "archived_to_gaussian_integral_b2_ratio": 8.481608497569667,
+        "shape_correlation": 0.5277566583134501,
+        "currents_a": {
+          "archived_current": 0.06188894277520134,
+          "isolated_full_profile_ls": 0.011215216819768808,
+          "isolated_integral_b2_match": 0.021250734866347747,
+          "whole_column_profile_nnls": 0.0,
+          "whole_column_nnls_then_total_b2_match": 0.0
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 176.40893709276716,
+          "isolated_full_profile_ls": 31.967979896290988,
+          "isolated_integral_b2_match": 60.57333316921275,
+          "whole_column_profile_nnls": 0.0,
+          "whole_column_nnls_then_total_b2_match": 0.0
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          -1.1415440268097263e-14,
+          -1.1218546153453272e-14,
+          -1.1523322760863172e-14
+        ]
+      }
+    },
+    "projector_lens_1": {
+      "name": "Projector P1 lens",
+      "controls_and_windings": {
+        "excitation_percent": 32.1132572718703,
+        "polarity": 1,
+        "total_turn_count": 432,
+        "interval_turn_counts": [
+          [
+            432
+          ]
+        ],
+        "archived_current_a": 32.8252695494996,
+        "archived_current_at_100_percent_a": 102.21719108591635,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.108,
+            "ampere_turns": 14180.516445383828,
+            "center_z_m": 2.2469,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 0.0002981072365051682,
+        "b2_centroid_z_mm": 2246.9,
+        "b2_standard_deviation_mm": 8.513783471426498,
+        "integral_z_b2_t2_m2": 0.0006698171497034625,
+        "integral_z2_b2_t2_m3": 0.001505033761825377,
+        "peak_magnitude_t": 0.12369358987737222,
+        "signed_peak_bz_t": 0.12369358987737222,
+        "peak_z_mm": 2246.9,
+        "local_peaks": [
+          {
+            "z_mm": 2246.9,
+            "signed_bz_t": 0.12369358987737222
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            2234.1605354042917,
+            2259.6394645957084
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 25.478929191416682,
+        "half_maximum_outer_span_mm": 25.478929191416682,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.0014930263172807734,
+        "b2_centroid_z_mm": 2246.9,
+        "b2_standard_deviation_mm": 38.50849232136347,
+        "integral_z_b2_t2_m2": 0.0033546808322981697,
+        "integral_z2_b2_t2_m3": 0.007539846376760188,
+        "peak_magnitude_t": 0.12369358987737221,
+        "signed_peak_bz_t": 0.12369358987737221,
+        "peak_z_mm": 2246.9,
+        "local_peaks": [
+          {
+            "z_mm": 2246.9,
+            "signed_bz_t": 0.12369358987737221
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            2184.8801156192976,
+            2308.919884380703
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 124.03976876140541,
+        "half_maximum_outer_span_mm": 124.03976876140541,
+        "specimen_upper_surface_bz_t": 7.938187703631454e-05
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.3001151963174291,
+        "current_scale_isolated_integral_b2_match": 0.446840498646704,
+        "current_scale_whole_column_profile_nnls": 0.29540207666236706,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.7408791963919056,
+        "archived_to_gaussian_integral_b2_ratio": 5.00835315098058,
+        "shape_correlation": 0.6716383076877646,
+        "currents_a": {
+          "archived_current": 32.8252695494996,
+          "isolated_full_profile_ls": 9.8513622150206,
+          "isolated_integral_b2_match": 14.667659813710872,
+          "whole_column_profile_nnls": 9.696652791924144,
+          "whole_column_nnls_then_total_b2_match": 39.303654947630704
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 102.21719108591635,
+          "isolated_full_profile_ls": 30.67693236976595,
+          "isolated_integral_b2_match": 45.67478063509629,
+          "whole_column_profile_nnls": 30.195170517373686,
+          "whole_column_nnls_then_total_b2_match": 122.39074540114883
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          9.456079233465597e-15,
+          9.388192886969132e-15,
+          9.509068194889635e-15
+        ]
+      }
+    },
+    "projector_lens_2": {
+      "name": "Projector P2 lens",
+      "controls_and_windings": {
+        "excitation_percent": 9.826874422815507,
+        "polarity": 1,
+        "total_turn_count": 648,
+        "interval_turn_counts": [
+          [
+            648
+          ]
+        ],
+        "archived_current_a": 7.514137300316783,
+        "archived_current_at_100_percent_a": 76.46518086026279,
+        "winding_intervals": [
+          {
+            "schema": "air-core-annular-coil-potential-v1",
+            "source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+            "inner_radius_m": 0.03,
+            "outer_radius_m": 0.066,
+            "length_m": 0.162,
+            "ampere_turns": 4869.160970605275,
+            "center_z_m": 2.4494000000000002,
+            "registration": {
+              "origin_global_m": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation_local_to_global": [
+                [
+                  1.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ]
+            },
+            "quadrature_order": 12,
+            "permeability_h_per_m": 1.25663706127e-06,
+            "relative_permeability": 1.0,
+            "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+            "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+            "axial_domain": "all_z",
+            "domain": "Finite vacuum XYZ excluding closed winding volume",
+            "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+            "derivative_order": 2,
+            "units": {
+              "position": "m",
+              "A": "T m",
+              "B": "T",
+              "ampere_turns": "A turn"
+            },
+            "empirical_aberrations_applied": false,
+            "pole_piece_magnetism": false,
+            "wave_admission": false,
+            "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+          }
+        ]
+      },
+      "current_gaussian_reference": {
+        "integral_b2_t2_m": 2.278759672932324e-05,
+        "b2_centroid_z_mm": 2449.4000000000005,
+        "b2_standard_deviation_mm": 9.459759412696181,
+        "integral_z_b2_t2_m2": 5.581593942880436e-05,
+        "integral_z2_b2_t2_m3": 0.00013671760123167907,
+        "peak_magnitude_t": 0.03244378031010494,
+        "signed_peak_bz_t": 0.03244378031010494,
+        "peak_z_mm": 2449.4,
+        "local_peaks": [
+          {
+            "z_mm": 2449.4,
+            "signed_bz_t": 0.03244378031010494
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            2435.2450393381023,
+            2463.5549606618983
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 28.30992132379606,
+        "half_maximum_outer_span_mm": 28.30992132379606,
+        "specimen_upper_surface_bz_t": 0.0
+      },
+      "archived_ideal_current": {
+        "integral_b2_t2_m": 0.0001449566055439631,
+        "b2_centroid_z_mm": 2449.4,
+        "b2_standard_deviation_mm": 49.46397544756811,
+        "integral_z_b2_t2_m2": 0.00035505670961938324,
+        "integral_z2_b2_t2_m3": 0.0008700305676748847,
+        "peak_magnitude_t": 0.03244378031010495,
+        "signed_peak_bz_t": 0.03244378031010495,
+        "peak_z_mm": 2449.3999999999996,
+        "local_peaks": [
+          {
+            "z_mm": 2449.3999999999996,
+            "signed_bz_t": 0.03244378031010495
+          }
+        ],
+        "half_maximum_intervals_mm": [
+          [
+            2363.7786965658365,
+            2535.021303434164
+          ]
+        ],
+        "half_maximum_occupied_width_mm": 171.24260686832758,
+        "half_maximum_outer_span_mm": 171.24260686832758,
+        "specimen_upper_surface_bz_t": 1.2155008256181085e-05
+      },
+      "candidate_fit": {
+        "current_scale_isolated_full_profile_ls": 0.2401025111878253,
+        "current_scale_isolated_integral_b2_match": 0.3964881914408616,
+        "current_scale_whole_column_profile_nnls": 0.1708231035207096,
+        "isolated_ls_minimum_relative_l2_bz_error": 0.7957898218397534,
+        "archived_to_gaussian_integral_b2_ratio": 6.361206373177206,
+        "shape_correlation": 0.6055729183642987,
+        "currents_a": {
+          "archived_current": 7.514137300316783,
+          "isolated_full_profile_ls": 1.8041632352161658,
+          "isolated_integral_b2_match": 2.9792667084409197,
+          "whole_column_profile_nnls": 1.2835882539208392,
+          "whole_column_nnls_then_total_b2_match": 5.2027963576207945
+        },
+        "currents_at_100_percent_a": {
+          "archived_current": 76.46518086026279,
+          "isolated_full_profile_ls": 18.35948194298033,
+          "isolated_integral_b2_match": 30.317541267483982,
+          "whole_column_profile_nnls": 13.062019505822452,
+          "whole_column_nnls_then_total_b2_match": 52.94456949140636
+        },
+        "gaussian_closed_form_moment_relative_error": [
+          -1.6355147110019973e-15,
+          -1.5782485687052085e-15,
+          -1.784301996316134e-15
+        ]
+      }
+    }
+  },
+  "all_enabled_round_lens_sum": {
+    "archived_current": {
+      "integral_b2_t2_m": 5.642175605236268,
+      "b2_centroid_z_mm": 1579.283699576463,
+      "b2_standard_deviation_mm": 198.68382995928147,
+      "integral_z_b2_t2_m2": 8.910595963497602,
+      "integral_z2_b2_t2_m3": 14.295085331835585,
+      "relative_l2_bz_error": 11.589152705371522,
+      "integral_b2_to_gaussian_ratio": 136.54562044632402,
+      "sum_isolated_integral_b2_t2_m": 5.613948575336258,
+      "signed_cross_term_integral_b2_t2_m": 0.028227029900005363,
+      "peak_magnitude_t": 4.661386954057001,
+      "signed_peak_bz_t": 4.661386954057001,
+      "peak_z_mm": 1728.0654691059951,
+      "local_peaks": [
+        {
+          "z_mm": 501.6927653928219,
+          "signed_bz_t": 0.9436498464193349
+        },
+        {
+          "z_mm": 906.400189128088,
+          "signed_bz_t": 0.07000183501409064
+        },
+        {
+          "z_mm": 1163.763287812292,
+          "signed_bz_t": -0.2166687764676968
+        },
+        {
+          "z_mm": 1257.1315389408471,
+          "signed_bz_t": 0.37502077008342416
+        },
+        {
+          "z_mm": 1468.8543806102653,
+          "signed_bz_t": 4.659852912499002
+        },
+        {
+          "z_mm": 1728.0654691059951,
+          "signed_bz_t": 4.661386954057001
+        },
+        {
+          "z_mm": 2245.6561169716865,
+          "signed_bz_t": 0.13447151428492554
+        },
+        {
+          "z_mm": 2420.856709721069,
+          "signed_bz_t": 0.03972280776699168
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          1388.7757757450147,
+          1548.92809809343
+        ],
+        [
+          1648.5422735941374,
+          1807.5701029195466
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 319.1801516738244,
+      "half_maximum_outer_span_mm": 418.7943271745319,
+      "specimen_upper_surface_bz_t": 1.1124265579147818
+    },
+    "isolated_full_profile_ls": {
+      "integral_b2_t2_m": 0.0027342622102109943,
+      "b2_centroid_z_mm": 993.1187888699736,
+      "b2_standard_deviation_mm": 580.3245101932037,
+      "integral_z_b2_t2_m2": 0.00271544717465768,
+      "integral_z2_b2_t2_m3": 0.0036175969680993904,
+      "relative_l2_bz_error": 0.9706185004860566,
+      "integral_b2_to_gaussian_ratio": 0.06617155439290222,
+      "sum_isolated_integral_b2_t2_m": 0.0026847883752939956,
+      "signed_cross_term_integral_b2_t2_m": 4.947383491699835e-05,
+      "peak_magnitude_t": 0.11574861490594977,
+      "signed_peak_bz_t": 0.11574861490594977,
+      "peak_z_mm": 502.02639399422446,
+      "local_peaks": [
+        {
+          "z_mm": 502.02639399422446,
+          "signed_bz_t": 0.11574861490594977
+        },
+        {
+          "z_mm": 895.7283771377693,
+          "signed_bz_t": 0.007236736113183737
+        },
+        {
+          "z_mm": 1164.600428977901,
+          "signed_bz_t": -0.04796510304356599
+        },
+        {
+          "z_mm": 1252.703588575235,
+          "signed_bz_t": 0.049119891786419664
+        },
+        {
+          "z_mm": 1373.7888722316784,
+          "signed_bz_t": 0.05463997107315409
+        },
+        {
+          "z_mm": 1435.0784680551221,
+          "signed_bz_t": 0.05127651055443558
+        },
+        {
+          "z_mm": 1523.7024989474203,
+          "signed_bz_t": -0.039725836970978756
+        },
+        {
+          "z_mm": 1572.6819148473373,
+          "signed_bz_t": 0.010471966013322774
+        },
+        {
+          "z_mm": 1730.687357669526,
+          "signed_bz_t": 0.050361991689396035
+        },
+        {
+          "z_mm": 1889.3675723568088,
+          "signed_bz_t": 0.026196230528505653
+        },
+        {
+          "z_mm": 2247.2340354143485,
+          "signed_bz_t": 0.03757984040577466
+        },
+        {
+          "z_mm": 2419.76572888169,
+          "signed_bz_t": 0.008844538066134035
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          437.55518895983494,
+          577.2063612914548
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 139.65117233161982,
+      "half_maximum_outer_span_mm": 139.65117233161982,
+      "specimen_upper_surface_bz_t": 0.010649096799966638
+    },
+    "isolated_integral_b2_match": {
+      "integral_b2_t2_m": 0.04187401591355313,
+      "b2_centroid_z_mm": 1389.2783177684507,
+      "b2_standard_deviation_mm": 451.47653319959534,
+      "integral_z_b2_t2_m2": 0.05817466238659043,
+      "integral_z2_b2_t2_m3": 0.08935602214855938,
+      "relative_l2_bz_error": 1.269876157097986,
+      "integral_b2_to_gaussian_ratio": 1.0133880764343786,
+      "sum_isolated_integral_b2_t2_m": 0.041354826616280066,
+      "signed_cross_term_integral_b2_t2_m": 0.0005191892972730289,
+      "peak_magnitude_t": 0.3584773599451293,
+      "signed_peak_bz_t": 0.3584773599451293,
+      "peak_z_mm": 1728.5473698381013,
+      "local_peaks": [
+        {
+          "z_mm": 501.846602370436,
+          "signed_bz_t": 0.266273002647143
+        },
+        {
+          "z_mm": 899.5378789097049,
+          "signed_bz_t": 0.017606243640433082
+        },
+        {
+          "z_mm": 1164.46092613384,
+          "signed_bz_t": -0.08749258053853343
+        },
+        {
+          "z_mm": 1253.34234937882,
+          "signed_bz_t": 0.09857485337269
+        },
+        {
+          "z_mm": 1462.1926407779156,
+          "signed_bz_t": 0.3572622807947722
+        },
+        {
+          "z_mm": 1728.5473698381013,
+          "signed_bz_t": 0.3584773599451293
+        },
+        {
+          "z_mm": 2247.0405644633747,
+          "signed_bz_t": 0.05658123019820113
+        },
+        {
+          "z_mm": 2422.6594850917522,
+          "signed_bz_t": 0.0146487624796818
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          453.23665875269194,
+          553.6436169196363
+        ],
+        [
+          1373.27111545411,
+          1525.804471027276
+        ],
+        [
+          1648.6289117769654,
+          1808.8744894608715
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 413.1858914240163,
+      "half_maximum_outer_span_mm": 1355.6378307081795,
+      "specimen_upper_surface_bz_t": 0.0841331580511665
+    },
+    "whole_column_profile_nnls": {
+      "integral_b2_t2_m": 0.0025150500793113192,
+      "b2_centroid_z_mm": 1020.4115659583399,
+      "b2_standard_deviation_mm": 582.5937967743902,
+      "integral_z_b2_t2_m2": 0.0025663861898937105,
+      "integral_z2_b2_t2_m3": 0.0034724172116599927,
+      "relative_l2_bz_error": 0.9690890425045698,
+      "integral_b2_to_gaussian_ratio": 0.06086642769757607,
+      "sum_isolated_integral_b2_t2_m": 0.002896671886729616,
+      "signed_cross_term_integral_b2_t2_m": -0.0003816218074182967,
+      "peak_magnitude_t": 0.11368712344074136,
+      "signed_peak_bz_t": 0.11368712344074136,
+      "peak_z_mm": 500.4444880097294,
+      "local_peaks": [
+        {
+          "z_mm": 500.4444880097294,
+          "signed_bz_t": 0.11368712344074136
+        },
+        {
+          "z_mm": 907.0542861438653,
+          "signed_bz_t": 0.005437018906226726
+        },
+        {
+          "z_mm": 1078.8310206078515,
+          "signed_bz_t": 0.010618395923823312
+        },
+        {
+          "z_mm": 1165.2334459517576,
+          "signed_bz_t": -0.06618264377219095
+        },
+        {
+          "z_mm": 1252.360558085157,
+          "signed_bz_t": 0.05966128291503116
+        },
+        {
+          "z_mm": 1451.2311975767557,
+          "signed_bz_t": 0.05176201457516863
+        },
+        {
+          "z_mm": 1523.6592648350324,
+          "signed_bz_t": -0.04499982364603517
+        },
+        {
+          "z_mm": 1574.0637739651359,
+          "signed_bz_t": 0.010950385483470652
+        },
+        {
+          "z_mm": 1729.764885494234,
+          "signed_bz_t": 0.054298095880690664
+        },
+        {
+          "z_mm": 1882.4674254409422,
+          "signed_bz_t": 0.0191187826413477
+        },
+        {
+          "z_mm": 2247.1252335178237,
+          "signed_bz_t": 0.036894993889325864
+        },
+        {
+          "z_mm": 2396.8285535060486,
+          "signed_bz_t": 0.006732071659573553
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          437.1523092226955,
+          565.3542372930452
+        ],
+        [
+          1151.7606593345959,
+          1178.1967175937918
+        ],
+        [
+          1244.81635802347,
+          1260.269852916959
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 170.09148122303475,
+      "half_maximum_outer_span_mm": 823.1175436942635,
+      "specimen_upper_surface_bz_t": 0.011264993934799988
+    },
+    "whole_column_nnls_then_total_b2_match": {
+      "integral_b2_t2_m": 0.041320809754233016,
+      "b2_centroid_z_mm": 1020.4115659583399,
+      "b2_standard_deviation_mm": 582.5937967743901,
+      "integral_z_b2_t2_m2": 0.042164232187983555,
+      "integral_z2_b2_t2_m3": 0.05704979482142794,
+      "relative_l2_bz_error": 1.2274272090102416,
+      "integral_b2_to_gaussian_ratio": 1.0,
+      "sum_isolated_integral_b2_t2_m": 0.04759063405400038,
+      "signed_cross_term_integral_b2_t2_m": -0.006269824299767371,
+      "peak_magnitude_t": 0.46081050519051636,
+      "signed_peak_bz_t": 0.46081050519051636,
+      "peak_z_mm": 500.44448800968354,
+      "local_peaks": [
+        {
+          "z_mm": 500.44448800968354,
+          "signed_bz_t": 0.46081050519051636
+        },
+        {
+          "z_mm": 907.054286143864,
+          "signed_bz_t": 0.022037987707681488
+        },
+        {
+          "z_mm": 1078.831020607858,
+          "signed_bz_t": 0.04303977655411803
+        },
+        {
+          "z_mm": 1165.2334459517606,
+          "signed_bz_t": -0.2682595582375167
+        },
+        {
+          "z_mm": 1252.3605580851604,
+          "signed_bz_t": 0.2418263835721038
+        },
+        {
+          "z_mm": 1451.2311975767311,
+          "signed_bz_t": 0.20980810635511657
+        },
+        {
+          "z_mm": 1523.6592648350309,
+          "signed_bz_t": -0.18239876988903062
+        },
+        {
+          "z_mm": 1574.0637739651336,
+          "signed_bz_t": 0.044385437100967984
+        },
+        {
+          "z_mm": 1729.7648854942483,
+          "signed_bz_t": 0.22008766020635803
+        },
+        {
+          "z_mm": 1882.4674254409179,
+          "signed_bz_t": 0.07749458004520042
+        },
+        {
+          "z_mm": 2247.1252335178324,
+          "signed_bz_t": 0.1495472860829594
+        },
+        {
+          "z_mm": 2396.828553506061,
+          "signed_bz_t": 0.027287253371696515
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          437.1523092226955,
+          565.3542372930452
+        ],
+        [
+          1151.7606593345959,
+          1178.1967175937918
+        ],
+        [
+          1244.81635802347,
+          1260.269852916959
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 170.09148122303475,
+      "half_maximum_outer_span_mm": 823.1175436942635,
+      "specimen_upper_surface_bz_t": 0.045660646421132066
+    },
+    "current_gaussian_reference": {
+      "integral_b2_t2_m": 0.04132080975423301,
+      "b2_centroid_z_mm": 1410.9852665605576,
+      "b2_standard_deviation_mm": 414.433916836153,
+      "integral_z_b2_t2_m2": 0.05830305376557455,
+      "integral_z2_b2_t2_m3": 0.08936182501767984,
+      "relative_l2_bz_error": 0.0,
+      "integral_b2_to_gaussian_ratio": 1.0,
+      "sum_isolated_integral_b2_t2_m": 0.04135482661628007,
+      "signed_cross_term_integral_b2_t2_m": -3.40168620470635e-05,
+      "peak_magnitude_t": 1.113835009791217,
+      "signed_peak_bz_t": 1.113835009791217,
+      "peak_z_mm": 1599.200000000001,
+      "local_peaks": [
+        {
+          "z_mm": 500.0,
+          "signed_bz_t": 0.9169923663804393
+        },
+        {
+          "z_mm": 650.0,
+          "signed_bz_t": 0.17101515856672264
+        },
+        {
+          "z_mm": 915.0,
+          "signed_bz_t": 0.05467279516038215
+        },
+        {
+          "z_mm": 1088.2,
+          "signed_bz_t": 0.011005120215633272
+        },
+        {
+          "z_mm": 1166.3500019085072,
+          "signed_bz_t": -0.2913891940653052
+        },
+        {
+          "z_mm": 1249.949998091493,
+          "signed_bz_t": 0.273683577272393
+        },
+        {
+          "z_mm": 1366.3000000000002,
+          "signed_bz_t": 0.18160747774610306
+        },
+        {
+          "z_mm": 1486.2982808644033,
+          "signed_bz_t": 1.545938793140444e-05
+        },
+        {
+          "z_mm": 1522.4236459420863,
+          "signed_bz_t": -0.17548565023003299
+        },
+        {
+          "z_mm": 1599.200000000001,
+          "signed_bz_t": 1.113835009791217
+        },
+        {
+          "z_mm": 1896.9,
+          "signed_bz_t": 0.10026776857020192
+        },
+        {
+          "z_mm": 2066.9,
+          "signed_bz_t": 0.00026721780329175537
+        },
+        {
+          "z_mm": 2246.9,
+          "signed_bz_t": 0.12369358987737222
+        },
+        {
+          "z_mm": 2449.4,
+          "signed_bz_t": 0.03244378031010494
+        }
+      ],
+      "half_maximum_intervals_mm": [
+        [
+          495.7514136228401,
+          504.2485863771599
+        ],
+        [
+          1582.1198349763472,
+          1616.2801650236559
+        ]
+      ],
+      "half_maximum_occupied_width_mm": 42.657502801628425,
+      "half_maximum_outer_span_mm": 1120.5287514008157,
+      "specimen_upper_surface_bz_t": 1.1138350097911995
+    }
+  },
+  "finite_column_intervals": {
+    "gun_exit_to_specimen": {
+      "lower_z_m": 0.45,
+      "upper_z_m": 1.5991999975,
+      "models": {
+        "archived_current": {
+          "integral_b2_t2_m": 2.857411843884675,
+          "sum_isolated_integral_b2_t2_m": 2.846058163861591,
+          "signed_cross_term_integral_b2_t2_m": 0.01135368002308379,
+          "relative_l2_bz_error": 10.672184965837536
+        },
+        "isolated_full_profile_ls": {
+          "integral_b2_t2_m": 0.0020535933635770507,
+          "sum_isolated_integral_b2_t2_m": 0.0020584357853007614,
+          "signed_cross_term_integral_b2_t2_m": -4.842421723710768e-06,
+          "relative_l2_bz_error": 0.9568348236251173
+        },
+        "isolated_integral_b2_match": {
+          "integral_b2_t2_m": 0.024017224705901993,
+          "sum_isolated_integral_b2_t2_m": 0.02403143081534858,
+          "signed_cross_term_integral_b2_t2_m": -1.4206109446586457e-05,
+          "relative_l2_bz_error": 1.22923244595618
+        },
+        "whole_column_profile_nnls": {
+          "integral_b2_t2_m": 0.0018292472155856544,
+          "sum_isolated_integral_b2_t2_m": 0.0022459718911208917,
+          "signed_cross_term_integral_b2_t2_m": -0.0004167246755352374,
+          "relative_l2_bz_error": 0.9541320215874062
+        },
+        "whole_column_nnls_then_total_b2_match": {
+          "integral_b2_t2_m": 0.03005346764680429,
+          "sum_isolated_integral_b2_t2_m": 0.03690001164977742,
+          "signed_cross_term_integral_b2_t2_m": -0.006846544002973132,
+          "relative_l2_bz_error": 1.246783051808996
+        },
+        "current_gaussian_reference": {
+          "integral_b2_t2_m": 0.024667182392128006,
+          "sum_isolated_integral_b2_t2_m": 0.02470119925417529,
+          "signed_cross_term_integral_b2_t2_m": -3.4016862047282076e-05
+        }
+      }
+    },
+    "gun_exit_to_2600mm": {
+      "lower_z_m": 0.45,
+      "upper_z_m": 2.6,
+      "models": {
+        "archived_current": {
+          "integral_b2_t2_m": 5.633312907999848,
+          "sum_isolated_integral_b2_t2_m": 5.605515264093995,
+          "signed_cross_term_integral_b2_t2_m": 0.02779764390585271,
+          "relative_l2_bz_error": 11.579895308127577
+        },
+        "isolated_full_profile_ls": {
+          "integral_b2_t2_m": 0.0026018949495398122,
+          "sum_isolated_integral_b2_t2_m": 0.0025588342464011337,
+          "signed_cross_term_integral_b2_t2_m": 4.3060703138678505e-05,
+          "relative_l2_bz_error": 0.9689669081867874
+        },
+        "isolated_integral_b2_match": {
+          "integral_b2_t2_m": 0.04117192847697116,
+          "sum_isolated_integral_b2_t2_m": 0.0406850946080337,
+          "signed_cross_term_integral_b2_t2_m": 0.00048683386893746267,
+          "relative_l2_bz_error": 1.263168365601532
+        },
+        "whole_column_profile_nnls": {
+          "integral_b2_t2_m": 0.0023858133562216543,
+          "sum_isolated_integral_b2_t2_m": 0.002769066446182438,
+          "signed_cross_term_integral_b2_t2_m": -0.0003832530899607837,
+          "relative_l2_bz_error": 0.9674739943508479
+        },
+        "whole_column_nnls_then_total_b2_match": {
+          "integral_b2_t2_m": 0.039197525573143925,
+          "sum_isolated_integral_b2_t2_m": 0.045494150896138646,
+          "signed_cross_term_integral_b2_t2_m": -0.006296625322994721,
+          "relative_l2_bz_error": 1.2063134773379074
+        },
+        "current_gaussian_reference": {
+          "integral_b2_t2_m": 0.04132080975423316,
+          "sum_isolated_integral_b2_t2_m": 0.04135482661628021,
+          "signed_cross_term_integral_b2_t2_m": -3.401686204704962e-05
+        }
+      }
+    }
+  },
+  "gram_matrices": {
+    "keys": [
+      "condenser_lens_1",
+      "condenser_lens_2",
+      "condenser_lens_3",
+      "adapter_lens",
+      "probe_tl22_lens",
+      "probe_tl21_lens",
+      "probe_tl12_lens",
+      "mini_condenser",
+      "objective_lens",
+      "diffraction_lens",
+      "intermediate_lens",
+      "projector_lens_1",
+      "projector_lens_2"
+    ],
+    "coil_signed_bz_inner_products_t2_m": [
+      [
+        0.0818646439263232,
+        0.00596955397689623,
+        0.00010220660107875627,
+        2.1441331227339037e-06,
+        -3.8244224718183916e-05,
+        2.497219654067438e-05,
+        1.0695545817010553e-05,
+        -2.4859314464837614e-06,
+        0.0006218488398098456,
+        2.2390014670991173e-06,
+        6.102549896685442e-09,
+        1.5476499851729887e-06,
+        3.8214742881306206e-07
+      ],
+      [
+        0.00596955397689623,
+        0.004157037425961024,
+        0.00011596170147821213,
+        1.3832678871671878e-06,
+        -2.1542719182219404e-05,
+        1.2623891311099306e-05,
+        4.84067439571919e-06,
+        -1.0092081683102269e-06,
+        0.00025305626989192883,
+        7.906827404839052e-07,
+        2.0695733302670988e-09,
+        5.067612415133405e-07,
+        1.2140854318827074e-07
+      ],
+      [
+        0.00010220660107875627,
+        0.00011596170147821213,
+        0.0004059993730541703,
+        7.329684831770264e-06,
+        -6.372007988053739e-05,
+        2.4261154797451425e-05,
+        6.2947753944102915e-06,
+        -9.381861595027132e-07,
+        0.00024325189106991568,
+        5.066360646658242e-07,
+        1.2030869795441743e-09,
+        2.7148255499385853e-07,
+        6.078880476095682e-08
+      ],
+      [
+        2.1441331227339037e-06,
+        1.3832678871671878e-06,
+        7.329684831770264e-06,
+        6.633622003559536e-06,
+        -5.934382041418169e-05,
+        1.0880673764671165e-05,
+        1.4926295111146596e-06,
+        -1.1731259817306491e-07,
+        4.1976969709946604e-05,
+        5.400866089415626e-08,
+        1.1725702242631616e-10,
+        2.4617697419860605e-08,
+        5.207405158160246e-09
+      ],
+      [
+        -3.8244224718183916e-05,
+        -2.1542719182219404e-05,
+        -6.372007988053739e-05,
+        -5.934382041418169e-05,
+        0.004490150695887019,
+        -0.0012795057160087306,
+        -0.00010389856067188041,
+        5.668747879017697e-06,
+        -0.002188744818330743,
+        -1.933634805705593e-06,
+        -3.971480430776636e-09,
+        -7.987088411493779e-07,
+        -1.6355064798128584e-07
+      ],
+      [
+        2.497219654067438e-05,
+        1.2623891311099303e-05,
+        2.4261154797451425e-05,
+        1.0880673764671165e-05,
+        -0.0012795057160087306,
+        0.003957303247639494,
+        0.00040640211730651546,
+        -1.1932732213859242e-05,
+        0.005475003016179136,
+        2.6304563472956596e-06,
+        5.023445921223252e-09,
+        9.565016122075258e-07,
+        1.8818382496681956e-07
+      ],
+      [
+        1.0695545817010553e-05,
+        4.84067439571919e-06,
+        6.2947753944102915e-06,
+        1.4926295111146596e-06,
+        -0.00010389856067188038,
+        0.00040640211730651546,
+        0.0017445221831291359,
+        -4.1337993303666994e-05,
+        0.02559327949554375,
+        3.2219219722827075e-06,
+        5.376781335663495e-09,
+        9.294335598632386e-07,
+        1.7095826747345905e-07
+      ],
+      [
+        -2.4859314464837614e-06,
+        -1.0092081683102267e-06,
+        -9.381861595027132e-07,
+        -1.173125981730649e-07,
+        5.668747879017697e-06,
+        -1.193273221385924e-05,
+        -4.1337993303666994e-05,
+        0.0009072817231085306,
+        -0.02921816462817093,
+        -3.1224185093096613e-06,
+        -3.95027881875972e-09,
+        -5.704963587639208e-07,
+        -9.359329362148487e-08
+      ],
+      [
+        0.0006218488398098456,
+        0.00025305626989192883,
+        0.00024325189106991568,
+        4.1976969709946604e-05,
+        -0.002188744818330743,
+        0.005475003016179136,
+        0.02559327949554375,
+        -0.02921816462817093,
+        5.513914218541129,
+        0.007727308792037371,
+        3.89428627479401e-06,
+        0.000357179016839679,
+        4.7672375345739936e-05
+      ],
+      [
+        2.2390014670991173e-06,
+        7.906827404839052e-07,
+        5.066360646658243e-07,
+        5.400866089415626e-08,
+        -1.933634805705593e-06,
+        2.6304563472956596e-06,
+        3.2219219722827075e-06,
+        -3.1224185093096613e-06,
+        0.007727308792037371,
+        0.0008627918417491153,
+        4.7212905952516467e-07,
+        1.5264882402957105e-05,
+        1.2800540359757024e-06
+      ],
+      [
+        6.102549896685442e-09,
+        2.0695733302670983e-09,
+        1.2030869795441743e-09,
+        1.1725702242631616e-10,
+        -3.971480430776636e-09,
+        5.023445921223252e-09,
+        5.376781335663495e-09,
+        -3.95027881875972e-09,
+        3.894286274794009e-06,
+        4.7212905952516467e-07,
+        9.833449360073041e-09,
+        5.675342841617858e-07,
+        1.726233985756496e-08
+      ],
+      [
+        1.5476499851729887e-06,
+        5.067612415133405e-07,
+        2.7148255499385853e-07,
+        2.4617697419860605e-08,
+        -7.987088411493778e-07,
+        9.565016122075258e-07,
+        9.294335598632386e-07,
+        -5.704963587639208e-07,
+        0.000357179016839679,
+        1.5264882402957105e-05,
+        5.675342841617858e-07,
+        0.0014930263172807721,
+        4.777887777634464e-05
+      ],
+      [
+        3.8214742881306217e-07,
+        1.2140854318827074e-07,
+        6.078880476095682e-08,
+        5.207405158160246e-09,
+        -1.6355064798128584e-07,
+        1.8818382496681954e-07,
+        1.7095826747345908e-07,
+        -9.359329362148484e-08,
+        4.767237534573994e-05,
+        1.2800540359757024e-06,
+        1.726233985756496e-08,
+        4.7778877776344634e-05,
+        0.00014495660554396308
+      ]
+    ],
+    "gaussian_signed_bz_inner_products_t2_m": [
+      [
+        0.0065014320911175845,
+        2.2193468475650488e-27,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.2193468475650488e-27,
+        0.0003957171325460916,
+        1.4909874228847897e-73,
+        2.632601785334966e-236,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.970878215987987e-309,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.4909874228847897e-73,
+        2.9119954414533577e-05,
+        7.916561137014676e-59,
+        -1.7460292692988784e-134,
+        4.505135038328801e-241,
+        0.0,
+        0.0,
+        2.793119343760391e-178,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        2.632601785334966e-236,
+        7.916561137014676e-59,
+        9.176841855345253e-07,
+        -1.3023428396688252e-20,
+        4.886684178278924e-77,
+        3.400757499809765e-198,
+        0.0,
+        5.189037680803939e-105,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.7460292692988784e-134,
+        -1.3023428396688254e-20,
+        0.0005514469772918333,
+        -6.001262223918008e-25,
+        -3.0814561008513443e-116,
+        8.0325e-320,
+        -5.578178384190059e-76,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        4.505135038328801e-241,
+        4.886684178278923e-77,
+        -6.001262223918008e-25,
+        0.00048646808295175044,
+        1.0097522584455432e-39,
+        -3.1991113394792405e-185,
+        1.2287128174889633e-49,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        3.400757499809764e-198,
+        -3.0814561008513443e-116,
+        1.0097522584455432e-39,
+        0.0002499027982737631,
+        -1.8872391896046082e-53,
+        1.1583963800405614e-22,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        8.0325e-320,
+        -3.1991113394792405e-185,
+        -1.8872391896046082e-53,
+        0.0002840592617087065,
+        -1.700843102363896e-05,
+        -3.4615945926636786e-168,
+        -4.885171581662818e-261,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.970878215987987e-309,
+        2.793119343760392e-178,
+        5.189037680803938e-105,
+        -5.578178384190059e-76,
+        1.2287128174889633e-49,
+        1.1583963800405617e-22,
+        -1.700843102363896e-05,
+        0.03240427674651316,
+        9.818414453129181e-31,
+        3.6361016226411697e-69,
+        3.850993999398451e-114,
+        7.57147785437256e-184
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -3.4615945926636786e-168,
+        9.81841445312918e-31,
+        0.0001305898946576606,
+        7.591534796530515e-24,
+        5.920383779077633e-65,
+        2.2505498445428894e-140
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -4.885171581662818e-261,
+        3.636101622641169e-69,
+        7.591534796530515e-24,
+        1.1593849637000733e-09,
+        2.322022315210374e-19,
+        3.612845735114697e-61
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        3.850993999398451e-114,
+        5.920383779077633e-65,
+        2.322022315210374e-19,
+        0.00029810723650516824,
+        1.1143702813207516e-16
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        7.571477854372561e-184,
+        2.2505498445428894e-140,
+        3.612845735114698e-61,
+        1.1143702813207516e-16,
+        2.2787596729323246e-05
+      ]
+    ],
+    "coil_gaussian_inner_products_t2_m": [
+      [
+        0.01000402621666409,
+        0.00026979260371678596,
+        3.2490955108109845e-06,
+        1.7978058746859067e-07,
+        -2.810229075844021e-06,
+        1.8536109574593735e-06,
+        9.320347527701158e-07,
+        -6.466412853748773e-07,
+        9.66763620879767e-06,
+        2.1084151099991583e-07,
+        4.978379993831812e-10,
+        1.9961027842771207e-07,
+        4.186909083826357e-08
+      ],
+      [
+        0.0002693122418984315,
+        0.000608901294187996,
+        3.4207271924644964e-06,
+        1.1253912629181722e-07,
+        -1.546690590674784e-06,
+        9.204479881963094e-07,
+        4.1650383230287593e-07,
+        -2.6160024343425674e-07,
+        3.769816842767469e-06,
+        7.410786994196327e-08,
+        1.6810455632473783e-10,
+        6.518576770264931e-08,
+        1.3270902118089785e-08
+      ],
+      [
+        3.4616240077935826e-06,
+        4.5227795942117926e-06,
+        4.4917242148779805e-05,
+        6.050379748834521e-07,
+        -4.3244266839025026e-06,
+        1.6726815175018406e-06,
+        5.201908902391826e-07,
+        -2.4049726038458375e-07,
+        3.125828308650683e-06,
+        4.690255984757468e-08,
+        9.664491555796264e-11,
+        3.469552944762348e-08,
+        6.608164632369552e-09
+      ],
+      [
+        4.806819529638895e-08,
+        3.7855985613073524e-08,
+        1.3371734605035242e-07,
+        1.391341114801466e-06,
+        -3.971789640156851e-06,
+        5.39373736899971e-07,
+        8.653679941716616e-08,
+        -2.6298911782523174e-08,
+        3.025998812537592e-07,
+        3.40875556146743e-09,
+        6.413714673523865e-12,
+        2.1483424949638635e-09,
+        3.8631383173384965e-10
+      ],
+      [
+        -8.826918431422046e-07,
+        -6.180076247895486e-07,
+        -1.1996524576325025e-06,
+        -4.525825230941785e-06,
+        0.0008390497637571331,
+        -8.181799181462203e-05,
+        -6.01585033295804e-06,
+        1.2628155629107052e-06,
+        -1.3265986867510431e-05,
+        -1.2324513385753525e-07,
+        -2.195487002739948e-10,
+        -7.06640748176326e-08,
+        -1.230711397689698e-08
+      ],
+      [
+        5.80273033497609e-07,
+        3.695008296988791e-07,
+        4.818162028020581e-07,
+        6.256947759376059e-07,
+        -8.161374508406115e-05,
+        0.0007401604927439957,
+        2.5625268361224708e-05,
+        -2.604968052613074e-06,
+        2.363597109841148e-05,
+        1.659627170266199e-07,
+        2.751805786458447e-10,
+        8.421097877804944e-08,
+        1.410064913215071e-08
+      ],
+      [
+        2.5134261130740723e-07,
+        1.4502470044788134e-07,
+        1.325256477130049e-07,
+        8.697405144104796e-08,
+        -5.158316223108139e-06,
+        2.198837261300138e-05,
+        0.000378038583225366,
+        -8.67670129414034e-06,
+        5.309573708860295e-05,
+        2.0018296884873477e-07,
+        2.9074409541030104e-10,
+        8.147082217647486e-08,
+        1.2770794843954212e-08
+      ],
+      [
+        -1.9455679948108253e-08,
+        -1.0224591288738342e-08,
+        -6.967205288552191e-09,
+        -2.9815994750773595e-09,
+        1.225368742546875e-07,
+        -2.562174045409115e-07,
+        -1.0441533097922418e-06,
+        0.00040236232365071687,
+        -0.00030032915149828815,
+        -7.284822708798381e-08,
+        -7.9015597580778e-11,
+        -1.863344440266956e-08,
+        -2.5916347897956985e-09
+      ],
+      [
+        1.7442740365891976e-05,
+        9.120771691649825e-06,
+        6.266653767549686e-06,
+        2.834981538508463e-06,
+        -0.0001251106653044728,
+        0.00030939100547310125,
+        0.0025523650860087917,
+        -0.00903685536061389,
+        0.05864561473372106,
+        0.0005335260252532817,
+        2.1020625416892896e-07,
+        3.446224909559421e-05,
+        3.976500391135694e-06
+      ],
+      [
+        6.361851317226608e-08,
+        2.9202197810235618e-08,
+        1.3762922583125576e-08,
+        3.8562373163106785e-09,
+        -1.1870213962672225e-07,
+        1.6052735825022231e-07,
+        2.2527516813089267e-07,
+        -7.308211050975931e-07,
+        2.7615069101720266e-05,
+        0.0001984730488915355,
+        2.1823890256557828e-08,
+        1.3869393823379589e-06,
+        1.023465492120794e-07
+      ],
+      [
+        1.7402129051248326e-10,
+        7.688994113784952e-11,
+        3.301127567069498e-11,
+        8.447557617840361e-12,
+        -2.4648971666271153e-10,
+        3.108434426303349e-10,
+        3.834308621067542e-10,
+        -9.428257360295684e-10,
+        2.815441014420577e-08,
+        3.315442996863935e-08,
+        1.7819704411500541e-09,
+        5.2061345131460016e-08,
+        1.2686097812114994e-09
+      ],
+      [
+        4.42665209042792e-08,
+        1.891815810856729e-08,
+        7.506797988397295e-09,
+        1.785425490870859e-09,
+        -4.997089059438702e-08,
+        5.977471494003133e-08,
+        6.718504155254233e-08,
+        -1.3772211819477123e-07,
+        3.5929653982306244e-06,
+        1.0274328582975788e-06,
+        2.6290998698325487e-08,
+        0.0004480798863178071,
+        3.020498982039073e-06
+      ],
+      [
+        1.095774865214764e-08,
+        4.549752593655579e-09,
+        1.6906149034131645e-09,
+        3.794904734797011e-10,
+        -1.0290099427411998e-08,
+        1.1839171228306947e-08,
+        1.2466030926542117e-08,
+        -2.2735439613657946e-08,
+        5.488193227102319e-07,
+        9.096422207214982e-08,
+        9.46119539883293e-10,
+        4.200816323797743e-06,
+        3.4804445004368574e-05
+      ]
+    ]
+  },
+  "elapsed_s": 10.903071599999748
+}

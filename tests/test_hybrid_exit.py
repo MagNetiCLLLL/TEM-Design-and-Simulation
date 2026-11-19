@@ -7,6 +7,8 @@ from scipy.constants import e, hbar
 from temsim.physics.hybrid_exit import local_diffraction, sample_exit
 from temsim.physics.hybrid_semiclassical import SemiclassicalNumerics
 from temsim.physics.hybrid_pipeline import HybridGrid, HybridRequest, simulate_hybrid, _source_count
+from temsim.physics.retired_tip_wave import RetiredTipCoherentWorkflow
+from temsim.physics.tip_wave_pipeline import require_tip_wave_cuda
 from temsim.physics.tip_gun_wave import TipGunCheckpoint
 from temsim.physics.wave_flux import BeamState
 from temsim.physics.potential_snapshot import StaticPolynomialGauge
@@ -49,17 +51,17 @@ def test_magnetic_gauge_changes_raw_spectrum_not_local_kinetic_distribution():
     assert not np.allclose(result[3]["raw_canonical_diffraction"], baseline[3]["raw_canonical_diffraction"])
 
 
-def test_cuda_guard_precedes_source_or_field_work(monkeypatch):
+def test_archived_wave_settings_validate_cuda_before_field_work(monkeypatch):
     from temsim.physics.compute_backend import GPUExecutionError
     def unavailable(*args, **kwargs):
         raise GPUExecutionError("unavailable", "test CUDA unavailable")
     monkeypatch.setattr("temsim.physics.compute_backend.require_coherent_cuda", unavailable)
     with pytest.raises(GPUExecutionError, match="CUDA unavailable"):
-        simulate_hybrid(object(), HybridRequest("Camera", HybridGrid(500., 32, 20.)))
+        require_tip_wave_cuda(HybridRequest("Camera", HybridGrid(500., 32, 20.)).wave)
 
 
 @pytest.mark.parametrize("setting", ["gun", "radial_column", "wave_grid"])
-def test_explicit_cpu_wave_settings_are_rejected_before_hybrid_preparation(monkeypatch, setting):
+def test_archived_wave_settings_reject_explicit_cpu(monkeypatch, setting):
     from temsim.physics import compute_backend
 
     monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
@@ -74,24 +76,28 @@ def test_explicit_cpu_wave_settings_are_rejected_before_hybrid_preparation(monke
     }
     wave = replace(request.wave, **{setting: cpu_settings[setting]})
     with pytest.raises(compute_backend.GPUExecutionError, match="Coherent calculations currently require"):
-        simulate_hybrid(object(), replace(request, wave=wave))
+        require_tip_wave_cuda(wave)
 
 
 def test_original_count_cannot_be_satisfied_by_duplicates_or_exit_resampling():
     from types import SimpleNamespace
     def trace(ids, current_a=1e-9):
         return SimpleNamespace(emitted_current_a=current_a, emission_reference={"ray_id": ids}, exit_bundle=SimpleNamespace(
-            weight=np.ones(len(ids))/len(ids), alive=np.ones(len(ids), bool)))
+            ray_id=ids, weight=np.ones(len(ids))/len(ids), alive=np.ones(len(ids), bool)))
     with pytest.raises(ValueError, match="1000"):
         _source_count(trace(np.arange(999)))
     with pytest.raises(ValueError, match="duplicate"):
         _source_count(trace(np.zeros(1024)))
     with pytest.raises(ValueError, match="only 0 original positive-current particles"):
         _source_count(trace(np.arange(1024), 0.))
+    changed = trace(np.arange(1024))
+    changed.exit_bundle.ray_id = np.zeros(1024, dtype=int)
+    with pytest.raises(ValueError, match="exit IDs differ"):
+        _source_count(changed)
     assert _source_count(trace(np.arange(1024)))["positive_current_count"] == 1024
 
 
-def test_zero_source_current_rejects_hybrid_before_capture(monkeypatch):
+def test_retired_hybrid_rejects_zero_current_request_before_capture(monkeypatch):
     from types import SimpleNamespace
     from temsim.physics import compute_backend
     monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
@@ -100,7 +106,7 @@ def test_zero_source_current_rejects_hybrid_before_capture(monkeypatch):
                         lambda *_: pytest.fail("Zero current reached instrument capture"))
     state = SimpleNamespace(simulation_mode="unified", electron_gun=SimpleNamespace(emitted_current_a=0.))
     request = HybridRequest("camera", HybridGrid(500., 32, 20.))
-    with pytest.raises(ValueError, match="finite positive source current"):
+    with pytest.raises(RetiredTipCoherentWorkflow):
         simulate_hybrid(state, request)
 
 

@@ -206,18 +206,24 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
     components = (*getattr(state, "stigmators", ()), *getattr(state, "corrector_elements", ()),
                   *getattr(state, "deflectors", ()))
     by_key = {str(component.key): component for component in components}
+    if not by_key:
+        return ()
+    from temsim.physics.transverse_coil_field import capture_transverse_coil_fields, FrozenTransverseCoilField
+    prescribed=capture_transverse_coil_fields(state,time_s=time_s,component_keys=component_keys,
+                                             include_hexapole=include_hexapole)
+    prescribed_keys={field.component_key for field in prescribed}
     posed_keys = {key for key, component in by_key.items()
                   if bool(getattr(component, "enabled", False))
-                  and (include_aligned or has_lens_pose(state, key))}
+                  and (include_aligned or key in prescribed_keys or has_lens_pose(state, key))}
     if component_keys is not None:
         posed_keys &= set(component_keys)
     if not posed_keys:
         return ()
     charge, momentum, _ = electron(state)
     ratio = momentum/charge
-    result = []
+    result = [field for field in prescribed if field.event_z_mm is None]
     for key, component in by_key.items():
-        if key not in posed_keys or not any(hasattr(component, name) for name in
+        if key in prescribed_keys or key not in posed_keys or not any(hasattr(component, name) for name in
                 ("quadrupole_tensor_m2", "quadrupole_strength_m2", "hexapole_strength_components_m3")):
             continue
         from temsim.test_electron_compiled_laws import multipole_is_supported, _MULTIPOLES
@@ -270,6 +276,9 @@ def capture_posed_column_fields(state, *, include_hexapole=True, time_s=None, ar
             field = next(row for row in column_dipole_fields(state, time_s=capture_time) if row.key == original.key)
             if (field.lower_m, field.upper_m, field.event_z_mm) != (original.lower_m, original.upper_m, original.event_z_mm):
                 raise ValueError("Time-dependent posed deflector changed its physical coil geometry")
+        if type(field) is FrozenTransverseCoilField:
+            result.append(field)
+            continue
         component = by_key[key]
         result.append(FrozenPosedMultipole(field.key, key, lens_pose_registration(state, key),
             ((1, 0, -field.by_t), (0, 1, field.bx_t)), "uniform", field.event_z_mm*.001,

@@ -1,0 +1,327 @@
+{
+  "status": "VERIFIED_SAVED_FIXED_HIGH_FIELD_COARSE_CONTROL",
+  "physical_execution": false,
+  "implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+  "high_archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\high-accuracy\\complete-result.temsim",
+    "sha256": "98f862668efa9dc430d7a82b5ffaa4ecc22bdaf08a3a2f56a9bb934ec0f7f53a",
+    "package_digest": "4b92d4bbdaa1f515a595810e9cba684da684d9a4e425d4c371b92cc3e701f54f"
+  },
+  "coarse_archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\fixed-high-field-preview-execution\\fixed-high-field-preview.temsim",
+    "sha256": "cffebc7a993b4199848c26f1c11cb0c64b88142e0bf0b871633ed39eb20ae6b5",
+    "package_digest": "7dc88c442917121659986f36ba1f3d75488258189f2a2bcfd53ee762dba6dbf2"
+  },
+  "actual_operator_witness_exact": true,
+  "independent_physical_inputs_and_tolerances_exact": true,
+  "original_count": 1024,
+  "original_positive_count": 1024,
+  "source_launch_fields": [
+    {
+      "field": "emission_phase.x_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "d73d2d3d9d9127384e7cfc4e13e8da0d592ae2fe096e5dd6fab1af21902106b7"
+    },
+    {
+      "field": "emission_phase.y_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "0f5030effdd57397d1d44dbf4ca7e5b74a22eba6262534f97ad4bb3415246571"
+    },
+    {
+      "field": "emission_phase.tx_rad",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "58becb544628706118015032551947efe49f5e9f9f1b10e7a515e5c2389f9190"
+    },
+    {
+      "field": "emission_phase.ty_rad",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "60c563def2d91d949522f8e1000d6e5502dcac57da46782c079b4d771897b601"
+    },
+    {
+      "field": "emission_phase.energy_offset_ev",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "c29241bf27ac78049bcb3ce9f66f5d4af371febff6d38657603f694aabb07777"
+    },
+    {
+      "field": "emission_phase.ray_id",
+      "exact_bytes_equal": true,
+      "dtype": "<i8",
+      "shape": [
+        1024
+      ],
+      "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    {
+      "field": "emission_phase.weight",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+    },
+    {
+      "field": "emission_phase.position_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+    },
+    {
+      "field": "emission_phase.direction",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "b891753e21b4c1dd26210d497e7837d86f81aba7bf50637bb772eac24c65e4c1"
+    },
+    {
+      "field": "emission_phase.normal",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "bfe9ad68d70dea35d2d7518fde148979c730047d0feeb7648c0534faacab4f92"
+    },
+    {
+      "field": "emission_phase.emission_time_s",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "9f1dcbc35c350d6027f98be0f5c8b43b42ca52b7604459c0c42be3aa88913d47"
+    },
+    {
+      "field": "emission_reference.ray_id",
+      "exact_bytes_equal": true,
+      "dtype": "<i8",
+      "shape": [
+        1024
+      ],
+      "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    {
+      "field": "emission_reference.position_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235"
+    },
+    {
+      "field": "emission_reference.direction",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "b891753e21b4c1dd26210d497e7837d86f81aba7bf50637bb772eac24c65e4c1"
+    },
+    {
+      "field": "emission_reference.normal",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024,
+        3
+      ],
+      "sha256": "bfe9ad68d70dea35d2d7518fde148979c730047d0feeb7648c0534faacab4f92"
+    }
+  ],
+  "original_gun_exit_fields": [
+    {
+      "field": "x_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "1d07ad34e7156a90f94f4a8e79cf353e70a5d14ea2f3e7ee49f7944df49b7d3e"
+    },
+    {
+      "field": "y_m",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "eda42f029c5776277159b43164ac4c886f9696c6fe1d4298f9ce0834be045a2f"
+    },
+    {
+      "field": "tx_rad",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "3c984ac52f8baf6bbeb66b6f84050a7370f86a715666489d5d7cdc9d1a244ec4"
+    },
+    {
+      "field": "ty_rad",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "ac19dcfd939d22f7f77e0f955666a0909945510955a8e97156b5fb62600e24d6"
+    },
+    {
+      "field": "energy_offset_ev",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "61161f1465347c705920117f7efd0520350650d7b790ca1f73a87e46e796ca98"
+    },
+    {
+      "field": "weight",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+    },
+    {
+      "field": "ray_id",
+      "exact_bytes_equal": true,
+      "dtype": "<i8",
+      "shape": [
+        1024
+      ],
+      "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+    },
+    {
+      "field": "alive",
+      "exact_bytes_equal": true,
+      "dtype": "|b1",
+      "shape": [
+        1024
+      ],
+      "sha256": "5a648d8015900d89664e00e125df179636301a2d8fa191c1aa2bd9358ea53a69"
+    },
+    {
+      "field": "flight_time_s",
+      "exact_bytes_equal": true,
+      "dtype": "<f8",
+      "shape": [
+        1024
+      ],
+      "sha256": "79c1ab9efa26b7b258609fe0d6fe37716ed286518b46e65a2b6fe55d8ce00c3c"
+    }
+  ],
+  "original_weight_sum": 1.0,
+  "emitted_current_a": 1e-05,
+  "compared_common_sample_count": 1024,
+  "sample_z_mm": 1599.2,
+  "sample_max_rms_differences": {
+    "x_m": {
+      "unit": "m",
+      "count": 1024,
+      "max_abs": 1.3605853703449976e-15,
+      "rms": 3.7461748039881057e-16,
+      "mean_signed": 3.1116207591664743e-18,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    },
+    "y_m": {
+      "unit": "m",
+      "count": 1024,
+      "max_abs": 1.3703536719300894e-15,
+      "rms": 3.7597556466706417e-16,
+      "mean_signed": -8.23841139465382e-19,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    },
+    "tx_rad": {
+      "unit": "rad",
+      "count": 1024,
+      "max_abs": 1.0024474841527613e-14,
+      "rms": 2.732915336996845e-15,
+      "mean_signed": 2.587056409734321e-17,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    },
+    "ty_rad": {
+      "unit": "rad",
+      "count": 1024,
+      "max_abs": 9.954323149319539e-15,
+      "rms": 2.7421711601112865e-15,
+      "mean_signed": 6.778080439052404e-19,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    },
+    "flight_time_s": {
+      "unit": "s",
+      "count": 1024,
+      "max_abs": 3.0423702929700358e-21,
+      "rms": 1.1437740186127252e-21,
+      "mean_signed": -2.10284821347465e-23,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    },
+    "kinetic_energy_ev": {
+      "unit": "eV",
+      "count": 1024,
+      "max_abs": 0.0,
+      "rms": 0.0,
+      "mean_signed": 0.0,
+      "convention": "Coarse minus High on the same original source IDs; no recentering/refocusing"
+    }
+  },
+  "flags": {
+    "sample_alive_exact": true,
+    "sample_blocked_z_exact": true,
+    "sample_blocked_key_exact": true,
+    "original_source_weight_bytes_exact": true
+  },
+  "post_stop_ledger": {
+    "000": {
+      "alive_exact": true,
+      "weight_bytes_exact": true,
+      "blocked_key_exact": true,
+      "high_stop_z_range_mm": [
+        2714.15,
+        2714.15
+      ],
+      "coarse_stop_z_range_mm": [
+        2714.15,
+        2714.15
+      ]
+    }
+  },
+  "quality_numerics": {
+    "high_step_mm": 0.05,
+    "coarse_step_mm": 0.5,
+    "high_history_step_mm": 0.5,
+    "coarse_history_step_mm": 2.0
+  },
+  "scope": "Raw exact sample checkpoints compared by original source ID. New coarse integration reused only the genuine High Gun. This is a step-size sensitivity control at one fixed actual field, not a multi-grid convergence certificate, refocus, material scattering or coherent/scan qualification."
+}

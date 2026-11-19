@@ -165,8 +165,9 @@ def test_stigmator_hardware_readout_shows_current_shared_controls_without_mutati
     assert page.stigmator_table.editTriggers() == QAbstractItemView.EditTrigger.NoEditTriggers
     assert page.stigmator_table.rowCount() == 3
     row = _stigmator_row(page, "condenser_stigmator")
-    assert "Probe A1 fine" in page.stigmator_table.item(row, 3).text()
-    assert "same drives" in page.stigmator_table.item(row, 3).text()
+    assert "Probe A1 fine" not in page.stigmator_table.item(row, 3).text()
+    assert "QPolx / QPoly" in page.stigmator_shared_host.text()
+    assert page.stigmator_table.item(row, 3).text()=="Stigmation controls"
     assert "OEM coil locations" in page.stigmator_note.text()
     assert "shares the Image/Diffraction deflector coil pair" in page.stigmator_shared_host.text()
     assert "Not declared" in page.stigmator_table.item(row, 0).toolTip()

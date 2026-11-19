@@ -29,13 +29,23 @@ def part_solids(part, by_key, *, runtime=None, aperture_index=0):
     values = rear_gun_solids(part)
     if values is not None:
         return values
+    from temsim.multipole_winding import is_primary_multipole
+    from temsim.cad_multipole_winding import multipole_winding_solids
+    if not is_primary_multipole(part):
+        winding=multipole_winding_solids(part,by_key)
+        if winding is not None:
+            return winding
     if non_material_role(part):
         return ()
+    from temsim.cad_round_winding import round_winding_solids
+    winding = round_winding_solids(part, by_key)
+    if winding is not None:
+        return winding
     values = tube_solids(part)
     if values is not None:
         return values
     for build in (objective_upper_hardware_solids, sleeve_solids, detector_solids, recording_plane_solids, gun_stigmator_solids, stigmator_support_solids, c3_lens_hardware_solids, adapter_lens_hardware_solids, tl22_lens_hardware_solids, probe_transfer_lens_hardware_solids, stage_holder_solids, access_port_solids, round_lens_solids, multipole_solids):
-        values=build(part,by_key)
+        values=(build(part,by_key,runtime=runtime) if build is multipole_solids else build(part,by_key))
         if values is not None:
             return values
     values=auxiliary_solids(part,by_key,runtime,aperture_index)
@@ -69,6 +79,10 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
     from temsim.cad_objective_sleeves import sleeve_solids
     from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
     from temsim.gun_rear_geometry import rear_gun_solids
+    from temsim.cad_round_winding import round_winding_solids
+    winding = round_winding_solids(part, by_key)
+    if winding is not None:
+        return winding
     values = rear_gun_solids(part)
     if values is not None:
         return values
@@ -81,8 +95,11 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
             return values
     # Existing saddle-loop face provenance and Tip emission overlays stay native.
     if part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES:
-        return None
-    values=multipole_solids(part,by_key)
+        from temsim.transverse_winding import transverse_winding_definition
+        winding=transverse_winding_definition(part,by_key)
+        if winding is None or not winding['detailed_cad']:
+            return None
+    values=multipole_solids(part,by_key,runtime=runtime)
     if values is not None:
         return values or None
     values=accelerator_solids(part)
@@ -103,6 +120,52 @@ def native_reconstruction(part, by_key, *, runtime=None, aperture_index=0):
 
 def is_reconstruction_region(part, region):
     """Display material categories do not create new FEM material assignments."""
+    if region.startswith(('winding_turn_multipole_coil_','winding_insulation_multipole_coil_',
+                          'multipole_winding_bulk_coil_')):
+        import re
+        from temsim.multipole_winding import multipole_winding_definition
+        try:
+            d=multipole_winding_definition(part)
+        except (TypeError,ValueError,OverflowError):
+            return False
+        if d is None:
+            return False
+        turn=re.fullmatch(r'winding_turn_multipole_coil_([1-9][0-9]*)_([0-9]{6})',region)
+        bulk=re.fullmatch(r'multipole_winding_bulk_coil_([1-9][0-9]*)',region)
+        insulation=re.fullmatch(r'winding_insulation_multipole_coil_([1-9][0-9]*)',region)
+        match=turn or bulk or insulation
+        return bool(match and 1<=int(match.group(1))<=d['coil_count'] and
+                    (not turn or d['detailed_cad'] and 1<=int(turn.group(2))<=d['turn_count_per_coil']) and
+                    (not bulk or not d['detailed_cad']))
+    if region.startswith(('winding_turn_transverse_coil_','winding_insulation_transverse_coil_')):
+        import re
+        from temsim.transverse_winding import transverse_winding_definition
+        try:
+            d=transverse_winding_definition(part)
+        except (TypeError,ValueError,OverflowError):
+            return False
+        if d is None or not d['detailed_cad']:
+            return False
+        turn=re.fullmatch(r'winding_turn_transverse_coil_([1-9][0-9]*)_([0-9]{6})',region)
+        insulation=re.fullmatch(r'winding_insulation_transverse_coil_([1-9][0-9]*)',region)
+        match=turn or insulation
+        return bool(match and 1<=int(match.group(1))<=d['coil_count'] and
+                    (not turn or 1<=int(turn.group(2))<=d['turn_count_per_coil']))
+    if region.startswith(("winding_turn_", "winding_insulation_")) and "winding_turn_count" in part:
+        return True
+    if region.startswith(("winding_turn_coil_", "winding_insulation_coil_")):
+        # Classifying each wire must not rebuild every Boolean wire/insulation
+        # solid. Only the pure bounded layout is needed to check its identity.
+        import re
+        from temsim.cad_probe_winding import probe_winding_dimensions
+        try:
+            dimensions = probe_winding_dimensions(part)
+        except (TypeError, ValueError, OverflowError):
+            return False
+        if dimensions is not None:
+            turn = re.fullmatch(r"winding_turn_coil_([1-6])_([0-9]{6})", region)
+            insulation = re.fullmatch(r"winding_insulation_coil_([1-6])", region)
+            return bool(insulation or (turn and 1 <= int(turn.group(2)) <= dimensions['turn_count_per_coil']))
     if (part.get("mechanical_objective_upper_end_structure")
             and region in {"upper_winding_inner_insulation", "upper_end_insulation", "lower_end_insulation",
                            "upper_cooling_plate", "lower_cooling_plate"}):
@@ -161,7 +224,8 @@ def posed_solids(part,by_key,**kwargs):
     from temsim.lens_pose import mechanical_part_transform_mm
     from temsim.cad_features import map_solid
     from temsim.component_representation import non_material_role
-    if non_material_role(part):
+    from temsim.multipole_winding import multipole_winding_definition
+    if non_material_role(part) and multipole_winding_definition(part,by_key) is None:
         return ()
     explicit=part.get("model_3d",{}).get("base",{}).get("kind","existing") != "existing"
     values=() if explicit else part_solids(part,by_key,**kwargs)

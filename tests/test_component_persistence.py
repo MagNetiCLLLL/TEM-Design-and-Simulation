@@ -165,3 +165,95 @@ def test_raw_composed_transaction_preserves_links_and_validates_shared_parts(cat
         module_manifest.update_manifest_values(
             {MODULE: {("parts", "condenser_lens_1", "name"): "Rejected C1"}}, root=catalog)
     assert path.read_bytes() == original
+
+
+def test_composed_catalog_can_clear_transverse_winding_and_restore_saved_recipe(catalog):
+    from temsim.transverse_current import FIELDS as CURRENT_FIELDS
+    from temsim.transverse_winding import FIELDS as WINDING_FIELDS
+
+    path = catalog / MODULE
+    draft = PartModelDocument(path)
+    key = "probe_dp22_coils"
+    original = draft.part(key)
+    assert WINDING_FIELDS.intersection(original) and CURRENT_FIELDS.intersection(original)
+    linked = catalog.parent / "subassemblies/sample_stage.toml"
+    original_linked = linked.read_bytes()
+    source = tomllib.loads(path.read_text(encoding="utf-8"))
+
+    draft.configure_transverse_winding(key, turn_count_per_coil=None)
+    draft.save()
+    restored = PartModelDocument(path)
+    assert not (WINDING_FIELDS | CURRENT_FIELDS).intersection(restored.part(key))
+    assert not (WINDING_FIELDS | CURRENT_FIELDS).intersection(restored.part(key).get("parameter_metadata", {}))
+    assert tomllib.loads(path.read_text(encoding="utf-8"))["subassemblies"] == source["subassemblies"]
+    assert linked.read_bytes() == original_linked
+
+    draft.undo()
+    draft.save()
+    assert PartModelDocument(path).part(key) == original
+
+
+def test_storage_diff_removes_complete_optional_transverse_provenance_table():
+    from temsim.component_persistence import _storage_text
+    from temsim.transverse_current import BIAS_FIELD
+    from temsim.transverse_winding import TURN_FIELD
+
+    original = ('# Preserve this source comment\n[[parts]]\nkey = "winding"\n'
+                f'{TURN_FIELD} = 4\n{BIAS_FIELD} = [0.0, 0.0]\n'
+                '[parts.parameter_metadata]\n'
+                f'{TURN_FIELD} = {{ source_kind = "estimated" }}\n'
+                '[unrelated]\nvalue = 7 # Keep this comment\n')
+    expected = tomllib.loads(original)
+    for field in (TURN_FIELD, BIAS_FIELD, 'parameter_metadata'):
+        expected['parts'][0].pop(field)
+    staged = _storage_text(original,expected)
+    assert tomllib.loads(staged)==expected
+    assert '# Preserve this source comment' in staged and '# Keep this comment' in staged
+
+
+def test_composed_catalog_multipole_current_clear_save_reload_and_undo(catalog):
+    from copy import deepcopy
+    from temsim.multipole_current import (
+        FIELDS as CURRENT_FIELDS,MATRIX_FIELD,BIAS_FIELD,REFERENCE_ENERGY_FIELD,
+        KIND_FIELD,CALIBRATION_KIND,STATUS_FIELD,NOTE_FIELD,
+    )
+    from temsim.multipole_winding import FIELDS as WINDING_FIELDS
+    path=catalog/MODULE
+    linked=catalog/'../subassemblies/sample_stage.toml'
+    original_linked=linked.read_bytes()
+    draft=PartModelDocument(path)
+    key='probe_qpol_quadrupole'
+    draft.configure_multipole_winding(key,turn_count_per_coil=4,
+        wire_cross_section_mm2=.01,insulation_thickness_mm=.005)
+    candidate=deepcopy(draft.document)
+    part=next(p for p in candidate['parts'] if p['key']==key)
+    part.update({MATRIX_FIELD:[[.1,0.],[0.,.1]],BIAS_FIELD:[0.,0.],
+        REFERENCE_ENERGY_FIELD:300000.,KIND_FIELD:CALIBRATION_KIND,
+        STATUS_FIELD:'test_reference',NOTE_FIELD:'Synthetic persistence fixture; no field calibration.'})
+    draft._commit_component_operation(candidate)
+    draft.save()
+    original=draft.part(key)
+    saved=tomllib.loads(path.read_text(encoding='utf-8'))
+    draft.configure_multipole_winding(key,turn_count_per_coil=None)
+    draft.save()
+    assert not (WINDING_FIELDS|CURRENT_FIELDS).intersection(PartModelDocument(path).part(key))
+    assert tomllib.loads(path.read_text(encoding='utf-8'))['subassemblies']==saved['subassemblies']
+    assert linked.read_bytes()==original_linked
+    draft.undo();draft.save()
+    assert PartModelDocument(path).part(key)==original
+
+
+def test_storage_diff_removes_complete_optional_multipole_provenance_table():
+    from temsim.component_persistence import _storage_text
+    from temsim.multipole_current import BIAS_FIELD
+    from temsim.multipole_winding import TURN_FIELD
+    original=('# Keep winding source\n[[parts]]\nkey = "winding"\n'
+        f'{TURN_FIELD} = 4\n{BIAS_FIELD} = [0.0, 0.0]\n'
+        '[parts.parameter_metadata]\n'
+        f'{TURN_FIELD} = {{ source_kind = "estimated" }}\n'
+        '[unrelated]\nvalue = 9 # Keep unrelated comment\n')
+    expected=tomllib.loads(original)
+    for field in (TURN_FIELD,BIAS_FIELD,'parameter_metadata'):expected['parts'][0].pop(field)
+    staged=_storage_text(original,expected)
+    assert tomllib.loads(staged)==expected
+    assert '# Keep winding source' in staged and '# Keep unrelated comment' in staged

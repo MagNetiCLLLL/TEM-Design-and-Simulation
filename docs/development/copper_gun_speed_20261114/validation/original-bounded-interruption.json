@@ -1,0 +1,18 @@
+{
+  "status": "STOPPED_AT_USER_REQUEST_BOUNDED_VALIDATION",
+  "original_positive_count": 1024,
+  "implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "complete_preview_result": false,
+  "complete_high_accuracy_result": false,
+  "last_progress": {
+    "quality": "Preview",
+    "elapsed_s": 4595.1303058,
+    "progress": [
+      0,
+      0,
+      "Electron gun | 1,024/1,024 active | Z 0.662688 to 0.67816 mm / exit 450.000 mm | 515 steps | 4594.5 s"
+    ]
+  },
+  "scope": "Real official Preview worker progressed through accepted Gun steps. Full Gun exit, column, specimen probe and High accuracy transport are not completed or qualified. User selected CUDA scan completion and bounded copper verification.",
+  "original_inputs_and_logs_unchanged": true
+}

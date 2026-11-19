@@ -108,10 +108,10 @@ def test_rigid_pose_rotates_potential_field_and_derivatives():
 def test_source_volume_is_excluded_even_at_zero_current_and_swept_boxes_fail_closed():
     coil = _coil(ampere_turns=0.)
     for point in ([.006, 0., 0.], [.01, 0., .005], [.007, 0., 0.]):
-        with pytest.raises(ValueError, match="copper"):
+        with pytest.raises(ValueError, match="winding"):
             coil.sample(point)
     coil.sample([[.0059, 0., 0.], [.0101, 0., 0.], [.007, 0., .0051]])
-    with pytest.raises(ValueError, match="copper"):
+    with pytest.raises(ValueError, match="winding"):
         coil.require_global_box([[.005, 0., 0.], [.011, 0., 0.]])
     coil.require_global_box([[-.001, -.001, -.1], [.001, .001, .1]])
 

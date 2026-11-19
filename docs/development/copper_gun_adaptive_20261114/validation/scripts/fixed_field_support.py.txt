@@ -1,0 +1,82 @@
+"""Read-only controls/serialization helpers for the new High-field control."""
+from copy import deepcopy
+from collections.abc import Mapping
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+
+
+CASE = Path(__file__).resolve().parent
+
+
+def sha(path):
+    result = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(8*1024**2), b""):
+            result.update(block)
+    return result.hexdigest()
+
+
+def serial(value):
+    import numpy as np
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, np.generic):
+        return value.item()
+    if isinstance(value, Mapping):
+        return {str(key): serial(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [serial(item) for item in value]
+    if isinstance(value, Path):
+        return str(value)
+    return value
+
+
+def write_json(path, data):
+    with Path(path).open("x", encoding="utf-8") as stream:
+        json.dump(serial(data), stream, indent=2, allow_nan=False)
+
+
+def helper_module():
+    path = CASE / "run_particle_validation.py"
+    spec = importlib.util.spec_from_file_location("adaptive_full_validation_helpers", path)
+    result = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+
+
+def independent_controls(state, helper):
+    # The new full-run helper already excludes exactly the two existing
+    # lower_gain compatibility readbacks. Every independent field is retained.
+    return helper.physical_controls(state)
+
+
+def derived_records(state):
+    from temsim.physics.scan_preparation import _resolved_values
+    ac, descan = state.ac_deflector, state.descan_deflector
+    return dict(official_resolved_values=_resolved_values(state),
+        ac_lower_coil_gain=ac.lower_coil_gain, descan_lower_coil_gain=descan.lower_coil_gain,
+        ac_ratio=ac.pure_shift_lower_ratio_matrix, descan_ratio=descan.image_plane_lower_ratio_matrix,
+        ac_commands_mrad=ac.scan_command_matrix_mrad, descan_commands_mrad=descan.scan_command_matrix_mrad,
+        ac_coil_maps=ac.coil_kick_matrices(), descan_coil_maps=descan.coil_kick_matrices(),
+        execution_receipt=getattr(ac, "_scan_execution_receipt", None))
+
+
+def graph_without_derived(state):
+    from temsim.instrument_snapshot import encode_instrument
+    from temsim.immutable_json import thaw_json
+    from temsim.physics.scan_preparation import _resolved_values
+    outputs = dict(zip(("ac_deflector", "descan_deflector"), _resolved_values(state)))
+    graph = deepcopy(thaw_json(encode_instrument(state)))
+    for node in graph["nodes"]:
+        attributes = node.get("attributes", {})
+        key = attributes.get("key")
+        if key not in outputs:
+            continue
+        remove = {name for name in outputs[key] if name.startswith("_")}
+        remove.add("lower_coil_gain")
+        for name in remove:
+            attributes.pop(name, None)
+        node["fields"] = [name for name in node["fields"] if name not in remove]
+    return graph

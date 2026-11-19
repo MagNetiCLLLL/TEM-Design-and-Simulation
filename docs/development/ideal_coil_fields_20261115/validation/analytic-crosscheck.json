@@ -1,0 +1,73 @@
+{
+  "reference": "Independent production benchmark integrates radius with96 Gauss nodes and integrates axial coordinate analytically; normalized its fixedmu0 to the production scipy.constants.mu_0 before comparison",
+  "max_relative_difference": 6.054207604698087e-15,
+  "lenses": [
+    {
+      "key": "condenser_lens_1",
+      "peak_normalized_error": 9.85161074715914e-16
+    },
+    {
+      "key": "condenser_lens_2",
+      "peak_normalized_error": 8.522674752709369e-16
+    },
+    {
+      "key": "condenser_lens_3",
+      "peak_normalized_error": 7.760538205111843e-16
+    },
+    {
+      "key": "adapter_lens",
+      "peak_normalized_error": 4.738530474178247e-15
+    },
+    {
+      "key": "probe_tl22_lens",
+      "peak_normalized_error": 6.054207604698087e-15
+    },
+    {
+      "key": "probe_tl21_lens",
+      "peak_normalized_error": 5.094540279305836e-15
+    },
+    {
+      "key": "probe_tl12_lens",
+      "peak_normalized_error": 5.6219778429318555e-15
+    },
+    {
+      "key": "mini_condenser",
+      "peak_normalized_error": 1.89512804937559e-15
+    },
+    {
+      "key": "objective_lens",
+      "peak_normalized_error": 6.876415449472025e-16
+    },
+    {
+      "key": "diffraction_lens",
+      "peak_normalized_error": 6.928417103630327e-16
+    },
+    {
+      "key": "intermediate_lens",
+      "peak_normalized_error": 6.038563610520474e-16
+    },
+    {
+      "key": "projector_lens_1",
+      "peak_normalized_error": 5.124416706895438e-16
+    },
+    {
+      "key": "projector_lens_2",
+      "peak_normalized_error": 4.850575155809191e-16
+    }
+  ],
+  "objective_refined_analytic_fwhm": {
+    "peak_t": 0.007568746213303648,
+    "upper_peak_z_mm": 1470.3996636891593,
+    "half_max_crossings_mm": [
+      1391.133673874095,
+      1549.8672708769404,
+      1648.5327291230597,
+      1807.2663261259052
+    ],
+    "lobe_widths_mm": [
+      158.7335970028456,
+      158.7335970028456
+    ]
+  },
+  "no_production_input_or_tolerance_change": true
+}

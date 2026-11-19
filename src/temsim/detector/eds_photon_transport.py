@@ -19,6 +19,7 @@ import math
 from typing import Iterable, Protocol
 
 import numpy as np
+from temsim.pole_geometry import RadialBand, installed_objective_section, section_radial_bands
 
 from temsim.detector.eds_geometry import EDSDetectorArrayGeometry
 from temsim.specimen.scene import SpecimenScene
@@ -159,6 +160,7 @@ class AxisymmetricPolePieceOccluder:
     hard_shadow: bool = True
     geometry_status: str = "assembly_geometry"
     provenance: str = "selected instrument TOML"
+    radial_bands: tuple[RadialBand, ...] = ()
 
     def __post_init__(self) -> None:
         values = (
@@ -219,14 +221,14 @@ class AxisymmetricPolePieceOccluder:
         maximum = float(maximum_distance_mm)
         if not math.isfinite(maximum) or maximum <= 0.0:
             return ()
-        z_breaks = sorted({
-            float(self.z_min_mm),
-            float(self.z_max_mm),
-            float(self.face_z_mm),
-            float(self.shoulder_z_mm),
-        })
+        bands = self.radial_bands
+        if not bands:
+            stations = sorted({self.z_min_mm, self.z_max_mm, self.face_z_mm, self.shoulder_z_mm})
+            bands = tuple(RadialBand(a, b, self.bore_radius_mm, self.bore_radius_mm,
+                                     self._outer_radius(a), self._outer_radius(b))
+                          for a, b in zip(stations, stations[1:]))
         intervals: list[tuple[float, float]] = []
-        for z_left, z_right in zip(z_breaks[:-1], z_breaks[1:], strict=True):
+        for z_left, z_right, inner_left, inner_right, outer_left, outer_right in bands:
             distance_bounds = self._distance_interval_for_z(
                 origin, vector, z_left, z_right
             )
@@ -236,15 +238,14 @@ class AxisymmetricPolePieceOccluder:
             upper = min(float(distance_bounds[1]), maximum)
             if upper <= lower:
                 continue
-            outer_left = self._outer_radius(z_left)
-            outer_right = self._outer_radius(z_right)
             slope = (outer_right - outer_left) / (z_right - z_left)
             constant = outer_left - slope * z_left
+            inner_slope = (inner_right - inner_left) / (z_right - z_left)
             candidates = [lower, upper]
             candidates.extend(
                 root
                 for root in _radial_surface_roots(
-                    origin, vector, self.bore_radius_mm, 0.0
+                    origin, vector, inner_left - inner_slope * z_left, inner_slope
                 )
                 if lower < root < upper
             )
@@ -258,10 +259,8 @@ class AxisymmetricPolePieceOccluder:
                 middle = 0.5 * (start + stop)
                 point = origin + middle * vector
                 radius = math.hypot(float(point[0]), float(point[1]))
-                if (
-                    radius >= self.bore_radius_mm - 1.0e-12
-                    and radius <= self._outer_radius(float(point[2])) + 1.0e-12
-                ):
+                dz = float(point[2]) - z_left
+                if inner_left + inner_slope * dz - 1.0e-12 <= radius <= outer_left + slope * dz + 1.0e-12:
                     intervals.append((start, stop))
         if not intervals:
             return ()
@@ -929,6 +928,7 @@ def objective_pole_occluders_from_state(
         face = float(part.end_z_mm if upper else part.start_z_mm)
         nose = float(data["pole_nose_axial_length_mm"])
         shoulder = face - nose if upper else face + nose
+        section = installed_objective_section(part)
         rows.append(
             AxisymmetricPolePieceOccluder(
                 key=key,
@@ -939,6 +939,7 @@ def objective_pole_occluders_from_state(
                 bore_radius_mm=0.5 * float(data["mechanical_bore_diameter_mm"]),
                 tip_radius_mm=0.5 * float(data["mechanical_tip_diameter_mm"]),
                 body_radius_mm=0.5 * float(data["mechanical_outer_diameter_mm"]),
+                radial_bands=section_radial_bands(section) if section else (),
                 hard_shadow=True,
                 geometry_status=str(
                     data.get(

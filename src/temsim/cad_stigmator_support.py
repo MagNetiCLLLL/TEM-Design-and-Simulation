@@ -144,4 +144,6 @@ def stigmator_support_solids(part, by_key=None):
             supports.append(spec(f"coil_{index}_{name}", material, transformed(shape, rotation=rotation), extra))
     carrier = difference(annulus(d["start_mm"], d["end_mm"],
         d["inner_radius_mm"], d["outer_radius_mm"]), *slots)
-    return windings + (spec("slotted_carrier", "insulating_polymer_unspecified", carrier), *supports)
+    from temsim.cad_transverse_winding import transverse_winding_solids
+    detailed=transverse_winding_solids(part,by_key)
+    return (detailed if detailed is not None else windings) + (spec("slotted_carrier", "insulating_polymer_unspecified", carrier), *supports)

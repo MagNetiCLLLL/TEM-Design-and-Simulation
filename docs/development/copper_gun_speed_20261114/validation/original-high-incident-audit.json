@@ -1,0 +1,876 @@
+{
+  "status": "NumericalCompleteButOpticalInputCheckFailed",
+  "scope": "Independent persisted-array and official restart-codec audit. No emission, transport, benchmark, coherent calculation, field solve, or source edit.",
+  "implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "qualities": [
+    {
+      "quality": "Preview",
+      "numerical_completed_result_count": 1,
+      "worker_errors": [],
+      "persistence_errors": [],
+      "receipt_elapsed_seconds": 3213.8323622999997,
+      "quality_preparation": {
+        "schema": "gui-request-numerical-preparation-v1",
+        "quality": "Preview",
+        "requested_step_mm": 0.5,
+        "applied_step_mm": 0.5,
+        "high_accuracy_maximum_step_mm": null,
+        "changed": false,
+        "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+      },
+      "emitter_original_positive_count": 1024,
+      "energy_spread_fwhm_setting_ev": 0.3,
+      "initial_source_bounds_ev": [
+        0.01,
+        1.3
+      ],
+      "initial_source_actual_energy_range_ev": [
+        0.015094567656436075,
+        0.7013491466779715
+      ],
+      "all_original_source_fields_exact": true,
+      "physical_controls_unchanged": true,
+      "physical_control_differences": [],
+      "official_roundtrip": {
+        "native_array_count": 63,
+        "exact_dtype_shape_and_bytes": true,
+        "checked_fields": [
+          "incident.z",
+          "incident.x",
+          "incident.y",
+          "incident.tx",
+          "incident.ty",
+          "incident.alive",
+          "incident.blocked_z",
+          "incident.energy_offset_ev",
+          "incident.ray_weight",
+          "incident.source_ray_id",
+          "incident.source_azimuth_rad",
+          "incident.flight_time_s",
+          "incident.kinetic_energy_ev",
+          "gun.z_mm",
+          "gun.x_m",
+          "gun.y_m",
+          "gun.tx_rad",
+          "gun.ty_rad",
+          "gun.blocked_z_mm",
+          "gun.flight_time_s",
+          "gun_exit.x_m",
+          "gun_exit.y_m",
+          "gun_exit.tx_rad",
+          "gun_exit.ty_rad",
+          "gun_exit.energy_offset_ev",
+          "gun_exit.weight",
+          "gun_exit.ray_id",
+          "gun_exit.alive",
+          "gun_exit.flight_time_s",
+          "gun_time_history.time_s",
+          "gun_time_history.z_mm",
+          "gun_time_history.x_m",
+          "gun_time_history.y_m",
+          "gun_time_history.tx_rad",
+          "gun_time_history.ty_rad",
+          "gun_time_history.alive",
+          "gun_time_history.completed",
+          "checkpoint.z_mm",
+          "checkpoint.x_m",
+          "checkpoint.y_m",
+          "checkpoint.tx_rad",
+          "checkpoint.ty_rad",
+          "checkpoint.kinetic_energy_ev",
+          "checkpoint.flight_time_s",
+          "arrival0.time_s",
+          "arrival0.x_m",
+          "arrival0.y_m",
+          "arrival0.reached",
+          "arrival0.transmitted",
+          "arrival1.time_s",
+          "arrival1.x_m",
+          "arrival1.y_m",
+          "arrival1.reached",
+          "arrival1.transmitted",
+          "arrival2.time_s",
+          "arrival2.x_m",
+          "arrival2.y_m",
+          "arrival2.reached",
+          "arrival2.transmitted",
+          "emission.ray_id",
+          "emission.position_m",
+          "emission.direction",
+          "emission.normal"
+        ],
+        "codec_validation": "Official loader additionally verifies every numeric checksum and logical content digest"
+      },
+      "executed_output_npz_comparison": {
+        "available": true,
+        "exact_array_count": 14,
+        "exact_bytes": true
+      },
+      "negative_identity_admission": {
+        "wrong_source_digest": "None",
+        "wrong_implementation_schema": "None",
+        "wrong_manifest_schema": "ValueError"
+      },
+      "full_gun_fingerprint_sha256": "96670d5e93726ebb7f128ba495a2b2737e33e322671fea0899e7b142abda914a",
+      "gun_exit_survivors": 1024,
+      "gun_equal_time_frames": 353,
+      "gun_model_energy_validation": {
+        "accelerating_voltage_kv": 300.0,
+        "electrostatic_field": {
+          "boundary_conditions": {
+            "axis": "axisymmetric_regular",
+            "cathode": {
+              "extent": "entire_radial_domain_at_z_zero",
+              "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+              "rise_v": 0.0,
+              "type": "planar_equipotential"
+            },
+            "exit": {
+              "location": "numerical_cut_inside_continuing_grounded_liner",
+              "rise_v": 300000.0,
+              "type": "uniform_dirichlet"
+            },
+            "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+            "metal": "annular_dirichlet",
+            "radial_outer": "natural_zero_normal_derivative"
+          },
+          "cache_bytes": 5349662,
+          "cache_hit": true,
+          "cache_path": "C:\\Users\\54019\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4.npz",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 1,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 1
+          },
+          "elements": 1815840,
+          "grid_shape": [
+            313,
+            2911
+          ],
+          "limitations": [
+            "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+            "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+            "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+            "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+            "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+            "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+            "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+          ],
+          "linear_residual": 1.6492170592149098e-15,
+          "load_seconds": 0.027761800000007497,
+          "maximum_axial_cell_m": 0.10302791397559308,
+          "minimum_axial_cell_m": 1.0000000005838672e-07,
+          "minimum_radial_cell_m": 1.4705882352940985e-05,
+          "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+          "potential_reference": "rise_relative_to_original_tip_v",
+          "request_sha256": "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4",
+          "schema": "closed-classical-gun-electrostatics-v1",
+          "solve_seconds": 3.8689997999999832,
+          "vertices": 911143
+        },
+        "exit_energy_error_budget_ev": 0.001,
+        "exit_energy_status": "verified",
+        "extraction_voltage_kv": 4.0,
+        "launch_boundary": null,
+        "maximum_exit_energy_error_ev": 9.097857400774956e-08,
+        "maximum_exit_kinetic_energy_ev": 300000.70134922117,
+        "maximum_expected_exit_kinetic_energy_ev": 300000.7013491739,
+        "minimum_exit_kinetic_energy_ev": 300000.01509460155,
+        "minimum_expected_exit_kinetic_energy_ev": 300000.0150945949,
+        "model": "closed-classical-gun-electrostatics-v1",
+        "potential_reference": "work_relative_to_executed_emission_positions",
+        "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction",
+        "surface_mesh_displacement_m": null,
+        "transmitted_particle_count": 1024
+      },
+      "incident": {
+        "source_ids_unique": true,
+        "sample_z_mm": 1599.2,
+        "sample_positive_survivors": 1024,
+        "sample_effective_count": 1024.0,
+        "source_weight_sum": 1.0,
+        "surviving_source_fraction": 1.0,
+        "lost_source_fraction": 0.0,
+        "emitted_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "lost_current_a": 0.0,
+        "absolute_current_ledger_residual_a": 0.0,
+        "executed_start_z_mm": 450.0,
+        "retained_history_nodes": 2804,
+        "integration_nodes": 2578,
+        "maximum_integration_step_mm": 0.4998695084821066,
+        "required_executed_energy_clock_points": 2639872,
+        "unknown_pre_column_energy_cells": 231424,
+        "maximum_energy_minus_nominal_and_source_offset_ev": 3.597233444452286e-07,
+        "executed_clock_nondecreasing": true,
+        "minimum_adjacent_clock_increment_s": 8.271806125530277e-25,
+        "gun_exit_clock_matches_column_start_exactly": true,
+        "energy_range_ev": [
+          300000.01509454974,
+          300000.7013494626
+        ]
+      },
+      "field": {
+        "snapshot_schema": "native-dynamic-potential-snapshot-v1",
+        "numerical_digest": "d8445e49015d1a956974b90fc51bffb7eade4123d6ac7d996d81177836862837",
+        "dynamic_coils": [
+          {
+            "owner_ids": [
+              "ac_deflector:0"
+            ],
+            "reference_kick_rad": [
+              -5e-05,
+              -4.921875000000001e-05
+            ],
+            "drives": [
+              {
+                "key": "ac_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    0.05,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              7.002192603104712e-06,
+              6.892783343681201e-06
+            ],
+            "B_at_center_10ns_t": [
+              6.892783343681201e-06,
+              -7.00218364029818e-06,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "ac_deflector:1"
+            ],
+            "reference_kick_rad": [
+              5e-05,
+              4.921875000000001e-05
+            ],
+            "drives": [
+              {
+                "key": "ac_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    -0.05,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    -0.05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              -7.002192603104712e-06,
+              -6.892783343681201e-06
+            ],
+            "B_at_center_10ns_t": [
+              -6.892783343681201e-06,
+              7.00218364029818e-06,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "image_diffraction_deflector:0"
+            ],
+            "reference_kick_rad": [
+              5e-05,
+              4.921875000000001e-05
+            ],
+            "drives": [
+              {
+                "key": "descan_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    -0.05,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    -0.05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              -7.002192603104712e-06,
+              -6.892783343681201e-06
+            ],
+            "B_at_center_10ns_t": [
+              -6.892783343681201e-06,
+              7.00218364029818e-06,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "image_diffraction_deflector:1"
+            ],
+            "reference_kick_rad": [
+              5e-05,
+              4.921875000000001e-05
+            ],
+            "drives": [
+              {
+                "key": "descan_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    -0.05,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    -0.05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              -7.002192603104712e-06,
+              -6.892783343681201e-06
+            ],
+            "B_at_center_10ns_t": [
+              -6.892783343681201e-06,
+              7.00218364029818e-06,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          }
+        ],
+        "scope": "Saved runtime coefficients plus four single-point analytical field evaluations; no transport"
+      },
+      "audit_view": {
+        "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\audit-view\\preview",
+        "hardlinked_numeric_files": 103,
+        "independent_metadata_copies": 2,
+        "loader_policy": "Official rb np.load; only copied reference LRU is touched",
+        "cleanup_policy": "Retained; no recursive removal"
+      },
+      "original_store_size_mtime_and_json_hashes_unchanged": true,
+      "restored_post_branches": 0,
+      "post_branch_persistence_limit": "Official incident seed preserves Gun/incident/plan/checkpoints only. No post-specimen branch phase, energy or clock can be recovered from this seed."
+    },
+    {
+      "quality": "High accuracy",
+      "numerical_completed_result_count": 1,
+      "worker_errors": [],
+      "persistence_errors": [],
+      "receipt_elapsed_seconds": 2909.128643,
+      "quality_preparation": {
+        "schema": "gui-request-numerical-preparation-v1",
+        "quality": "High accuracy",
+        "requested_step_mm": 0.5,
+        "applied_step_mm": 0.05,
+        "high_accuracy_maximum_step_mm": 0.05,
+        "changed": true,
+        "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+      },
+      "emitter_original_positive_count": 1024,
+      "energy_spread_fwhm_setting_ev": 0.3,
+      "initial_source_bounds_ev": [
+        0.01,
+        1.3
+      ],
+      "initial_source_actual_energy_range_ev": [
+        0.015094567656436075,
+        0.7013491466779715
+      ],
+      "all_original_source_fields_exact": true,
+      "physical_controls_unchanged": false,
+      "physical_control_differences": [
+        {
+          "path": ".corrector_elements[13].lower_coil_gain",
+          "before": -0.5,
+          "after": -0.470958347513965
+        },
+        {
+          "path": ".corrector_elements[14].lower_coil_gain",
+          "before": 0.5,
+          "after": -0.4799506262907954
+        }
+      ],
+      "official_roundtrip": {
+        "native_array_count": 63,
+        "exact_dtype_shape_and_bytes": true,
+        "checked_fields": [
+          "incident.z",
+          "incident.x",
+          "incident.y",
+          "incident.tx",
+          "incident.ty",
+          "incident.alive",
+          "incident.blocked_z",
+          "incident.energy_offset_ev",
+          "incident.ray_weight",
+          "incident.source_ray_id",
+          "incident.source_azimuth_rad",
+          "incident.flight_time_s",
+          "incident.kinetic_energy_ev",
+          "gun.z_mm",
+          "gun.x_m",
+          "gun.y_m",
+          "gun.tx_rad",
+          "gun.ty_rad",
+          "gun.blocked_z_mm",
+          "gun.flight_time_s",
+          "gun_exit.x_m",
+          "gun_exit.y_m",
+          "gun_exit.tx_rad",
+          "gun_exit.ty_rad",
+          "gun_exit.energy_offset_ev",
+          "gun_exit.weight",
+          "gun_exit.ray_id",
+          "gun_exit.alive",
+          "gun_exit.flight_time_s",
+          "gun_time_history.time_s",
+          "gun_time_history.z_mm",
+          "gun_time_history.x_m",
+          "gun_time_history.y_m",
+          "gun_time_history.tx_rad",
+          "gun_time_history.ty_rad",
+          "gun_time_history.alive",
+          "gun_time_history.completed",
+          "checkpoint.z_mm",
+          "checkpoint.x_m",
+          "checkpoint.y_m",
+          "checkpoint.tx_rad",
+          "checkpoint.ty_rad",
+          "checkpoint.kinetic_energy_ev",
+          "checkpoint.flight_time_s",
+          "arrival0.time_s",
+          "arrival0.x_m",
+          "arrival0.y_m",
+          "arrival0.reached",
+          "arrival0.transmitted",
+          "arrival1.time_s",
+          "arrival1.x_m",
+          "arrival1.y_m",
+          "arrival1.reached",
+          "arrival1.transmitted",
+          "arrival2.time_s",
+          "arrival2.x_m",
+          "arrival2.y_m",
+          "arrival2.reached",
+          "arrival2.transmitted",
+          "emission.ray_id",
+          "emission.position_m",
+          "emission.direction",
+          "emission.normal"
+        ],
+        "codec_validation": "Official loader additionally verifies every numeric checksum and logical content digest"
+      },
+      "executed_output_npz_comparison": {
+        "available": false
+      },
+      "negative_identity_admission": {
+        "wrong_source_digest": "None",
+        "wrong_implementation_schema": "None",
+        "wrong_manifest_schema": "ValueError"
+      },
+      "full_gun_fingerprint_sha256": "d3ac72933957a9f1071836817fedb9720f0d4152865fdb9a2973ea4e371a22e0",
+      "gun_exit_survivors": 1024,
+      "gun_equal_time_frames": 353,
+      "gun_model_energy_validation": {
+        "accelerating_voltage_kv": 300.0,
+        "electrostatic_field": {
+          "boundary_conditions": {
+            "axis": "axisymmetric_regular",
+            "cathode": {
+              "extent": "entire_radial_domain_at_z_zero",
+              "material_extension": "z_below_zero_is_constant_potential_conductor_for_interception",
+              "rise_v": 0.0,
+              "type": "planar_equipotential"
+            },
+            "exit": {
+              "location": "numerical_cut_inside_continuing_grounded_liner",
+              "rise_v": 300000.0,
+              "type": "uniform_dirichlet"
+            },
+            "grounded_liner": "physical_shells_and_radial_step_faces_at_ground",
+            "metal": "annular_dirichlet",
+            "radial_outer": "natural_zero_normal_derivative"
+          },
+          "cache_bytes": 5349662,
+          "cache_hit": true,
+          "cache_path": "C:\\Users\\54019\\AppData\\Local\\TEMSimulator\\cache\\gun-fields\\e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4.npz",
+          "cpu_resources": {
+            "available_cpus": 32,
+            "blas_threads": 1,
+            "numba_threads": 1,
+            "numerical_jobs": 1,
+            "numerical_thread_budget": 1
+          },
+          "elements": 1815840,
+          "grid_shape": [
+            313,
+            2911
+          ],
+          "limitations": [
+            "The flat source uses an idealised full-domain planar cathode, not a nanometre emission patch.",
+            "Annular electrode contours use current mechanical bore, thickness and outer dimensions.",
+            "Grounding the downstream liner is an explicit simulator electrical design, not measured wiring.",
+            "Radial joints between stepped liner shells are idealised zero-thickness grounded faces.",
+            "No space charge, image charge, dielectric polarization or tunnelling-current prediction.",
+            "Magnetic controls, aperture absorption and any installed monochromator remain separate required operations.",
+            "Field evaluation is strict inside the solved domain; no analytic fallback or energy reset."
+          ],
+          "linear_residual": 1.6492170592149098e-15,
+          "load_seconds": 0.027761800000007497,
+          "maximum_axial_cell_m": 0.10302791397559308,
+          "minimum_axial_cell_m": 1.0000000005838672e-07,
+          "minimum_radial_cell_m": 1.4705882352940985e-05,
+          "model_status": "classical_planar_cathode_with_explicit_grounded_outlet",
+          "potential_reference": "rise_relative_to_original_tip_v",
+          "request_sha256": "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4",
+          "schema": "closed-classical-gun-electrostatics-v1",
+          "solve_seconds": 3.8689997999999832,
+          "vertices": 911143
+        },
+        "exit_energy_error_budget_ev": 0.001,
+        "exit_energy_status": "verified",
+        "extraction_voltage_kv": 4.0,
+        "launch_boundary": null,
+        "maximum_exit_energy_error_ev": 9.097857400774956e-08,
+        "maximum_exit_kinetic_energy_ev": 300000.70134922117,
+        "maximum_expected_exit_kinetic_energy_ev": 300000.7013491739,
+        "minimum_exit_kinetic_energy_ev": 300000.01509460155,
+        "minimum_expected_exit_kinetic_energy_ev": 300000.0150945949,
+        "model": "closed-classical-gun-electrostatics-v1",
+        "potential_reference": "work_relative_to_executed_emission_positions",
+        "scope": "classical prescribed outgoing flux; no coherent phase or tunnelling prediction",
+        "surface_mesh_displacement_m": null,
+        "transmitted_particle_count": 1024
+      },
+      "incident": {
+        "source_ids_unique": true,
+        "sample_z_mm": 1599.2,
+        "sample_positive_survivors": 1024,
+        "sample_effective_count": 1024.0,
+        "source_weight_sum": 1.0,
+        "surviving_source_fraction": 1.0,
+        "lost_source_fraction": 0.0,
+        "emitted_current_a": 1e-05,
+        "sample_current_a": 1e-05,
+        "lost_current_a": 0.0,
+        "absolute_current_ledger_residual_a": 0.0,
+        "executed_start_z_mm": 450.0,
+        "retained_history_nodes": 23239,
+        "integration_nodes": 23013,
+        "maximum_integration_step_mm": 0.0500000000001819,
+        "required_executed_energy_clock_points": 23565312,
+        "unknown_pre_column_energy_cells": 231424,
+        "maximum_energy_minus_nominal_and_source_offset_ev": 3.597233444452286e-07,
+        "executed_clock_nondecreasing": true,
+        "minimum_adjacent_clock_increment_s": 8.271806125530277e-25,
+        "gun_exit_clock_matches_column_start_exactly": true,
+        "energy_range_ev": [
+          300000.01509454974,
+          300000.7013494626
+        ]
+      },
+      "field": {
+        "snapshot_schema": "native-dynamic-potential-snapshot-v1",
+        "numerical_digest": "0d893312694840ecd630e0ac962f376dba01e76d943c9f56400c640739f9422e",
+        "dynamic_coils": [
+          {
+            "owner_ids": [
+              "ac_deflector:0"
+            ],
+            "reference_kick_rad": [
+              -1.9017386001937483e-08,
+              -2.2934426001637525e-08
+            ],
+            "drives": [
+              {
+                "key": "ac_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    2.1124218066030805e-05,
+                    -2.1402738428884535e-06
+                  ],
+                  [
+                    2.1402738428884535e-06,
+                    2.1124218066030805e-05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              2.6632679918630746e-09,
+              3.2118253621023727e-09
+            ],
+            "B_at_center_10ns_t": [
+              3.2118249784451656e-09,
+              -2.6632642052174813e-09,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "ac_deflector:1"
+            ],
+            "reference_kick_rad": [
+              1.589054365210952e-08,
+              2.3279182313383196e-08
+            ],
+            "drives": [
+              {
+                "key": "ac_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    -1.970853439387497e-05,
+                    3.878593769412524e-06
+                  ],
+                  [
+                    -3.878593769412524e-06,
+                    -1.970853439387497e-05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              -2.2253729444022763e-09,
+              -3.260106364021957e-09
+            ],
+            "B_at_center_10ns_t": [
+              -3.260105668760246e-09,
+              2.22536941152666e-09,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "image_diffraction_deflector:0"
+            ],
+            "reference_kick_rad": [
+              1.9017386001937483e-08,
+              2.2934426001637525e-08
+            ],
+            "drives": [
+              {
+                "key": "descan_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    -2.1124218066030805e-05,
+                    2.1402738428884535e-06
+                  ],
+                  [
+                    -2.1402738428884535e-06,
+                    -2.1124218066030805e-05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              -2.6632679918630746e-09,
+              -3.2118253621023727e-09
+            ],
+            "B_at_center_10ns_t": [
+              -3.2118249784451656e-09,
+              2.6632642052174813e-09,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          },
+          {
+            "owner_ids": [
+              "image_diffraction_deflector:1"
+            ],
+            "reference_kick_rad": [
+              -1.7430401151923022e-08,
+              -2.269839200556016e-08
+            ],
+            "drives": [
+              {
+                "key": "descan_deflector",
+                "kind": "raster",
+                "matrix_mrad": [
+                  [
+                    2.0200228107215777e-05,
+                    -2.813792462519627e-06
+                  ],
+                  [
+                    2.813792462519627e-06,
+                    2.020022810721578e-05
+                  ]
+                ],
+                "period_s": 1.0,
+                "lines": 64,
+                "phase_rad": 0.0,
+                "time_policy": "rounded-line-interval-v1"
+              }
+            ],
+            "reference_coefficients_t": [
+              2.441020520302865e-09,
+              3.1787702520740895e-09
+            ],
+            "B_at_center_10ns_t": [
+              3.1787697476845404e-09,
+              -2.4410168992881364e-09,
+              0.0
+            ],
+            "E_at_center_10ns_v_per_m": [
+              -0.0,
+              -0.0,
+              -0.0
+            ],
+            "nonzero_B": true
+          }
+        ],
+        "scope": "Saved runtime coefficients plus four single-point analytical field evaluations; no transport"
+      },
+      "audit_view": {
+        "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\audit-view\\high-accuracy",
+        "hardlinked_numeric_files": 103,
+        "independent_metadata_copies": 2,
+        "loader_policy": "Official rb np.load; only copied reference LRU is touched",
+        "cleanup_policy": "Retained; no recursive removal"
+      },
+      "original_store_size_mtime_and_json_hashes_unchanged": true,
+      "restored_post_branches": 0,
+      "post_branch_persistence_limit": "Official incident seed preserves Gun/incident/plan/checkpoints only. No post-specimen branch phase, energy or clock can be recovered from this seed."
+    }
+  ],
+  "full_gun_source_native_histories_exit_clocks_and_metadata_exact_between_qualities": false,
+  "all_gun_source_native_history_exit_and_clock_array_bytes_exact_between_qualities": true,
+  "gun_numeric_array_count_compared": 54,
+  "full_gun_fingerprint_differences": [
+    {
+      "path": ".fields.incremental_source.column_input_digest",
+      "before": "07148a110f5a7ab494cf6fbb3dea02686813825b1c7a1b3bba98dccfcdb4133f",
+      "after": "653e4efa469b0e46b423f5f426cc3063c371eb46fc03de1bb6b1f341315a1ae3"
+    }
+  ],
+  "executed_runtime_field_equal": false,
+  "all_four_saved_scan_coils_have_nonzero_B": true,
+  "paired_sample_endpoints": {
+    "source_ids_equal": true,
+    "matched_alive_source_count": 1024,
+    "x": {
+      "maximum_absolute_difference": 4.6771621586367e-07,
+      "rms_difference": 4.677159554131403e-07
+    },
+    "y": {
+      "maximum_absolute_difference": 1.832146381595339e-06,
+      "rms_difference": 1.8321450858613656e-06
+    },
+    "tx": {
+      "maximum_absolute_difference": 5.769440599075872e-06,
+      "rms_difference": 5.76943361972617e-06
+    },
+    "ty": {
+      "maximum_absolute_difference": 2.4636043263022707e-06,
+      "rms_difference": 2.4636031896847254e-06
+    },
+    "kinetic_energy_ev": {
+      "maximum_absolute_difference": 0.0,
+      "rms_difference": 0.0
+    },
+    "flight_time_s": {
+      "maximum_absolute_difference": 2.520551675347084e-19,
+      "rms_difference": 2.2974852879899556e-19
+    },
+    "interpretation": "Confounded quality comparison: step size and executed scan calibration both differ. Not a fixed-field integration convergence or source-sampling convergence result."
+  },
+  "preserved_runner_failure": {
+    "status": "FAILED",
+    "error": "Traceback (most recent call last):\n  File \"F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\run_particle_validation.py\", line 515, in main\n    existing = run_quality(args, quality, values, args.output / quality.lower().replace(\" \", \"-\"), existing)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\run_particle_validation.py\", line 438, in run_quality\n    raise RuntimeError(\"Gun or optical hardware settings changed during execution\")\nRuntimeError: Gun or optical hardware settings changed during execution\n",
+    "scope": "No claim beyond already persisted result/observer evidence"
+  },
+  "high_missing_outputs": [
+    "summary.json",
+    "completed-source-verification.json",
+    "executed-energy-clock-loss-arrays.npz",
+    "executed-energy-clock-loss-verification.json"
+  ],
+  "qualification_limit": "High worker numerically returned and saved its incident seed, but failed the unchanged-optical-input guard. This audit does not mark High complete/pass and cannot recover unsaved High post-column data.",
+  "audit_elapsed_seconds": 8.982515100000455
+}

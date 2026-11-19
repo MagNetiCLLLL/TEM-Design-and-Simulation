@@ -7,6 +7,7 @@ import tomllib
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document,legacy_transverse_draft
 
 from temsim.cad_geometry import annulus
 from temsim.cad_gun_stigmator import (
@@ -22,7 +23,7 @@ VARIANTS = [("FEG.toml", "FEG", "feg_stigmator", 433.),
 
 
 def _document(filename):
-    return tomllib.loads((ROOT/"configs/instruments/gun"/filename).read_text(encoding="utf-8"))
+    return legacy_transverse_document(tomllib.loads((ROOT/"configs/instruments/gun"/filename).read_text(encoding="utf-8")))
 
 
 @pytest.fixture
@@ -96,7 +97,7 @@ def test_native_cad_and_reconstruction_permissions_use_one_shared_builder(filena
     from temsim.cad_catalog import part_solids, native_reconstruction, is_reconstruction_region
     from temsim.part_model_3d import part_model_from_document
     from temsim.part_model_document import PartModelDocument
-    document = PartModelDocument(ROOT/"configs/instruments/gun"/filename).document
+    document = legacy_transverse_draft(ROOT/"configs/instruments/gun"/filename).document
     parts = {p["key"]: p for p in document["parts"]}
     part = parts[key]
     expected = gun_stigmator_solids(part)
@@ -208,7 +209,7 @@ def test_independent_copy_replacement_owns_geometry_and_restore_is_atomic(filena
     from temsim.part_model_3d import part_model_from_document
     from temsim.part_model_document import PartModelDocument
 
-    draft = PartModelDocument(ROOT/"configs/instruments/gun"/filename)
+    draft = legacy_transverse_draft(ROOT/"configs/instruments/gun"/filename)
     original = deepcopy(draft.part(key))
     copied = draft.copy_component_from(draft.document, key, "replaced_gun_stigmator",
                                        2500., include_children=False)

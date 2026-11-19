@@ -17,7 +17,7 @@ from temsim.physics.physical_scene import capture_physical_scene
 from temsim.physics.potential_geometry import PotentialGeometrySnapshot,PotentialBoundaryHost
 from temsim.physics.potential_snapshot import ElectromagneticPotentialSnapshot,PotentialContribution
 from temsim.physics.potential_ray import trace_potential_rays
-from temsim.physics.unified_field_runtime import UnifiedFieldRuntime
+from temsim.physics.unified_field_runtime import UnifiedFieldRuntime, field_execution_identity
 from temsim.physics.unified_field_particle import merge_unified_stops,_sampler
 from test_unified_field_runtime import parked_state
 
@@ -27,7 +27,8 @@ def controlled(state,rows=(),pieces=()):
     snapshot=ElectromagneticPotentialSnapshot(scene,tuple(rows))
     geometry=PotentialGeometrySnapshot(.45,.452,tuple(PotentialBoundaryHost(p.key,(p.key,),(p,)) for p in pieces),
         source_scene_geometry_digest=scene.geometry_digest)
-    return UnifiedFieldRuntime(snapshot,geometry,capture_instrument_snapshot(state).digest)
+    return UnifiedFieldRuntime(snapshot,geometry,capture_instrument_snapshot(state).digest,
+        {"field_execution_identity": field_execution_identity(state,snapshot)})
 
 
 def execute(state,runtime,initial,monkeypatch,energy=300000.,step=.02):
@@ -111,7 +112,8 @@ def test_completed_unified_vacuum_result_does_not_run_legacy_conjugate_diagnosti
     state.sample.specimen_mode="vacuum"
     runtimes=[]
     def capture_runtime(current):
-        runtime=replace(controlled(current),metadata={
+        runtime=controlled(current)
+        runtime=replace(runtime,metadata={**runtime.metadata,
             "source_contract":"Actual FEG emission into a declared vacuum test column"})
         runtimes.append(runtime)
         return runtime
@@ -271,7 +273,7 @@ def test_oversized_numerical_history_rejected_before_allocation(monkeypatch):
     import temsim.physics.unified_field_particle as module
     state=parked_state();runtime=controlled(state)
     monkeypatch.setattr(module,"MAX_UNIFIED_HISTORY_BYTES",1)
-    with pytest.raises(ValueError,match="numerical budget"):
+    with pytest.raises(ValueError,match="numerical budget|bounded execution history budget"):
         execute(state,runtime,np.zeros((1,4)),monkeypatch)
 
 

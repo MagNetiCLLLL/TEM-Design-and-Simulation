@@ -1,0 +1,21 @@
+{
+  "status": "SCRIPT_PREPARED_NOT_EXECUTED",
+  "physical_execution": false,
+  "new_source_emission": false,
+  "scripts": {
+    "fixed_field_preview.py": "f8c58878c9d22b86d5d4e629af0358b454977f22a5cae249eb45494730c12a52",
+    "fixed_field_support.py": "dbb2845ef902ffd7d05769037210c7d7a524d3d785c209037fae70a4946f4358",
+    "test_fixed_field_preview_contract.py": "79ef4214bc70da4c1803f3d2cb7cfb54f1a0f97a88e7a20d9bc893555255a3db"
+  },
+  "tests": "13 pure-record/array contract tests passed; fixed-field-contract.xml",
+  "requires": "Root confirmation that the new 616901 High job and its formal complete-result.temsim are complete before any preparation or execution",
+  "default_high_archive": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\high-accuracy\\complete-result.temsim",
+  "expected_source": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\baseline-input\\independent-expected-emission.npz",
+  "execution_scope": "Official Preview .5/2 mm new full incident+post integration from the exact saved High Gun exit. Actual High providers, dynamic laws, gauge, complete boundaries and independent inputs stay exact. No new Gun/source/chief or field solve allowed.",
+  "bound_seconds": 900,
+  "persistence": "Formal full typed archive before guards/statistics; emergency actual arrays retained on serialization failure",
+  "planned_commands": {
+    "prepare": ".venv/Scripts/python.exe -u outputs/copper-gun-adaptive-20261114/fixed_field_preview.py --output outputs/copper-gun-adaptive-20261114/fixed-high-field-preview-preparation",
+    "execute_after_review": ".venv/Scripts/python.exe -u outputs/copper-gun-adaptive-20261114/fixed_field_preview.py --prepared outputs/copper-gun-adaptive-20261114/fixed-high-field-preview-preparation --output outputs/copper-gun-adaptive-20261114/fixed-high-field-preview-execution --execute"
+  }
+}

@@ -22,8 +22,10 @@ def _runtime(state, start=.45, stop=.450001, contributions=(), *, physical_geome
     snapshot = ElectromagneticPotentialSnapshot(scene, tuple(contributions))
     geometry = (capture_potential_geometry(state, start, stop) if physical_geometry else
         PotentialGeometrySnapshot(start, stop, (), source_scene_geometry_digest=scene.geometry_digest))
+    from temsim.physics.unified_field_runtime import field_execution_identity
     return UnifiedFieldRuntime(snapshot, geometry, capture_instrument_snapshot(state).digest,
-        {"scope": "explicit post-gun analytical test domain; not the default complete instrument field"})
+        {"scope": "explicit post-gun analytical test domain; not the default complete instrument field",
+         "field_execution_identity": field_execution_identity(state,snapshot)})
 
 
 def _request(tmp_path, **kwargs):

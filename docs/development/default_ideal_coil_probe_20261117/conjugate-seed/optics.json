@@ -1,0 +1,137 @@
+{
+  "surface": {
+    "z_mm": 1599.1999975,
+    "surviving": 1024,
+    "effective": 1024.0,
+    "current_a": 1e-05,
+    "rms_radius_nm": 13.172916449064934,
+    "D95_nm": 56.55387261328432,
+    "alpha95_mrad": 1.673649004896936,
+    "angular_rms_mrad": 0.9422423159851437,
+    "core_50pm_current_a": 8.7890625e-08,
+    "radial_covariance_m_rad": -1.9218875846581466e-14,
+    "D50_nm": 11.195892143809717
+  },
+  "local_D95": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 56.115126220750625,
+    "observed_minimum_planes_mm": [
+      1599.202237211676
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.202237211676,
+        1599.202237211676
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.2022367399543,
+      1599.2022376833975
+    ],
+    "neighbour_bracket_offset_nm": [
+      2239.239954178629,
+      2240.1833973617613
+    ],
+    "representative_offset_nm": 2239.711675883882,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "local_RMS": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 13.172900657859914,
+    "observed_minimum_planes_mm": [
+      1599.2000191962188
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.2000191962188,
+        1599.2000191962188
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.200019086241,
+      1599.2000193061967
+    ],
+    "neighbour_bracket_offset_nm": [
+      21.586240791293676,
+      21.806196627949248
+    ],
+    "representative_offset_nm": 21.696218709621462,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "search_window_mm": [
+    1597.1999975,
+    1601.1999975
+  ],
+  "stable_membership": true,
+  "separation": {
+    "definition": "z_RMS minus z_D95, executed planes",
+    "resolved_delta_z_nm": -2218.0154571742605,
+    "difference_bracket_nm": [
+      -2218.5971565704676,
+      -2217.4337575506797
+    ],
+    "zero_excluded_from_bracket": true
+  },
+  "refinement": 2,
+  "input_digest": "b58862000e637e80cae90244f64260ec8550c1060dfb79c81981b5f995f2e5c4",
+  "specimen_upper_surface_mm": 1599.1999975,
+  "parked_scan": true,
+  "specimen_retracted_for_focus": true,
+  "population": {
+    "emitted_count": 1024,
+    "positive_current_count": 1024,
+    "gun_exit_surviving_count": 1024,
+    "effective_emitted_count": 1024.0,
+    "emitted_weight": 1.0,
+    "gun_exit_weight": 1.0,
+    "effective_gun_exit_count": 1024.0,
+    "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"
+  },
+  "elapsed_s": 2016.1400000000003,
+  "native_Mini_centre_to_surface_plus_2mm": {
+    "first_z_mm": 1522.5,
+    "last_z_mm": 1601.1999975,
+    "count": 545,
+    "d95": {
+      "value": 56.115126220750625,
+      "planes_mm": [
+        1599.202237211676
+      ],
+      "offsets_nm": [
+        2239.711675883882
+      ],
+      "first_or_last_plane": false,
+      "target_fractional_difference": 0.007818683162320893
+    },
+    "rms": {
+      "value": 13.172900657859914,
+      "planes_mm": [
+        1599.2000191962188
+      ],
+      "offsets_nm": [
+        21.696218709621462
+      ],
+      "first_or_last_plane": false,
+      "target_fractional_difference": 1.1987644505413738e-06
+    },
+    "axis_core_50pm": {
+      "value": 1.07421875e-07,
+      "planes_mm": [
+        1599.199418776307
+      ],
+      "offsets_nm": [
+        -578.7236930245854
+      ],
+      "first_or_last_plane": false,
+      "target_fractional_difference": 0.1818181818181818
+    }
+  },
+  "sha256": {
+    "entrance.npz": "f0eaf2dd9c8f08fedc5f3d31ec2945106fb7196c574ab9dbef5d1cf815a81730",
+    "si110.json": "cc244ca2fb7c55d22f88c23bd213d7b41d0207852e695465469d0b79a6d4d94f",
+    "si110.npz": "055b48a3d40ada5ba62f3fb038513fe8adb5f27f38ba398230f0c7cbc5376ffa",
+    "native-profile.csv": "f3cdf5a3a7e154f48a9c84daf786d33bde1d08947cfa8a521586e173282bc21a",
+    "currents.json": "9b4f4cbb6cd13c1d2d3f57a2d05d33d880cb5382bc6f0205a25b98a9a4c15aa4",
+    "through-focus.npz": "80ce7f3f4e972ceee0f3f4eb43913f279d96ea0e0d2538b551d6c0cb30271797"
+  }
+}

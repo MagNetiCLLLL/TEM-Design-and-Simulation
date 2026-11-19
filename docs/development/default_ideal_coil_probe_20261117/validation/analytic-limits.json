@@ -1,0 +1,64 @@
+{
+  "scope": "Analytic zero-current reference trajectories and software checks",
+  "references": 1024,
+  "length_m": 0.016,
+  "checks": {
+    "vacuum_drift": [
+      {
+        "step_m": 0.0004,
+        "max_absolute_x_y_tx_ty_time": [
+          1.8973538018496328e-19,
+          1.6263032587282567e-19,
+          0.0,
+          0.0,
+          5.169878828456423e-26
+        ]
+      },
+      {
+        "step_m": 0.0002,
+        "max_absolute_x_y_tx_ty_time": [
+          4.336808689942018e-19,
+          3.7947076036992655e-19,
+          0.0,
+          0.0,
+          9.04728794979874e-26
+        ]
+      }
+    ],
+    "uniform_axial_B": [
+      {
+        "step_m": 0.0004,
+        "max_absolute_x_y_tx_ty_time": [
+          2.1233069013963657e-12,
+          2.4512418462206698e-12,
+          1.7612819687949643e-10,
+          1.5017257402882844e-10,
+          2.942953523098819e-22
+        ]
+      },
+      {
+        "step_m": 0.0002,
+        "max_absolute_x_y_tx_ty_time": [
+          1.4474836260158774e-13,
+          1.2198185170286813e-13,
+          2.0319187413360418e-12,
+          1.7367162395698355e-12,
+          1.8301371052735737e-23
+        ]
+      }
+    ],
+    "uniform_axial_E": {
+      "gradient_v_per_m": 2100000.0,
+      "kinetic_gain_ev": 33600.0,
+      "max_time_error_s": 5.557619740590655e-25
+    },
+    "widths_equal": {
+      "D95_nm": 10022.98677325313,
+      "RMS_radius_nm": 2837.637529912785
+    },
+    "widths_unequal": {
+      "D95_nm": 10102.249140640817,
+      "RMS_radius_nm": 2842.2134896784382
+    }
+  }
+}

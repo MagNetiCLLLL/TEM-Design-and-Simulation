@@ -346,7 +346,6 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
 
     document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
-    by_key["objective_upper_pole"]["pole_stem_outer_diameter_mm"] = 59.0
     by_key["objective_lower_pole"]["pole_stem_outer_diameter_mm"] = 59.0
     with pytest.raises(
         ValueError,
@@ -367,8 +366,8 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
 
     document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
-    by_key["condenser_lens_3_excitation_coil"][
-        "mechanical_outer_diameter_mm"
+    by_key["condenser_lens_3"][
+        "mechanical_coil_radial_thickness_mm"
     ] += 1.0
     with pytest.raises(
         ValueError,
@@ -384,11 +383,14 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
     by_key["condenser_lens_3_excitation_coil"][
         "mechanical_outer_diameter_mm"
     ] = 150.0
+    with pytest.raises(ValueError, match="C3 end hardware no longer contacts condenser_lens_3_excitation_coil"):
+        validate_document(document)
+    from temsim.module_manifest import _validate_column_mechanical_overlaps
     with pytest.raises(
         ValueError,
         match="Excitation-coil material overlap.*condenser_lens_3_upper_pole",
     ):
-        validate_document(document)
+        _validate_column_mechanical_overlaps(document["parts"])
 
     document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}

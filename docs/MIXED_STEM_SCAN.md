@@ -1,11 +1,13 @@
-# Mixed coherent STEM scanning
+# Mixed particle-wave STEM scanning
 
 The Scanning Image page can acquire BF and ADF images from the executed particle
 beam at the specimen entrance. The particle calculation retains the selected
 source distribution, lens and corrector excitations, aperture interception and
 integration step. A mixed coherent density is constructed at the specimen upper
 surface, then propagated through the inserted specimen on CUDA. No coherent
-Tip-to-specimen calculation is involved.
+Tip-to-specimen calculation is involved. Scanning Image offers particle scanning
+and mixed particle-wave scanning; a separate pure coherent scan is not part of
+the supported workflow.
 
 ## Operation
 
@@ -14,7 +16,7 @@ Tip-to-specimen calculation is involved.
    positive-current source particles; the normal selected particle count is
    retained in both Preview and High accuracy.
 2. Set the raster dimensions, pixel pitch and scan origin on the Scanning Image
-   page. Select the mixed coherent CUDA acquisition and start the calculation.
+   page. Select **Mixed particles + waves (CUDA)** and start the calculation.
 3. Read BF and ADF as absolute currents referenced to the original emitted beam.
    The exit diffraction panel shows one actual raster position nearest the scan
    origin. Its reported coordinate is the selected pixel coordinate, including
@@ -24,6 +26,55 @@ A usable CUDA device and execution backend are required before source
 preparation. An unavailable device, failed CUDA operation, cancellation or
 failed numerical qualification produces no replacement image. There is no CPU
 coherent fallback. Classical particle transport may use CPU.
+
+### Ideal prescribed-current coils in vacuum
+
+The local mixed particle-wave STEM entry admits static ideal-current winding
+sources under `unified`, subject to the actual per-request field and numerical
+qualification. This is a purpose-specific admission of the near-specimen
+operator, not qualification of a working point or of general column-wave
+propagation with these sources.
+
+Prepare stationary inputs explicitly before generating the particle source.
+Live AC/Descan raster and wobble fields are rejected when the captured specimen
+region is time-dependent. The calculation never disables or freezes a drive to
+make it admissible. Raster dimensions, pixel pitch and origin still specify
+the virtual translation of the stationary entrance density. A particle source
+generated with different drive inputs cannot be reused as that stationary
+boundary.
+
+Explicit **Prefer GPU**, **CUDA GPU** or **Require GPU** settings enable the
+FP64 CUDA ideal-coil field sampler for its supported immutable sources. **Auto**,
+**CPU** and **Numba CPU** retain the existing CPU field dispatch. The Gun's
+population discrete-gradient solve and the column integration equations keep
+their existing steps and tolerances. Original pack quadrature, currents and
+axial tails are retained. Inside the admitted bore, default-or-finer rectangular
+winding paths use analytic integrals of their four closed straight segments;
+saddle paths and explicitly low-order diagnostics retain the original path
+quadrature. This changes numerical evaluation, not winding geometry or
+ampere-turns. Classical Lorentz steps request B, E and phi without computing
+unused static A; canonical handoffs and material-field qualification still
+request the full vector potential. GPU reductions have different binary64
+rounding from CPU reductions; they are not bitwise-equivalence claims.
+Execution receipts identify actual GPU queries and deterministic reference
+queries for unsupported poses, field laws or numerical domains. A CUDA
+allocation, launch or invalid-result failure raises instead of retrying a
+field calculation on CPU. Numerical identities bind backend, device, kernels
+and implementation so a changed executor cannot reuse an old particle prefix.
+The specimen wave stages independently retain their mandatory CUDA execution.
+Use **Prefer GPU** with the CPU particle coordinators. **Require GPU** retains
+its strict entry-point restrictions; field acceleration does not make the
+complete particle integrator a CUDA implementation.
+
+Before new particle preparation, the current-coil entry samples the complete
+captured near-specimen potential and retains the native zero-axis magnetic
+gauge gate (`norm(A_axis) <= 1e-20 T m`, zero gauge gradient and Hessian).
+The wave stage independently retains the complete field sampling, refined
+nonuniform-field remainder, material/domain checks and all Fourier, current,
+grid, slice, split and observable-error gates. No winding tail is truncated,
+and no native or Gaussian field is substituted. Arbitrary downstream mixed-wave
+observations and the general column wave kernel retain their separate rejection
+of ideal-current providers.
 
 The current analytic finite-CIF reference requires a proved rectangular repeat
 aligned with the laboratory axes and quarter-period transverse sites, including

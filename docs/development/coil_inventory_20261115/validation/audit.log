@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "F:\tem_simulator_v2\docs\development\coil_inventory_20261115\audit.py", line 247, in <module>
+    run(args.output.resolve())
+  File "F:\tem_simulator_v2\docs\development\coil_inventory_20261115\audit.py", line 196, in run
+    metrics,before,after,fast_before,fast_after = compare(legacy,new,points)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\tem_simulator_v2\docs\development\coil_inventory_20261115\audit.py", line 105, in compare
+    np.testing.assert_allclose(after["B_t"], before["B_t"], rtol=RTOL, atol=ATOL_T)
+  File "F:\tem_simulator_v2\.venv\Lib\site-packages\numpy\testing\_private\utils.py", line 1768, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "F:\tem_simulator_v2\.venv\Lib\site-packages\numpy\testing\_private\utils.py", line 983, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=4e-14, atol=1e-20
+
+Mismatched elements: 34 / 2223 (1.53%)
+First 5 mismatches are at indices:
+ [367, 0]: -1.011145580784821e-19 (ACTUAL), -8.189749808765016e-20 (DESIRED)
+ [369, 1]: -1.011145580784821e-19 (ACTUAL), -8.189749808765016e-20 (DESIRED)
+ [370, 0]: 7.149878969397568e-20 (ACTUAL), 5.791027625998973e-20 (DESIRED)
+ [370, 1]: -7.149878969397571e-20 (ACTUAL), -5.791027625998974e-20 (DESIRED)
+ [371, 0]: 1.011145580784821e-19 (ACTUAL), 8.189749808765016e-20 (DESIRED)
+Max absolute difference among violations: 8.4915053e-20
+Max relative difference among violations: 1.1038961
+ ACTUAL: array([[ 0.000000e+00,  0.000000e+00,  4.653941e-06],
+       [-3.539238e-14,  0.000000e+00,  4.653941e-06],
+       [-2.502619e-14, -2.502619e-14,  4.653941e-06],...
+ DESIRED: array([[ 0.000000e+00,  0.000000e+00,  4.653941e-06],
+       [-3.539238e-14,  0.000000e+00,  4.653941e-06],
+       [-2.502619e-14, -2.502619e-14,  4.653941e-06],...

@@ -1,0 +1,296 @@
+{
+  "scope": "field-only research; no installed current-source change or experimental validation",
+  "native": {
+    "selection": {
+      "gun": "FEG",
+      "column": "C3 + Probe Corrector",
+      "recording": "No Energy Filter",
+      "beam_blanker": "None"
+    },
+    "beam_voltage_kv": 300.0,
+    "reference_momentum_kg_m_per_s": 3.365624812638601e-22,
+    "signed_charge_c": -1.602176634e-19,
+    "positive_rigidity_Tm": 0.0021006577809314134,
+    "detached_command_example": {
+      "component": "probe_dph2_deflector",
+      "x_mrad": 1.0,
+      "y_mrad": 0.0,
+      "effective_length_mm": 4.0,
+      "bx_t": -0.0,
+      "by_t": 0.0005251644452328534,
+      "integrated_bx_Tm": -0.0,
+      "integrated_by_Tm": 2.1006577809314154e-06
+    },
+    "original_state_exactly_preserved": true
+  },
+  "centroid_assumption": "one representative closed filament per saddle; N=1 each, opposed pair current senses reinforce; no leads or finite conductor averaging",
+  "geometry_config": "configs\\instruments\\column\\C3_ProbeCorrector.toml",
+  "geometry_config_sha256": "0ab7ab450649f716a33a8eb48d976e428d6a22a56380191546c28be6be5b871b",
+  "centroid_scales": [
+    {
+      "host": "probe_dph2_coils",
+      "copper_length_mm": 14.5,
+      "pairs": [
+        {
+          "radius_mm": 11.26,
+          "straight_length_mm": 13.34,
+          "half_angle_rad": 0.9956877821024591,
+          "integral_Tm_per_Aturn": 7.953135192237451e-07,
+          "Aturn_per_reference_1mrad": 2.6412952001390995
+        },
+        {
+          "radius_mm": 11.74,
+          "straight_length_mm": 13.34,
+          "half_angle_rad": 0.9977938033260695,
+          "integral_Tm_per_Aturn": 7.638360597301791e-07,
+          "Aturn_per_reference_1mrad": 2.750142198933969
+        }
+      ]
+    },
+    {
+      "host": "probe_dph1_coils",
+      "copper_length_mm": 14.5,
+      "pairs": [
+        {
+          "radius_mm": 11.26,
+          "straight_length_mm": 13.34,
+          "half_angle_rad": 0.9956877821024591,
+          "integral_Tm_per_Aturn": 7.953135192237451e-07,
+          "Aturn_per_reference_1mrad": 2.6412952001390995
+        },
+        {
+          "radius_mm": 11.74,
+          "straight_length_mm": 13.34,
+          "half_angle_rad": 0.9977938033260695,
+          "integral_Tm_per_Aturn": 7.638360597301791e-07,
+          "Aturn_per_reference_1mrad": 2.750142198933969
+        }
+      ]
+    },
+    {
+      "host": "probe_dp22_coils",
+      "copper_length_mm": 14.22,
+      "pairs": [
+        {
+          "radius_mm": 11.26,
+          "straight_length_mm": 13.06,
+          "half_angle_rad": 0.9956877821024591,
+          "integral_Tm_per_Aturn": 7.786202819386891e-07,
+          "Aturn_per_reference_1mrad": 2.6979232748740873
+        },
+        {
+          "radius_mm": 11.74,
+          "straight_length_mm": 13.06,
+          "half_angle_rad": 0.9977938033260695,
+          "integral_Tm_per_Aturn": 7.478035187463373e-07,
+          "Aturn_per_reference_1mrad": 2.8091038999830893
+        }
+      ]
+    },
+    {
+      "host": "probe_dp21_coils",
+      "copper_length_mm": 14.32,
+      "pairs": [
+        {
+          "radius_mm": 11.26,
+          "straight_length_mm": 13.152000000000001,
+          "half_angle_rad": 0.995332542315603,
+          "integral_Tm_per_Aturn": 7.839246002855649e-07,
+          "Aturn_per_reference_1mrad": 2.679668146867944
+        },
+        {
+          "radius_mm": 11.74,
+          "straight_length_mm": 13.152000000000001,
+          "half_angle_rad": 0.9974530878235142,
+          "integral_Tm_per_Aturn": 7.529057592389658e-07,
+          "Aturn_per_reference_1mrad": 2.7900673559128433
+        }
+      ]
+    },
+    {
+      "host": "probe_dp11_coils",
+      "copper_length_mm": 14.32,
+      "pairs": [
+        {
+          "radius_mm": 11.26,
+          "straight_length_mm": 13.152000000000001,
+          "half_angle_rad": 0.995332542315603,
+          "integral_Tm_per_Aturn": 7.839246002855649e-07,
+          "Aturn_per_reference_1mrad": 2.679668146867944
+        },
+        {
+          "radius_mm": 11.74,
+          "straight_length_mm": 13.152000000000001,
+          "half_angle_rad": 0.9974530878235142,
+          "integral_Tm_per_Aturn": 7.529057592389658e-07,
+          "Aturn_per_reference_1mrad": 2.7900673559128433
+        }
+      ]
+    }
+  ],
+  "scalar_full_axis_check": {
+    "numerical_Tm_per_Aturn": 7.953135192287502e-07,
+    "analytic_Tm_per_Aturn": 7.953135192237451e-07,
+    "quad_error_estimate": 1.1646766233411845e-16,
+    "relative_difference": 6.293263680731641e-12
+  },
+  "centroid_vector_convergence": {
+    "points_m": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.00667
+      ],
+      [
+        0.00025,
+        0.0004,
+        -0.002
+      ],
+      [
+        -0.001,
+        0.0008,
+        0.005
+      ]
+    ],
+    "reference_gauss_order": 64,
+    "reference_b_T_per_Aturn": [
+      [
+        5.287755563169189e-05,
+        4.459648796084625e-22,
+        0.0
+      ],
+      [
+        3.2256640368069014e-05,
+        2.204112543521819e-21,
+        4.235164736271502e-21
+      ],
+      [
+        5.0803671073607234e-05,
+        9.58659715377707e-09,
+        5.230845987615372e-07
+      ],
+      [
+        4.072893487375797e-05,
+        -2.1082465999299318e-08,
+        4.611206768895649e-06
+      ]
+    ],
+    "doubled_quadrature": [
+      {
+        "gauss_order_per_segment": 4,
+        "b_T_per_Aturn": [
+          [
+            5.2873977795224766e-05,
+            1.4752847381227504e-21,
+            0.0
+          ],
+          [
+            3.2256849801945424e-05,
+            2.253080534642126e-22,
+            4.235164736271502e-21
+          ],
+          [
+            5.08032459511328e-05,
+            9.608368497080545e-09,
+            5.230861667725069e-07
+          ],
+          [
+            4.0731084410710816e-05,
+            -2.108797060983522e-08,
+            4.6112907285078755e-06
+          ]
+        ],
+        "max_abs_error_T_per_Aturn": 3.577836467124186e-09,
+        "peak_normalized_error": 6.766266754168622e-05
+      },
+      {
+        "gauss_order_per_segment": 8,
+        "b_T_per_Aturn": [
+          [
+            5.2877555475043894e-05,
+            2.0081917899428257e-21,
+            1.6940658945086007e-21
+          ],
+          [
+            3.2256640381440744e-05,
+            7.820512900463816e-22,
+            5.929230630780102e-21
+          ],
+          [
+            5.080367120565095e-05,
+            9.586589461092797e-09,
+            5.230845987614305e-07
+          ],
+          [
+            4.072893479548396e-05,
+            -2.1082481570467453e-08,
+            4.611206768870646e-06
+          ]
+        ],
+        "max_abs_error_T_per_Aturn": 1.5664799644064809e-13,
+        "peak_normalized_error": 2.9624666754974186e-09
+      },
+      {
+        "gauss_order_per_segment": 16,
+        "b_T_per_Aturn": [
+          [
+            5.287755563169186e-05,
+            1.3531602054139832e-21,
+            1.6940658945086007e-21
+          ],
+          [
+            3.2256640368069e-05,
+            7.820512900463816e-22,
+            7.623296525288703e-21
+          ],
+          [
+            5.08036710736072e-05,
+            9.586597153773841e-09,
+            5.230845987615524e-07
+          ],
+          [
+            4.072893487375795e-05,
+            -2.1082465999299636e-08,
+            4.611206768895654e-06
+          ]
+        ],
+        "max_abs_error_T_per_Aturn": 3.3881317890172014e-20,
+        "peak_normalized_error": 6.407504561323825e-16
+      },
+      {
+        "gauss_order_per_segment": 32,
+        "b_T_per_Aturn": [
+          [
+            5.287755563169185e-05,
+            1.2481769090522118e-21,
+            0.0
+          ],
+          [
+            3.2256640368068994e-05,
+            2.431052321255622e-22,
+            5.929230630780102e-21
+          ],
+          [
+            5.08036710736072e-05,
+            9.58659715377633e-09,
+            5.230845987615474e-07
+          ],
+          [
+            4.072893487375794e-05,
+            -2.1082465999305168e-08,
+            4.6112067688956475e-06
+          ]
+        ],
+        "max_abs_error_T_per_Aturn": 4.0657581468206416e-20,
+        "peak_normalized_error": 7.689005473588591e-16
+      }
+    ]
+  },
+  "source_emission_forbidden": true,
+  "particle_propagation_forbidden": true
+}

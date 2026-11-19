@@ -3,6 +3,7 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document,legacy_transverse_draft
 
 from temsim.cad_catalog import part_solids, posed_solids
 from temsim.cad_mesh import _manifold
@@ -36,7 +37,7 @@ def _rows(document):
 
 @pytest.fixture
 def document():
-    return read_document(INSTRUMENT_CONFIG_ROOT / MODULE)
+    return legacy_transverse_document(read_document(INSTRUMENT_CONFIG_ROOT / MODULE))
 
 
 @pytest.fixture
@@ -44,7 +45,7 @@ def draft(tmp_path):
     from temsim.shared_tip import copy_catalog_inputs
     root = tmp_path / "instruments"
     copy_catalog_inputs(INSTRUMENT_CONFIG_ROOT, root, (MODULE,))
-    return PartModelDocument(root / MODULE)
+    return legacy_transverse_draft(root / MODULE,persist=True)
 
 
 def _ends(side):
@@ -55,7 +56,7 @@ def _ends(side):
 @pytest.mark.parametrize("key", SIDES)
 @pytest.mark.parametrize("variant", VARIANTS)
 def test_probe_variants_keep_the_same_explicit_laminate_and_double_end_covers(document, key, variant):
-    other = read_document(INSTRUMENT_CONFIG_ROOT / "column" / (variant + ".toml"))
+    other = legacy_transverse_document(read_document(INSTRUMENT_CONFIG_ROOT / "column" / (variant + ".toml")))
     validate_document(other)
     rows = _rows(other)
     row = rows[key]
@@ -233,7 +234,7 @@ def test_copper_length_edits_match_both_editors_and_change_every_material_region
     root = tmp_path / "instruments"
     copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
     module = "column/" + variant + ".toml"
-    draft = PartModelDocument(root / module)
+    draft = legacy_transverse_draft(root / module,persist=True)
     original = deepcopy(draft.document)
     storage_original = read_document(root / module)
     path = ("parts", key, "winding_axial_length_mm")
@@ -280,7 +281,7 @@ def test_buildable_overlaps_remain_editable_drafts_but_both_save_paths_reject_at
 
     root = tmp_path / "instruments"
     copy_catalog_tree(INSTRUMENT_CONFIG_ROOT, root)
-    draft = PartModelDocument(root / MODULE)
+    draft = legacy_transverse_draft(root / MODULE,persist=True)
     before = deepcopy(draft.document)
     value = draft.part(key)["length_mm"] if field == "winding_axial_length_mm" else .15
     path = ("parts", key, field)

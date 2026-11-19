@@ -3,6 +3,7 @@
 Same solved potential, Lorentz equation, stopping tolerance and captured magnetic
 sum as the Python reference. No fast-math, voltage scaling or beam matching.
 Other field providers (including the Wien assembly) use the general reference.
+Packed copper uses a nonrecursive derivative core and one population clock.
 """
 import math
 from collections import OrderedDict
@@ -26,6 +27,7 @@ _PACKED_INSTRUMENT_FIELDS = OrderedDict()
 _PACKED_INSTRUMENT_LOCK = RLock()
 _INSTRUMENT_FIELD_METHOD = InstrumentMagneticField.field_at_global_positions_t
 _STEP_POOL = ContextVar("gun_discrete_gradient_pool", default=None)
+_COPPER_NATIVE_FALLBACK = "Copper Gun step requires the unchanged native evaluator"
 
 
 class _StepPool:
@@ -36,7 +38,12 @@ class _StepPool:
 
     def step(self, x0, p0, dt, tolerance, iterations, *field_args):
         from temsim.cpu_resources import numerical_thread_budget
-        workers = min(numerical_thread_budget(), len(x0)//2048)
+        copper = field_args[7] if len(field_args) > 7 else None
+        # Copper quadrature is much more expensive per row than the original
+        # Gaussian laws. Parallelize rows, retaining one shared dt and one
+        # convergence decision across the entire population at every iterate.
+        rows_per_worker = 256 if copper is not None else 2048
+        workers = min(numerical_thread_budget(), len(x0)//rows_per_worker)
         if workers < 2:
             return _step(x0, p0, dt, tolerance, iterations, *field_args)
         if self.executor is None:
@@ -63,7 +70,10 @@ class _StepPool:
                         error = exc
             if error is not None:
                 raise error
-            if max(row[2] for row in results) <= tolerance:
+            residual = max(row[2] for row in results)
+            if copper is not None and _copper_convergence_needs_native(residual, tolerance):
+                raise ValueError(_COPPER_NATIVE_FALLBACK)
+            if residual <= tolerance:
                 return (np.concatenate([row[0] for row in results]),
                         np.concatenate([row[1] for row in results])*(m_e*c))
             momenta = [row[1] for row in results]
@@ -103,6 +113,12 @@ def _packed_instrument_field(provider):
             _PACKED_INSTRUMENT_FIELDS.move_to_end(key)
             return cached[1]
         packed = prepare_compiled_magnetic_sources(provider._sources)
+        if packed is None:
+            from .compiled_copper_instrument import pack_copper_instrument_sources
+            copper = pack_copper_instrument_sources(provider._sources)
+            packed = (np.empty((0, 11)), np.empty((0, 9)), copper) if copper is not None else None
+        else:
+            packed = (*packed, None)
         _PACKED_INSTRUMENT_FIELDS[key] = (provider, packed)
         while len(_PACKED_INSTRUMENT_FIELDS) > 4:
             _PACKED_INSTRUMENT_FIELDS.popitem(last=False)
@@ -170,15 +186,20 @@ def _prepare_step(x0, p0, dt, data, ht, magnetic, strict_domain=False, planar_ca
 
 
 def _step_iteration(x0, u0, u1, gamma0, phi0, dt, data, ht, magnetic, strict_domain=False,
-                    planar_cathode=False, instrument_sources=None, instrument_terms=None):
+                    planar_cathode=False, instrument_sources=None, instrument_terms=None, copper_data=None):
     gamma1 = np.sqrt(1+np.sum(u1*u1, axis=1))
     vbar = c*(u1+u0)/(gamma1+gamma0).reshape((-1,1))
     dx = dt*vbar
     x1 = x0+dx
     midpoint = .5*(x0+x1)
     _, emid = _electric(midpoint, data, ht, strict_domain, planar_cathode)
-    bmid = (_magnetic(midpoint, magnetic) if instrument_sources is None else
-            compiled_magnetic_batch(midpoint, instrument_sources, instrument_terms))
+    if copper_data is not None:
+        admitted, bmid = copper_instrument_batch(midpoint, copper_data)
+        if not admitted:
+            raise ValueError(_COPPER_NATIVE_FALLBACK)
+    else:
+        bmid = (_magnetic(midpoint, magnetic) if instrument_sources is None else
+                compiled_magnetic_batch(midpoint, instrument_sources, instrument_terms))
     phi1, _ = _electric(x1, data, ht, strict_domain, planar_cathode)
     updated = np.empty_like(u0)
     error = 0.
@@ -197,12 +218,20 @@ def _step_iteration(x0, u0, u1, gamma0, phi0, dt, data, ht, magnetic, strict_dom
     return x1, updated, error
 
 
+def _copper_convergence_needs_native(residual, tolerance):
+    # A guard band is an instruction to repeat the identical reference step,
+    # never an expanded convergence tolerance or an accepted approximate trial.
+    return abs(residual-tolerance) <= 64.*np.finfo(np.float64).eps
+
+
 def _step(x0, p0, dt, tolerance, iterations, data, ht, magnetic, strict_domain=False,
-          planar_cathode=False, instrument_sources=None, instrument_terms=None):
+          planar_cathode=False, instrument_sources=None, instrument_terms=None, copper_data=None):
     phi0, u0, gamma0, u1 = _prepare_step(x0, p0, dt, data, ht, magnetic, strict_domain, planar_cathode)
     for _ in range(iterations):
         x1, updated, error = _step_iteration(x0, u0, u1, gamma0, phi0, dt, data, ht, magnetic,
-            strict_domain, planar_cathode, instrument_sources, instrument_terms)
+            strict_domain, planar_cathode, instrument_sources, instrument_terms, copper_data)
+        if copper_data is not None and _copper_convergence_needs_native(error, tolerance):
+            raise ValueError(_COPPER_NATIVE_FALLBACK)
         if error <= tolerance:
             return x1, updated*(m_e*c)
         u1 = updated
@@ -214,13 +243,19 @@ if njit is not None:
     _magnetic = njit(cache=True)(_magnetic)
     _electric = njit(cache=True)(_electric)
     _prepare_step = njit(cache=True, nogil=True)(_prepare_step)
-    _step_iteration = njit(cache=True, nogil=True)(_step_iteration)
+    _copper_convergence_needs_native = njit(cache=True, nogil=True)(_copper_convergence_needs_native)
+    # These composed kernels call imported field/DG helpers. Numba caller
+    # caches do not track those helpers' source revisions; keep only the
+    # process-local compiled function rather than loading a stale inline body.
+    _step_iteration = njit(cache=False, nogil=True)(_step_iteration)
     # A large emission bundle can spend most of the job in this kernel. Release
     # the interpreter so the GUI can paint progress and accept cancellation.
-    _step = njit(cache=True, nogil=True)(_step)
+    _step = njit(cache=False, nogil=True)(_step)
 
 
 def try_step(phase, dt, magnetic, electric, tolerance, iterations):
+    from .gun_step_diagnostics import current_gun_step_diagnostics
+    observer = current_gun_step_diagnostics()
     from temsim.optics.electron_gun.alignment import FegMagneticField, GunDeflector, GunStigmator
     from .grounded_tip_field import GroundedTipField
     from .closed_gun_field import ClosedGunField
@@ -231,26 +266,34 @@ def try_step(phase, dt, magnetic, electric, tolerance, iterations):
     if (njit is None or phase.position_m.ndim != 2 or type(electric) not in (GroundedTipField, ClosedGunField, ContinuousGunField)
             or not getattr(electric, 'compiled_particle_steps', True)
             or (not planar and (not hasattr(electric, '_regular') or not electric._regular.compiled))):
+        _observe_dispatch(observer, False, "unsupported_electric_or_compiler")
         return None
     for provider, names in (
             (electric, ('potential_v_at_global_positions', 'potential_rise_v_at_global_positions',
                         'field_at_global_positions_v_per_m', '_interpolate', 'interpolate')),
             (magnetic, ('field_at_global_positions_t',))):
         if any(name in provider.__dict__ for name in names):
+            _observe_dispatch(observer, False, "overridden_field_callback")
             return None
-    instrument_sources = instrument_terms = None
+    instrument_sources = instrument_terms = copper_data = None
     if type(magnetic) is InstrumentMagneticField:
         if getattr(magnetic.field_at_global_positions_t, '__func__', None) is not _INSTRUMENT_FIELD_METHOD:
+            _observe_dispatch(observer, False, "overridden_instrument_field")
             return None
         packed = _packed_instrument_field(magnetic)
         if packed is None:
+            _observe_dispatch(observer, False, "unsupported_magnetic_law_or_pose")
             return None
-        instrument_sources, instrument_terms = packed
+        instrument_sources, instrument_terms, copper_data = packed
+        if copper_data is not None and not copper_near_axis_domain(phase.position_m, copper_data[3]):
+            _observe_dispatch(observer, False, "copper_initial_domain", copper=True)
+            return None
         parameters = np.empty(0)
     elif (type(magnetic) is FegMagneticField and type(magnetic.deflector) is GunDeflector
             and type(magnetic.stigmator) is GunStigmator):
         d, s = magnetic.deflector, magnetic.stigmator
         if any('field_at_global_positions_t' in provider.__dict__ for provider in (d, s)):
+            _observe_dispatch(observer, False, "overridden_gun_alignment_field")
             return None
         upper = (d.upper_field_x_mt, d.upper_field_y_mt) if d.enabled else (0., 0.)
         lower = (d.lower_field_x_mt, d.lower_field_y_mt) if d.enabled else (0., 0.)
@@ -264,6 +307,7 @@ def try_step(phase, dt, magnetic, electric, tolerance, iterations):
             s.optical_reference_from_tip_mm, .5*s.effective_length_mm, s.soft_edge_mm,
             s.gradient_t_per_m if s.enabled else 0., math.radians(s.rotation_deg)])
     else:
+        _observe_dispatch(observer, False, "unsupported_magnetic_provider")
         return None
     if planar:
         data = _closed_field_data(electric)
@@ -277,10 +321,29 @@ def try_step(phase, dt, magnetic, electric, tolerance, iterations):
     from .relativistic_lorentz import RelativisticPhaseSpace
     pool = _STEP_POOL.get()
     step = _step if pool is None else pool.step
-    x, p = step(phase.position_m, phase.momentum_kg_m_per_s, dt,
-                 tolerance, iterations, data, high_tension, parameters, closed, planar,
-                 instrument_sources, instrument_terms)
+    try:
+        x, p = step(phase.position_m, phase.momentum_kg_m_per_s, dt,
+                     tolerance, iterations, data, high_tension, parameters, closed, planar,
+                     instrument_sources, instrument_terms, copper_data)
+    except ValueError as error:
+        if copper_data is not None and str(error) == _COPPER_NATIVE_FALLBACK:
+            _observe_dispatch(observer, False, "copper_trial_or_roundoff_native_miss", copper=True)
+            return None
+        _observe_dispatch(observer, False, "compiled_error", copper=copper_data is not None)
+        raise
+    except BaseException:
+        _observe_dispatch(observer, False, "compiled_error", copper=copper_data is not None)
+        raise
+    _observe_dispatch(observer, True, copper=copper_data is not None)
     return RelativisticPhaseSpace(x, p, phase.time_s+dt)
+
+
+def _observe_dispatch(observer, used, reason="", *, copper=False):
+    """Only scalar observations; no field/input/phase changes or allocations."""
+    if observer is not None:
+        observer.record_dispatch("grounded_dg", used, reason)
+        if copper:
+            observer.record_dispatch("grounded_copper_dg", used, reason)
 
 
 def _closed_field_data(electric):
@@ -295,3 +358,6 @@ def _closed_field_data(electric):
                 np.zeros(len(z)), np.zeros(len(z)))
         electric._compiled_field_data = data
     return data
+
+
+from .compiled_copper_instrument import copper_instrument_batch, copper_near_axis_domain

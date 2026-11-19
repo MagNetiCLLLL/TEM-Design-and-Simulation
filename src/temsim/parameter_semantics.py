@@ -12,6 +12,7 @@ import re
 
 from temsim.component_keys import CAMERA, FLUORESCENT_SCREEN, STEM_DETECTOR_KEYS
 from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 
 
 CATEGORY_LABELS = {
@@ -41,7 +42,7 @@ class ParameterSemantics:
 
 _ANNULAR = {"magnetic_excitation_coil", "magnetic_lens_housing", "magnetic_lens_yoke"}
 _POLE_STYLES = {"", "embedded_hourglass_bore", "tapered_bore_pole",
-                "objective_vertical_back_inserted_shank_tapered_nose"}
+                "objective_vertical_back_inserted_shank_tapered_nose", RECESSED_OBJECTIVE_STYLE}
 _ENVELOPE_FIELDS = {"length_mm", "mechanical_outer_diameter_mm", "mechanical_outer_radius_mm",
                     "outer_diameter_mm", "outer_width_mm", "housing_length_mm", "electrode_length_mm"}
 _DIMENSION_WORDS = ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle")
@@ -52,7 +53,24 @@ _UNITS = ("mrad", "keV", "eV", "kV", "MHz", "kHz", "Hz", "nm", "um", "mm", "deg"
 # not a blanket interpretation of every name ending in m2 or m3.
 _FIELD_UNITS = {"maximum_strength_m2": "m⁻²", "max_strength_m2": "m⁻²", "strength_m2": "m⁻²",
                 "maximum_strength_m3": "m⁻³", "max_strength_m3": "m⁻³", "strength_m3": "m⁻³",
-                "air_core_reference_ampere_turns": "A·turn", "coil_ampere_turn_fraction": "1"}
+                "air_core_reference_ampere_turns": "A·turn", "coil_ampere_turn_fraction": "1",
+                "winding_turn_count": "turn", "winding_interval_turn_counts": "turn",
+                "winding_wire_cross_section_mm2": "mm²",
+                "hexapole_winding_turn_count_per_coil": "turn",
+                "hexapole_winding_wire_cross_section_mm2": "mm²",
+                "transverse_winding_turn_count_per_coil": "turn",
+                "transverse_winding_wire_cross_section_mm2": "mm²",
+                "transverse_winding_insulation_thickness_mm": "mm",
+                "ideal_transverse_current_matrix_a_per_unit": "A/native unit",
+                "ideal_transverse_current_bias_a": "A",
+                "ideal_transverse_calibration_reference_energy_ev": "eV",
+                "multipole_winding_turn_count_per_coil": "turn",
+                "multipole_winding_wire_cross_section_mm2": "mm²",
+                "multipole_winding_insulation_thickness_mm": "mm",
+                "ideal_multipole_current_matrix_a_per_unit": "A/native coefficient",
+                "ideal_multipole_current_bias_a": "A",
+                "ideal_multipole_calibration_reference_energy_ev": "eV",
+                "ideal_coil_current_a_at_100_percent": "A"}
 _DETECTOR_UNITS = {"pixels": "pixels", "stem_fourdstem_charge_spread_sigma_px": "pixels",
     "stem_fourdstem_dark_electrons_per_pixel": "electrons/pixel/exposure",
     "stem_fourdstem_read_noise_electrons_rms": "electrons RMS",
@@ -65,6 +83,30 @@ _COMPOSITE_UNITS = (("electrons_per_nm2_s", "electrons/(nm² s)"),
                     ("na", "nA"), ("pa", "Pa"), ("mt", "mT"),
                     ("t", "T"), ("a", "A"))
 _FRIENDLY = {
+    "multipole_winding_turn_count_per_coil": "Multipole winding turns per coil",
+    "multipole_winding_wire_cross_section_mm2": "Multipole conductor metal area",
+    "multipole_winding_insulation_thickness_mm": "Multipole wire insulation radial thickness",
+    "multipole_winding_basis_angle_deg": "Multipole winding angular datum",
+    "multipole_winding_wire_diameter_mm": "Derived multipole conductor diameter",
+    "ideal_multipole_current_matrix_a_per_unit": "Fixed multipole current calibration matrix",
+    "ideal_multipole_current_bias_a": "Signed multipole current bias",
+    "ideal_multipole_calibration_reference_energy_ev": "Multipole calibration reference energy",
+    "ideal_multipole_calibration_reference_orientation_rad": "Multipole calibration reference orientation",
+    "transverse_winding_turn_count_per_coil": "Transverse winding turns per coil",
+    "transverse_winding_wire_cross_section_mm2": "Transverse conductor metal area",
+    "transverse_winding_insulation_thickness_mm": "Wire insulation radial thickness",
+    "transverse_winding_wire_diameter_mm": "Derived transverse conductor diameter",
+    "ideal_transverse_current_matrix_a_per_unit": "Fixed current calibration matrix",
+    "ideal_transverse_current_bias_a": "Signed coil-channel current bias",
+    "ideal_transverse_calibration_reference_energy_ev": "Current calibration reference energy",
+    "hexapole_winding_turn_count_per_coil": "Radial winding turns per coil",
+    "hexapole_winding_wire_cross_section_mm2": "Radial winding conductor metal area",
+    "hexapole_winding_wire_diameter_mm": "Derived radial-winding conductor diameter",
+    "winding_turn_count": "Conductor turn count",
+    "winding_interval_turn_counts": "Fixed turns per occupied axial interval",
+    "winding_wire_diameter_mm": "Conductor wire diameter",
+    "winding_wire_cross_section_mm2": "Conductor metal cross-section per turn",
+    "ideal_coil_current_a_at_100_percent": "Conductor current at 100% excitation",
     "air_core_reference_ampere_turns": "Reference ampere-turns at 100% excitation",
     "coil_ampere_turn_fraction": "Fraction of the owner's ampere-turns",
     "gaussian_reference_coil_length_mm": "Reference winding length for Gaussian scaling",
@@ -145,15 +187,92 @@ def _meaning(part, path, by_key):
     field = str(relative[0]) if relative else ""
     label = _label(field, ("parts", "", *relative))
     profile = part.get("mechanical_profile", "")
+    if (field.startswith('multipole_winding_') or field.startswith('hexapole_winding_')
+            and 'multipole_winding_geometry_status' in part):
+        return label,'physical',(
+            'Explicit engineering multipole winding input with fixed integer turns, conductor metal area, '
+            'radial insulation and angular datum. Probe HP retains its original canonical per-coil N and '
+            'metal-area records. Every requested closed turn and remaining insulation fits the existing '
+            'allocation. Auxiliary winding-only CAD preserves transport clipping and existing cartridge '
+            'ownership. At fixed N, current and envelope, wire-size edits do not change the homogenized '
+            'ideal source. Turn or angular edits retain numerical current gains and mark the old fit stale.')
+    if field.startswith('ideal_multipole_'):
+        return label,'physical',(
+            'Fixed signed current calibration for a vacuum multipole winding. The matrix maps native '
+            'quadrupole coefficients in m^-2 or hexapole coefficients in m^-3 to amperes, plus a separately '
+            'entered current bias. Main HP1/HP2 uses one winding channel; auxiliary normal/skew windings '
+            'use two independent channels. Reference energy and orientation document the original fit '
+            'without rescaling current. No magnetic material, current refit or optical retuning is inferred.')
+    if field.startswith('transverse_winding_'):
+        return label,'physical',(
+            'Explicit physical winding inputs for identified deflector or material stigmator coils. '
+            'Fixed integer turns and conductor metal area define closed wire turns and automatically '
+            'filled remaining insulation inside the original envelope. Diameter is calculated, and '
+            'insulation thickness is radial. Known turns may retain bulk CAD while metal area is unknown. '
+            'The ideal current source uses the whole homogenized pack, excluding magnetic cores and '
+            'pole pieces. Geometry or turn edits do not automatically refit currents or retune optics.')
+    if field.startswith('ideal_transverse_'):
+        return label,'physical',(
+            'Fixed electrical calibration for the ideal vacuum transverse-coil source. The complete '
+            'matrix maps existing column deflector commands in mrad or stigmator commands in percent '
+            '(gun deflector: mT; gun stigmator: normal/skew gradients in T/m) to '
+            'signed physical channel currents; a separately entered bias adds amperes. '
+            'Channels follow physical station order, X then Y. The reference energy records the '
+            'original calibration, not a query-time rescaling. A manual edit does not repeat the '
+            'field fit, change native optical commands or model magnetic materials and heating.')
+    if field.startswith('hexapole_winding_'):
+        return label, 'physical', (
+            'CAD-only inputs for six radial-axis HP1/HP2 windings. Known per-coil integer turns may '
+            'retain bulk CAD while conductor metal area is unknown. Turns stay fixed after authoring; '
+            'geometry changes do not re-estimate them. Per-coil turns and '
+            'conductor metal area define rounded rectangular turns and automatic remaining insulation inside '
+            'the original winding bounds. Diameter is calculated. These are engineering inputs, not measured '
+            'or OEM windings; native multipole strength and current calibration remain separate and unchanged.')
+    if field == "winding_turn_count":
+        return label, "physical", (
+            "Fixed integer conductor turn count in the existing round-winding envelope. "
+            "Known turns do not require a guessed wire diameter. Detailed wire CAD is available only when wire size is supplied. "
+            "Together with the owner's declared conductor current this determines ampere-turns in the ideal prescribed-current field model. "
+            "Calibrate current rather than changing a photo-constrained turn count. This is not a current/thermal rating.")
+    if field == "winding_interval_turn_counts":
+        return label, "physical", (
+            "Fixed conductor turns for each original current-bearing axial interval, in increasing Z order. "
+            "Positive integer entries sum to the total turn count and remain fixed when interval lengths change. "
+            "Each region carries its declared turns times current; no turns are redistributed to fit a field target. "
+            "Photo estimates and symmetry assumptions retain their separate provenance.")
+    if field == "winding_wire_diameter_mm":
+        return label, "physical", (
+            "Equivalent circular conductor diameter, excluding insulation. Existing diameter inputs remain readable; "
+            "the winding editor derives diameter from the user's conductor metal cross-section. "
+            "The turn grid must fit the existing winding inner/outer diameters and current-bearing axial intervals. "
+            "Wire size changes conductor/insulation geometry, not that envelope or the ideal field's occupied cross-section. "
+            "No resistance, heating or wire current rating is inferred.")
+    if field == "winding_wire_cross_section_mm2":
+        return label, "physical", (
+            "Bare conductor metal cross-sectional area of one circular turn, in square millimetres. "
+            "This excludes insulation and is distinct from the winding-pack area allocated per turn. "
+            "The diameter is derived from area; remaining allocated volume is filled automatically with insulation. "
+            "Turn count and conductor area must fit the unchanged inner/outer and axial envelopes; impossible packing is rejected. "
+            "At fixed turns and current this changes CAD packing, not the ideal field. No thermal or current rating is inferred.")
+    if field == "ideal_coil_current_a_at_100_percent":
+        return label, "operating", (
+            "Explicit reference conductor current at 100% lens excitation for Ideal prescribed-current coils in vacuum. Actual signed current scales with "
+            "the existing excitation percentage and polarity; configured turns times current determine ampere-turns. "
+            "Explicit turn/current configuration replaces the legacy total-ampere-turn fallback without compressing "
+            "the ideal current-bearing envelope. Other field models retain their own current/calibration rules. "
+            "This is a prescribed-current input, not a solved supply or thermal limit.")
     if field == "air_core_reference_ampere_turns":
         return label, "operating", (
             "Total turns times conductor current at 100% excitation for this round-lens owner. "
-            "The copper-coil model multiplies this reference by excitation and polarity, then distributes it among "
-            "the owned windings. It does not specify turns and amperes separately or establish a thermal rating.")
+            "The ideal prescribed-current coil model multiplies this reference by excitation and polarity, then distributes it among "
+            "the owned windings when no explicit turn/current configuration is selected. This legacy fallback "
+            "does not specify turns and amperes separately or establish a thermal rating.")
     if field == "coil_ampere_turn_fraction":
         return label, "operating", (
             "Positive share of the independently driven owner's total ampere-turns. Owned winding shares sum to one; "
-            "separate axial segments divide that same share by occupied cross-section, without duplicating current.")
+            "separate axial segments divide that same share by occupied cross-section, without duplicating current. "
+            "In the ideal prescribed-current field model this legacy share is inactive when explicit owner current "
+            "and winding turn counts define each coil's ampere-turns.")
     if field == "gaussian_reference_coil_length_mm":
         return label, "operating", (
             "Frozen denominator of the optional actual/reference current-bearing winding-length rule for Gaussian a. "
@@ -343,6 +462,8 @@ def _meaning(part, path, by_key):
             return label, "physical", (explanations.get(field, "Dimension of the configured winding material envelope.") +
                 " This changes the reconstructed solid, not the linked analytical field strength; it is not an OEM winding measurement.")
     if profile == "magnetic_pole_piece" and part.get("pole_piece_geometry_style", "") in _POLE_STYLES:
+        if field == "pole_rear_recess_depth_mm":
+            return label, "physical", "Axial depth of the annular well from the rear flange face to its floor around the tubular stem."
         if field == "pole_root_fillet_radius_range_mm":
             return label, "unknown", "Reference range only. The current pole solid has sharp shoulders; this metadata does not generate a fillet or select a physical fillet radius."
         if field == "magnetic_radial_profile_mm" or any(word in field for word in _DIMENSION_WORDS):
@@ -392,11 +513,39 @@ def _source(part, path, category):
     if len(path) > 2 and path[2] == "model_3d":
         return "user_defined", "Explicit CAD geometry authored in model_3d; no independent dimensional verification is implied."
     if path and path[0] == "derived":
+        if len(path)>2 and path[2]=='multipole_winding_wire_diameter_mm':
+            from temsim.multipole_winding import area_field
+            kind,note=_source(part,('parts',part.get('key',''),area_field(part)),category)
+            return kind,'Computed from multipole conductor metal area; no independent diameter input. '+note
+        if len(path)>2 and path[2]=='transverse_winding_wire_diameter_mm':
+            kind,note=_source(part,('parts',part.get('key',''),'transverse_winding_wire_cross_section_mm2'),category)
+            return kind,'Computed from transverse conductor metal area; no independent diameter input. '+note
+        if len(path)>2 and path[2]=='hexapole_winding_wire_diameter_mm':
+            kind,note=_source(part,('parts',part.get('key',''),'hexapole_winding_wire_cross_section_mm2'),category)
+            return kind,'Computed from radial-winding conductor metal area; no independent diameter input. '+note
+        if (len(path) > 2 and path[2] == "winding_wire_diameter_mm"
+                and "winding_wire_cross_section_mm2" in part):
+            source_kind, note = _source(part, ("parts",part.get("key",""),"winding_wire_cross_section_mm2"), category)
+            return source_kind, "Computed equivalent diameter from the conductor metal cross-section; no independent diameter input. " + note
         return "unspecified", "Derived from mechanical_inner_diameter_mm and mechanical_outer_diameter_mm; no independent thickness measurement or source is declared."
     relative = _relative_path(path)
     field = str(relative[0]) if relative else ""
     metadata = part.get("parameter_metadata", {})
     declared_field = metadata.get(field) if isinstance(metadata, Mapping) else None
+    if field.startswith(('multipole_winding_','ideal_multipole_')) and field in part and not isinstance(declared_field,Mapping):
+        note_field=('multipole_winding_source_note' if field.startswith('multipole_winding_')
+                    else 'ideal_multipole_calibration_source_note')
+        return 'user_defined',str(part.get(note_field,'Explicit engineering multipole winding/current input; not OEM or measured data.'))
+    if field.startswith(('transverse_winding_','ideal_transverse_')) and field in part and not isinstance(declared_field,Mapping):
+        note_field=('transverse_winding_source_note' if field.startswith('transverse_winding_')
+                    else 'ideal_transverse_calibration_source_note')
+        return 'user_defined',str(part.get(note_field,'Explicit engineering winding/current input; not measured or OEM data.'))
+    if (field in {"winding_turn_count", "winding_interval_turn_counts", "winding_wire_diameter_mm",
+                  "winding_wire_cross_section_mm2", "ideal_coil_current_a_at_100_percent"}
+            and field in part and not isinstance(declared_field, Mapping)):
+        return "user_defined", "Explicit winding input supplied by the user; no OEM specification or independent measurement is implied."
+    if field.startswith('hexapole_winding_') and field in part and not isinstance(declared_field,Mapping):
+        return 'user_defined',str(part.get('hexapole_winding_source_note','Explicit CAD-only radial winding input; not measured or OEM data.'))
     if field == "air_core_reference_ampere_turns" and not isinstance(declared_field, Mapping):
         status, note = part.get("air_core_reference_status", ""), part.get("air_core_reference_source", "")
         if str(status).startswith("engineering_"):

@@ -1,0 +1,283 @@
+"""Read existing baseline observer records; never execute physical operators."""
+from __future__ import annotations
+
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[1]
+OLD = ROOT / "outputs" / "copper-gun-speed-20261114"
+BASE = OLD / "optimized-preview-high-1024" / "preview"
+GATES = ("total_momentum", "xyz_position", "transverse_momentum", "xy_position")
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def distribution(values):
+    values = np.asarray(values, dtype=float)
+    return None if not len(values) else dict(minimum=float(np.min(values)),
+        p25=float(np.quantile(values, .25)), median=float(np.median(values)),
+        p75=float(np.quantile(values, .75)), maximum=float(np.max(values)))
+
+
+def midpoint(record):
+    return (record["z_min_m"]+record["z_max_m"])*500.
+
+
+def dominant(record):
+    return max(GATES, key=lambda name: record["gates"][name]["maximum_ratio"])
+
+
+def aggregate(records, total_seconds):
+    accepted = [row for row in records if row["accepted"]]
+    rejected = [row for row in records if not row["accepted"]]
+    return dict(accepted_steps=len(accepted), trial_attempts=len(records), rejected_attempts=len(rejected),
+        recorded_attempt_seconds=sum(row["seconds"] for row in records),
+        fraction_of_all_attempt_seconds=sum(row["seconds"] for row in records)/total_seconds,
+        rejected_attempt_seconds=sum(row["seconds"] for row in rejected),
+        static_call_seconds=sum(call["seconds"] for row in records for call in row["static_calls"]),
+        failure_counts_nonexclusive={gate: sum(row["gates"][gate]["maximum_ratio"] > 1 for row in rejected) for gate in GATES},
+        dominant_rejection_gate_exclusive=dict(Counter(dominant(row) for row in rejected)),
+        accepted_retry_depth_counts=dict(sorted(Counter(row["attempt"] for row in accepted).items())),
+        initial_dt_s=distribution([row["initial_dt_s"] for row in accepted]),
+        accepted_dt_s=distribution([row["dt_s"] for row in accepted]),
+        initial_over_accepted_dt=distribution([row["initial_dt_s"]/row["dt_s"] for row in accepted]),
+        accepted_maximum_normalized_gate_ratio=distribution([max(row["gates"][name]["maximum_ratio"] for name in GATES) for row in accepted]))
+
+
+def main():
+    report_path = CASE / "baseline-rejection-audit.json"
+    brief_path = CASE / "baseline-rejection-brief.md"
+    if report_path.exists() or brief_path.exists():
+        raise FileExistsError("Baseline audit outputs are new-only")
+    observer = json.loads((BASE / "observer.json").read_text())
+    attempts = observer["attempts"]
+    assert len(attempts) == 9444 and observer["attempt_records_dropped"] == 0
+    assert observer["counts"]["accepted_steps"] == 3502 and observer["counts"]["gate_rejections"] == 5942
+    assert all(row.get("finite") is True and "retryable_implicit_failure" not in row for row in attempts)
+    grouped = defaultdict(list)
+    for row in attempts:
+        grouped[row["surface_step"]].append(row)
+    steps = [grouped[key] for key in sorted(grouped)]
+    for rows in steps:
+        assert rows[-1]["accepted"] and sum(bool(row["accepted"]) for row in rows) == 1
+        assert [row["attempt"] for row in rows] == list(range(len(rows)))
+        assert all(row["initial_dt_s"] == rows[0]["dt_s"] for row in rows)
+        assert all(row["dt_s"] == rows[0]["dt_s"]*.5**index for index, row in enumerate(rows))
+        assert all(row["cached_full"] == (index > 0) for index, row in enumerate(rows))
+    total_seconds = sum(row["seconds"] for row in attempts)
+    all_statistics = aggregate(attempts, total_seconds)
+    rejected = [row for row in attempts if not row["accepted"]]
+    coarse_edges = [0, .1, .15, .2, .3, .4, .5, .6, .65, .7, .75, .8, .85, .9, 1., 1.1, 1.3,
+        2.3, 10., 14., 16., 18., 19., 20., 20.25, 20.5, 20.75, 21., 21.5, 22., 23., 24., 25., 40., 100., 450.1]
+    bins = []
+    for lower, upper in zip(coarse_edges[:-1], coarse_edges[1:]):
+        rows = [row for row in attempts if lower <= midpoint(row) < upper]
+        bins.append(dict(start_z_mm=lower, stop_z_mm=upper, **aggregate(rows, total_seconds)))
+    fine_bins = []
+    for lower in np.arange(.15, 1.3, .025):
+        upper = lower+.025
+        rows = [row for row in attempts if lower <= midpoint(row) < upper]
+        fine_bins.append(dict(start_z_mm=float(lower), stop_z_mm=float(upper), **aggregate(rows, total_seconds)))
+    reset_pairs = []
+    for index, rows in enumerate(steps[:-1]):
+        if len(rows) <= 1:
+            continue
+        previous, following = rows[-1], steps[index+1][0]
+        reset_pairs.append(dict(previous_surface_step=previous["surface_step"], previous_midpoint_z_mm=midpoint(previous),
+            previous_retry_depth=previous["attempt"], previous_accepted_dt_s=previous["dt_s"],
+            next_initial_dt_s=following["initial_dt_s"],
+            next_initial_over_previous_accepted=following["initial_dt_s"]/previous["dt_s"],
+            next_initial_over_previous_initial=following["initial_dt_s"]/previous["initial_dt_s"],
+            next_retry_depth=steps[index+1][-1]["attempt"]))
+    model = json.loads((BASE / "gun-electrostatic-model-report.json").read_text())
+    field_path = Path(model["electrostatic_field"]["cache_path"])
+    metadata_path = field_path.with_suffix(".json")
+    metadata = json.loads(metadata_path.read_text())
+    assert metadata["request_sha256"] == "e2e09c17b63548a07267cca80b85a3ed36e9d142222917a8e50bec19f23b1fd4"
+    request = metadata["request"]
+    with np.load(field_path, allow_pickle=False) as stored:
+        radial, axial = stored["r"], stored["z"]
+    # No voltage member is decompressed, and no field query is made.
+    snapshot_rows = []
+    with np.load(BASE / "observer-arrays.npz", allow_pickle=False) as stored:
+        for index, snapshot in enumerate(observer["snapshots"]):
+            prefix = f"snapshot_{index:05d}_"
+            active = stored[prefix+"active"]
+            positions, momenta = stored[prefix+"start_position_m"][active], stored[prefix+"start_momentum_kg_m_per_s"][active]
+            radius = np.linalg.norm(positions[:, :2], axis=1)
+            normalized_transverse = np.linalg.norm(momenta[:, :2], axis=1)/np.linalg.norm(momenta, axis=1)
+            current_z = np.mean((snapshot["z_min_m"], snapshot["z_max_m"]))
+            axial_cell = int(np.clip(np.searchsorted(axial, current_z)-1, 0, len(axial)-2))
+            nearby_bodies = [row for row in request["rings"]+request["grounded_liner"]
+                if row["start_m"] <= current_z <= row["stop_m"]]
+            limiting_bore = min([row["inner_m"] for row in nearby_bodies], default=None)
+            snapshot_rows.append(dict(accepted_step=snapshot["accepted_step"],
+                z_min_mm=snapshot["z_min_m"]*1000, z_max_mm=snapshot["z_max_m"]*1000,
+                active_count=int(np.count_nonzero(active)), maximum_radius_m=float(np.max(radius)),
+                radius_rms_about_axis_m=float(np.sqrt(np.mean(radius*radius))),
+                transverse_over_total_momentum=distribution(normalized_transverse),
+                fraction_using_transverse_momentum_floor=float(np.mean(normalized_transverse < 1e-5)),
+                radial_mesh_cell_at_maximum_radius=int(np.searchsorted(radial, np.max(radius), side="right")-1),
+                first_radial_cell_width_m=float(radial[1]-radial[0]),
+                midpoint_axial_cell_start_mm=float(axial[axial_cell]*1000),
+                midpoint_axial_cell_stop_mm=float(axial[axial_cell+1]*1000),
+                midpoint_axial_cell_width_m=float(axial[axial_cell+1]-axial[axial_cell]),
+                beam_axial_spread_m=snapshot["z_max_m"]-snapshot["z_min_m"],
+                physical_bodies_at_midpoint=nearby_bodies,
+                minimum_local_bore_radius_m=limiting_bore,
+                bore_radius_over_snapshot_maximum_beam_radius=limiting_bore/float(np.max(radius)) if limiting_bore is not None else None,
+                initial_over_accepted_dt=snapshot["initial_dt_s"]/snapshot["used_dt_s"]))
+    failure_combinations = Counter(tuple(name for name in GATES if row["gates"][name]["maximum_ratio"] > 1) for row in rejected)
+    limiting_ids = Counter(row["gates"][dominant(row)]["limiting_original_id"] for row in rejected)
+    dominant_changes = []
+    for rows in steps:
+        for first, second in zip(rows[:-1], rows[1:]):
+            gate = dominant(first)
+            a, b = first["gates"][gate]["maximum_ratio"], second["gates"][gate]["maximum_ratio"]
+            if a > 0 and b > 0:
+                dominant_changes.append(dict(gate=gate, effective_halving_order=float(np.log2(a/b)),
+                    error_increased=b > a))
+    changes_by_gate = {name: dict(transitions=sum(row["gate"] == name for row in dominant_changes),
+        effective_normalized_halving_order=distribution([row["effective_halving_order"] for row in dominant_changes if row["gate"] == name]),
+        error_increased_after_halving=sum(row["gate"] == name and row["error_increased"] for row in dominant_changes)) for name in GATES}
+    tracing_path = ROOT / "src" / "temsim" / "optics" / "electron_gun" / "tracing.py"
+    tracing = tracing_path.read_text()
+    expected_fragments = ["dt = step_m / max(float(np.max(velocity[:, 2])), 1.0)", "cached_full = None", "cached_full = half", "dt *= .5"]
+    assert all(fragment in tracing for fragment in expected_fragments)
+    findings = dict(
+        confirmed=[
+            "All 9444 attempts are retained: 3502 accepted and 5942 gate rejections; no implicit-convergence exception or nonfinite gate rejection occurred.",
+            "Every surface step recomputes the initial duration from the current authoritative spatial/field/impulse caps. The previous accepted duration is not carried into the next outer step.",
+            "Every within-step retry halves duration exactly, and reuses the previous half update as the next full update. This cache is reset at the next accepted outer step.",
+            "1103 accepted steps required rejection. All 1103 following initial proposals exceed the previous accepted duration; 1088 are within 5 percent of the previous rejected initial proposal.",
+            "The transverse-momentum gate dominates 5663 of 5942 rejected trials. Total-momentum failures always co-occur with other failures and never dominate the maximum normalized ratio.",
+            "The main time hotspot overlaps the extractor narrow-bore neighborhood. The recorded beam radii are tens of nanometres there, thousands of times smaller than the 250 micrometre electrode bore radius.",
+            "The original solved field uses piecewise bilinear interpolation in r squared and z; the dense initial axial mesh extends to 2.3 mm. The outer duration cap is not explicitly limited to axial mesh cells.",
+            "All 1024 original particles survive the completed Gun. This baseline has no observed physical wall/aperture loss to remove or repair."
+        ],
+        inference=[
+            "Repeatedly proposing a nearly unchanged initial dt, rejecting it 6-8 times, then restarting near that same proposal is avoidable controller work. A conservative remembered successful duration can reduce failed proposals while retaining all four acceptance gates and all physical caps.",
+            "The extractor hotspot is consistent with strong local electric variation plus piecewise-field derivative changes and a strict transverse budget. The retained observer does not identify the exact internal field-cell crossings of every full/half trial, so it cannot assign a causal percentage to interpolation interfaces.",
+            "A universal cubic error law cannot be certified from these normalized gate ratios. Their budgets change with state and some ratios are nonmonotone on halving; any predictor needs unchanged gate validation and the existing safe halving fallback.",
+            "The observed rejected-attempt time is not a promised speedup: direct selection of a formerly accepted duration must compute a full update that the old retry path obtained from its cached preceding half update. A new controller may also accept a different duration sequence."
+        ],
+        controller_requirements=[
+            "Keep dt bounded by every existing spatial, magnetic-scope, extraction-impulse, collision and conductor/event rule; never enlarge a tolerance or clip a field tail.",
+            "Use the previous accepted duration and normalized four-gate error only as an initial-proposal controller. Continue to evaluate full/half/fine DG and all active-particle gates before every acceptance.",
+            "Grow conservatively after successful steps and recover promptly when the physical cap changes; retain exact original source IDs, energies, weights, clocks, absolute losses and all boundary handling.",
+            "Version the numerical controller identity and forbid reusing old downstream results as the new executed solution. Verify source/current/energy/clock/boundary invariants and matched full 1024 Preview/High runs.",
+            "Do not split the population into independently timed cohorts or use a percentile to ignore the limiting active ray without a separately justified method; this audit supports preserving the global active-particle maximum gates."
+        ])
+    report = dict(status="READ_ONLY_BASELINE_REJECTION_AUDIT_COMPLETE", created_utc=datetime.now(timezone.utc).isoformat(),
+        scope="Existing observer/array/input/cache-axis reads and scalar analysis only. No voltage decompression, source emission, field sample/solve, transport, particle-count change or source edits.",
+        baseline=dict(directory=str(BASE), source_implementation=json.loads((BASE / "execution-receipt.json").read_text())["execution_implementation"],
+            observer_sha256=sha(BASE / "observer.json"), observer_arrays_sha256=sha(BASE / "observer-arrays.npz"),
+            input_sha256=sha(BASE / "input.json"), original_positive_source_count=1024, configured_energy_fwhm_ev=.3,
+            worker_seconds=json.loads((BASE / "execution-receipt.json").read_text())["elapsed_seconds"],
+            observer_elapsed_seconds=observer["elapsed_seconds"],
+            current_tracing_sha256=sha(tracing_path), current_tracing_retains_baseline_control_fragments=True),
+        timing_definition="Attempt seconds include all observed full/half/fine calls and gate evaluation. They exclude outer-loop/boundary/preparation/column work. Time is assigned to the midpoint of the active population's start-Z extrema, not a common-Z particle plane.",
+        totals=dict(**all_statistics, exact_counts=observer["counts"], recorded_attempts_dropped=0,
+            static_step_seconds=observer["static_step_seconds"],
+            attempt_seconds_fraction_of_worker=total_seconds/json.loads((BASE / "execution-receipt.json").read_text())["elapsed_seconds"],
+            rejected_seconds_fraction_of_attempts=sum(row["seconds"] for row in rejected)/total_seconds,
+            implicit_failures=0, nonfinite_gate_trials=0,
+            rejection_combinations=[dict(failed_gates=list(names), count=count) for names, count in failure_combinations.most_common()],
+            dominant_limiting_original_ids=[dict(original_id=key, rejected_attempts=value) for key, value in limiting_ids.most_common(20)]),
+        dt_reset_evidence=dict(accepted_steps_with_retries=len(reset_pairs),
+            next_initial_over_previous_accepted=distribution([row["next_initial_over_previous_accepted"] for row in reset_pairs]),
+            next_initial_over_previous_initial=distribution([row["next_initial_over_previous_initial"] for row in reset_pairs]),
+            following_initial_within_5percent_of_previous_initial=sum(.95 < row["next_initial_over_previous_initial"] < 1.05 for row in reset_pairs),
+            following_initial_over_1p5_previous_accepted=sum(row["next_initial_over_previous_accepted"] > 1.5 for row in reset_pairs),
+            within_step_duration_halving_exact=True, cached_full_only_after_rejection=True,
+            examples=sorted(reset_pairs, key=lambda row: row["next_initial_over_previous_accepted"], reverse=True)[:12]),
+        mathematical_call_accounting=dict(actual_static_calls=22390, accepted_steps=3502, rejected_trials=5942,
+            identity="22390 = 3*3502 + 2*5942; each retry already saves its next full update using the previous half result.",
+            same_accepted_sequence_no_rejection_counterfactual_calls=10506,
+            counterfactual_additional_retry_calls=11884,
+            limitation="Bookkeeping for the exact observed accepted sequence, not an achievable runtime guarantee. A changed controller can change the sequence, and direct accepted-dt selection needs its own full step."),
+        regions=[dict(start_z_mm=lower, stop_z_mm=upper, **aggregate([row for row in attempts if lower <= midpoint(row) < upper], total_seconds))
+                 for lower, upper in ((.5, 1.1), (.65, 1.), (14., 25.), (100., 450.1))],
+        axial_bins=bins, extractor_fine_25um_bins=fine_bins,
+        normalized_error_halving_empirics=changes_by_gate,
+        field_and_geometry=dict(request_sha256=metadata["request_sha256"], cache_metadata_sha256=sha(metadata_path),
+            mesh_shape=[len(radial), len(axial)], interpolation=request["numerics"]["interpolation"],
+            dense_axial_band_mm=[0., 2.3], initial_axial_spacing_m=[float(np.min(np.diff(axial)[:149])), float(np.max(np.diff(axial)[:149]))],
+            electrodes=request["rings"], grounded_liner=request["grounded_liner"],
+            note="No grounded outlet shell covers the sub-mm extractor hotspot; the explicit grounded liner starts at 370 mm. The extractor body has a 2 mm bore radius over 0.3-0.75 mm and 0.25 mm over 0.75-1.3 mm."),
+        retained_beam_snapshots=snapshot_rows,
+        sampling_limits="Only 15 exact full-population snapshots were retained, every 250 accepted steps. Beam widths and per-ray momentum-floor fractions between those snapshots cannot be reconstructed from scalar observer records.",
+        unchanged_tolerances=dict(implicit=1e-13, total_relative_momentum=1e-6,
+            transverse_relative_momentum=1e-5, transverse_floor_fraction=1e-5,
+            xyz_absolute_m=1e-13, xyz_relative_step=1e-5, xy_absolute_m=1e-13, xy_relative_position=1e-6, maximum_retries=32),
+        code_evidence=[dict(path="src/temsim/optics/electron_gun/tracing.py", lines=[338, 364, 368, 372, 846, 860, 891, 907, 916, 921],
+            meaning="Outer initial proposal; original impulse cap; four unchanged gates; local cached-half retry; accepted dt returned without an outer history controller."),
+            dict(path="src/temsim/optics/electron_gun/field_emission.py", lines=[1024, 1030], meaning="Solved-field spatial ceiling, not mesh-cell scheduling."),
+            dict(path="src/temsim/physics/planar_gun_field.py", lines=[283, 300, 304, 307], meaning="Exact existing piecewise bilinear r-squared/z interpolation and cell lookup.")],
+        findings=findings)
+    with report_path.open("x", encoding="utf-8") as stream:
+        json.dump(report, stream, indent=2, allow_nan=False)
+    brief = f"""# Existing 1024-particle Gun rejection audit
+
+This is a read-only audit of the completed baseline. No new source, field query,
+transport or physical trial was run. Original optics, 0.3 eV source, boundaries
+and tolerances were not edited.
+
+The observer retains all 9,444 attempts: 3,502 accepted and 5,942 rejected.
+Recorded attempts took {total_seconds:.3f} s; rejected attempts occupied
+{sum(row['seconds'] for row in rejected):.3f} s ({sum(row['seconds'] for row in rejected)/total_seconds:.2%}).
+There were no implicit-convergence failures or nonfinite gate trials.
+
+The outer loop proposes dt from the original spatial/field/impulse caps at
+every accepted step. The successful smaller dt is not remembered. Of 1,103
+steps needing retries, all following proposals exceed the previous accepted
+duration, and 1,088 remain within 5% of the previous rejected initial duration.
+The median restart ratio is 64.025; the worst is 290.303. This is direct
+evidence of repeated reject-and-halve sawtooth work.
+
+The dominant rejecting gate is transverse momentum (5,663 trials, 95.30%);
+XYZ position dominates 172 and XY position 107. These exclusive dominant-gate
+counts differ from the nonexclusive failed-gate totals in the JSON report.
+The 0.7-0.8 mm and 0.8-0.9 mm start-Z bands each consume about 555 s. Most
+steps there halve 7-8 times, selecting 1/128 or 1/256 of the initial proposal.
+The electrostatic-lens neighborhood at 14-25 mm is a smaller secondary hotspot.
+
+The extractor nose changes bore radius from 2 mm to 0.25 mm at 0.75 mm. The
+retained beam maximum radius near 0.788-0.804 mm is only 53.6 nm; this is not
+evidence of near-wall interception. The axial mesh is about 15.6 micrometres
+there, the bunch spans about 16.3 micrometres, and all particles are inside the
+first 15.625-micrometre radial cell. Interpolation-interface effects are a plausible
+contributor, but this observer does not identify each trial's internal cell
+crossings, so no causal percentage can be assigned.
+
+A controller can remember a conservative successful dt and cautiously grow
+it while still applying every original physical cap and all four gates. The
+existing half-update cache already avoids one full update per rejection.
+The exact call identity is 22,390 = 3*3,502 + 2*5,942; removing retries from the
+same accepted sequence would require 10,506 calls. This is bookkeeping, not a
+runtime promise: direct accepted-dt proposals need a fresh full update and a
+new controller can change the accepted sequence. Preserve safe halving and
+do not assume a globally cubic normalized-error law.
+
+See `baseline-rejection-audit.json` for fine axial bins, timings, every failed
+gate, retry depth, dt ratios, limiting original IDs, beam snapshots and explicit
+evidence/inference separation. New full 1024 Preview/High runs must validate
+any later implementation; this audit itself makes no new convergence claim.
+"""
+    with brief_path.open("x", encoding="utf-8") as stream:
+        stream.write(brief)
+    print(json.dumps(dict(status=report["status"], report=str(report_path), brief=str(brief_path),
+        totals=all_statistics, dt_reset_evidence=report["dt_reset_evidence"]), indent=2), flush=True)
+
+
+if __name__ == "__main__":
+    main()

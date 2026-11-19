@@ -26,6 +26,37 @@ _INTERN = weakref.WeakValueDictionary()
 _LOCK = RLock()
 
 
+def field_execution_identity(state, snapshot):
+    """Bind numerical field execution separately from physical field inputs.
+
+    A device or explicit CPU/CUDA policy change may alter binary64 reductions.
+    Completed particle prefixes must retain their original execution identity.
+    CUDA failures are not converted into a different identity or CPU success.
+    """
+    from temsim.physics.compute_backend import (
+        BACKEND_CPU, BACKEND_CUDA, BACKEND_PREFER_GPU, BACKEND_REQUIRE_GPU,
+        normalise_backend,
+    )
+    policy = (normalise_backend(getattr(state, "acceleration_backend", "Auto"))
+              if bool(getattr(state, "acceleration_enabled", True)) else BACKEND_CPU)
+    identity = {"schema": "unified-field-execution-v1", "policy": policy,
+                "sampler": "retained-providers"}
+    if policy in (BACKEND_CUDA, BACKEND_PREFER_GPU, BACKEND_REQUIRE_GPU):
+        from temsim.physics.cuda_coil_potential import prepare_cuda_coil_potential
+        static = snapshot.static_snapshot if type(snapshot) is DynamicPotentialSnapshot else snapshot
+        sampler = prepare_cuda_coil_potential(static, execution_backend=policy)
+        if sampler is not None:
+            identity["sampler"] = thaw_json(sampler.execution_identity)
+        if type(snapshot) is DynamicPotentialSnapshot:
+            identity["dynamic_sources"] = "Retained time-dependent providers and original interval guards"
+    return identity
+
+
+def _field_execution_matches(state, runtime):
+    return (thaw_json(runtime.metadata.get("field_execution_identity"))
+            == field_execution_identity(state, runtime.snapshot))
+
+
 @dataclass(frozen=True, slots=True, weakref_slot=True)
 class UnifiedFieldRuntime:
     snapshot: ElectromagneticPotentialSnapshot | DynamicPotentialSnapshot
@@ -79,6 +110,8 @@ class UnifiedFieldRuntime:
     def require_state(self, state):
         if capture_instrument_snapshot(state).digest != self.source_identity:
             raise ValueError("Instrument inputs or implementation changed after unified field capture")
+        if not _field_execution_matches(state, self):
+            raise ValueError("Field execution backend or CUDA device changed after unified field capture")
 
 
 def unified_source_selection(state):
@@ -168,6 +201,13 @@ def capture_unified_field_runtime(state, start_z_m=None, stop_z_m=None):
     drive_components={item.key:item for item in (*state.stigmators,*state.corrector_elements,*state.deflectors)}
     for row in native.contributions:
         potential = row.potential
+        from temsim.physics.transverse_coil_field import TransverseCoilPotential
+        if type(potential) is TransverseCoilPotential and potential.provenance.get('dynamic_drive_frozen',False):
+            from temsim.physics.dynamic_transverse_coil import capture_dynamic_transverse_coil
+            dynamic=capture_dynamic_transverse_coil(row,drive_components)
+            if dynamic is not None:
+                dynamic_coils.append(dynamic)
+                continue
         if type(potential) is AnalyticMagneticPotential:
             field=potential.field
             if getattr(field,"dynamic",False):
@@ -189,6 +229,7 @@ def capture_unified_field_runtime(state, start_z_m=None, stop_z_m=None):
     return UnifiedFieldRuntime(snapshot, geometry, identity, {
         "source_contract": report["source"], "electric_policy": report["electric_policy"],
         "emission_time_s": epoch, "time_policy": report["time_policy"],
+        "field_execution_identity": field_execution_identity(state, snapshot),
         "dynamic_snapshot_digest": snapshot.numerical_digest if dynamic_coils else None,
         "round_radial_order": 3, "empirical_aberrations_applied": False,
         "round_remote_domain_policy": REMOTE_POLICY,
@@ -202,10 +243,12 @@ def get_unified_field_runtime(state):
     identity = capture_instrument_snapshot(state).digest
     with _LOCK:
         previous = _CACHE.get(id(state))
-        if previous is not None and previous[0]() is state and previous[1].source_identity == identity:
+        if (previous is not None and previous[0]() is state
+                and previous[1].source_identity == identity
+                and _field_execution_matches(state, previous[1])):
             return previous[1]
         shared = _INTERN.get(identity)
-        if shared is not None:
+        if shared is not None and _field_execution_matches(state, shared):
             _CACHE[id(state)] = (weakref.ref(state,lambda ref,key=id(state):_CACHE.pop(key,None)),shared)
             return shared
     result = capture_unified_field_runtime(state)

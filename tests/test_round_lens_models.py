@@ -195,8 +195,8 @@ def test_copper_coherent_entry_is_rejected_without_running_a_wave(state):
     switch_mode(state, "unified")
     assert coherent_mode_issue(state) is None
     set_round_lens_field_model(state, "copper_coil")
-    assert "classical particles only" in coherent_mode_issue(state)
-    with pytest.raises(ValueError, match="classical particles only"):
+    assert "General/downstream coherent propagation" in coherent_mode_issue(state)
+    with pytest.raises(ValueError, match="General/downstream coherent propagation"):
         require_coherent_mode(state)
 
 
@@ -280,4 +280,59 @@ def test_model_inspector_changes_round_source_without_emission_or_excitation_edi
     assert not page.geometry_field_button.isEnabled()
     assert not page.analytic_field_button.isEnabled()
     assert [(x.key, x.percent, x.polarity) for x in state.lenses] == controls
-    assert "Copper-coil field requested" in {page.table.item(i, 2).text() for i in range(page.table.rowCount())}
+    assert "Ideal prescribed-current coil field requested" in {page.table.item(i, 2).text() for i in range(page.table.rowCount())}
+
+
+@pytest.mark.parametrize("retained_recipe", [{}, {"ampere_turns": 12345.}])
+def test_model_inspector_copper_lens_selection_uses_active_reference(state, qtbot, retained_recipe):
+    from temsim.gui.model_inspector import ModelInspectorPage
+    from temsim.simulation_modes import switch_mode
+    switch_mode(state, "unified")
+    set_round_lens_field_model(state, "copper_coil")
+    key = "condenser_lens_2"
+    state.lens_field_map_descriptors[key] = deepcopy(retained_recipe)
+    before = deepcopy(state.to_dict())
+    page = ModelInspectorPage(); qtbot.addWidget(page); page.set_state(state)
+    assert page.lens.currentData() != key
+    page.lens.setCurrentIndex(page.lens.findData(key))
+    lens = next(item for item in state.lenses if item.key == key)
+    from temsim.coil_reference_metadata import round_coil_operating_point
+    owner = state._resolved_assembly.part(key)
+    windings = [dict(key=p.key,data=p.data) for p in state._resolved_assembly.parts
+                if p.data.get("mechanical_profile")=="magnetic_excitation_coil"
+                and p.data.get("field_source_key")==key]
+    reference = round_coil_operating_point(owner.data,windings)["reference_ampere_turns"]
+    expected = reference*lens.percent*.01*lens.polarity
+    assert page.current_summary.text().startswith(f"Air-core NI {expected:.6g} A-turn |")
+    assert state.to_dict() == before
+    # Returning to saved per-lens models must reveal their original calibration.
+    page.round_lens_model.setCurrentIndex(page.round_lens_model.findData("gaussian"))
+    if retained_recipe:
+        old_ni = retained_recipe["ampere_turns"]*lens.percent*.01*lens.polarity
+        assert page.current_summary.text().startswith(f"NI {old_ni:.6g} A-turn |")
+    else:
+        assert "configure reference ampere-turns" in page.current_summary.text()
+    assert state.lens_field_map_descriptors[key] == retained_recipe
+
+
+def test_model_inspector_copper_lens_selection_preserves_enable_and_polarity(state, qtbot):
+    from temsim.gui.model_inspector import ModelInspectorPage
+    from temsim.simulation_modes import switch_mode
+    switch_mode(state, "unified")
+    set_round_lens_field_model(state, "copper_coil")
+    key = "condenser_lens_2"
+    lens = next(item for item in state.lenses if item.key == key)
+    from temsim.coil_reference_metadata import round_coil_operating_point
+    owner = state._resolved_assembly.part(key)
+    windings = [dict(key=p.key,data=p.data) for p in state._resolved_assembly.parts
+                if p.data.get("mechanical_profile")=="magnetic_excitation_coil"
+                and p.data.get("field_source_key")==key]
+    reference = round_coil_operating_point(owner.data,windings)["reference_ampere_turns"]
+    page = ModelInspectorPage(); qtbot.addWidget(page); page.set_state(state)
+    for enabled, polarity in ((True, -1), (False, -1), (True, 1)):
+        lens.enabled, lens.polarity = enabled, polarity
+        page.lens.setCurrentIndex(0)
+        page.lens.setCurrentIndex(page.lens.findData(key))
+        expected = reference*lens.percent*.01*polarity if enabled else 0.
+        assert page.current_summary.text().startswith(f"Air-core NI {expected:.6g} A-turn |")
+        assert (lens.enabled, lens.polarity) == (enabled, polarity)

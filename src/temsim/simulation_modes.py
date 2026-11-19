@@ -20,7 +20,7 @@ class SimulationMode:
 
 
 MODES = (
-    SimulationMode("ideal_thin", "Ideal Optics", "Fast thin-element particle optics. Lenses, stigmators and deflectors act at declared planes; field thickness and magnetic materials are not resolved. Positions and apertures remain active. Configured empirical Cs/Cc screens are inactive; saved values are retained. Coherent propagation requires Finite-Field Optics."),
+    SimulationMode("ideal_thin", "Ideal Optics", "Thin-lens approximation. Lenses, stigmators and deflectors act at declared planes; propagation inside their finite field thickness and overlapping fields is not resolved. Positions and apertures remain active. Configured empirical Cs/Cc screens are inactive; saved values are retained. Coherent propagation requires Finite-Field Optics."),
     SimulationMode("unified", "Finite-Field Optics", "Particles and coherent waves use the same immutable electromagnetic potentials and finite geometry. Natural field aberrations replace empirical Cs/Cc screens and equivalent image lenses in the owned column interval; saved values remain unchanged. Unsupported source, field, geometry or wave configurations are rejected explicitly. This is a bounded forward-field model, not full instrument qualification."),
     SimulationMode("ideal", "Parameterized fields (legacy)", "Compatibility execution of parameterized finite column fields with configured aberrations, corrector multipoles and actual electron energies. Pole-piece shape and magnetic materials are not used to solve the field. The historical ideal key keeps its original behavior; it does not select the unified potential executor."),
     SimulationMode("analytical", "Analytical Field (compatibility)", "Compatibility alias for parameterized Finite-Field Optics. Existing profiles retain their key, configured aberrations and correctors. Saved geometry/map recipes are inactive."),
@@ -69,8 +69,9 @@ def coherent_mode_issue(state):
         return ("Coherent propagation is unavailable in Ideal Optics (thin elements). "
                 "Select Finite-Field Optics in Simulation; the mode was not changed automatically.")
     if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
-        return ("Copper-coil round-lens fields currently support classical particles only. "
-                "Coherent propagation is not qualified for this source model; select Gaussian calibration to use coherent optics.")
+        return ("General/downstream coherent propagation is not qualified for ideal prescribed-current coil fields. "
+                "Local stationary mixed particle-wave STEM uses separate admission on Scanning Image; "
+                "the field model was not changed automatically.")
     return None
 
 
@@ -85,7 +86,7 @@ def mode_display_label(state):
     label = MODE_BY_KEY[key].label
     label = f"Finite-Field Optics / {label}" if key in FINITE_FIELD_KEYS and key != "unified" else label
     if getattr(state, "round_lens_field_model", "gaussian") == "copper_coil":
-        label += " / Copper coils in vacuum"
+        label += " / Ideal prescribed-current coils in vacuum"
     elif getattr(state, "gaussian_geometry_coupling", "fixed_calibration") == "axial_length":
         label += " / Gaussian coil-length linking"
     return label
@@ -129,6 +130,13 @@ def validate_model_recipes(descriptors):
     for row in descriptors.values():
         from temsim.excitation_calibration import validate_excitation_recipe
         validate_excitation_recipe(row)
+        from temsim.ideal_coil_segments import FIELD, normalize_recipe
+        if isinstance(row, dict) and FIELD in row:
+            normalize_recipe(row[FIELD])
+        if isinstance(row, dict) and "ideal_transverse_current_segments" in row:
+            from temsim.ideal_transverse_segments import FIELD as TRANSVERSE_FIELD
+            from temsim.ideal_transverse_segments import normalize_recipe as normalize_transverse_recipe
+            normalize_transverse_recipe(row[TRANSVERSE_FIELD])
         if isinstance(row, dict) and row.get("solver") == "axisymmetric_nonlinear_fem":
             from temsim.physics.nonlinear_circuits import operator_settings
             operator_settings(row)

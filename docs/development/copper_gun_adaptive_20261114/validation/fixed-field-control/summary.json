@@ -1,0 +1,121 @@
+{
+  "original_count": 1024,
+  "original_positive_count": 1024,
+  "gun_exit_surviving": 1024,
+  "incident_surviving_positive": 1024,
+  "incident_effective_count": 1024.0,
+  "gun_emitted_current_a": 1e-05,
+  "incident_source_weight_sum": 1.0,
+  "incident_surviving_source_fraction": 1.0,
+  "incident_z_range_mm": [
+    0.0,
+    1599.2
+  ],
+  "equal_time_history_saved": true,
+  "equal_time_frames": 382,
+  "performance": {
+    "backend_stages": [
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 35610.765,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 2578,
+        "retained_history_nodes": 2578,
+        "history_memory_bytes": 158379728,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.49986950848210654,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      },
+      {
+        "stage": "column",
+        "requested": "Auto",
+        "actual": "CPU",
+        "outcome": "returned",
+        "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+        "monotonic_s": 35714.89,
+        "retried": false,
+        "history_policy": "full",
+        "requested_history_policy": "auto",
+        "integration_nodes": 2839,
+        "retained_history_nodes": 2839,
+        "history_memory_bytes": 177559448,
+        "history_budget_bytes": 2147483648,
+        "retained_history_maximum_gap_mm": 0.4999819884728822,
+        "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+        "display_history_step_mm": null
+      }
+    ],
+    "backend_scope": "Last 256 stage calls in this worker, including exact internal reuse; not hardware qualification",
+    "numerical_preparation": {
+      "schema": "gui-request-numerical-preparation-v1",
+      "quality": "Preview",
+      "requested_step_mm": 0.5,
+      "applied_step_mm": 0.5,
+      "high_accuracy_maximum_step_mm": null,
+      "changed": false,
+      "qualification": "Execution resolution only; working-point convergence requires independent refinement"
+    }
+  },
+  "scope": "Separate fixed-High-calibration-field Preview control. Not a fresh/default Preview automatic-calibration result, not a material Si scan, and not a coherent calculation.",
+  "label": "AdaptiveGunFixedHighFieldPreviewControl",
+  "status": "COMPLETE_FIXED_HIGH_FIELD_PREVIEW_CONTROL",
+  "quality": "Preview",
+  "worker_elapsed_seconds": 215.4640683999969,
+  "source": {
+    "high_archive": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\adaptive-preview-high-1024\\high-accuracy\\complete-result.temsim",
+    "high_archive_sha256": "98f862668efa9dc430d7a82b5ffaa4ecc22bdaf08a3a2f56a9bb934ec0f7f53a",
+    "high_package_digest": "4b92d4bbdaa1f515a595810e9cba684da684d9a4e425d4c371b92cc3e701f54f",
+    "source_reference": "F:\\tem_simulator_v2\\outputs\\copper-gun-adaptive-20261114\\baseline-input\\independent-expected-emission.npz",
+    "source_reference_sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4",
+    "implementation": "6169010971ca2aeb082c8f0936b043f2ad4eb886cdfd07991c69bdda32a7ffca",
+    "original_count": 1024,
+    "original_positive_count": 1024,
+    "source_fwhm_ev": 0.3,
+    "high_step_mm": 0.05,
+    "high_history_step_mm": 0.5
+  },
+  "official_step_mm": 0.5,
+  "official_history_step_mm": 2.0,
+  "new_original_source_particles": 0,
+  "genuine_completed_gun_reused": true,
+  "actual_high_field_and_boundaries_exact": true,
+  "independent_inputs_and_tolerances_unchanged": true,
+  "full_coarse_incident_and_post_newly_executed": true,
+  "column_segment_cache": {
+    "mode": "checkpoint",
+    "hit": true,
+    "resume_z_mm": 450.0,
+    "reused_prefix_rows": 226,
+    "recomputed_history_rows": 2578,
+    "reused_integration_nodes": 1,
+    "recomputed_integration_nodes": 2577,
+    "checkpoint_spacing_mm": 0.0,
+    "checkpoint_count": 231,
+    "checkpoint_retained_bytes": 13520520,
+    "checkpoint_internal_state_bytes": 2164560,
+    "checkpoint_memory_budget_bytes": 536870912,
+    "field_sigma_cutoff": 7.0,
+    "incremental_gun_reused_original_count": 0,
+    "incremental_column_reused_original_count": 0,
+    "incremental_column_transported_original_count": 1024,
+    "downstream": {
+      "hit": false,
+      "resume_z_mm": 1599.2,
+      "completed_z_mm": 2987.1499999999996,
+      "scope": "optical_reference"
+    }
+  },
+  "formal_archive_roundtrip_exact": true,
+  "upstream_gates": {
+    "rejected": [],
+    "reuse_validation": []
+  },
+  "validate_incident_flight_times": true
+}

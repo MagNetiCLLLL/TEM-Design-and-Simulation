@@ -1,0 +1,2425 @@
+{
+  "status": "SOURCE_FREE_UNQUALIFIED_BRANCH_SEARCH",
+  "cells": [
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.25
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.02250000000000002,
+      "center_z_m": 0.46625000000000005,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.25,
+        0.5
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022499999999999964,
+      "center_z_m": 0.48875,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z2",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        0.75
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022499999999999964,
+      "center_z_m": 0.51125,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z3",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.75,
+        1.0
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022500000000000075,
+      "center_z_m": 0.53375,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_2:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 270,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 0.6095,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_2",
+      "original_actual_master_a": 51.69992515557007
+    },
+    {
+      "source_id": "condenser_lens_2:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 270,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.08100000000000007,
+      "center_z_m": 0.6905000000000001,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_2",
+      "original_actual_master_a": 51.69992515557007
+    },
+    {
+      "source_id": "condenser_lens_3:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 255,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.07650000000000001,
+      "center_z_m": 0.87675,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_3",
+      "original_actual_master_a": 16.895544072366775
+    },
+    {
+      "source_id": "condenser_lens_3:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 255,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.07650000000000001,
+      "center_z_m": 0.95325,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_3",
+      "original_actual_master_a": 16.895544072366775
+    },
+    {
+      "source_id": "adapter_lens:interval0:r0:z0",
+      "parent_source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5217391304347826
+      ],
+      "turn_count": 12,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.045525,
+      "length_m": 0.017092173913043407,
+      "center_z_m": 1.080366086956522,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "adapter_lens",
+      "original_actual_master_a": 34.52999896863375
+    },
+    {
+      "source_id": "adapter_lens:interval0:r0:z1",
+      "parent_source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5217391304347826,
+        1.0
+      ],
+      "turn_count": 11,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.045525,
+      "length_m": 0.01566782608695627,
+      "center_z_m": 1.0967460869565218,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "adapter_lens",
+      "original_actual_master_a": 34.52999896863375
+    },
+    {
+      "source_id": "probe_tl22_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04675547125,
+      "length_m": 0.012078947368421078,
+      "center_z_m": 1.1609144736842105,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl22_lens",
+      "original_actual_master_a": -1082.979471068911
+    },
+    {
+      "source_id": "probe_tl22_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04675547125,
+      "length_m": 0.010871052631578948,
+      "center_z_m": 1.1723894736842104,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl22_lens",
+      "original_actual_master_a": -1082.979471068911
+    },
+    {
+      "source_id": "probe_tl21_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04665823795,
+      "length_m": 0.0120789473684213,
+      "center_z_m": 1.2445144736842106,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl21_lens",
+      "original_actual_master_a": 1016.1529276495789
+    },
+    {
+      "source_id": "probe_tl21_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04665823795,
+      "length_m": 0.010871052631578948,
+      "center_z_m": 1.2559894736842108,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl21_lens",
+      "original_actual_master_a": 1016.1529276495789
+    },
+    {
+      "source_id": "probe_tl12_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.046814999999999996,
+      "length_m": 0.012031578947368393,
+      "center_z_m": 1.3608857894736843,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl12_lens",
+      "original_actual_master_a": 675.200888264675
+    },
+    {
+      "source_id": "probe_tl12_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.046814999999999996,
+      "length_m": 0.01082842105263171,
+      "center_z_m": 1.3723157894736842,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl12_lens",
+      "original_actual_master_a": 675.200888264675
+    },
+    {
+      "source_id": "mini_condenser:interval0:r0:z0",
+      "parent_source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5294117647058824
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.017,
+      "outer_radius_m": 0.025500000000000002,
+      "length_m": 0.009529411764705786,
+      "center_z_m": 1.5182647058823528,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "mini_condenser",
+      "original_actual_master_a": -387.8880554673398
+    },
+    {
+      "source_id": "mini_condenser:interval0:r0:z1",
+      "parent_source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5294117647058824,
+        1.0
+      ],
+      "turn_count": 8,
+      "inner_radius_m": 0.017,
+      "outer_radius_m": 0.025500000000000002,
+      "length_m": 0.00847058823529423,
+      "center_z_m": 1.527264705882353,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "mini_condenser",
+      "original_actual_master_a": -387.8880554673398
+    },
+    {
+      "source_id": "objective_lens:interval0:r0:z0",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.43275,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval0:r0:z1",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.5052500000000002,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval1:r0:z0",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:1",
+      "parent_interval_index": 1,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.6931500000000002,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval1:r0:z1",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:1",
+      "parent_interval_index": 1,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.76565,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "diffraction_lens:interval0:r0:z0",
+      "parent_source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 180,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.04499999999999993,
+      "center_z_m": 1.8744,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "diffraction_lens",
+      "original_actual_master_a": 28.962896061940654
+    },
+    {
+      "source_id": "diffraction_lens:interval0:r0:z1",
+      "parent_source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 180,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.04500000000000015,
+      "center_z_m": 1.9194,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "diffraction_lens",
+      "original_actual_master_a": 28.962896061940654
+    },
+    {
+      "source_id": "intermediate_lens:interval0:r0:z0",
+      "parent_source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.0263999999999998,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "intermediate_lens",
+      "original_actual_master_a": 0.06188894277520134
+    },
+    {
+      "source_id": "intermediate_lens:interval0:r0:z1",
+      "parent_source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.1074,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "intermediate_lens",
+      "original_actual_master_a": 0.06188894277520134
+    },
+    {
+      "source_id": "projector_lens_1:interval0:r0:z0",
+      "parent_source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 216,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.053999999999999826,
+      "center_z_m": 2.2199,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_1",
+      "original_actual_master_a": 32.8252695494996
+    },
+    {
+      "source_id": "projector_lens_1:interval0:r0:z1",
+      "parent_source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 216,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.05400000000000027,
+      "center_z_m": 2.2739000000000003,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_1",
+      "original_actual_master_a": 32.8252695494996
+    },
+    {
+      "source_id": "projector_lens_2:interval0:r0:z0",
+      "parent_source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.4089,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_2",
+      "original_actual_master_a": 7.514137300316783
+    },
+    {
+      "source_id": "projector_lens_2:interval0:r0:z1",
+      "parent_source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.4899000000000004,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_2",
+      "original_actual_master_a": 7.514137300316783
+    }
+  ],
+  "scales": [
+    105.49493791612478,
+    105.49493791612478,
+    105.49493791612478,
+    105.49493791612478,
+    15.951090308758427,
+    15.951090308758427,
+    4.524856862492036,
+    4.524856862492036,
+    12.843039807843837,
+    12.843039807843837,
+    379.52609861234106,
+    379.52609861234106,
+    356.27601236077965,
+    356.27601236077965,
+    255.5526073920933,
+    255.5526073920933,
+    217.0400106661396,
+    217.0400106661396,
+    84.15828189236098,
+    84.15828189236098,
+    84.15828189236098,
+    84.15828189236098,
+    11.267920042186253,
+    11.267920042186253,
+    0.021250734866347747,
+    0.021250734866347747,
+    14.667659813710872,
+    14.667659813710872,
+    2.9792667084409197,
+    2.9792667084409197
+  ],
+  "owners": {
+    "condenser_lens_1": [
+      0,
+      4
+    ],
+    "condenser_lens_2": [
+      4,
+      6
+    ],
+    "condenser_lens_3": [
+      6,
+      8
+    ],
+    "adapter_lens": [
+      8,
+      10
+    ],
+    "probe_tl22_lens": [
+      10,
+      12
+    ],
+    "probe_tl21_lens": [
+      12,
+      14
+    ],
+    "probe_tl12_lens": [
+      14,
+      16
+    ],
+    "mini_condenser": [
+      16,
+      18
+    ],
+    "objective_lens": [
+      18,
+      22
+    ],
+    "diffraction_lens": [
+      22,
+      24
+    ],
+    "intermediate_lens": [
+      24,
+      26
+    ],
+    "projector_lens_1": [
+      26,
+      28
+    ],
+    "projector_lens_2": [
+      28,
+      30
+    ]
+  },
+  "best_values": [
+    -4.552855757778508,
+    2.673772392899512,
+    6.6584921597201525,
+    -4.693904344266731,
+    0.36938855276371263,
+    -0.24968212739852205,
+    -4.944781891436232,
+    13.373690650032913,
+    -31.413110857712155,
+    -8.304521693249773,
+    0.6760116661138873,
+    -2.772546618537248,
+    1.4833297759008186,
+    0.2625396767687489,
+    -2.1281579802094264,
+    -0.3249956963644221,
+    -2.8173902321650974,
+    -10.915372625541375,
+    2.5465091173055825,
+    -1.2989438757270297,
+    11.869285825086795,
+    7.443225599446427,
+    3.5183208817431493,
+    2.4658069751598357,
+    1.6125769712473965,
+    0.2582240868123181,
+    -1.6036742567431275,
+    -1.9975654672963183,
+    -2.7107694669308446,
+    -3.1399886339722576
+  ],
+  "score": 1.2350577879760964,
+  "attempts": [
+    {
+      "index": 0,
+      "score": 1.4666808213730642,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        4.734798069403009,
+        1.1618174119517977,
+        -5.18742320915053,
+        1.8128828887369766,
+        -0.24523235495143225,
+        -0.46621383517933446,
+        11.291453464821107,
+        -5.1486302670684365,
+        3.1912469425855408,
+        -6.881304469260921,
+        0.2089602600100566,
+        -3.1939304541817775,
+        2.1086601018185283,
+        0.21436833883922382,
+        -2.0263011359025476,
+        0.4209968993408818,
+        1.8937666904864834,
+        -8.426676397713235,
+        1.7934360875234285,
+        -1.1997617164244885,
+        12.00594170098929,
+        4.89085951572759,
+        0.014420884679281978,
+        -0.9612123554065174,
+        -2.9684142076973825,
+        -4.126281458689141,
+        -4.344117756128431,
+        -4.767855375482636,
+        -5.718857262048003,
+        -6.255757311921514
+      ],
+      "current_a": [
+        499.4972283770579,
+        122.56585574372767,
+        -547.2468893939999,
+        191.2499677965123,
+        -3.911723440459798,
+        -7.43661898813818,
+        51.09221069780526,
+        -23.296814996378817,
+        40.98531152028604,
+        -88.37686722861172,
+        79.30587224663716,
+        -1212.1799645147526,
+        751.2650125001809,
+        76.3742969380431,
+        -517.8265386414564,
+        107.586855330549,
+        411.0231427023663,
+        -1828.9259352397876,
+        150.93249980972968,
+        -100.96988473451495,
+        1010.3994260551085,
+        411.6063338205386,
+        0.16249337550373807,
+        -10.830863964282154,
+        -0.06308098330127679,
+        -0.08768651326252958,
+        -63.71804143759283,
+        -69.93328068855202,
+        -17.0380010511452,
+        -18.637569495493626
+      ]
+    },
+    {
+      "index": 1,
+      "score": 1.9597390017242882,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        4.443367400334883,
+        2.5071797684457544,
+        2.8711902426194325,
+        2.3400577212726628,
+        -3.2306479566043027,
+        -3.02062371324795,
+        -11.823105359893038,
+        -19.36073054362989,
+        2.944926669296631,
+        0.2713017913875296,
+        -1.2564050147265085,
+        -1.2739672772926998,
+        2.0629163022957053,
+        0.15751288506782063,
+        -3.4328043253225173,
+        4.091406078747078,
+        -5.720352982840499,
+        -11.805252244072708,
+        0.8488745305055168,
+        0.7426288574673358,
+        7.570638781835469,
+        5.332618205706106,
+        3.975640756761551,
+        3.8026217818968564,
+        3.936091911702059,
+        5.786267673761151,
+        3.724835634688289,
+        3.7794778600048344,
+        3.9539378853347844,
+        4.014765871322195
+      ],
+      "current_a": [
+        468.75276803686126,
+        264.494774016749,
+        302.8960363905203,
+        246.86424402580798,
+        -51.53235731160111,
+        -48.18224163879527,
+        -53.497859423678385,
+        -87.60453446320288,
+        37.8218104449576,
+        3.484339706729387,
+        -476.83849351613264,
+        -483.5038305106848,
+        734.9675940159585,
+        56.11806258740493,
+        -877.262096003025,
+        1045.5694913236762,
+        -1241.5454724097854,
+        -2562.212072970009,
+        71.43982202952886,
+        62.498368728138004,
+        637.1319527069497,
+        448.78398618015063,
+        44.797202163646006,
+        42.847638189089594,
+        0.0836448456251563,
+        0.12296244020081697,
+        54.63462195159565,
+        55.43609552400287,
+        11.779835509021213,
+        11.961058302615019
+      ]
+    },
+    {
+      "index": 2,
+      "score": 1.2350577879760964,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        -4.552855757778508,
+        2.673772392899512,
+        6.6584921597201525,
+        -4.693904344266731,
+        0.36938855276371263,
+        -0.24968212739852205,
+        -4.944781891436232,
+        13.373690650032913,
+        -31.413110857712155,
+        -8.304521693249773,
+        0.6760116661138873,
+        -2.772546618537248,
+        1.4833297759008186,
+        0.2625396767687489,
+        -2.1281579802094264,
+        -0.3249956963644221,
+        -2.8173902321650974,
+        -10.915372625541375,
+        2.5465091173055825,
+        -1.2989438757270297,
+        11.869285825086795,
+        7.443225599446427,
+        3.5183208817431493,
+        2.4658069751598357,
+        1.6125769712473965,
+        0.2582240868123181,
+        -1.6036742567431275,
+        -1.9975654672963183,
+        -2.7107694669308446,
+        -3.1399886339722576
+      ],
+      "current_a": [
+        -480.3032355079149,
+        282.0694525907824,
+        702.4372170046811,
+        -495.18314738264723,
+        5.892150164155558,
+        -3.9827021626167523,
+        -22.374430274991585,
+        60.514035914647,
+        -403.43983323380866,
+        -106.65530269150955,
+        256.5640702566322,
+        -1052.2538013542803,
+        528.4748175739526,
+        93.53658912565787,
+        -543.8563207848098,
+        -83.05349759713712,
+        -611.4864060397903,
+        -2369.072591072388,
+        214.30983213567055,
+        -109.31688485579127,
+        998.8987023286588,
+        626.4090781866498,
+        39.64415837823604,
+        27.78451583556617,
+        0.0342684456675565,
+        0.0054874516049533365,
+        -23.52214844991382,
+        -29.299610729918786,
+        -8.076105227085204,
+        -9.354863602076428
+      ]
+    },
+    {
+      "index": 3,
+      "score": 2.0842137932835634,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        -13.45665181590927,
+        9.437167510393964,
+        8.674199232054306,
+        -9.87775919139705,
+        1.4857313100508476,
+        6.320856475497702,
+        -0.7907648320886658,
+        0.6253595208747806,
+        7.8557955899128515,
+        -7.334544343298356,
+        -0.047455355185795585,
+        -2.9075003210024084,
+        1.5498559032764934,
+        0.8139485516168276,
+        -4.02602064660526,
+        2.017108812086481,
+        0.08772857600710363,
+        -7.9082730671105095,
+        2.047407101849103,
+        -1.3926416616667774,
+        12.632684926332836,
+        6.793309182301932,
+        2.5084330260878267,
+        1.4775568938971753,
+        1.0072373770844871,
+        -1.0490625431504268,
+        -3.075568088814815,
+        -3.6803144509623644,
+        -4.7110626690807935,
+        -5.26735678162496
+      ],
+      "current_a": [
+        -1419.6086478782563,
+        995.5734006130812,
+        915.0841094576663,
+        -1042.0535926468629,
+        23.699034301171036,
+        100.82455246936433,
+        -3.5780976770937616,
+        2.829662319554983,
+        100.89229548353481,
+        -94.19784497337662,
+        -18.010545811927926,
+        -1103.4722535441733,
+        552.1764809531633,
+        289.99034423687556,
+        -1028.8600736543756,
+        515.4774163222683,
+        19.04061107230701,
+        -1716.4116708364095,
+        172.30626402583863,
+        -117.20232953759864,
+        1063.1450590876982,
+        571.7132291461302,
+        28.264822769136934,
+        16.648992938214448,
+        0.021404534447897965,
+        -0.022293349962706214,
+        -45.11138646064061,
+        -53.98160037420006,
+        -14.035512171371229,
+        -15.69286070097575
+      ]
+    },
+    {
+      "index": 4,
+      "score": 2.058731760755623,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        -17.399785951204453,
+        14.091995160737056,
+        12.730933237162615,
+        -17.95048139983815,
+        4.985004893077024,
+        5.263243877468197,
+        11.931515217666187,
+        -2.277684668845333,
+        15.536754391551352,
+        0.11892493023476339,
+        0.21371635265022326,
+        -3.512788133386548,
+        1.7630433338499776,
+        0.6444283339272275,
+        -4.815587050573266,
+        2.344684298757778,
+        1.4319884377847398,
+        -8.06970570453864,
+        2.132349004222093,
+        -1.5785635685300363,
+        13.118402664863204,
+        6.127062716815269,
+        1.3190725805723362,
+        0.15634219073795133,
+        -1.2344943614683699,
+        -1.1939547551747223,
+        -5.453597234951044,
+        -6.206710870230019,
+        -7.632189045984816,
+        -8.315146824120253
+      ],
+      "current_a": [
+        -1835.589338676174,
+        1486.6341545962866,
+        1343.0490114687996,
+        -1893.6849208404783,
+        79.51626323907426,
+        83.95447840651508,
+        53.988398512585,
+        -10.306197104417706,
+        199.53915513538655,
+        1.5273576131501174,
+        81.1109335309985,
+        -1333.1947755159244,
+        628.1300486033248,
+        229.59435706389354,
+        -1230.6358268975985,
+        599.1901860588521,
+        310.7987858105885,
+        -1751.449012185674,
+        179.4548285902181,
+        -132.84919778536207,
+        1104.022229447057,
+        515.6430712939144,
+        14.863204367729368,
+        1.7616513044554678,
+        -0.026233912369565588,
+        -0.02537241594463316,
+        -79.99150900325616,
+        -91.03792360659529,
+        -22.738326737230025,
+        -24.773040108899714
+      ]
+    },
+    {
+      "index": 5,
+      "score": 1.461417413892552,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        -1.480061891980698,
+        -6.286239059915796,
+        -2.2697454472213408,
+        5.658877641765572,
+        9.424687025906143,
+        -3.327546999020993,
+        12.058441525103333,
+        -5.313305550221108,
+        -2.9200138806658797,
+        6.285700249354196,
+        -0.07003690659101151,
+        -3.0432266584136958,
+        2.230501213745223,
+        0.09884647083382786,
+        -3.0654809431712438,
+        -0.6515321493603669,
+        -3.3267475202220598,
+        -9.77019408268265,
+        2.646292667360622,
+        -1.3797327825053223,
+        12.51313369049782,
+        5.128356310808873,
+        -0.727457693056268,
+        -2.2592730326680543,
+        -2.7850950402966292,
+        -6.083470593001296,
+        -3.7451892428444586,
+        -3.9123030547603466,
+        -4.405595817628768,
+        -4.671243013425598
+      ],
+      "current_a": [
+        -156.13903740652592,
+        -663.1663993517355,
+        -239.44665504002222,
+        596.9829454930056,
+        150.33403388201276,
+        -53.07800268802195,
+        54.56272188582275,
+        -24.041947081435005,
+        -37.50185450884846,
+        80.72749852262987,
+        -26.580833917363556,
+        -1154.9839408608213,
+        794.6740779990271,
+        35.2166264646123,
+        -783.3916479381847,
+        -166.50073956881653,
+        -722.0373172725493,
+        -2120.5230279156963,
+        222.70744426942306,
+        -116.11594044621448,
+        1053.0838324817148,
+        431.5936560495215,
+        -8.196935119431297,
+        -25.457307885571286,
+        -0.05918531627892376,
+        -0.12927822063909386,
+        -54.93316175201191,
+        -57.38433029536662,
+        -13.125444950307942,
+        -13.916878796936125
+      ]
+    },
+    {
+      "index": 6,
+      "score": 1.5731999278545508,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        12.647184704355205,
+        -8.033570544994845,
+        -8.64438476587264,
+        9.3106034126735,
+        -2.239144641769063,
+        0.06094162758987955,
+        -0.4739337127822305,
+        -0.2641848602009422,
+        2.630711774611977,
+        -5.43302815099118,
+        -0.3332339749747716,
+        -2.5098494857711295,
+        1.464972405095181,
+        0.7989240263523415,
+        -3.07264248836144,
+        -0.2839186182728074,
+        -3.7605376768962073,
+        -11.005898196002088,
+        2.538894273202239,
+        -1.1526997194617465,
+        11.399432519937005,
+        7.848580214838909,
+        4.605992767099703,
+        3.6816431605201174,
+        2.1778191708380135,
+        2.151721054377696,
+        -0.3138754570388687,
+        -0.7954748861753952,
+        -1.7479498305628385,
+        -2.1989292857453213
+      ],
+      "current_a": [
+        1334.2139651997152,
+        -847.5010258890399,
+        -911.9388341988291,
+        982.2215289816503,
+        -35.71679839523086,
+        0.972085405248893,
+        -2.144482212649005,
+        -1.1953986776467322,
+        33.78633604430512,
+        -69.77659682031592,
+        -126.47099044725755,
+        -952.5533834389072,
+        521.9345267058917,
+        284.6374662880307,
+        -785.2217994844957,
+        -72.55614318677635,
+        -816.1871375039727,
+        -2388.72026185074,
+        213.66897993905496,
+        -97.00922792770707,
+        959.3566554258052,
+        660.52302617522,
+        51.89995821456767,
+        41.48446075660257,
+        0.04628025778632791,
+        0.04572565363291864,
+        -4.603818427719148,
+        -11.667755020771073,
+        -5.207608738220811,
+        -6.551196815236806
+      ]
+    },
+    {
+      "index": 7,
+      "score": 1.6679142936607332,
+      "nfev": 500,
+      "success": false,
+      "values": [
+        -5.125086814276402,
+        -7.159230635082661,
+        -2.3004142470195967,
+        8.524504528232733,
+        4.691213645329169,
+        3.1956132010278515,
+        -8.676912115679555,
+        13.50141298470431,
+        -30.150111729261592,
+        -5.315405451382523,
+        0.3264318539626847,
+        -2.4612848564838554,
+        0.9892586240420339,
+        0.8612059304039618,
+        -2.032249667185613,
+        -0.5888001701256047,
+        -1.4995234672955335,
+        -11.439019272080987,
+        2.6065969926754993,
+        -1.4081092318884438,
+        13.650579373766204,
+        1.5181222193622506,
+        -5.398248513510022,
+        -6.903147821019015,
+        -8.751541905204613,
+        -9.218177319743178,
+        -11.469864130475157,
+        -12.004881551863255,
+        -13.210943213725434,
+        -13.857444411202284
+      ],
+      "current_a": [
+        -540.6707152868388,
+        -755.2625913752639,
+        -242.6820581707013,
+        899.2920759716367,
+        74.8299725143254,
+        50.97351476145586,
+        -39.26178533187292,
+        61.09196119717837,
+        -387.219085149846,
+        -68.26596380693587,
+        123.88940799725118,
+        -934.1218391549535,
+        352.44911776720755,
+        306.8270147057786,
+        -519.3467013209973,
+        -150.4694187085064,
+        -325.4565893359493,
+        -2482.724864822634,
+        219.36672448936505,
+        -118.50405367250355,
+        1148.8093069314646,
+        127.76255768414495,
+        -60.827032618081724,
+        -77.78411768663452,
+        -0.18597669669923506,
+        -0.1958930421728424,
+        -168.23606517529424,
+        -176.08351870662366,
+        -39.35892330375568,
+        -41.285022798365645
+      ]
+    }
+  ],
+  "maps": [
+    {
+      "radial": [
+        [
+          24.886331183866307,
+          1.1753643299905379
+        ],
+        [
+          232.186799172895,
+          11.006205760858187
+        ]
+      ],
+      "theta": 3.754261927378633,
+      "initial_bz_t": -0.08285828408169188,
+      "final_bz_t": -0.05921663342005692,
+      "canonical": [
+        [
+          -20.359904716467444,
+          14.3109664149366,
+          -0.9615843166652004,
+          0.6758971150682814
+        ],
+        [
+          -14.3109664149366,
+          -20.359904716467444,
+          -0.6758971150682814,
+          -0.9615843166652004
+        ],
+        [
+          -189.95572600297112,
+          133.51978081482324,
+          -9.004352587181723,
+          6.329154741042579
+        ],
+        [
+          -133.51978081482324,
+          -189.95572600297112,
+          -6.329154741042579,
+          -9.004352587181723
+        ]
+      ],
+      "mechanical": [
+        [
+          -7.029871695693325,
+          33.27531824844121,
+          -0.9615843166652004,
+          0.6758971150682814
+        ],
+        [
+          -33.27531824844121,
+          -7.029871695693325,
+          -0.6758971150682814,
+          -0.9615843166652004
+        ],
+        [
+          -534.1406366175463,
+          212.01897103044337,
+          -18.530976118151628,
+          -7.224168056065194
+        ],
+        [
+          -212.01897103044337,
+          -534.1406366175463,
+          7.224168056065194,
+          -18.530976118151628
+        ]
+      ],
+      "symplectic_determinant": 0.9999999999967448,
+      "maximum_bz_t": 0.21382841460694046
+    },
+    {
+      "radial": [
+        [
+          -0.16337553392724433,
+          -0.07871556395357379
+        ],
+        [
+          14.769114354719912,
+          0.9950031171723944
+        ]
+      ],
+      "theta": 0.47813446419910055,
+      "initial_bz_t": -0.05921663342005693,
+      "final_bz_t": 0.2080503324264722,
+      "canonical": [
+        [
+          -0.14505375925271133,
+          0.07517294734589448,
+          -0.06988799478536267,
+          0.036218892768971896
+        ],
+        [
+          -0.07517294734589448,
+          -0.14505375925271133,
+          -0.036218892768971896,
+          -0.06988799478536267
+        ],
+        [
+          13.112829727242623,
+          -6.795618836216162,
+          0.8834183377683437,
+          -0.45782446819430506
+        ],
+        [
+          6.795618836216162,
+          13.112829727242623,
+          0.45782446819430506,
+          0.8834183377683437
+        ]
+      ],
+      "mechanical": [
+        [
+          0.36544369431861506,
+          1.0602291057632554,
+          -0.06988799478536267,
+          0.036218892768971896
+        ],
+        [
+          -1.0602291057632554,
+          0.36544369431861506,
+          -0.036218892768971896,
+          -0.06988799478536267
+        ],
+        [
+          59.16273751200539,
+          -37.34408396827197,
+          2.676988130312621,
+          3.003048759159094
+        ],
+        [
+          37.34408396827197,
+          59.16273751200539,
+          -3.003048759159094,
+          2.676988130312621
+        ]
+      ],
+      "symplectic_determinant": 0.9999999999992877,
+      "maximum_bz_t": 0.2080503324264722
+    },
+    {
+      "radial": [
+        [
+          0.0781772561406942,
+          -0.018979879923426174
+        ],
+        [
+          28.8942628306618,
+          5.776492790010237
+        ]
+      ],
+      "theta": 4.938267146742872,
+      "initial_bz_t": 0.20805033242647222,
+      "final_bz_t": 0.4315761274095858,
+      "canonical": [
+        [
+          0.017508758670341407,
+          0.07619138237039315,
+          -0.004250777701551293,
+          -0.01849774934524928
+        ],
+        [
+          -0.07619138237039315,
+          0.017508758670341407,
+          0.01849774934524928,
+          -0.004250777701551293
+        ],
+        [
+          6.471225773759688,
+          28.16028518165951,
+          1.2937166538467137,
+          5.629757203698923
+        ],
+        [
+          -28.16028518165951,
+          6.471225773759688,
+          -5.629757203698923,
+          1.2937166538467137
+        ]
+      ],
+      "mechanical": [
+        [
+          0.9335225271563004,
+          -0.1343083291739255,
+          -0.004250777701551293,
+          -0.01849774934524928
+        ],
+        [
+          0.1343083291739255,
+          0.9335225271563004,
+          0.01849774934524928,
+          -0.004250777701551293
+        ],
+        [
+          -286.1126347322075,
+          -3.669710745130663,
+          -0.6064469760131226,
+          6.06641428215487
+        ],
+        [
+          3.669710745130663,
+          -286.1126347322075,
+          -6.06641428215487,
+          -0.6064469760131226
+        ]
+      ],
+      "symplectic_determinant": 0.9999999954413803,
+      "maximum_bz_t": 0.7903825900901954
+    }
+  ],
+  "targets": [
+    {
+      "radial": [
+        [
+          105.70429197538009,
+          4.953741531931661
+        ],
+        [
+          240.04363469515968,
+          11.258900659759501
+        ]
+      ],
+      "theta": 3.6609834452116004,
+      "initial_bz_t": 2.010046996314247e-11,
+      "final_bz_t": 0.0002228986458031148,
+      "canonical": [
+        [
+          -91.76419198967626,
+          52.466469392348465,
+          -4.3004506298503635,
+          2.4587963611092847
+        ],
+        [
+          -52.466469392348465,
+          -91.76419198967626,
+          -2.4587963611092847,
+          -4.3004506298503635
+        ],
+        [
+          -208.38709354580246,
+          119.1459852500127,
+          -9.774096230411354,
+          5.588370687865248
+        ],
+        [
+          -119.1459852500127,
+          -208.38709354580246,
+          -5.588370687865248,
+          -9.774096230411354
+        ]
+      ],
+      "mechanical": [
+        [
+          -91.76419200143995,
+          52.4664693717737,
+          -4.3004506298503635,
+          2.4587963611092847
+        ],
+        [
+          -52.4664693717737,
+          -91.76419200143995,
+          -2.4587963611092847,
+          -4.3004506298503635
+        ],
+        [
+          -205.6035119060732,
+          124.01448742098623,
+          -9.643646048527401,
+          5.8165288939372
+        ],
+        [
+          -124.01448742098623,
+          -205.6035119060732,
+          -5.8165288939372,
+          -9.643646048527401
+        ]
+      ],
+      "symplectic_determinant": 0.9999999957733907,
+      "maximum_bz_t": 0.9169855324095407
+    },
+    {
+      "radial": [
+        [
+          -0.1737202816030214,
+          -0.07991898264646784
+        ],
+        [
+          14.683461553505865,
+          0.9986589218998345
+        ]
+      ],
+      "theta": 0.4826882238243142,
+      "initial_bz_t": 0.0002228986458031148,
+      "final_bz_t": 0.012674387066335056,
+      "canonical": [
+        [
+          -0.1538728008468902,
+          0.08063434379820004,
+          -0.070788267133641,
+          0.03709535042916711
+        ],
+        [
+          -0.08063434379820004,
+          -0.1538728008468902,
+          -0.03709535042916711,
+          -0.070788267133641
+        ],
+        [
+          13.005881262204223,
+          -6.81550407429487,
+          0.8845624931383412,
+          -0.46353946760014075
+        ],
+        [
+          6.81550407429487,
+          13.005881262204223,
+          0.46353946760014075,
+          0.8845624931383412
+        ]
+      ],
+      "mechanical": [
+        [
+          -0.1558408756688127,
+          0.0768787085333637,
+          -0.070788267133641,
+          0.03709535042916711
+        ],
+        [
+          -0.0768787085333637,
+          -0.1558408756688127,
+          -0.03709535042916711,
+          -0.070788267133641
+        ],
+        [
+          13.262399205892873,
+          -6.298438567349543,
+          0.996470494995773,
+          -0.24998781117348548
+        ],
+        [
+          6.298438567349543,
+          13.262399205892873,
+          0.24998781117348548,
+          0.996470494995773
+        ]
+      ],
+      "symplectic_determinant": 0.9999999999469038,
+      "maximum_bz_t": 0.29135960012188533
+    },
+    {
+      "radial": [
+        [
+          0.10417861835780666,
+          0.0021831677758972125
+        ],
+        [
+          28.46464533105673,
+          10.195403828966771
+        ]
+      ],
+      "theta": 4.789699333953348,
+      "initial_bz_t": 0.012674387066335056,
+      "final_bz_t": 1.1138350097911995,
+      "canonical": [
+        [
+          0.008046065151646598,
+          0.10386744128222757,
+          0.00016861339148800553,
+          0.0021766467471610765
+        ],
+        [
+          -0.10386744128222757,
+          0.008046065151646598,
+          -0.0021766467471610765,
+          0.00016861339148800553
+        ],
+        [
+          2.198420313711458,
+          28.379622653360116,
+          0.787425334951821,
+          10.164950593956979
+        ],
+        [
+          -28.379622653360116,
+          2.198420313711458,
+          -10.164950593956979,
+          0.787425334951821
+        ]
+      ],
+      "mechanical": [
+        [
+          0.001479630668451889,
+          0.10437610847392476,
+          0.00016861339148800553,
+          0.0021766467471610765
+        ],
+        [
+          -0.10437610847392476,
+          0.001479630668451889,
+          -0.0021766467471610765,
+          0.00016861339148800553
+        ],
+        [
+          -0.7951073917831214,
+          30.362827418212646,
+          1.364488713133576,
+          10.120248524856581
+        ],
+        [
+          -30.362827418212646,
+          -0.7951073917831214,
+          -10.120248524856581,
+          1.364488713133576
+        ]
+      ],
+      "symplectic_determinant": 0.9999999880625441,
+      "maximum_bz_t": 1.1138350097911995
+    }
+  ],
+  "elapsed_s": 54.64888919999794
+}

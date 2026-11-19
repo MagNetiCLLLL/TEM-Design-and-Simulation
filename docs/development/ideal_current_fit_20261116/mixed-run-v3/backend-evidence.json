@@ -1,0 +1,590 @@
+[
+  {
+    "stage": "gun_magnetic_sampling",
+    "requested": "Prefer GPU",
+    "actual": "CUDA field dispatch / CPU discrete-gradient coordinator",
+    "outcome": "returned",
+    "reason": "Explicit captured field adapter; receipt distinguishes actual CUDA and reference queries",
+    "monotonic_s": 8973.5,
+    "execution_identity": {
+      "coordinator_implementation": {
+        "cuda_gun_step.py": "be83d09eb14fddbbcee2595fd7c7695e1edae91c2664aa59072668c37a4fa7f1",
+        "discrete_gradient.py": "651cdd6e7fa931df74a515b79f568d185d0c98354089c0da1c226ac802a29600",
+        "relativistic_lorentz.py": "15b86def3f01328400f4df135fa81a11a9de9c618ec6c00f2dceff10d879b509",
+        "static_energy_lorentz.py": "9febc7e62159f3059d1b11621e4a532100fe22b97b4a776b00cb27294adb6844"
+      },
+      "magnetic_execution": {
+        "adapter_sha256": "04345f9079d9289cf35422650807209ddcd6065f1028f29ee3dbeb806443c51c",
+        "admission": {
+          "absolute_position_limit_m": 10000.0,
+          "analytic_rectangle_maximum_segment_to_half_bore_ratio": 16.0,
+          "analytic_rectangle_minimum_reference_path_order": 24,
+          "nonzero_transverse_weight_range": [
+            1e-100,
+            1e+100
+          ],
+          "round_nonzero_normalized_z_min": 1e-80,
+          "round_normalized_z_max": 10000.0,
+          "round_prefactor_range": [
+            1e-40,
+            1e+40
+          ],
+          "transverse_bore_fraction": 0.5
+        },
+        "compiler_options": [
+          "--std=c++11",
+          "--fmad=false"
+        ],
+        "compute_capability": [
+          12,
+          0
+        ],
+        "cuda_driver_version": 13030,
+        "cuda_failure": "Raise coil_field_execution_failure; never CPU retry",
+        "cuda_runtime_version": 12090,
+        "cupy_version": "14.2.0",
+        "deterministic_reference": "Unsupported law/pose, elliptic branch, winding/roundoff boundary or unsafe numerical range",
+        "device_id": 0,
+        "device_name": "NVIDIA GeForce RTX 5090",
+        "kernel_sha256": "ec79bff8c2c1b3df47b106d1ffd3645b114e84fb86aa1cf378a5b1b895efd40c",
+        "minimum_gpu_batch": 128,
+        "mode": "magnetic",
+        "numpy_version": "2.4.6",
+        "outputs": {
+          "magnetic": "Real B only; no A accumulation",
+          "sample": "Real A/B/E/phi",
+          "sample_fields": "Real B/E/phi; A not requested or constructed by CUDA"
+        },
+        "precision": "float64",
+        "quadrature": "Unchanged radial/fraction Gauss pack and NI; full axial tails and six round near-axis terms",
+        "radial_rectangle_path": "Analytic finite straight segments when reference path_order>=24 and conservative admission passes; original line Gauss otherwise",
+        "reduction": "32-lane tree; compensated transverse A, ordinary B; original source/owner addition order",
+        "requested_backend": "Prefer GPU",
+        "resolved_backend": "CuPy CUDA FP64 ideal-coil potentials",
+        "saddle_arc_path": "Original line Gauss nodes and path order",
+        "schema": "cuda-ideal-coil-potential-fp64-v2-analytic-rectangles",
+        "solver_source_identity": "3e7f0a0d27ca191e8e3266e7714e6cc04f902c8648020ae1a542c7792d002d48"
+      },
+      "requested_backend": "Prefer GPU",
+      "schema": "scoped-cuda-magnetic-population-dg-v1"
+    },
+    "field_evidence": {
+      "execution_identity": {
+        "adapter_sha256": "04345f9079d9289cf35422650807209ddcd6065f1028f29ee3dbeb806443c51c",
+        "admission": {
+          "absolute_position_limit_m": 10000.0,
+          "analytic_rectangle_maximum_segment_to_half_bore_ratio": 16.0,
+          "analytic_rectangle_minimum_reference_path_order": 24,
+          "nonzero_transverse_weight_range": [
+            1e-100,
+            1e+100
+          ],
+          "round_nonzero_normalized_z_min": 1e-80,
+          "round_normalized_z_max": 10000.0,
+          "round_prefactor_range": [
+            1e-40,
+            1e+40
+          ],
+          "transverse_bore_fraction": 0.5
+        },
+        "compiler_options": [
+          "--std=c++11",
+          "--fmad=false"
+        ],
+        "compute_capability": [
+          12,
+          0
+        ],
+        "cuda_driver_version": 13030,
+        "cuda_failure": "Raise coil_field_execution_failure; never CPU retry",
+        "cuda_runtime_version": 12090,
+        "cupy_version": "14.2.0",
+        "deterministic_reference": "Unsupported law/pose, elliptic branch, winding/roundoff boundary or unsafe numerical range",
+        "device_id": 0,
+        "device_name": "NVIDIA GeForce RTX 5090",
+        "kernel_sha256": "ec79bff8c2c1b3df47b106d1ffd3645b114e84fb86aa1cf378a5b1b895efd40c",
+        "minimum_gpu_batch": 128,
+        "mode": "magnetic",
+        "numpy_version": "2.4.6",
+        "outputs": {
+          "magnetic": "Real B only; no A accumulation",
+          "sample": "Real A/B/E/phi",
+          "sample_fields": "Real B/E/phi; A not requested or constructed by CUDA"
+        },
+        "precision": "float64",
+        "quadrature": "Unchanged radial/fraction Gauss pack and NI; full axial tails and six round near-axis terms",
+        "radial_rectangle_path": "Analytic finite straight segments when reference path_order>=24 and conservative admission passes; original line Gauss otherwise",
+        "reduction": "32-lane tree; compensated transverse A, ordinary B; original source/owner addition order",
+        "requested_backend": "Prefer GPU",
+        "resolved_backend": "CuPy CUDA FP64 ideal-coil potentials",
+        "saddle_arc_path": "Original line Gauss nodes and path order",
+        "schema": "cuda-ideal-coil-potential-fp64-v2-analytic-rectangles",
+        "solver_source_identity": "3e7f0a0d27ca191e8e3266e7714e6cc04f902c8648020ae1a542c7792d002d48"
+      },
+      "counter_scope": "Lifetime of this cached sampler; field queries are not emitted particle counts",
+      "counts": {},
+      "reference_reasons": {},
+      "failure": null,
+      "retained_device_bytes": 437080,
+      "transverse_paths": {
+        "probe_hp2_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hp1_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        }
+      }
+    }
+  },
+  {
+    "stage": "gun_magnetic_sampling",
+    "requested": "Prefer GPU",
+    "actual": "CUDA field dispatch / CPU discrete-gradient coordinator",
+    "outcome": "returned",
+    "reason": "Explicit captured field adapter; receipt distinguishes actual CUDA and reference queries",
+    "monotonic_s": 9796.734,
+    "execution_identity": {
+      "coordinator_implementation": {
+        "cuda_gun_step.py": "be83d09eb14fddbbcee2595fd7c7695e1edae91c2664aa59072668c37a4fa7f1",
+        "discrete_gradient.py": "651cdd6e7fa931df74a515b79f568d185d0c98354089c0da1c226ac802a29600",
+        "relativistic_lorentz.py": "15b86def3f01328400f4df135fa81a11a9de9c618ec6c00f2dceff10d879b509",
+        "static_energy_lorentz.py": "9febc7e62159f3059d1b11621e4a532100fe22b97b4a776b00cb27294adb6844"
+      },
+      "magnetic_execution": {
+        "adapter_sha256": "04345f9079d9289cf35422650807209ddcd6065f1028f29ee3dbeb806443c51c",
+        "admission": {
+          "absolute_position_limit_m": 10000.0,
+          "analytic_rectangle_maximum_segment_to_half_bore_ratio": 16.0,
+          "analytic_rectangle_minimum_reference_path_order": 24,
+          "nonzero_transverse_weight_range": [
+            1e-100,
+            1e+100
+          ],
+          "round_nonzero_normalized_z_min": 1e-80,
+          "round_normalized_z_max": 10000.0,
+          "round_prefactor_range": [
+            1e-40,
+            1e+40
+          ],
+          "transverse_bore_fraction": 0.5
+        },
+        "compiler_options": [
+          "--std=c++11",
+          "--fmad=false"
+        ],
+        "compute_capability": [
+          12,
+          0
+        ],
+        "cuda_driver_version": 13030,
+        "cuda_failure": "Raise coil_field_execution_failure; never CPU retry",
+        "cuda_runtime_version": 12090,
+        "cupy_version": "14.2.0",
+        "deterministic_reference": "Unsupported law/pose, elliptic branch, winding/roundoff boundary or unsafe numerical range",
+        "device_id": 0,
+        "device_name": "NVIDIA GeForce RTX 5090",
+        "kernel_sha256": "ec79bff8c2c1b3df47b106d1ffd3645b114e84fb86aa1cf378a5b1b895efd40c",
+        "minimum_gpu_batch": 128,
+        "mode": "magnetic",
+        "numpy_version": "2.4.6",
+        "outputs": {
+          "magnetic": "Real B only; no A accumulation",
+          "sample": "Real A/B/E/phi",
+          "sample_fields": "Real B/E/phi; A not requested or constructed by CUDA"
+        },
+        "precision": "float64",
+        "quadrature": "Unchanged radial/fraction Gauss pack and NI; full axial tails and six round near-axis terms",
+        "radial_rectangle_path": "Analytic finite straight segments when reference path_order>=24 and conservative admission passes; original line Gauss otherwise",
+        "reduction": "32-lane tree; compensated transverse A, ordinary B; original source/owner addition order",
+        "requested_backend": "Prefer GPU",
+        "resolved_backend": "CuPy CUDA FP64 ideal-coil potentials",
+        "saddle_arc_path": "Original line Gauss nodes and path order",
+        "schema": "cuda-ideal-coil-potential-fp64-v2-analytic-rectangles",
+        "solver_source_identity": "3e7f0a0d27ca191e8e3266e7714e6cc04f902c8648020ae1a542c7792d002d48"
+      },
+      "requested_backend": "Prefer GPU",
+      "schema": "scoped-cuda-magnetic-population-dg-v1"
+    },
+    "field_evidence": {
+      "execution_identity": {
+        "adapter_sha256": "04345f9079d9289cf35422650807209ddcd6065f1028f29ee3dbeb806443c51c",
+        "admission": {
+          "absolute_position_limit_m": 10000.0,
+          "analytic_rectangle_maximum_segment_to_half_bore_ratio": 16.0,
+          "analytic_rectangle_minimum_reference_path_order": 24,
+          "nonzero_transverse_weight_range": [
+            1e-100,
+            1e+100
+          ],
+          "round_nonzero_normalized_z_min": 1e-80,
+          "round_normalized_z_max": 10000.0,
+          "round_prefactor_range": [
+            1e-40,
+            1e+40
+          ],
+          "transverse_bore_fraction": 0.5
+        },
+        "compiler_options": [
+          "--std=c++11",
+          "--fmad=false"
+        ],
+        "compute_capability": [
+          12,
+          0
+        ],
+        "cuda_driver_version": 13030,
+        "cuda_failure": "Raise coil_field_execution_failure; never CPU retry",
+        "cuda_runtime_version": 12090,
+        "cupy_version": "14.2.0",
+        "deterministic_reference": "Unsupported law/pose, elliptic branch, winding/roundoff boundary or unsafe numerical range",
+        "device_id": 0,
+        "device_name": "NVIDIA GeForce RTX 5090",
+        "kernel_sha256": "ec79bff8c2c1b3df47b106d1ffd3645b114e84fb86aa1cf378a5b1b895efd40c",
+        "minimum_gpu_batch": 128,
+        "mode": "magnetic",
+        "numpy_version": "2.4.6",
+        "outputs": {
+          "magnetic": "Real B only; no A accumulation",
+          "sample": "Real A/B/E/phi",
+          "sample_fields": "Real B/E/phi; A not requested or constructed by CUDA"
+        },
+        "precision": "float64",
+        "quadrature": "Unchanged radial/fraction Gauss pack and NI; full axial tails and six round near-axis terms",
+        "radial_rectangle_path": "Analytic finite straight segments when reference path_order>=24 and conservative admission passes; original line Gauss otherwise",
+        "reduction": "32-lane tree; compensated transverse A, ordinary B; original source/owner addition order",
+        "requested_backend": "Prefer GPU",
+        "resolved_backend": "CuPy CUDA FP64 ideal-coil potentials",
+        "saddle_arc_path": "Original line Gauss nodes and path order",
+        "schema": "cuda-ideal-coil-potential-fp64-v2-analytic-rectangles",
+        "solver_source_identity": "3e7f0a0d27ca191e8e3266e7714e6cc04f902c8648020ae1a542c7792d002d48"
+      },
+      "counter_scope": "Lifetime of this cached sampler; field queries are not emitted particle counts",
+      "counts": {
+        "calls": 191592,
+        "query_points": 91559594,
+        "magnetic_only_calls": 191592,
+        "gpu_calls": 30466,
+        "gpu_source_calls": 456990,
+        "gpu_analytic_rectangle_source_calls": 60932,
+        "reference_calls": 161126
+      },
+      "reference_reasons": {
+        "small_magnetic_batch": 161126
+      },
+      "failure": null,
+      "retained_device_bytes": 437080,
+      "transverse_paths": {
+        "probe_hp2_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hp1_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        }
+      }
+    }
+  },
+  {
+    "stage": "gun",
+    "requested": "Prefer GPU",
+    "actual": "CPU",
+    "outcome": "returned",
+    "reason": "CPU implementation; may reuse exact upstream data",
+    "monotonic_s": 9796.734
+  },
+  {
+    "stage": "column",
+    "requested": "Prefer GPU",
+    "actual": "CPU",
+    "outcome": "returned",
+    "reason": "Shared-potential Lorentz RK4 with captured mechanical boundaries",
+    "monotonic_s": 11797.953,
+    "retried": false,
+    "field_execution": {
+      "execution_identity": {
+        "adapter_sha256": "04345f9079d9289cf35422650807209ddcd6065f1028f29ee3dbeb806443c51c",
+        "admission": {
+          "absolute_position_limit_m": 10000.0,
+          "analytic_rectangle_maximum_segment_to_half_bore_ratio": 16.0,
+          "analytic_rectangle_minimum_reference_path_order": 24,
+          "nonzero_transverse_weight_range": [
+            1e-100,
+            1e+100
+          ],
+          "round_nonzero_normalized_z_min": 1e-80,
+          "round_normalized_z_max": 10000.0,
+          "round_prefactor_range": [
+            1e-40,
+            1e+40
+          ],
+          "transverse_bore_fraction": 0.5
+        },
+        "compiler_options": [
+          "--std=c++11",
+          "--fmad=false"
+        ],
+        "compute_capability": [
+          12,
+          0
+        ],
+        "cuda_driver_version": 13030,
+        "cuda_failure": "Raise coil_field_execution_failure; never CPU retry",
+        "cuda_runtime_version": 12090,
+        "cupy_version": "14.2.0",
+        "deterministic_reference": "Unsupported law/pose, elliptic branch, winding/roundoff boundary or unsafe numerical range",
+        "device_id": 0,
+        "device_name": "NVIDIA GeForce RTX 5090",
+        "kernel_sha256": "ec79bff8c2c1b3df47b106d1ffd3645b114e84fb86aa1cf378a5b1b895efd40c",
+        "minimum_gpu_batch": 1,
+        "mode": "potential",
+        "numpy_version": "2.4.6",
+        "outputs": {
+          "magnetic": "Real B only; no A accumulation",
+          "sample": "Real A/B/E/phi",
+          "sample_fields": "Real B/E/phi; A not requested or constructed by CUDA"
+        },
+        "precision": "float64",
+        "quadrature": "Unchanged radial/fraction Gauss pack and NI; full axial tails and six round near-axis terms",
+        "radial_rectangle_path": "Analytic finite straight segments when reference path_order>=24 and conservative admission passes; original line Gauss otherwise",
+        "reduction": "32-lane tree; compensated transverse A, ordinary B; original source/owner addition order",
+        "requested_backend": "Prefer GPU",
+        "resolved_backend": "CuPy CUDA FP64 ideal-coil potentials",
+        "saddle_arc_path": "Original line Gauss nodes and path order",
+        "schema": "cuda-ideal-coil-potential-fp64-v2-analytic-rectangles",
+        "solver_source_identity": "3e7f0a0d27ca191e8e3266e7714e6cc04f902c8648020ae1a542c7792d002d48"
+      },
+      "counter_scope": "Lifetime of this cached sampler; field queries are not emitted particle counts",
+      "counts": {
+        "calls": 116162,
+        "query_points": 348486000,
+        "physical_fields_calls": 116162,
+        "exact_zero_source_calls": 2904050,
+        "reference_source_calls": 116162,
+        "gpu_calls": 116162,
+        "gpu_source_calls": 1742430,
+        "gpu_analytic_rectangle_source_calls": 232324
+      },
+      "reference_reasons": {
+        "native_electric_provider": 116162
+      },
+      "failure": null,
+      "retained_device_bytes": 437080,
+      "transverse_paths": {
+        "condenser_stigmator": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "objective_stigmator": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "diffraction_stigmator": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_qph2_quadrupole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hp2_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hpc_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_qpc_quadrupole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_qph1_quadrupole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hp1_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 3456,
+          "original_nonzero_line_gauss_nodes": 82944,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_hpol_hexapole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_qpol_quadrupole": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_dph2_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_dp22_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_dp21_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_dph1_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "probe_dp11_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "ac_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "ac_deflector:1": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "condenser_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "condenser_deflector:1": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "beam_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "beam_deflector:1": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "image_diffraction_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "image_diffraction_deflector:1": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "feg_deflector:0": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "feg_deflector:1": {
+          "representation": "Original line Gauss quadrature",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        },
+        "feg_stigmator": {
+          "representation": "Analytic finite straight segments on retained radial/fraction Gauss pack",
+          "elements": 0,
+          "original_nonzero_line_gauss_nodes": 0,
+          "retained_pack_order": 12,
+          "reference_path_order": 24
+        }
+      }
+    },
+    "requested_field_products": "B, E, phi and retained dynamic time derivatives; full A remains available for canonical handoffs",
+    "history_policy": "sampled",
+    "requested_history_policy": "auto",
+    "integration_nodes": 23233,
+    "retained_history_nodes": 709,
+    "history_memory_bytes": 194317096,
+    "history_budget_bytes": 2147483648,
+    "retained_history_maximum_gap_mm": 2.0499108158581407,
+    "history_scope": "Exact retained integration nodes; plot-node waist markers remain sampling dependent",
+    "display_history_step_mm": 2.0
+  }
+]

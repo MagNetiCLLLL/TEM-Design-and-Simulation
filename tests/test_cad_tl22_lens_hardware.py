@@ -100,11 +100,11 @@ def test_native_and_cad_share_the_four_passive_layers_at_saved_tl22_contacts(doc
                for s in specs[1:])
 
 
-@pytest.mark.parametrize("neighbor,pole,z,side", [
-    ("probe_hp2_hexapole", "probe_tl22_lens_upper_pole", 703.6, -1),
-    ("probe_dp22_coils", "probe_tl22_lens_lower_pole", 729.1, 1),
+@pytest.mark.parametrize("neighbor,pole,z,side,expected_gap", [
+    ("probe_hp2_hexapole", "probe_tl22_lens_upper_pole", 703.6, -1, 0.),
+    ("probe_dp22_coils", "probe_tl22_lens_lower_pole", 729.1, 1, .10),
 ])
-def test_existing_neighbor_materials_have_face_contacts_not_assembly_clearance(rows, neighbor, pole, z, side):
+def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearance(rows, neighbor, pole, z, side, expected_gap):
     pole_spec, = posed_solids(rows[pole], rows)
     other_specs = posed_solids(rows[neighbor], rows)
     contact_areas = []
@@ -113,9 +113,9 @@ def test_existing_neighbor_materials_have_face_contacts_not_assembly_clearance(r
         opposite = [_manifold(s.shape, count) for s in other_specs]
         combined = reduce(lambda a, b: a + b, opposite)
         assert (lens ^ combined).volume() < 1e-9
-        assert lens.min_gap(combined, .1) == pytest.approx(0., abs=1e-10)
-        # Sample inside opposite sides of the common plane, then intersect the
-        # XY sections. This detects positive-area contact of actual material.
+        assert lens.min_gap(combined, .5) == pytest.approx(expected_gap, abs=1e-10)
+        # Sample opposite sides of the original interface plane, then intersect
+        # XY sections to distinguish actual face contact from saved clearance.
         section = lens.slice(z - side * 1e-7)
         contact = [(spec.region, (section ^ solid.slice(z + side * 1e-7)).area())
                    for spec, solid in zip(other_specs, opposite)]
@@ -126,9 +126,23 @@ def test_existing_neighbor_materials_have_face_contacts_not_assembly_clearance(r
             expected = count * .5 * np.sin(2 * np.pi/count) * (33.165**2 - 31.89**2)
             assert positive["return_yoke"] == pytest.approx(expected, abs=2e-6)
         else:
-            assert {"x_winding_1", "x_winding_2", "y_winding_1", "y_winding_2"} <= positive.keys()
-            assert all(positive[region] > 7. for region in positive if "winding" in region)
-    assert all(area > 60. for area in contact_areas)
+            # The saved 2026-10-21 contact-isolation reconstruction retracts
+            # DP22 copper by 0.14 mm and adds a 0.04 mm axial end seal. The
+            # resulting complete laminate has 0.10 mm clearance; it no longer
+            # makes the earlier copper end-face contact at the TL22 pole.
+            assert rows[neighbor]["winding_axial_length_mm"] == pytest.approx(14.22)
+            copper = reduce(lambda a, b: a + b, [solid for spec, solid in zip(other_specs, opposite)
+                                               if spec.material == "copper_winding"])
+            assert lens.min_gap(copper, .5) == pytest.approx(.14, abs=1e-10)
+            np.testing.assert_allclose([combined.bounding_box()[2], combined.bounding_box()[5]],
+                                       [729.20, 743.50], atol=1e-10, rtol=0.)
+            np.testing.assert_allclose([copper.bounding_box()[2], copper.bounding_box()[5]],
+                                       [729.24, 743.46], atol=1e-10, rtol=0.)
+            assert positive == {}
+    if expected_gap == 0.:
+        assert all(area > 60. for area in contact_areas)
+    else:
+        assert all(area == 0. for area in contact_areas)
 
 
 def test_constant_tube_retains_04_mm_nominal_clearance_through_both_poles(document, rows):

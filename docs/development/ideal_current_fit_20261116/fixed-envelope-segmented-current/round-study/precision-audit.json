@@ -1,0 +1,193 @@
+{
+  "schema": "fixed-envelope-current-cancellation-precision-audit-v1",
+  "scope": "Pure fields only. MP80 sum uses exact serialized binary64 geometry/current inputs and high-precision 12-point Gauss-Legendre nodes and weights. No source, particle or wave.",
+  "source_library_sha256": "caf58e42be31348b2e846a6aa2da33b5c6e6217af87d2a7feea7728909a152b3",
+  "cases": [
+    {
+      "owner": "condenser_lens_1",
+      "rcond": "1e-10",
+      "segment_count": 32,
+      "z_mm": [
+        465.00000000000006,
+        490.0000000000001,
+        500.0000000000001,
+        513.0000000000001,
+        541.0000000000001
+      ],
+      "high_precision_axis_bz_t": [
+        0.013527906900641212,
+        0.09248866076168145,
+        0.8515191812821987,
+        0.027546912728007456,
+        -0.013220539687899832
+      ],
+      "matrix_q12_axis_bz_t": [
+        0.013527906965464354,
+        0.09248865442350507,
+        0.8515191746409982,
+        0.027546904049813747,
+        -0.01322054723277688
+      ],
+      "native_simple_sum_axis_bz_t": [
+        0.01352790660894243,
+        0.09248866207781248,
+        0.8515191830811091,
+        0.027546915516722947,
+        -0.013220539025496691
+      ],
+      "native_fsum_axis_bz_t": [
+        0.013527906929084565,
+        0.0924886625725776,
+        0.8515191831756965,
+        0.02754691510926932,
+        -0.013220539072790416
+      ],
+      "maximum_matrix_error_t": 8.6781937087832e-09,
+      "maximum_native_simple_sum_error_t": 2.7887154911698797e-09,
+      "maximum_native_fsum_error_t": 2.381261864775608e-09,
+      "maximum_matrix_error_over_reference_peak": 9.463757853337258e-09,
+      "maximum_native_simple_error_over_reference_peak": 3.041154532373615e-09,
+      "reference_peak_t": 0.9169923663804393
+    },
+    {
+      "owner": "probe_tl22_lens",
+      "rcond": "1e-10",
+      "segment_count": 19,
+      "z_mm": [
+        1131.3500000000004,
+        1156.3500000000001,
+        1166.3500000000001,
+        1179.3500000000001,
+        1207.3500000000001
+      ],
+      "high_precision_axis_bz_t": [
+        0.002566047610540674,
+        -0.01182146304293765,
+        -0.25321654375616115,
+        0.004294070818624478,
+        -0.004690927094489825
+      ],
+      "matrix_q12_axis_bz_t": [
+        0.002566047478467226,
+        -0.011821472086012363,
+        -0.25321654649451375,
+        0.004294076934456825,
+        -0.004690926987677813
+      ],
+      "native_simple_sum_axis_bz_t": [
+        0.0025660473911557347,
+        -0.01182146416977048,
+        -0.2532165413722396,
+        0.004294071230106056,
+        -0.004690927395131439
+      ],
+      "native_fsum_axis_bz_t": [
+        0.0025660471292212605,
+        -0.011821463995147496,
+        -0.2532165420707315,
+        0.004294072219636291,
+        -0.004690927162300795
+      ],
+      "maximum_matrix_error_t": 9.043074712666854e-09,
+      "maximum_native_simple_sum_error_t": 2.3839215601562103e-09,
+      "maximum_native_fsum_error_t": 1.6854296291946014e-09,
+      "maximum_matrix_error_over_reference_peak": 3.103435163981685e-08,
+      "maximum_native_simple_error_over_reference_peak": 8.181228435058509e-09,
+      "reference_peak_t": 0.29138919406534836
+    },
+    {
+      "owner": "probe_tl22_lens",
+      "rcond": "1e-14",
+      "segment_count": 19,
+      "z_mm": [
+        1131.3500000000004,
+        1156.3500000000001,
+        1166.3500000000001,
+        1179.3500000000001,
+        1207.3500000000001
+      ],
+      "high_precision_axis_bz_t": [
+        0.001951319071621708,
+        -0.016521547440324278,
+        -0.2781890558927682,
+        -0.016653503609304843,
+        0.0018564066115715292
+      ],
+      "matrix_q12_axis_bz_t": [
+        0.0019016265869140625,
+        -0.016550064086914062,
+        -0.2782402038574219,
+        -0.0167388916015625,
+        0.0018367767333984375
+      ],
+      "native_simple_sum_axis_bz_t": [
+        0.0019485801458358765,
+        -0.016509652137756348,
+        -0.2782008647918701,
+        -0.01663607358932495,
+        0.001867532730102539
+      ],
+      "native_fsum_axis_bz_t": [
+        0.0019482225179672241,
+        -0.01651209592819214,
+        -0.2782006859779358,
+        -0.016635537147521973,
+        0.0018649101257324219
+      ],
+      "maximum_matrix_error_t": 8.538799225765725e-05,
+      "maximum_native_simple_sum_error_t": 1.7430019979891576e-05,
+      "maximum_native_fsum_error_t": 1.796646178287009e-05,
+      "maximum_matrix_error_over_reference_peak": 0.0002930376074224212,
+      "maximum_native_simple_error_over_reference_peak": 5.981697446193778e-05,
+      "reference_peak_t": 0.29138919406534836
+    },
+    {
+      "owner": "objective_lens",
+      "rcond": "1e-10",
+      "segment_count": 128,
+      "z_mm": [
+        1564.2,
+        1589.2,
+        1599.2,
+        1612.1999999999998,
+        1640.1999999999998
+      ],
+      "high_precision_axis_bz_t": [
+        0.1294346535103686,
+        0.8712332425771899,
+        1.1126454910277512,
+        0.7384984541654619,
+        0.0896460827293311
+      ],
+      "matrix_q12_axis_bz_t": [
+        0.12943465360149276,
+        0.8712332425602654,
+        1.1126454910340726,
+        0.7384984541804442,
+        0.08964608277165098
+      ],
+      "native_simple_sum_axis_bz_t": [
+        0.12943465348689642,
+        0.8712332425741351,
+        1.1126454910177017,
+        0.738498454141677,
+        0.08964608271253383
+      ],
+      "native_fsum_axis_bz_t": [
+        0.12943465349050398,
+        0.8712332425817616,
+        1.1126454910166736,
+        0.7384984541376876,
+        0.08964608271267449
+      ],
+      "maximum_matrix_error_t": 9.112416377021759e-11,
+      "maximum_native_simple_sum_error_t": 2.378486296805704e-11,
+      "maximum_native_fsum_error_t": 2.777433838474508e-11,
+      "maximum_matrix_error_over_reference_peak": 8.181118654844436e-11,
+      "maximum_native_simple_error_over_reference_peak": 2.135402708567708e-11,
+      "reference_peak_t": 1.1138350097912169
+    }
+  ],
+  "elapsed_s": 6.025384700002178,
+  "qualification": "No unchanged project tolerance or focus criterion is declared passed by this diagnostic."
+}

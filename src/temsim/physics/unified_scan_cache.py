@@ -49,7 +49,8 @@ def response_dependencies(runtime, bounds_m=None):
     else:
         payload = {"providers": [(row.source_id, row.owner_ids, row.kind, row.potential.digest)
                                   for row in snapshot.contributions],
-                   "gauge": snapshot.gauge.digest, "geometry": geometry}
+                   "gauge": snapshot.gauge.digest, "geometry": geometry,
+                   "field_execution_identity": runtime.metadata.get("field_execution_identity")}
     return {"kind": "complete-frozen-runtime", "payload_digest": json_digest(payload)}
 
 

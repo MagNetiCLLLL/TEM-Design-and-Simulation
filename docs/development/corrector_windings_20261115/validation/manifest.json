@@ -1,0 +1,263 @@
+{
+  "schema": "corrector-turn-current-study-evidence-v1",
+  "status": "passed",
+  "scope": "fixed-N initialization and bounded field/CAD/UI research; not experimental or beam qualification",
+  "installed_configs": [
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "bytes": 136528,
+      "sha256": "0ab7ab450649f716a33a8eb48d976e428d6a22a56380191546c28be6be5b871b"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "bytes": 193766,
+      "sha256": "89998f99aa24373ae49045b813efd24edbe44f936888e05845274b70b7a736da"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "bytes": 229783,
+      "sha256": "386aaca29aa1100b86b75d99bc4df58b59af32c576a3f4b387749becc0ce0129"
+    }
+  ],
+  "preserved_original_configs": [
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector.toml",
+      "bytes": 133096,
+      "sha256": "af57565a438739c5e623f80408d433aa33988a369539e5a36a71332144e7cabb"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector_ImageCorrector.toml",
+      "bytes": 190334,
+      "sha256": "b082be1c59140792973960d387d8dbea1fa88aa6a766e3f29c1d0afd49180939"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector_BCOR.toml",
+      "bytes": 226351,
+      "sha256": "0119ad22ac7dd721b1ef477c6af6bb84bd2efd195a2974bd0d063edd4bf433fc"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "src/temsim/cad_probe_winding.py",
+      "bytes": 12829,
+      "sha256": "8bc3c7d2e04672be82b54636e3cd65df3e040db3c7f512bb79021f15c8410647"
+    },
+    {
+      "path": "src/temsim/gui/probe_winding_dialog.py",
+      "bytes": 9094,
+      "sha256": "1f2a3268821324064534c7dc82a3ab5771c7a50c9c93cb2d755244076012a0b3"
+    },
+    {
+      "path": "src/temsim/part_model_document.py",
+      "bytes": 48984,
+      "sha256": "335a3bd8c8eb4c9da91165d2bf19492b47d1da6856fd1e6730903f38a5650094"
+    },
+    {
+      "path": "src/temsim/parameter_semantics.py",
+      "bytes": 44840,
+      "sha256": "3c18187137e59788cbde2bc6efbb941da2aab37001e253bf5910b76eaffbe479"
+    },
+    {
+      "path": "src/temsim/parameter_impact.py",
+      "bytes": 56023,
+      "sha256": "3417165447ace458cc4183086b0b17ed6187f034c92214fd2bae8c1635149210"
+    },
+    {
+      "path": "src/temsim/module_manifest.py",
+      "bytes": 184227,
+      "sha256": "2acd4e37df87be71d9a56d608e398e9d2e1d100af646f1cab3b69a72deb36faf"
+    },
+    {
+      "path": "src/temsim/probe_hexapole_geometry.py",
+      "bytes": 4750,
+      "sha256": "cfdbfc7a7559d1e9fa33f56d3c840db12044707da06627a4a8251e9817414b3d"
+    },
+    {
+      "path": "src/temsim/cad_multipoles.py",
+      "bytes": 23708,
+      "sha256": "1b8c98a48e03f0ac40ce16bbab8104965639a1bca6e36484c17848a4d69f32d0"
+    },
+    {
+      "path": "src/temsim/physics/instrument_magnetic.py",
+      "bytes": 17541,
+      "sha256": "992bf396eb0d372db5bf27e87e06483e510cc2694901ca351d1ec03aeaf1a277"
+    },
+    {
+      "path": "src/temsim/physics/posed_column_fields.py",
+      "bytes": 15177,
+      "sha256": "994efccf46e8226d4566053b528a97d73add4a99b43e650a3dee0aedeefd5ff1"
+    },
+    {
+      "path": "src/temsim/optics/stigmator_field.py",
+      "bytes": 2039,
+      "sha256": "4c356f440f4e3cdc4b2dde9a393323238ce65dc7a42f71d014fa86b4bcac2067"
+    },
+    {
+      "path": "src/temsim/optics/corrector_channels.py",
+      "bytes": 20211,
+      "sha256": "e0419551e5b3e871d93534a96d578537daf528409e0106024ed1dd75325866b4"
+    },
+    {
+      "path": "configs/physics/coil_winding_estimates.toml",
+      "bytes": 451,
+      "sha256": "91e68cc40d4bb76d8c62dcc793e84cd5766bb6b3bbcbc0a72cc816eb026e0d28"
+    },
+    {
+      "path": "tests/test_probe_winding_inputs.py",
+      "bytes": 11072,
+      "sha256": "ee8642a114e35e5b7e99616b17ac1d89434886fc89b7971fc3f089e5c99edefc"
+    },
+    {
+      "path": "tests/test_corrector_turn_estimation.py",
+      "bytes": 5170,
+      "sha256": "7416d044426639db76dfe6f0ca533114c8e67057d475783f9e4bf7babcd8aa24"
+    },
+    {
+      "path": "tests/test_cad_probe_winding.py",
+      "bytes": 9044,
+      "sha256": "89d6c8b92f4f5fb29a56231c6596789b1fba6495391dc1d57c776e771ac04538"
+    },
+    {
+      "path": "tests/test_probe_winding_region_identity.py",
+      "bytes": 1765,
+      "sha256": "d12b1f68df9ef60182b3c7037a6d2da18ecac7bf69c587ddbf2a7aea2c84aad9"
+    },
+    {
+      "path": "tests/test_winding_parameter_information.py",
+      "bytes": 8825,
+      "sha256": "871e478b0b7fb31ec1d6f04cd747209d56de154253fc263ece7cd9913bdac201"
+    },
+    {
+      "path": "tests/test_coil_winding_dialog.py",
+      "bytes": 18410,
+      "sha256": "3ae8d20a82ba490c5d02a98b63375e0dbddecd97e3819eb0a1804beedafec76c"
+    },
+    {
+      "path": "tests/test_part_model_document.py",
+      "bytes": 44953,
+      "sha256": "a55f4dff75151bb7d8415ada9c83713bc43853d64ab0b937cc51b39b1f296aca"
+    },
+    {
+      "path": "tests/test_cad_multipoles.py",
+      "bytes": 18556,
+      "sha256": "09b94912fdc0a3ed21425311d8f48ff26d924afcdae4508952d47085fe8992ab"
+    },
+    {
+      "path": "tests/test_probe_hexapole_support.py",
+      "bytes": 17174,
+      "sha256": "c7a2628d92966aef124c8dfc08c9cb671e31916fc4cec547c4d43253ff2b6a83"
+    }
+  ],
+  "tests": [
+    {
+      "file": "input-cad-tests.xml",
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "persistence-regression-tests.xml",
+      "tests": 146,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "unique_passed_tests": 294,
+  "evidence": [
+    {
+      "path": "docs/development/corrector_windings_20261115/build_manifest.py",
+      "bytes": 3405,
+      "sha256": "ea4e92d53b7ab35417b02a8a29318cec53fff5a73f806fb9c20a81c168c1515f"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/check_deflector_fields.py",
+      "bytes": 8462,
+      "sha256": "83585468b0aff65611619251688d86e7c30f20ebbe13f2991c03be50b8376d72"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/deflector-study.md",
+      "bytes": 11196,
+      "sha256": "5c0df2bfe61313ad0b6642fb0dab1274862dce170b5f2e9c23778c7b22a9ecad"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/README.md",
+      "bytes": 8103,
+      "sha256": "2158fad4ae17986d3c8c97c3806162f312020fe3cc822d21b1c93e8ae2008819"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/render_default_dialog.py",
+      "bytes": 1425,
+      "sha256": "a4e8068ec0cb4d46861e779d2f256e7eec8fbce787ba403c78ad65793e14da5c"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/stigmator-study.md",
+      "bytes": 12482,
+      "sha256": "554e139d33c0d7d64b3b8b04380d1cc3725b7c99d15445ec981342592442c36a"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/study_stigmator_current.py",
+      "bytes": 13139,
+      "sha256": "8b9e53bf77bcef9146055bcc099d680c36c04d11283e50dabfa09f7965bc6415"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validate_field_equivalence.py",
+      "bytes": 2401,
+      "sha256": "350e8ad49cd9faf57403dde49dca2d3f394546f667ae9745b8d933906a0a75e1"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector.toml",
+      "bytes": 133096,
+      "sha256": "af57565a438739c5e623f80408d433aa33988a369539e5a36a71332144e7cabb"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector_BCOR.toml",
+      "bytes": 226351,
+      "sha256": "0119ad22ac7dd721b1ef477c6af6bb84bd2efd195a2974bd0d063edd4bf433fc"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/before/C3_ProbeCorrector_ImageCorrector.toml",
+      "bytes": 190334,
+      "sha256": "b082be1c59140792973960d387d8dbea1fa88aa6a766e3f29c1d0afd49180939"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/default-hp2-dialog.png",
+      "bytes": 42280,
+      "sha256": "da3c5e62d997ad53748232b087e3398733c4fcff9f81c1dc5a68be178482a000"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/deflector-field-check.json",
+      "bytes": 8589,
+      "sha256": "e00798fcf21d621236bd6506aa1b363a8b083e0e6c1679e4ce3984fb66ef4360"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/initial-turn-estimates.json",
+      "bytes": 5799,
+      "sha256": "bfa2da6dea519d29ad286570a8b6b995bd91317a80c58a3ba9a9e220591ccd24"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/input-cad-tests.xml",
+      "bytes": 22917,
+      "sha256": "f4597b8005711fd9310e981f1bd9820ac78ff0fa68193d997d978ea65536d2bb"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/native-field-equivalence.json",
+      "bytes": 612,
+      "sha256": "863c817ef805d52ec7893190cf6e170408eb5ced00c771388cb5ed6a98458047"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/persistence-regression-tests.xml",
+      "bytes": 25575,
+      "sha256": "b04961c536d1917d5ad89d7bcaf1453dcb9580ffd55fc2dc0cdc88f16f091378"
+    },
+    {
+      "path": "docs/development/corrector_windings_20261115/validation/stigmator-current-study.json",
+      "bytes": 31113,
+      "sha256": "f27aff7b28fe42246b68c55e21add08dcede788c76f4fabc2cc79bc30729ff29"
+    }
+  ],
+  "default_optics_tolerances_and_native_field_providers_unchanged": true,
+  "particle_or_coherent_calculation_executed": false,
+  "research_coil_fields_installed_as_runtime_sources": false
+}

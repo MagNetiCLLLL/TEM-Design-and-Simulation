@@ -148,7 +148,13 @@ def column_dipole_fields(state, *, time_s=None):
     """
     from temsim.physics.core import electron
     drives = column_deflector_drives(state, time_s=time_s)
+    if not drives:
+        return ()
     charge, momentum, _ = electron(state) if drives else (-1., 0., 0.)
+    from temsim.physics.transverse_coil_field import capture_transverse_coil_fields
+    prescribed={field.key:field for field in capture_transverse_coil_fields(state,time_s=time_s,
+                component_keys={component.key for component, *_ in drives})
+                if field.event_z_mm is not None}
     result = []
     for component, events, drive_keys, dynamic, captured_time in drives:
         key = str(component.key)
@@ -165,6 +171,9 @@ def column_dipole_fields(state, *, time_s=None):
         for index, (z, dx, dy) in enumerate(events):
             if not np.isfinite((z, dx, dy)).all():
                 raise ValueError(f"{key}: deflection commands must be finite")
+            if f'{key}:{index}' in prescribed:
+                result.append(prescribed[f'{key}:{index}'])
+                continue
             result.append(ColumnDipoleField(
                 f"{key}:{index}", (z-.5*thickness)*1e-3, (z+.5*thickness)*1e-3,
                 momentum/charge*dy/length, -momentum/charge*dx/length,
@@ -181,6 +190,8 @@ class InstrumentMagneticField:
     existing near-axis law. Diagnostics enforce its validity radius before
     querying. Production callers retain their own transport validity checks.
     Registered maps keep the provider's existing zero-outside-volume rule.
+    Copper-coil contributors have full axial tails independent of their finite
+    winding/display envelopes; these envelopes never truncate production B.
     """
     _sources: tuple
     physical_identity: str | None
@@ -283,7 +294,13 @@ def _captured_gun_sources(state):
     gun = getattr(state, "electron_gun", None)
     if gun is None:
         return ()
-    return tuple(_extra_sources(SimpleNamespace(electron_gun=gun), (-np.inf, np.inf), []))
+    # Preserve the selected current-source geometry/calibration while omitting
+    # column collections, so gun alignment is neither replaced by its legacy
+    # law nor counted a second time.
+    context=SimpleNamespace(electron_gun=gun,
+        round_lens_field_model=getattr(state,'round_lens_field_model','gaussian'),
+        _resolved_assembly=getattr(state,'_resolved_assembly',None))
+    return tuple(_extra_sources(context, (-np.inf, np.inf), []))
 
 
 def gun_magnetic_support_edges_mm(state):
@@ -321,6 +338,10 @@ def gun_paraxial_fields(state, z_mm):
     sources = _captured_gun_sources(state)
     if not sources or not z.size:
         return bx, by, kx, ky, kxy
+    from temsim.physics.transverse_coil_field import FrozenTransverseCoilField
+    if any(type(source.provider) is FrozenTransverseCoilField and not source.known_zero for source in sources):
+        raise ValueError('Ideal closed winding gun fields require the full vector Lorentz source; '
+                         'the native soft-window quadratic gun projection is not an admitted substitute')
     from temsim.physics.core import electron
     charge, momentum, _ = electron(state)
     scale = charge/momentum

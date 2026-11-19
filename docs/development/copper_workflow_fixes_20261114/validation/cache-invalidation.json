@@ -1,0 +1,32 @@
+{
+  "scope": "Configuration, exact single-point field and dependency evaluation only; no particle or coherent transport",
+  "implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "results": [
+    {
+      "mutation": "excitation",
+      "field_bz_before_t": 4.547947429248456e-05,
+      "field_bz_after_t": 4.719600474322941e-05,
+      "stage_invalidated": {
+        "incident": true,
+        "elastic": true,
+        "eds": true,
+        "sample_region": true,
+        "column": true
+      },
+      "gun_invalidated": true
+    },
+    {
+      "mutation": "ampere_turns",
+      "field_bz_before_t": 4.547947429248456e-05,
+      "field_bz_after_t": 9.095894858496912e-05,
+      "stage_invalidated": {
+        "incident": true,
+        "elastic": true,
+        "eds": true,
+        "sample_region": true,
+        "column": true
+      },
+      "gun_invalidated": true
+    }
+  ]
+}

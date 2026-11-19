@@ -1,0 +1,47 @@
+{
+  "scope": "Ideal Objective field only; no emission, particle transport or coherent calculation",
+  "surface_z_mm": 1599.1999975,
+  "unchanged_excitation_percent": 68.97810600833917,
+  "current_at_100_percent_a": 1575.2330285262728,
+  "current_a": 1086.565908295224,
+  "target_gaussian_surface_t": 1.113835009791199,
+  "selected_q12_surface_t": 1.1138350097911989,
+  "surface_match_relative": -2.220446049250313e-16,
+  "independent_exact_surface_t": 1.1138350097915275,
+  "independently_calculated_exact_matching_current_a": 1086.5659082949037,
+  "q12_surface_vs_independent_relative": -2.949862576429041e-13,
+  "global_peak_q12_t": 4.657584457374002,
+  "lower_peak_z_mm": 1727.953374152611,
+  "sampled_curve_z_mm": [
+    1300,
+    1900
+  ],
+  "sampled_curve_count": 121,
+  "q12_curve_peak_normalized_error": 3.612809075362077e-05,
+  "per_interval_turns": [
+    586,
+    586
+  ],
+  "per_interval_ampere_turns": [
+    636727.6222610013,
+    636727.6222610013
+  ],
+  "geometry": [
+    {
+      "inner_diameter_mm": 60.0,
+      "outer_diameter_mm": 132.0,
+      "z_start_mm": 1396.5,
+      "z_end_mm": 1541.5
+    },
+    {
+      "inner_diameter_mm": 60.0,
+      "outer_diameter_mm": 132.0,
+      "z_start_mm": 1656.9,
+      "z_end_mm": 1801.9
+    }
+  ],
+  "original_field_model": "gaussian",
+  "detached_selected_field_model": "copper_coil",
+  "original_controls_unchanged": true,
+  "potential_digest": "de55b717ae504c272a09b9ae9302f660671d7e620e4c45f98b5b82b703fb82c1"
+}

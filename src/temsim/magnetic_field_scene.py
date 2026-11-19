@@ -7,6 +7,8 @@ the configured signed integral and effective length. This is not a
 reconstruction of unmodelled fields inside magnetic material. The
 analytic provider's first-order off-axis expansion is restricted to a small
 near-axis cylinder.  Imported/generated maps retain their registered volume.
+Copper-coil fields retain their exact loop law and full axial tails; only the
+display window and registered winding bores bound their visualization.
 No particle propagation or magnetostatic solve is started by this module.
 """
 
@@ -28,7 +30,7 @@ from scipy._lib._array_api import array_namespace
 from temsim import input_io
 from temsim.component_keys import CONDENSER_LENS_KEYS
 from temsim.physics.instrument_magnetic import ColumnDipoleField, column_dipole_fields
-from temsim.physics.copper_coil_field_provider import CopperCoilAssemblyPotential, CopperCoilFieldProvider
+from temsim.physics.frozen_copper_coil_field import FrozenCopperCoilField, is_all_z_copper_field
 from temsim.physics.lens_field_provider import (
     CoordinateRegistration,
     FrozenMappedField,
@@ -184,13 +186,13 @@ class _Source:
 
     @property
     def axial_bounds_m(self):
-        if isinstance(self.provider, CopperCoilAssemblyPotential):
+        if is_all_z_copper_field(self.provider):
             return -np.inf, np.inf
         return self.bounds_m[:, 2]
 
     def contains(self, points):
-        if isinstance(self.provider, CopperCoilAssemblyPotential):
-            return self.provider.vacuum_mask(points)
+        if is_all_z_copper_field(self.provider):
+            return self.provider.display_contains(points)
         valid = np.all((points >= self.bounds_m[0]) & (points <= self.bounds_m[1]), axis=1)
         if self.field_map is None:
             local = self.analytic_local_points(points)
@@ -227,7 +229,9 @@ class MagneticSceneField:
 
     ``contains`` admits the provider-domain union only where every axially
     overlapping analytic contribution remains inside its near-axis radius;
-    it does not claim that the field is nonzero. Missing map support is never
+    copper contributors instead retain their registered winding-bore display
+    cylinders at every Z inside the explicit finite display window.
+    This does not claim that the field is nonzero. Missing map support is never
     extrapolated. The
     scene sums active contributions before tracing lines. A transverse
     quadrupole can have zero field on axis and still alter the total off-axis
@@ -342,9 +346,10 @@ class MagneticSceneField:
         # Otherwise terminate the line instead of bending it with a partial
         # sum. Finite imported maps retain their native zero-outside contract.
         for source in self._sources:
-            if isinstance(source.provider, CopperCoilAssemblyPotential):
-                valid &= source.contains(points)
-            elif source.field_map is None and not source.known_zero:
+            if source.field_map is None and not source.known_zero:
+                if is_all_z_copper_field(source.provider):
+                    valid &= source.contains(points)
+                    continue
                 local = source.analytic_local_points(points)
                 radius = np.hypot(local[:, 0], local[:, 1])
                 active_z = source.analytic_axial_mask(points)
@@ -522,6 +527,10 @@ def _implementation_inputs(provider_type, native_type=None, component_type=None)
         from temsim.physics import core
         from temsim.optics import stigmator_field
         paths.update((Path(core.__file__), Path(stigmator_field.__file__)))
+    if provider_type is FrozenCopperCoilField:
+        from temsim.physics import annular_coil_potential, copper_coil_field_provider, compiled_annular_coil
+        paths.update((Path(annular_coil_potential.__file__), Path(copper_coil_field_provider.__file__),
+                      Path(compiled_annular_coil.__file__)))
     from temsim.optics.electron_gun.alignment import GunDeflector, GunStigmator
     if provider_type in (GunDeflector, GunStigmator):
         from temsim.optics.electron_gun import electrostatic
@@ -546,13 +555,30 @@ def _source_field_inputs(source, original_provider, reference):
     from temsim.optics.electron_gun.alignment import GunDeflector, GunStigmator
 
     provider = source.provider
+    from temsim.physics.transverse_coil_field import FrozenTransverseCoilField
+    if type(provider) is FrozenTransverseCoilField:
+        if not provider.implementation_is_supported():
+            return None
+        metadata=provider.potential.to_metadata()
+        model=('ideal_multipole_current_coil'
+               if provider.potential.provenance.get('source_model')=='ideal_multipole_current_coil'
+               else 'ideal_transverse_current_coil')
+        return (model,metadata,{'potential_digest':provider.fingerprint},
+                'Prescribed-current closed winding pack in vacuum; full axial tails and signed current calibration. '
+                'Homogenized pack quadrature; no magnetic cores, pole shoes, resistance or heating.')
+    if type(provider) is FrozenCopperCoilField:
+        if not provider.implementation_is_supported():
+            return None
+        metadata = provider.potential.to_metadata()
+        physical = {"source_id": provider.lens_key, "axial_domain": "all_z",
+                    "coils": [{key: value for key, value in coil["metadata"].items()
+                               if key != "quadrature_order"} for coil in metadata["coils"]]}
+        numerical = {"potential_digest": provider.fingerprint,
+                     "quadrature_orders": [coil.quadrature_order for coil in provider.potential.coils]}
+        return ("air_core_annular_copper_coil", physical, numerical,
+                "Ideal prescribed-current annular winding in vacuum; exact circular-loop field with full axial tails. "
+                "Display cylinders follow winding bores; quadrature convergence is separate; no pole magnetism.")
     from temsim.physics.posed_column_fields import FrozenPosedMultipole
-    if type(provider) is CopperCoilAssemblyPotential:
-        coils = [coil.to_metadata() for coil in provider.coils]
-        physical = [{key: row[key] for key in ("inner_radius_m", "outer_radius_m", "length_m",
-                    "ampere_turns", "center_z_m", "registration", "permeability_h_per_m")} for row in coils]
-        return ("air_core_copper_windings", physical, {"potential": provider.digest},
-                "Biot-Savart field throughout vacuum, including axial tails. Copper winding volumes are excluded.")
     if type(provider) is FrozenPosedMultipole:
         return ("posed_native_multipole", asdict(provider), {},
                 "Rigid native transverse multipole; original axial envelope and finite support; local paraxial model.")
@@ -670,11 +696,12 @@ def _bind_source_identity(source, *, original_provider=None, reference=None):
         implementation = _implementation_inputs(type(provider), type(native) if native is not None else None,
                                                   type(components[0]) if components else None)
         libraries = {"numpy": np.__version__}
-        if isinstance(provider, CopperCoilAssemblyPotential):
-            implementation = {**implementation, **_implementation_inputs(type(provider.coils[0]))}
-        if source.field_map is not None or isinstance(provider, CopperCoilAssemblyPotential):
+        if source.field_map is not None or type(provider) is FrozenCopperCoilField:
             import scipy
             libraries["scipy"] = scipy.__version__
+        if type(provider) is FrozenCopperCoilField:
+            from temsim.physics.compiled_annular_coil import annular_axis_execution_metadata
+            numerical = {**numerical, "axis_execution": annular_axis_execution_metadata()}
         physical_id = identity_digest("magnetic-source-physical-v1", {"key": source.key, "model": model, "inputs": physical})
         numerical_id = identity_digest("magnetic-source-numerical-v1", {
             "physical_identity": physical_id, "bounds_m": bounds, "radius_m": source.radius_m,
@@ -720,7 +747,13 @@ def _extra_sources(state, z_clip, notes):
 
     def append(key, provider, support_mm, radius, category, label, *, known_zero=False, reference=None, global_bounds=None):
         low, high = np.asarray(support_mm, dtype=float) * 1e-3
-        low, high = max(low, z_clip[0]), min(high, z_clip[1])
+        if is_all_z_copper_field(provider):
+            # The winding envelope only seeds a display. Every ideal-current
+            # source contributes its physical tails inside a remote window.
+            low=(float(z_clip[0]) if np.isfinite(z_clip[0]) else low)
+            high=(float(z_clip[1]) if np.isfinite(z_clip[1]) else high)
+        else:
+            low, high = max(low, z_clip[0]), min(high, z_clip[1])
         if high <= low:
             return
         if global_bounds is None:
@@ -800,15 +833,30 @@ def _extra_sources(state, z_clip, notes):
                label, known_zero=not provider.scale, global_bounds=provider.bounds_m,
                reference={"reference_momentum_kg_m_s": provider.reference_momentum,
                           "reference_charge_c": charge, "captured_time_s": provider.captured_time_s})
-        notes.append(f"{label}: rigidly placed native transverse magnetic field; original envelope and support retained.")
+        from temsim.physics.transverse_coil_field import FrozenTransverseCoilField
+        notes.append(f'{label}: ideal prescribed-current vacuum winding; closed-circuit full fringe field; magnetic material response excluded.'
+                     if type(provider) is FrozenTransverseCoilField else
+                     f"{label}: rigidly placed native transverse magnetic field; original envelope and support retained.")
 
     gun = getattr(state, "electron_gun", None)
     if gun is not None:
+        from temsim.physics.transverse_coil_field import capture_transverse_coil_fields
+        gun_keys={getattr(getattr(gun,name,None),'key',None) for name in ('deflector','stigmator')}
+        prescribed_gun=capture_transverse_coil_fields(state,include_gun=True,component_keys=gun_keys)
+        prescribed_gun_keys={field.component_key for field in prescribed_gun}
         for name, category in (("deflector", "deflector"), ("stigmator", "stigmator")):
             original = getattr(gun, name, None)
             if original is None or not hasattr(original, "field_at_global_positions_t"):
                 continue
             if not bool(getattr(original, "enabled", False)) and not bool(getattr(original, "beam_blanked", False)):
+                continue
+            if original.key in prescribed_gun_keys:
+                for provider in prescribed_gun:
+                    if provider.component_key!=original.key:
+                        continue
+                    append(provider.lens_key,provider,provider.field_support_mm,provider.radial_support_m,
+                           category,original.name,known_zero=not provider.scale,global_bounds=provider.bounds_m)
+                notes.append(f'{original.name}: ideal prescribed-current vacuum winding; full axial tails; magnetic material response excluded.')
                 continue
             component = deepcopy(original)
             edge = float(component.soft_edge_mm)
@@ -875,26 +923,18 @@ def prepare_magnetic_scene(state, *, z_limits_mm=None):
         if key in included:
             continue
         included.add(key)
-        if isinstance(provider, CopperCoilFieldProvider):
-            frozen_provider, field_map = provider.potential, None
-            coils = frozen_provider.coils
-            radius = min(coil.inner_radius_m for coil in coils)
-            corners = []
-            for coil in coils:
-                r = coil.outer_radius_m
-                faces = (coil.center_z_m - coil.length_m/2, coil.center_z_m + coil.length_m/2)
-                local = np.array(tuple(product((-r, r), (-r, r), faces)))
-                corners.extend(local @ coil.registration.rotation_array.T + coil.registration.origin_array_m)
-            bounds = np.array([np.min(corners, axis=0), np.max(corners, axis=0)])
+        from temsim.physics.copper_coil_field_provider import CopperCoilFieldProvider
+        if type(provider) is CopperCoilFieldProvider:
+            field_map = None
+            frozen_provider = FrozenCopperCoilField.from_provider(provider)
+            radius = frozen_provider.radial_support_m
+            bounds = frozen_provider.display_bounds_m
             winding_regions[key] = _frozen_array(bounds)
-            # The viewing window can extend well beyond either winding face.
             if np.isfinite(z_clip).all():
                 bounds[:, 2] = z_clip
-            else:
-                parts = state._resolved_assembly.parts
-                bounds[0, 2] = min(bounds[0, 2], min(p.start_z_mm for p in parts)*.001)
-                bounds[1, 2] = max(bounds[1, 2], max(p.end_z_mm for p in parts)*.001)
-            notes.append(f"{key}: air-core winding field, including tails throughout the display.")
+            notes.append(f"{key}: ideal prescribed-current annular winding in vacuum with full axial tails; "
+                         "display limited to the winding bore, not a near-axis field expansion. "
+                         "Pole magnetism and coherent propagation are not modelled.")
         elif isinstance(provider, MappedLensFieldProvider):
             field_map = provider.field_map
             bounds, radius = _mapped_bounds(field_map)

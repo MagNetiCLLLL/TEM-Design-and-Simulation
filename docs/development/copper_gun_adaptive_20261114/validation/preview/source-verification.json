@@ -1,0 +1,33 @@
+[
+  {
+    "trace": 1,
+    "field": "ray_id",
+    "exact_bytes_equal": true,
+    "sha256": "2f88e9ce00d238e7e011a7b140b413dcad818f1da41a721f914f1af604d0e217"
+  },
+  {
+    "trace": 1,
+    "field": "weight",
+    "exact_bytes_equal": true,
+    "sha256": "2e9a3ef40f7a6b5212de9e8d5e6790f46751b08b405a11207b9099d51c786705"
+  },
+  {
+    "trace": 1,
+    "field": "launch_energy_ev",
+    "exact_bytes_equal": true,
+    "sha256": "d59af7f30ab42028caf01b9a7cf4bc36de0806db955f4165e0bcbfcc9f445725"
+  },
+  {
+    "trace": 1,
+    "field": "launch_momentum_kg_m_per_s",
+    "exact_bytes_equal": true,
+    "sha256": "fce799a9a10b54bf00565a26dbe38835640249ac3b056a1cac1706f659d9ce2a"
+  },
+  {
+    "trace": 1,
+    "field": "launch_position_m",
+    "sha256": "8dabc2e6139998ca4f33c75956f358ad052ef6313c6c9862e09e04acf33ac235",
+    "matches_declared_surface_coordinates": true,
+    "scope": "Actual native launch coordinates; exact declared flat-source comparison"
+  }
+]

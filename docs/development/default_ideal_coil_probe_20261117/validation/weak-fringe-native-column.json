@@ -1,0 +1,66 @@
+{
+  "input_digest": "33ff35389981bb2a15fe3300087e588c6975970dea512d41a089aed844407239",
+  "matched_survivors": 1024,
+  "full_gun_originals": 16384,
+  "native_surface": {
+    "z_mm": 1599.1999975,
+    "surviving": 1024,
+    "effective": 1024.0,
+    "current_a": 6.25e-07,
+    "rms_radius_nm": 7.928855504238306,
+    "D95_nm": 2.211538115304545,
+    "D90_nm": 1.8313846219191054,
+    "D50_nm": 1.123437211978335,
+    "alpha95_mrad": 29.55941281691177,
+    "angular_rms_mrad": 16.24114071449134,
+    "core_50pm_current_a": 3.0517578125e-09,
+    "radial_covariance_m_rad": -3.5630509087527123e-12
+  },
+  "expansion_surface": {
+    "D95_nm": 2.211774461404682,
+    "D90_nm": 1.83165603994438,
+    "D50_nm": 1.1232641782556045,
+    "rms_radius_nm": 7.9288487863381985,
+    "alpha95_mrad": 29.559412887698464,
+    "angular_rms_mrad": 16.241140756779327,
+    "core_50pm_current_a": 3.0517578125e-09
+  },
+  "max_absolute_difference": {
+    "x_m": 8.171412069029201e-13,
+    "y_m": 5.657283261945842e-13,
+    "tx_rad": 2.2579876857165004e-10,
+    "ty_rad": 2.1990163856511202e-10,
+    "flight_time_s": 1.6791766434826462e-21,
+    "kinetic_energy_ev": 5.820766091346741e-10
+  },
+  "native_D95_focus": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 2.1306698117563996,
+    "observed_minimum_planes_mm": [
+      1599.1999899340171
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.1999899340171,
+        1599.1999899340171
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.1999898962397,
+      1599.1999899717946
+    ],
+    "neighbour_bracket_offset_nm": [
+      -7.60376042308053,
+      -7.528205514972797
+    ],
+    "representative_offset_nm": -7.565982969026663,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "field_comparison": {
+    "sample_count": 4500,
+    "max_B_error_t": 3.1873687002760325e-14,
+    "rms_B_error_t": 1.306103896990713e-15,
+    "max_E_v_per_m": 0.00013601441978670917,
+    "max_E_error_v_per_m": 0.0
+  }
+}

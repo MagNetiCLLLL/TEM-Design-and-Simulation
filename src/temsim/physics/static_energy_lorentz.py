@@ -33,10 +33,26 @@ def static_energy_step(phase, dt_s, magnetic, electric, *,
     p0 = np.asarray(phase.momentum_kg_m_per_s, float)
     if x0.shape != p0.shape or x0.shape[-1:] != (3,) or not np.all(np.isfinite(x0)) or not np.all(np.isfinite(p0)):
         raise ValueError("Invalid particle state")
+    from .cuda_gun_step import try_cuda_gun_step
+    accelerated = try_cuda_gun_step(phase, dt, magnetic, electric, tolerance, maximum_iterations,
+                                    native_iteration=_native_static_energy_iteration)
+    if accelerated is not None:
+        return accelerated
     from .grounded_particle_step import try_step
     compiled = try_step(phase, dt, magnetic, electric, tolerance, maximum_iterations)
     if compiled is not None:
         return compiled
+    return _native_static_energy_iteration(phase, dt, magnetic, electric,
+        tolerance=tolerance, maximum_iterations=maximum_iterations)
+
+
+def _native_static_energy_iteration(phase, dt, magnetic, electric, *,
+                                    tolerance, maximum_iterations, _cancelled=None):
+    """Shared reference DG formulas; execution adapters only supply fields."""
+    if _cancelled is not None and _cancelled():
+        raise RuntimeError("Superseded optical tuning request")
+    x0 = np.asarray(phase.position_m, float)
+    p0 = np.asarray(phase.momentum_kg_m_per_s, float)
     phi = getattr(electric, "potential_rise_v_at_global_positions", electric.potential_v_at_global_positions)
     phi0 = phi(x0)
     u0 = p0/(m_e*c)
@@ -45,6 +61,8 @@ def static_energy_step(phase, dt_s, magnetic, electric, *,
     # used by the diagnostic scalar and compiled batch implementations.
     u1 = u0-e*dt/(m_e*c)*electric.field_at_global_positions_v_per_m(x0)
     for _ in range(maximum_iterations):
+        if _cancelled is not None and _cancelled():
+            raise RuntimeError("Superseded optical tuning request")
         gamma1 = np.sqrt(1+np.sum(u1*u1, axis=-1))
         vbar = c*(u1+u0)/(gamma1+gamma0)[..., None]
         dx = dt*vbar
@@ -63,6 +81,8 @@ def static_energy_step(phase, dt_s, magnetic, electric, *,
         scale = np.maximum(np.maximum(np.linalg.norm(u0, axis=-1), np.linalg.norm(updated, axis=-1)), NORMALIZED_MOMENTUM_FLOOR)
         error = np.max(np.linalg.norm(updated-u1, axis=-1)/scale, initial=0)
         if error <= tolerance:
+            if _cancelled is not None and _cancelled():
+                raise RuntimeError("Superseded optical tuning request")
             # Return the same x/p pair used in the last equation residual.
             return RelativisticPhaseSpace(x1, updated*(m_e*c), phase.time_s+dt)
         u1 = updated

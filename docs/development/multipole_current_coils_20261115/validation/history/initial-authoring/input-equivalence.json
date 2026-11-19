@@ -1,0 +1,74 @@
+{
+  "status": "passed",
+  "affected_config_files": 5,
+  "multipole_hosts": 40,
+  "optical_states_exact": 14,
+  "legacy_native_field_records_exact": 336,
+  "existing_probe_HP_counts_exact": [
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "key": "probe_hp2_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "key": "probe_hp1_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "key": "probe_hp2_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "key": "probe_hp1_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "key": "probe_hp2_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "key": "probe_hp1_hexapole",
+      "old_N": 2,
+      "new_N": 2
+    }
+  ],
+  "source_distribution_energy_boundaries_tolerances_unchanged": true,
+  "default_optical_working_point_unchanged": true,
+  "declared_clipping_and_ownership_exact": true,
+  "other_config_files_byte_exact": 31,
+  "monochromator_and_energy_filter_unchanged": true,
+  "finite_source_particle_or_coherent_execution": false,
+  "installed_inputs": [
+    {
+      "path": "configs/instruments/column/C3_BCOR.toml",
+      "sha256": "d651fa7e391b2f79e19409f4ad3b8c4185f0707d5aa42ad76de2da8dd2d59b1f"
+    },
+    {
+      "path": "configs/instruments/column/C3_ImageCorrector.toml",
+      "sha256": "929a14ccb449905a680f81491f3f85ef2c082c1d76fd17ab2d7a748c9d6612f5"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+      "sha256": "631e50bb994b1e06345e5527d9f76393998aeeb31b12f20dbe077058a24887d0"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+      "sha256": "fa52dd47a1214ff48f5c7a16ffb20dbe5692b2527b432612bb88e603b8ccc335"
+    },
+    {
+      "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+      "sha256": "a0de17baf8b396b12c12336d301128222f44a263e63d71dc08fa65435dc66457"
+    }
+  ],
+  "geometry_scope": "Declared runtime geometry, bores/liners/anchors and ownership; no circular-wave admission of filter slits"
+}

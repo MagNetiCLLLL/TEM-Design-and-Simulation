@@ -1,5 +1,11 @@
 # Simulation model levels
 
+For the current executable physical conditions, numerical tiers, product
+compatibility and cost drivers, use the [calculation scope matrix](CALCULATION_SCOPE_MATRIX.md).
+In particular, a field-source choice, Preview/High accuracy and a coherent
+product are independent selections. Historical Tip-origin operators are not
+available production wave calculations.
+
 The **Simulation** menu sits beside File and View. These choices select column
 lens physics, not the number of rays, integration step, CPU/GPU backend or the
 High accuracy product request. New desktop windows start in Finite-Field Optics;
@@ -8,7 +14,7 @@ previous mixed models are not silently replaced.
 
 | Menu choice | Implemented behaviour |
 | --- | --- |
-| Ideal Optics (`ideal_thin`) | Fast thin optical events and straight drifts. Native integrated strengths calibrate round lenses, stigmators, deflectors and hexapoles. No finite-thickness dynamics, material field solves, empirical aberration screens or coherent propagation. |
+| Ideal Optics (`ideal_thin`) | Thin-lens approximation with fast thin optical events and straight drifts. Native integrated strengths calibrate round lenses, stigmators, deflectors and hexapoles. No finite-thickness dynamics, material field solves, empirical aberration screens or coherent propagation. |
 | Finite-Field Optics (`unified`) | Shared immutable electromagnetic potentials and finite absorbing geometry for particles and coherent waves. Field-derived aberrations replace empirical residual actions and equivalent Image maps in the owned column interval. Explicit support gates apply. |
 | Parameterized fields (legacy, `ideal`) | Existing parameterised finite column fields, configured spherical/chromatic aberrations and corrector multipoles. Actual particle and wave-mode energies are retained. Pole shape and magnetic materials are not used to solve the field. |
 | Analytical Field | Compatibility profile within Finite-Field Optics, retaining the same parameterised laws. Registered spatial maps and geometry recipes are retained but inactive. |
@@ -16,6 +22,42 @@ previous mixed models are not silently replaced.
 | Nonlinear Material Field | Explicit sourced B-H recipes, jointly solved static axisymmetric fields. No hysteresis or thermal feedback; unsupported/missing inputs fail. |
 | Coupled Multiphysics | Disabled. Circuit/thermal/structural feedback is not implemented. |
 | Custom / Per-lens Models | Existing per-lens analytic, geometry and imported-map configuration, including legacy behaviour and its explicit approximation warnings. |
+
+The independent **Column round-lens field** selector offers Gaussian/saved
+models and **Ideal prescribed-current coils in vacuum**. This model requires
+shared `unified` execution. It supports classical particles and purpose-specific
+local stationary mixed particle-wave STEM admission, subject to actual
+per-request field and numerical qualification. General/downstream coherent
+propagation with these sources remains unqualified and rejected.
+It uses declared ideal vacuum winding geometry and ampere-turns; it does not
+solve the iron/pole material field. **Gaussian geometry relation** separately
+selects fixed calibration or an explicit coil-length width rule. The latter
+is not a magnetic geometry/material solve. See the scope matrix for the
+near-axis/native winding evaluation and diameter interpretation.
+
+Calibrated physical deflector and stigmator windings also use their closed
+prescribed-current pack fields in the ideal-coil selection. Their saved signed
+current matrices preserve the old field strength at the stated reference planes,
+not the complete old field shape. Native scan waveforms drive those currents;
+their induced electric work is retained by the classical time-dependent route.
+Unconfigured legacy sources retain their native fields. See
+[transverse winding and current inputs](TRANSVERSE_CURRENT_WINDINGS.md).
+
+The named Probe/Image HP1/HP2, QPol/QPC/QPH1/QPH2 and HPol/HPC recipes also
+use closed prescribed-current radial winding packs when explicitly calibrated.
+Their signed quadrupole/sextupole coefficients match the original reference
+plane; their axial profiles and integrated action remain different. HP native
+orientation rotates its internal package with fixed current gains; auxiliary
+normal/skew winding groups mix currents. Engineering winding-only CAD retains
+the original clipping ownership. See
+[multipole winding and current inputs](MULTIPOLE_CURRENT_WINDINGS.md).
+
+The accelerating Gun retains its frozen-time vector B capture. Time-dependent
+column coil drives are frozen there; the unified column's induced electric
+field is not a joint time-dependent Gun acceleration solve.
+
+The persisted key `copper_coil` is retained solely for compatibility with
+existing inputs, schemas and archives; it is not the user-facing mode name.
 
 ## Model boundaries
 
@@ -59,19 +101,18 @@ and are not added a second time. Field excitation, pose, effective thickness,
 apertures and retained-potential recipes control the new propagation.
 Changing a lens model recipe keeps `unified` selected and rechecks capability.
 
-The CPU coherent route includes actual static gun-tail acceleration and native
-axial scan coils. It evaluates the latter in an explicit retarded reference-
-wavefront approximation, retaining induced work and raw phase. Unknown domains,
-B-only maps, unqualified temporal drives and raster flybacks produce explicit
-errors. No numerical tolerance converts a nonzero gun tail into zero electric
-field. An exactly
-constant grounded-downstream potential has a separately recorded reference
-conversion with unchanged domain and executed kinetic energy. The source is
-always the executed gun wave. Source, sampling, memory and cumulative error gates
-remain active; the interface does not substitute a synthetic source or migrate
-to legacy execution. See [electric tails and native scanning](UNIFIED_DYNAMIC_EXECUTION.md)
-for the scope of the source-wavefront approximation and the separate material
-and acquisition limitations.
+New coherent work uses executed particles to the exact specimen upper face,
+followed by a declared local mixed-state lift. Tip-origin coherent propagation
+is retired. General mixed-wave observation requires admitted shared static
+downstream potentials and usable CUDA; a dynamic downstream snapshot is
+rejected. Ideal prescribed-current coils in vacuum and thin-lens optics are
+not admitted coherent sources. The independent mixed STEM raster uses its
+qualified local static specimen kernel,
+not every downstream lens or a full time-dependent scan-coil trajectory.
+See [mixed coherence](MIXED_COHERENCE.md), [mixed STEM](MIXED_STEM_SCAN.md) and
+the current scope matrix. Retained source-wavefront/native-scan operator
+descriptions in [the dynamic operator notes](UNIFIED_DYNAMIC_EXECUTION.md)
+do not reopen the retired Tip-wave workflow or override the CUDA policy.
 
 The thin executor collapses each calibrated field integral to its placed
 reference plane. It retains signed magnetic rotation and actual-energy
@@ -96,8 +137,10 @@ particle, coherent grid, energy and memory controls.
   saturation insert requires an unsupported solver. This is a readiness check,
   not a mesh-convergence or geometry-overlap certification.
 - **Configure lens models...** opens Model Inspector. Explicit field/model edits
-  there, or importing/clearing a map, select Custom and retain current operating
-  values. This avoids editing a recipe that the active global tier would ignore.
+  there, or importing/clearing a map, retain `unified` when it is already selected
+  and invalidate live provider caches. Other execution selections promote to
+  Custom while retaining current operating values. Capability checks still
+  decide whether a recipe can supply the selected executor.
 - Unconfigured lens drafts use the sourced pure-iron [material defaults](LENS_MATERIAL_DEFAULTS.md):
   constant reference permeability for Linear and the full B-H table for Nonlinear.
   Coil ampere-turns remain explicit; defaults do not bypass setup requirements.
@@ -129,7 +172,8 @@ plan signature. Inactive shelves are excluded from calculation identities, so
 returning to unchanged settings can reuse their old result. Shared physical
 geometry changes still invalidate affected products; retaining results never
 means accepting an incompatible field map. The persisted solver identity is
-`temsim-solver-2026-09-static-bh-v1`.
+`temsim-solver-2026-09-working-point-v3`. A separate complete source hash
+identifies the actual numeric implementation.
 
 `tests/test_simulation_modes.py` checks selection, invalid-mode rejection, profile
 and State round trips, inactive-shelf identities, map bypass/restoration, actual

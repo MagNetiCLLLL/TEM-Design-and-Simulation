@@ -1,0 +1,22 @@
+{
+  "implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "scope": "Input-only configuration restoration; no transport",
+  "results": [
+    {
+      "profile": "feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp",
+      "loaded": true,
+      "raw_sha256": "ff1eb2f4455d776e1af0ab19ef85be2870e3c9be4910878fdaceac28601eb3dd",
+      "energy_width_ev": 0.3,
+      "sample_upper_mm": 1599.1999998000001,
+      "historical_digest_unchanged": true
+    },
+    {
+      "profile": "feg-nanoprobe-300kv-zero-fwhm-20261110.temwp",
+      "loaded": true,
+      "raw_sha256": "e247ed00f49790cf5273575249d34f12d68b141e67568f366c380b55fe847d10",
+      "energy_width_ev": 0.0,
+      "sample_upper_mm": 1599.1999998000001,
+      "historical_digest_unchanged": true
+    }
+  ]
+}

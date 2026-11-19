@@ -1,0 +1,5 @@
+# Preserve the bytes referenced by the study's input and evidence checksums.
+*.json -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+*.csv -text whitespace=blank-at-eol,space-before-tab,cr-at-eol
+*.npz binary
+*.gz binary

@@ -1,0 +1,36 @@
+{
+  "scope": "Immutable input and source reference for speed validation; no calculation or relabelling",
+  "baseline_implementation": "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456",
+  "files": {
+    "input.json": {
+      "sha256": "a4d6e96ca7a91ff1f116f5205c8daf959c9706e396f3a0fafcfb226017372eaa",
+      "bytes": 2185198,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\input.json"
+    },
+    "request.json": {
+      "sha256": "763e9d1e866be8a1361bd477f49ed985606b9ae9519fca7c50ed6c8c5c309407",
+      "bytes": 4219,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\request.json"
+    },
+    "independent-expected-emission.npz": {
+      "sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4",
+      "bytes": 81987,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\independent-expected-emission.npz"
+    },
+    "independent-emission-report.json": {
+      "sha256": "22da3fe9e8cc2b86d7446b8984c53a74b0b9301c0f7254e8ec97907a581280ed",
+      "bytes": 661,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\independent-emission-report.json"
+    },
+    "bounded-interruption-receipt.json": {
+      "sha256": "873a2078d7f27d28811b3c2a57bb9cfb6357828ca6a264bb119272eb7a06d2a4",
+      "bytes": 809,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\bounded-interruption-receipt.json"
+    }
+  },
+  "requirements": {
+    "original_positive_particles": 1024,
+    "increase_count": false,
+    "optical_controls_energy_law_boundaries_tolerances": "unchanged"
+  }
+}

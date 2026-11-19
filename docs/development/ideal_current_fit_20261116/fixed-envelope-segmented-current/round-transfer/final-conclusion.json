@@ -1,0 +1,3912 @@
+{
+  "schema": "fixed-envelope-source-free-current-fit-conclusion-v1",
+  "status": "FAILED_TO_MATCH_REFERENCE_DO_NOT_INSTALL",
+  "conclusion": "The bounded current-only search did not recover the archived Gaussian linear transfer. This is a failed candidate, not proof that every possible fixed-envelope current distribution is impossible.",
+  "scope": "Source-free constant-300keV axisymmetric linear operators only. No particle source, physical acceleration, finite-ray transport, nonlinear corrector, D95, focus, aperture or coherent calculation.",
+  "reference_sha256": "1e6520726857efc7427fc5dcfb15723c1a861d6bea9294a0a0f926729e7ed8f2",
+  "geometry_identity_sha256": "0baf98616720ff54f46491918786e59420f8d8c675cd00be12b904cd35a20956",
+  "original_geometry_identities": {
+    "condenser_lens_1": {
+      "original_current_definition": {
+        "ampere_turns": 112304.34232788287,
+        "current_a": 374.34780775960957,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 217363.2432152572,
+        "reference_current_a": 724.5441440508573,
+        "total_turn_count": 300,
+        "winding_reference_ampere_turns": {
+          "condenser_lens_1_excitation_coil": 217363.2432152572
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 112304.34232788287,
+            "homogenized_cross_section_mm2": 2700.0,
+            "homogenized_current_density_a_per_mm2": 41.59420086217884,
+            "interval_homogenized_current_density_a_per_mm2": [
+              41.59420086217884
+            ],
+            "interval_turn_counts": [
+              300
+            ],
+            "key": "condenser_lens_1_excitation_coil",
+            "mean_diameter_mm": 126.0,
+            "turn_count": 300,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+          "inner_radius_m": 0.048,
+          "outer_radius_m": 0.078,
+          "length_m": 0.09,
+          "ampere_turns": 112304.34232788287,
+          "center_z_m": 0.5,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "condenser_lens_2": {
+      "original_current_definition": {
+        "ampere_turns": 27917.95958400784,
+        "current_a": 51.69992515557007,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 200862.50023772343,
+        "reference_current_a": 371.9675930328212,
+        "total_turn_count": 540,
+        "winding_reference_ampere_turns": {
+          "condenser_lens_2_excitation_coil": 200862.50023772343
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 27917.95958400784,
+            "homogenized_cross_section_mm2": 4860.0,
+            "homogenized_current_density_a_per_mm2": 5.744436128396675,
+            "interval_homogenized_current_density_a_per_mm2": [
+              5.744436128396675
+            ],
+            "interval_turn_counts": [
+              540
+            ],
+            "key": "condenser_lens_2_excitation_coil",
+            "mean_diameter_mm": 126.0,
+            "turn_count": 540,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+          "inner_radius_m": 0.048,
+          "outer_radius_m": 0.078,
+          "length_m": 0.162,
+          "ampere_turns": 27917.95958400784,
+          "center_z_m": 0.65,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "condenser_lens_3": {
+      "original_current_definition": {
+        "ampere_turns": 8616.727476907055,
+        "current_a": 16.895544072366775,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 54924.766755268516,
+        "reference_current_a": 107.6956210887618,
+        "total_turn_count": 510,
+        "winding_reference_ampere_turns": {
+          "condenser_lens_3_excitation_coil": 54924.766755268516
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 8616.727476907055,
+            "homogenized_cross_section_mm2": 4590.0,
+            "homogenized_current_density_a_per_mm2": 1.8772826747074194,
+            "interval_homogenized_current_density_a_per_mm2": [
+              1.8772826747074194
+            ],
+            "interval_turn_counts": [
+              510
+            ],
+            "key": "condenser_lens_3_excitation_coil",
+            "mean_diameter_mm": 126.0,
+            "turn_count": 510,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+          "inner_radius_m": 0.048,
+          "outer_radius_m": 0.078,
+          "length_m": 0.153,
+          "ampere_turns": 8616.727476907055,
+          "center_z_m": 0.915,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "adapter_lens": {
+      "original_current_definition": {
+        "ampere_turns": 794.1899762785763,
+        "current_a": 34.52999896863375,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 7941.8997627857625,
+        "reference_current_a": 345.2999896863375,
+        "total_turn_count": 23,
+        "winding_reference_ampere_turns": {
+          "adapter_lens_excitation_coil": 7941.8997627857625
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 794.1899762785762,
+            "homogenized_cross_section_mm2": 208.35359999999847,
+            "homogenized_current_density_a_per_mm2": 3.8117410799649347,
+            "interval_homogenized_current_density_a_per_mm2": [
+              3.8117410799649347
+            ],
+            "interval_turn_counts": [
+              23
+            ],
+            "key": "adapter_lens_excitation_coil",
+            "mean_diameter_mm": 84.69,
+            "turn_count": 23,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+          "inner_radius_m": 0.039165,
+          "outer_radius_m": 0.045525,
+          "length_m": 0.03275999999999976,
+          "ampere_turns": 794.1899762785762,
+          "center_z_m": 1.0882,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "probe_tl22_lens": {
+      "original_current_definition": {
+        "ampere_turns": -20576.609950309306,
+        "current_a": -1082.979471068911,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 34333.53304126725,
+        "reference_current_a": 1807.0280548035394,
+        "total_turn_count": 19,
+        "winding_reference_ampere_turns": {
+          "probe_tl22_lens_excitation_coil": 34333.53304126725
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": -20576.609950309306,
+            "homogenized_cross_section_mm2": 174.20131518750034,
+            "homogenized_current_density_a_per_mm2": -118.11971642212815,
+            "interval_homogenized_current_density_a_per_mm2": [
+              -118.11971642212815
+            ],
+            "interval_turn_counts": [
+              19
+            ],
+            "key": "probe_tl22_lens_excitation_coil",
+            "mean_diameter_mm": 85.92047124999999,
+            "turn_count": 19,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+          "inner_radius_m": 0.039165,
+          "outer_radius_m": 0.04675547125,
+          "length_m": 0.022950000000000047,
+          "ampere_turns": -20576.609950309306,
+          "center_z_m": 1.16635,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "probe_tl21_lens": {
+      "original_current_definition": {
+        "ampere_turns": 19306.905625342,
+        "current_a": 1016.1529276495789,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 32202.177898812526,
+        "reference_current_a": 1694.851468358554,
+        "total_turn_count": 19,
+        "winding_reference_ampere_turns": {
+          "probe_tl21_lens_excitation_coil": 32202.177898812526
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 19306.905625342,
+            "homogenized_cross_section_mm2": 171.96981095250206,
+            "homogenized_current_density_a_per_mm2": 112.2691565362862,
+            "interval_homogenized_current_density_a_per_mm2": [
+              112.2691565362862
+            ],
+            "interval_turn_counts": [
+              19
+            ],
+            "key": "probe_tl21_lens_excitation_coil",
+            "mean_diameter_mm": 85.82323794999999,
+            "turn_count": 19,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+          "inner_radius_m": 0.039165,
+          "outer_radius_m": 0.04665823795,
+          "length_m": 0.022950000000000272,
+          "ampere_turns": 19306.905625342,
+          "center_z_m": 1.2499500000000001,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "probe_tl12_lens": {
+      "original_current_definition": {
+        "ampere_turns": 12828.816877028823,
+        "current_a": 675.200888264675,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 35631.09044275582,
+        "reference_current_a": 1875.3205496187275,
+        "total_turn_count": 19,
+        "winding_reference_ampere_turns": {
+          "probe_tl12_lens_excitation_coil": 35631.09044275582
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 12828.816877028825,
+            "homogenized_cross_section_mm2": 174.87900000000093,
+            "homogenized_current_density_a_per_mm2": 73.35824699951827,
+            "interval_homogenized_current_density_a_per_mm2": [
+              73.35824699951827
+            ],
+            "interval_turn_counts": [
+              19
+            ],
+            "key": "probe_tl12_lens_excitation_coil",
+            "mean_diameter_mm": 85.97999999999999,
+            "turn_count": 19,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+          "inner_radius_m": 0.039165,
+          "outer_radius_m": 0.046814999999999996,
+          "length_m": 0.022860000000000127,
+          "ampere_turns": 12828.816877028825,
+          "center_z_m": 1.3663,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "mini_condenser": {
+      "original_current_definition": {
+        "ampere_turns": -6594.096942944777,
+        "current_a": -387.8880554673398,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 15025.354096789553,
+        "reference_current_a": 883.8443586346796,
+        "total_turn_count": 17,
+        "winding_reference_ampere_turns": {
+          "mini_condenser_excitation_coil": 15025.354096789553
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": -6594.096942944777,
+            "homogenized_cross_section_mm2": 153.0,
+            "homogenized_current_density_a_per_mm2": -43.09867282970443,
+            "interval_homogenized_current_density_a_per_mm2": [
+              -43.09867282970443
+            ],
+            "interval_turn_counts": [
+              17
+            ],
+            "key": "mini_condenser_excitation_coil",
+            "mean_diameter_mm": 42.5,
+            "turn_count": 17,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+          "inner_radius_m": 0.017,
+          "outer_radius_m": 0.025500000000000002,
+          "length_m": 0.018000000000000002,
+          "ampere_turns": -6594.096942944777,
+          "center_z_m": 1.5225,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "objective_lens": {
+      "original_current_definition": {
+        "ampere_turns": 1273455.2445220025,
+        "current_a": 1097.8062452775885,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 1846173.1094327918,
+        "reference_current_a": 1591.5285426144758,
+        "total_turn_count": 1160,
+        "winding_reference_ampere_turns": {
+          "objective_lens_excitation_coil": 1846173.1094327918
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 1273455.2445220025,
+            "homogenized_cross_section_mm2": 10440.0,
+            "homogenized_current_density_a_per_mm2": 121.97847169750982,
+            "interval_homogenized_current_density_a_per_mm2": [
+              121.97847169750982,
+              121.97847169750982
+            ],
+            "interval_turn_counts": [
+              580,
+              580
+            ],
+            "key": "objective_lens_excitation_coil",
+            "mean_diameter_mm": 96.0,
+            "turn_count": 1160,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "objective_lens:objective_lens_excitation_coil:0",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.145,
+          "ampere_turns": 636727.6222610013,
+          "center_z_m": 1.469,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        },
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "objective_lens:objective_lens_excitation_coil:1",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.145,
+          "ampere_turns": 636727.6222610013,
+          "center_z_m": 1.7294,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "diffraction_lens": {
+      "original_current_definition": {
+        "ampere_turns": 10426.642582298635,
+        "current_a": 28.962896061940654,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 71525.01291036655,
+        "reference_current_a": 198.68059141768487,
+        "total_turn_count": 360,
+        "winding_reference_ampere_turns": {
+          "diffraction_lens_excitation_coil": 71525.01291036655
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 10426.642582298635,
+            "homogenized_cross_section_mm2": 3240.0,
+            "homogenized_current_density_a_per_mm2": 3.21809956243785,
+            "interval_homogenized_current_density_a_per_mm2": [
+              3.21809956243785
+            ],
+            "interval_turn_counts": [
+              360
+            ],
+            "key": "diffraction_lens_excitation_coil",
+            "mean_diameter_mm": 96.0,
+            "turn_count": 360,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.09,
+          "ampere_turns": 10426.642582298635,
+          "center_z_m": 1.8969,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "intermediate_lens": {
+      "original_current_definition": {
+        "ampere_turns": 40.10403491833046,
+        "current_a": 0.06188894277520134,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 114312.99123611311,
+        "reference_current_a": 176.40893709276716,
+        "total_turn_count": 648,
+        "winding_reference_ampere_turns": {
+          "intermediate_lens_excitation_coil": 114312.99123611311
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 40.10403491833047,
+            "homogenized_cross_section_mm2": 5832.0,
+            "homogenized_current_density_a_per_mm2": 0.006876549197244594,
+            "interval_homogenized_current_density_a_per_mm2": [
+              0.006876549197244594
+            ],
+            "interval_turn_counts": [
+              648
+            ],
+            "key": "intermediate_lens_excitation_coil",
+            "mean_diameter_mm": 96.0,
+            "turn_count": 648,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.162,
+          "ampere_turns": 40.10403491833047,
+          "center_z_m": 2.0669,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "projector_lens_1": {
+      "original_current_definition": {
+        "ampere_turns": 14180.516445383828,
+        "current_a": 32.8252695494996,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 44157.82654911587,
+        "reference_current_a": 102.21719108591635,
+        "total_turn_count": 432,
+        "winding_reference_ampere_turns": {
+          "projector_lens_1_excitation_coil": 44157.82654911587
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 14180.516445383828,
+            "homogenized_cross_section_mm2": 3888.0,
+            "homogenized_current_density_a_per_mm2": 3.6472521721666222,
+            "interval_homogenized_current_density_a_per_mm2": [
+              3.6472521721666222
+            ],
+            "interval_turn_counts": [
+              432
+            ],
+            "key": "projector_lens_1_excitation_coil",
+            "mean_diameter_mm": 96.0,
+            "turn_count": 432,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.108,
+          "ampere_turns": 14180.516445383828,
+          "center_z_m": 2.2469,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    },
+    "projector_lens_2": {
+      "original_current_definition": {
+        "ampere_turns": 4869.160970605275,
+        "current_a": 7.514137300316783,
+        "homogenization": "Original winding envelope; uniform inside each interval with fixed counts when declared; CAD insulation ignored electromagnetically",
+        "method": "explicit_winding_turns_and_prescribed_current_v1",
+        "reference_ampere_turns": 49549.43719745029,
+        "reference_current_a": 76.46518086026279,
+        "total_turn_count": 648,
+        "winding_reference_ampere_turns": {
+          "projector_lens_2_excitation_coil": 49549.43719745029
+        },
+        "windings": [
+          {
+            "conductor_cross_section_mm2": null,
+            "equivalent_current_a": 4869.160970605275,
+            "homogenized_cross_section_mm2": 5832.0,
+            "homogenized_current_density_a_per_mm2": 0.8349041444796425,
+            "interval_homogenized_current_density_a_per_mm2": [
+              0.8349041444796425
+            ],
+            "interval_turn_counts": [
+              648
+            ],
+            "key": "projector_lens_2_excitation_coil",
+            "mean_diameter_mm": 96.0,
+            "turn_count": 648,
+            "wire_cross_section_mm2": null,
+            "wire_diameter_mm": null
+          }
+        ]
+      },
+      "original_winding_records": [
+        {
+          "schema": "air-core-annular-coil-potential-v1",
+          "source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+          "inner_radius_m": 0.03,
+          "outer_radius_m": 0.066,
+          "length_m": 0.162,
+          "ampere_turns": 4869.160970605275,
+          "center_z_m": 2.4494000000000002,
+          "registration": {
+            "origin_global_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation_local_to_global": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "quadrature_order": 12,
+          "permeability_h_per_m": 1.25663706127e-06,
+          "relative_permeability": 1.0,
+          "current_law": "Uniform azimuthal ampere-turn density over the radial-axial winding rectangle",
+          "method": "Tensor Gauss-Legendre circular loops; complete elliptic-integral vector potential",
+          "axial_domain": "all_z",
+          "domain": "Finite vacuum XYZ excluding closed winding volume",
+          "gauge": "Coulomb; local A=(-y*f,x*f,0)",
+          "derivative_order": 2,
+          "units": {
+            "position": "m",
+            "A": "T m",
+            "B": "T",
+            "ampere_turns": "A turn"
+          },
+          "empirical_aberrations_applied": false,
+          "pole_piece_magnetism": false,
+          "wave_admission": false,
+          "numerical_scope": "Quadrature convergence must be tested; no geometric iron-field or coherent qualification"
+        }
+      ]
+    }
+  },
+  "search": {
+    "coarse_seed_count": 8,
+    "coarse_max_nfev_each": 500,
+    "fine_max_nfev": 500,
+    "original_interval_subdivision": "4 axial integer-turn cells for C1 lens; 2 axial cells per original interval for every other round lens",
+    "control_count": 30,
+    "normalized_current_bounds": [
+      -100.0,
+      100.0
+    ],
+    "current_scale_a": [
+      105.49493791612478,
+      105.49493791612478,
+      105.49493791612478,
+      105.49493791612478,
+      15.951090308758427,
+      15.951090308758427,
+      4.524856862492036,
+      4.524856862492036,
+      12.843039807843837,
+      12.843039807843837,
+      379.52609861234106,
+      379.52609861234106,
+      356.27601236077965,
+      356.27601236077965,
+      255.5526073920933,
+      255.5526073920933,
+      217.0400106661396,
+      217.0400106661396,
+      84.15828189236098,
+      84.15828189236098,
+      84.15828189236098,
+      84.15828189236098,
+      11.267920042186253,
+      11.267920042186253,
+      0.021250734866347747,
+      0.021250734866347747,
+      14.667659813710872,
+      14.667659813710872,
+      2.9792667084409197,
+      2.9792667084409197
+    ],
+    "resistance_or_power_model": false,
+    "endpoint_field_objective_weight_per_tesla": 0.5
+  },
+  "candidate_current_a": [
+    -372.85007441329975,
+    50.805752385684215,
+    884.1089204157868,
+    -542.8326839664144,
+    5.675856423706518,
+    -3.942469388401283,
+    -22.183295159721467,
+    60.76382893891086,
+    -450.8664403219489,
+    -74.61258728047318,
+    369.42173771420124,
+    -1163.9741910819887,
+    604.6748463595349,
+    13.140310221049697,
+    -467.3599673017057,
+    -170.79522368395837,
+    -363.24865628281486,
+    -2442.6747464129394,
+    218.92373369537376,
+    -118.36255856639971,
+    1147.2975102859748,
+    121.76922716131956,
+    -29.68459810573308,
+    -38.2076194916687,
+    -0.045660647570584564,
+    -0.0678460455708625,
+    -95.58772958778198,
+    -100.48945647684684,
+    -22.271737959799736,
+    -23.428498360713807
+  ],
+  "maximum_absolute_current_a": 2442.6747464129394,
+  "cells": [
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.25
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.02250000000000002,
+      "center_z_m": 0.46625000000000005,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.25,
+        0.5
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022499999999999964,
+      "center_z_m": 0.48875,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z2",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        0.75
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022499999999999964,
+      "center_z_m": 0.51125,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_1:interval0:r0:z3",
+      "parent_source_id": "condenser_lens_1:condenser_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.75,
+        1.0
+      ],
+      "turn_count": 75,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.022500000000000075,
+      "center_z_m": 0.53375,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_1",
+      "original_actual_master_a": 374.34780775960957
+    },
+    {
+      "source_id": "condenser_lens_2:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 270,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 0.6095,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_2",
+      "original_actual_master_a": 51.69992515557007
+    },
+    {
+      "source_id": "condenser_lens_2:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_2:condenser_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 270,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.08100000000000007,
+      "center_z_m": 0.6905000000000001,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_2",
+      "original_actual_master_a": 51.69992515557007
+    },
+    {
+      "source_id": "condenser_lens_3:interval0:r0:z0",
+      "parent_source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 255,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.07650000000000001,
+      "center_z_m": 0.87675,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_3",
+      "original_actual_master_a": 16.895544072366775
+    },
+    {
+      "source_id": "condenser_lens_3:interval0:r0:z1",
+      "parent_source_id": "condenser_lens_3:condenser_lens_3_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 255,
+      "inner_radius_m": 0.048,
+      "outer_radius_m": 0.078,
+      "length_m": 0.07650000000000001,
+      "center_z_m": 0.95325,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "condenser_lens_3",
+      "original_actual_master_a": 16.895544072366775
+    },
+    {
+      "source_id": "adapter_lens:interval0:r0:z0",
+      "parent_source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5217391304347826
+      ],
+      "turn_count": 12,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.045525,
+      "length_m": 0.017092173913043407,
+      "center_z_m": 1.080366086956522,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "adapter_lens",
+      "original_actual_master_a": 34.52999896863375
+    },
+    {
+      "source_id": "adapter_lens:interval0:r0:z1",
+      "parent_source_id": "adapter_lens:adapter_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5217391304347826,
+        1.0
+      ],
+      "turn_count": 11,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.045525,
+      "length_m": 0.01566782608695627,
+      "center_z_m": 1.0967460869565218,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "adapter_lens",
+      "original_actual_master_a": 34.52999896863375
+    },
+    {
+      "source_id": "probe_tl22_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04675547125,
+      "length_m": 0.012078947368421078,
+      "center_z_m": 1.1609144736842105,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl22_lens",
+      "original_actual_master_a": -1082.979471068911
+    },
+    {
+      "source_id": "probe_tl22_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl22_lens:probe_tl22_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04675547125,
+      "length_m": 0.010871052631578948,
+      "center_z_m": 1.1723894736842104,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl22_lens",
+      "original_actual_master_a": -1082.979471068911
+    },
+    {
+      "source_id": "probe_tl21_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04665823795,
+      "length_m": 0.0120789473684213,
+      "center_z_m": 1.2445144736842106,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl21_lens",
+      "original_actual_master_a": 1016.1529276495789
+    },
+    {
+      "source_id": "probe_tl21_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl21_lens:probe_tl21_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.04665823795,
+      "length_m": 0.010871052631578948,
+      "center_z_m": 1.2559894736842108,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl21_lens",
+      "original_actual_master_a": 1016.1529276495789
+    },
+    {
+      "source_id": "probe_tl12_lens:interval0:r0:z0",
+      "parent_source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5263157894736842
+      ],
+      "turn_count": 10,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.046814999999999996,
+      "length_m": 0.012031578947368393,
+      "center_z_m": 1.3608857894736843,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl12_lens",
+      "original_actual_master_a": 675.200888264675
+    },
+    {
+      "source_id": "probe_tl12_lens:interval0:r0:z1",
+      "parent_source_id": "probe_tl12_lens:probe_tl12_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5263157894736842,
+        1.0
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.039165,
+      "outer_radius_m": 0.046814999999999996,
+      "length_m": 0.01082842105263171,
+      "center_z_m": 1.3723157894736842,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "probe_tl12_lens",
+      "original_actual_master_a": 675.200888264675
+    },
+    {
+      "source_id": "mini_condenser:interval0:r0:z0",
+      "parent_source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5294117647058824
+      ],
+      "turn_count": 9,
+      "inner_radius_m": 0.017,
+      "outer_radius_m": 0.025500000000000002,
+      "length_m": 0.009529411764705786,
+      "center_z_m": 1.5182647058823528,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "mini_condenser",
+      "original_actual_master_a": -387.8880554673398
+    },
+    {
+      "source_id": "mini_condenser:interval0:r0:z1",
+      "parent_source_id": "mini_condenser:mini_condenser_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5294117647058824,
+        1.0
+      ],
+      "turn_count": 8,
+      "inner_radius_m": 0.017,
+      "outer_radius_m": 0.025500000000000002,
+      "length_m": 0.00847058823529423,
+      "center_z_m": 1.527264705882353,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "mini_condenser",
+      "original_actual_master_a": -387.8880554673398
+    },
+    {
+      "source_id": "objective_lens:interval0:r0:z0",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.43275,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval0:r0:z1",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.5052500000000002,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval1:r0:z0",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:1",
+      "parent_interval_index": 1,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.6931500000000002,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "objective_lens:interval1:r0:z1",
+      "parent_source_id": "objective_lens:objective_lens_excitation_coil:1",
+      "parent_interval_index": 1,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 290,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.07250000000000001,
+      "center_z_m": 1.76565,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "objective_lens",
+      "original_actual_master_a": 1097.8062452775885
+    },
+    {
+      "source_id": "diffraction_lens:interval0:r0:z0",
+      "parent_source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 180,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.04499999999999993,
+      "center_z_m": 1.8744,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "diffraction_lens",
+      "original_actual_master_a": 28.962896061940654
+    },
+    {
+      "source_id": "diffraction_lens:interval0:r0:z1",
+      "parent_source_id": "diffraction_lens:diffraction_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 180,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.04500000000000015,
+      "center_z_m": 1.9194,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "diffraction_lens",
+      "original_actual_master_a": 28.962896061940654
+    },
+    {
+      "source_id": "intermediate_lens:interval0:r0:z0",
+      "parent_source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.0263999999999998,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "intermediate_lens",
+      "original_actual_master_a": 0.06188894277520134
+    },
+    {
+      "source_id": "intermediate_lens:interval0:r0:z1",
+      "parent_source_id": "intermediate_lens:intermediate_lens_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.1074,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "intermediate_lens",
+      "original_actual_master_a": 0.06188894277520134
+    },
+    {
+      "source_id": "projector_lens_1:interval0:r0:z0",
+      "parent_source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 216,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.053999999999999826,
+      "center_z_m": 2.2199,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_1",
+      "original_actual_master_a": 32.8252695494996
+    },
+    {
+      "source_id": "projector_lens_1:interval0:r0:z1",
+      "parent_source_id": "projector_lens_1:projector_lens_1_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 216,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.05400000000000027,
+      "center_z_m": 2.2739000000000003,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_1",
+      "original_actual_master_a": 32.8252695494996
+    },
+    {
+      "source_id": "projector_lens_2:interval0:r0:z0",
+      "parent_source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.0,
+        0.5
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.4089,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_2",
+      "original_actual_master_a": 7.514137300316783
+    },
+    {
+      "source_id": "projector_lens_2:interval0:r0:z1",
+      "parent_source_id": "projector_lens_2:projector_lens_2_excitation_coil:0",
+      "parent_interval_index": 0,
+      "radial_fraction": [
+        0.0,
+        1.0
+      ],
+      "axial_fraction": [
+        0.5,
+        1.0
+      ],
+      "turn_count": 324,
+      "inner_radius_m": 0.03,
+      "outer_radius_m": 0.066,
+      "length_m": 0.08099999999999996,
+      "center_z_m": 2.4899000000000004,
+      "registration": {
+        "origin_global_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_local_to_global": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "owner": "projector_lens_2",
+      "original_actual_master_a": 7.514137300316783
+    }
+  ],
+  "recipes": {
+    "condenser_lens_1": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_1_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.25
+            ],
+            "current_ratio": -0.9959990861031792
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.25,
+              0.5
+            ],
+            "current_ratio": 0.13571804437628637
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              0.75
+            ],
+            "current_ratio": 2.3617312619165234
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 75,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.75,
+              1.0
+            ],
+            "current_ratio": -1.4500757656767118
+          }
+        ]
+      }
+    },
+    "condenser_lens_2": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_2_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 270,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": 0.10978461586989377
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 270,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -0.07625677167883728
+          }
+        ]
+      }
+    },
+    "condenser_lens_3": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "condenser_lens_3_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 255,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": -1.3129671980201565
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 255,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": 3.5964410899493986
+          }
+        ]
+      }
+    },
+    "adapter_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "adapter_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 12,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5217391304347826
+            ],
+            "current_ratio": -13.057238742795954
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 11,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5217391304347826,
+              1.0
+            ],
+            "current_ratio": -2.1608047931958967
+          }
+        ]
+      }
+    },
+    "probe_tl22_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl22_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 10,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5263157894736842
+            ],
+            "current_ratio": -0.3411161038441278
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 9,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5263157894736842,
+              1.0
+            ],
+            "current_ratio": 1.0747887861005667
+          }
+        ]
+      }
+    },
+    "probe_tl21_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl21_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 10,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5263157894736842
+            ],
+            "current_ratio": 0.5950628393682662
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 9,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5263157894736842,
+              1.0
+            ],
+            "current_ratio": 0.01293142977154433
+          }
+        ]
+      }
+    },
+    "probe_tl12_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "probe_tl12_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 10,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5263157894736842
+            ],
+            "current_ratio": -0.6921791357574506
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 9,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5263157894736842,
+              1.0
+            ],
+            "current_ratio": -0.2529546786037515
+          }
+        ]
+      }
+    },
+    "mini_condenser": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "mini_condenser_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 9,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5294117647058824
+            ],
+            "current_ratio": 0.936478066707059
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 8,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5294117647058824,
+              1.0
+            ],
+            "current_ratio": 6.297370367514739
+          }
+        ]
+      }
+    },
+    "objective_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "objective_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 290,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": 0.19941928244361304
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 290,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -0.10781734853081552
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 290,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": 1.0450819670786917
+          },
+          {
+            "interval_index": 1,
+            "turn_count": 290,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": 0.110920508682777
+          }
+        ]
+      }
+    },
+    "diffraction_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "diffraction_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 180,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": -1.0249181588142628
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 180,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -1.3191919554576685
+          }
+        ]
+      }
+    },
+    "intermediate_lens": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "intermediate_lens_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 324,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": -0.7377836092052392
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 324,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -1.0962547189939742
+          }
+        ]
+      }
+    },
+    "projector_lens_1": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "projector_lens_1_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 216,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": -2.9120165926935746
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 216,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -3.0613444415227575
+          }
+        ]
+      }
+    },
+    "projector_lens_2": {
+      "schema": "ideal-coil-current-segments-v1",
+      "windings": {
+        "projector_lens_2_excitation_coil": [
+          {
+            "interval_index": 0,
+            "turn_count": 324,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.0,
+              0.5
+            ],
+            "current_ratio": -2.963978041612415
+          },
+          {
+            "interval_index": 0,
+            "turn_count": 324,
+            "radial_fraction": [
+              0.0,
+              1.0
+            ],
+            "axial_fraction": [
+              0.5,
+              1.0
+            ],
+            "current_ratio": -3.1179225803774044
+          }
+        ]
+      }
+    }
+  },
+  "final_optimizer": {
+    "success": false,
+    "message": "The maximum number of function evaluations is exceeded.",
+    "nfev": 500,
+    "optimality": 0.43179170460798094
+  },
+  "fine_objective_norm": 1.2208978635382994,
+  "refined_objective_norm": 1.2208978635825125,
+  "residual_jacobian_singular_values": [
+    59.22100920767353,
+    6.621378588450069,
+    4.352053138034124,
+    3.6650055153339616,
+    2.3813277294298687,
+    0.9632701030911747,
+    0.2287001366236605,
+    0.1509650860013352,
+    0.10775963166092825,
+    0.09462956141462943,
+    0.029364895401116666,
+    0.003882329994727082,
+    0.003592647629997898,
+    0.0027464153015873518,
+    0.001647961875452144,
+    0.0009702097422077221,
+    1.952440337467666e-07,
+    9.47517886192103e-08,
+    4.333572592367707e-08
+  ],
+  "residual_jacobian_condition": 1366563221.1163058,
+  "matrix_metrics": [
+    {
+      "interval_m": [
+        0.45,
+        1.07
+      ],
+      "candidate_005": {
+        "radial": [
+          [
+            25.3740989336517,
+            1.2287996225553206
+          ],
+          [
+            228.22839443455354,
+            11.091899880800296
+          ]
+        ],
+        "theta": 3.7545046264230244,
+        "initial_bz_t": -0.07428021088293564,
+        "final_bz_t": -0.06360103924737961,
+        "canonical": [
+          [
+            -20.755413352659115,
+            14.5964966089471,
+            -1.0051290554362455,
+            0.7068692200895009
+          ],
+          [
+            -14.5964966089471,
+            -20.755413352659115,
+            -0.7068692200895009,
+            -1.0051290554362455
+          ],
+          [
+            -186.68543374443146,
+            131.28879942259982,
+            -9.072912007409318,
+            6.380635600902582
+          ],
+          [
+            -131.28879942259982,
+            -186.68543374443146,
+            -6.380635600902582,
+            -9.072912007409318
+          ]
+        ],
+        "mechanical": [
+          [
+            -8.257805410154672,
+            32.36740600697054,
+            -1.0051290554362455,
+            0.7068692200895009
+          ],
+          [
+            -32.36740600697054,
+            -8.257805410154672,
+            -0.7068692200895009,
+            -1.0051290554362455
+          ],
+          [
+            -563.8638861719314,
+            166.69028475598552,
+            -19.77375471910107,
+            -8.835372709393795
+          ],
+          [
+            -166.69028475598552,
+            -563.8638861719314,
+            8.835372709393795,
+            -19.77375471910107
+          ]
+        ],
+        "symplectic_determinant": 0.9999999999999671,
+        "maximum_bz_t": 0.21416672662882588
+      },
+      "candidate_0025": {
+        "radial": [
+          [
+            25.374098933653922,
+            1.228799622555852
+          ],
+          [
+            228.22839443455672,
+            11.091899880804261
+          ]
+        ],
+        "theta": 3.7545046264230253,
+        "initial_bz_t": -0.07428021088293564,
+        "final_bz_t": -0.06360103924737961,
+        "canonical": [
+          [
+            -20.755413352660916,
+            14.5964966089484,
+            -1.0051290554366794,
+            0.7068692200898076
+          ],
+          [
+            -14.5964966089484,
+            -20.755413352660916,
+            -0.7068692200898076,
+            -1.0051290554366794
+          ],
+          [
+            -186.68543374443394,
+            131.28879942260184,
+            -9.072912007412555,
+            6.3806356009048715
+          ],
+          [
+            -131.28879942260184,
+            -186.68543374443394,
+            -6.3806356009048715,
+            -9.072912007412555
+          ]
+        ],
+        "mechanical": [
+          [
+            -8.257805410151052,
+            32.36740600697951,
+            -1.0051290554366794,
+            0.7068692200898076
+          ],
+          [
+            -32.36740600697951,
+            -8.257805410151052,
+            -0.7068692200898076,
+            -1.0051290554366794
+          ],
+          [
+            -563.8638861720292,
+            166.69028475609963,
+            -19.77375471910895,
+            -8.835372709398072
+          ],
+          [
+            -166.69028475609963,
+            -563.8638861720292,
+            8.835372709398072,
+            -19.77375471910895
+          ]
+        ],
+        "symplectic_determinant": 1.0000000000000826,
+        "maximum_bz_t": 0.21416675323379394
+      },
+      "target_0025": {
+        "radial": [
+          [
+            105.70429414704843,
+            4.953741660814312
+          ],
+          [
+            240.04363952964513,
+            11.258900947730975
+          ]
+        ],
+        "theta": 3.6609834452115266,
+        "initial_bz_t": 2.010046996314247e-11,
+        "final_bz_t": 0.0002228986458031148,
+        "canonical": [
+          [
+            -91.76419387495258,
+            52.46647047025225,
+            -4.300450741736372,
+            2.4587964250800467
+          ],
+          [
+            -52.46647047025225,
+            -91.76419387495258,
+            -2.4587964250800467,
+            -4.300450741736372
+          ],
+          [
+            -208.38709774273306,
+            119.14598764960078,
+            -9.774096480406056,
+            5.588370830799561
+          ],
+          [
+            -119.14598764960078,
+            -208.38709774273306,
+            -5.588370830799561,
+            -9.774096480406056
+          ]
+        ],
+        "mechanical": [
+          [
+            -91.76419388671627,
+            52.46647044967748,
+            -4.300450741736372,
+            2.4587964250800467
+          ],
+          [
+            -52.46647044967748,
+            -91.76419388671627,
+            -2.4587964250800467,
+            -4.300450741736372
+          ],
+          [
+            -205.60351604581618,
+            124.01448992059667,
+            -9.643646295128168,
+            5.816529042807568
+          ],
+          [
+            -124.01448992059667,
+            -205.60351604581618,
+            -5.816529042807568,
+            -9.643646295128168
+          ]
+        ],
+        "symplectic_determinant": 0.9999999999412088,
+        "maximum_bz_t": 0.916992259538918
+      },
+      "dimensionless_radial_residual": [
+        [
+          -0.7599520517269123,
+          -0.751945154452431
+        ],
+        [
+          -0.04922123793090233,
+          -0.01483280363705215
+        ]
+      ],
+      "radial_residual_norm": 1.070323025331895,
+      "candidate_radial_mesh_max_difference": 3.964828465541359e-12,
+      "candidate_mechanical_mesh_max_difference": 1.1411316336307209e-10
+    },
+    {
+      "interval_m": [
+        1.07,
+        1.379
+      ],
+      "candidate_005": {
+        "radial": [
+          [
+            -0.16999122087681753,
+            -0.07957481981474518
+          ],
+          [
+            14.696132371651274,
+            0.9967696247712242
+          ]
+        ],
+        "theta": 0.4791393342787158,
+        "initial_bz_t": -0.06360103924737961,
+        "final_bz_t": 0.20808343871253307,
+        "canonical": [
+          [
+            -0.1508488548682193,
+            0.07836860442892853,
+            -0.07061406102905521,
+            0.036685233180859415
+          ],
+          [
+            -0.07836860442892853,
+            -0.1508488548682193,
+            -0.036685233180859415,
+            -0.07061406102905521
+          ],
+          [
+            13.0412307636864,
+            -6.775146260663009,
+            0.8845254224812106,
+            -0.45952634511092294
+          ],
+          [
+            6.775146260663009,
+            13.0412307636864,
+            0.45952634511092294,
+            0.8845254224812106
+          ]
+        ],
+        "mechanical": [
+          [
+            0.40450551472847524,
+            1.1473498796498913,
+            -0.07061406102905521,
+            0.036685233180859415
+          ],
+          [
+            -1.1473498796498913,
+            0.40450551472847524,
+            -0.036685233180859415,
+            -0.07061406102905521
+          ],
+          [
+            62.910885201273345,
+            -40.19982777426787,
+            2.7014776027786787,
+            3.0378583250059434
+          ],
+          [
+            40.19982777426787,
+            62.910885201273345,
+            -3.0378583250059434,
+            2.7014776027786787
+          ]
+        ],
+        "symplectic_determinant": 1.0000000000000062,
+        "maximum_bz_t": 0.20808343871253307
+      },
+      "candidate_0025": {
+        "radial": [
+          [
+            -0.16999122087681703,
+            -0.07957481981474786
+          ],
+          [
+            14.696132371654418,
+            0.9967696247729431
+          ]
+        ],
+        "theta": 0.4791393342787251,
+        "initial_bz_t": -0.06360103924737961,
+        "final_bz_t": 0.20808343871253307,
+        "canonical": [
+          [
+            -0.1508488548682181,
+            0.0783686044289297,
+            -0.07061406102905723,
+            0.03668523318086131
+          ],
+          [
+            -0.0783686044289297,
+            -0.1508488548682181,
+            -0.03668523318086131,
+            -0.07061406102905723
+          ],
+          [
+            13.041230763689125,
+            -6.77514626066458,
+            0.8845254224827316,
+            -0.45952634511172363
+          ],
+          [
+            6.77514626066458,
+            13.041230763689125,
+            0.45952634511172363,
+            0.8845254224827316
+          ]
+        ],
+        "mechanical": [
+          [
+            0.4045055147285051,
+            1.147349879649923,
+            -0.07061406102905723,
+            0.03668523318086131
+          ],
+          [
+            -1.147349879649923,
+            0.4045055147285051,
+            -0.03668523318086131,
+            -0.07061406102905723
+          ],
+          [
+            62.91088520126553,
+            -40.199827774293944,
+            2.7014776027802934,
+            3.037858325005243
+          ],
+          [
+            40.199827774293944,
+            62.91088520126553,
+            -3.037858325005243,
+            2.7014776027802934
+          ]
+        ],
+        "symplectic_determinant": 1.000000000000004,
+        "maximum_bz_t": 0.20808343871253307
+      },
+      "target_0025": {
+        "radial": [
+          [
+            -0.1737202663598292,
+            -0.07991898173812241
+          ],
+          [
+            14.683461534937347,
+            0.9986589239035255
+          ]
+        ],
+        "theta": 0.48268822385593735,
+        "initial_bz_t": 0.0002228986458031148,
+        "final_bz_t": 0.012674387066335056,
+        "canonical": [
+          [
+            -0.1538727873426774,
+            0.08063433672775625,
+            -0.07078826632790064,
+            0.037095350009786275
+          ],
+          [
+            -0.08063433672775625,
+            -0.1538727873426774,
+            -0.037095350009786275,
+            -0.07078826632790064
+          ],
+          [
+            13.005881245541623,
+            -6.815504066087358,
+            0.8845624948984525,
+            -0.4635394685581505
+          ],
+          [
+            6.815504066087358,
+            13.005881245541623,
+            0.4635394685581505,
+            0.8845624948984525
+          ]
+        ],
+        "mechanical": [
+          [
+            -0.15584086214234985,
+            0.07687870150566806,
+            -0.07078826632790064,
+            0.037095350009786275
+          ],
+          [
+            -0.07687870150566806,
+            -0.15584086214234985,
+            -0.037095350009786275,
+            -0.07078826632790064
+          ],
+          [
+            13.262399168080185,
+            -6.298438599854825,
+            0.9964704954907103,
+            -0.24998781456222557
+          ],
+          [
+            6.298438599854825,
+            13.262399168080185,
+            0.24998781456222557,
+            0.9964704954907103
+          ]
+        ],
+        "symplectic_determinant": 0.99999999999994,
+        "maximum_bz_t": 0.29138919406534836
+      },
+      "dimensionless_radial_residual": [
+        [
+          0.003729045483012172,
+          0.001113792632280107
+        ],
+        [
+          0.0008629325371896895,
+          -0.0018892991305824447
+        ]
+      ],
+      "radial_residual_norm": 0.00441139637877341,
+      "candidate_radial_mesh_max_difference": 1.7188472867246674e-12,
+      "candidate_mechanical_mesh_max_difference": 2.6076918402395677e-11
+    },
+    {
+      "interval_m": [
+        1.379,
+        1.5991999975
+      ],
+      "candidate_005": {
+        "radial": [
+          [
+            0.07999673613994765,
+            -0.018395725210110923
+          ],
+          [
+            28.890577261139537,
+            5.856949947541866
+          ]
+        ],
+        "theta": 4.936663002267315,
+        "initial_bz_t": 0.20808343871253307,
+        "final_bz_t": 0.44432473733399136,
+        "canonical": [
+          [
+            0.01779116405879655,
+            0.0779932835215789,
+            -0.004091183978069699,
+            -0.017935019366131066
+          ],
+          [
+            -0.0779932835215789,
+            0.01779116405879655,
+            0.017935019366131066,
+            -0.004091183978069699
+          ],
+          [
+            6.4252246355035725,
+            28.16703645869034,
+            1.3025776103988105,
+            5.710267441801512
+          ],
+          [
+            -28.16703645869034,
+            6.4252246355035725,
+            -5.710267441801512,
+            1.3025776103988105
+          ]
+        ],
+        "mechanical": [
+          [
+            0.9060797127594088,
+            -0.12463554024259012,
+            -0.004091183978069699,
+            -0.017935019366131066
+          ],
+          [
+            0.12463554024259012,
+            0.9060797127594088,
+            0.017935019366131066,
+            -0.004091183978069699
+          ],
+          [
+            -289.57509255744003,
+            -3.144299259071455,
+            -0.5942027317573644,
+            6.142944830508503
+          ],
+          [
+            3.144299259071455,
+            -289.57509255744003,
+            -6.142944830508503,
+            -0.5942027317573644
+          ]
+        ],
+        "symplectic_determinant": 0.9999999999957887,
+        "maximum_bz_t": 0.7775661390412609
+      },
+      "candidate_0025": {
+        "radial": [
+          [
+            0.07999673639706788,
+            -0.01839572520227235
+          ],
+          [
+            28.890577197283996,
+            5.856949946282649
+          ]
+        ],
+        "theta": 4.9366630022673,
+        "initial_bz_t": 0.20808343871253307,
+        "final_bz_t": 0.44432473733399136,
+        "canonical": [
+          [
+            0.017791164115978624,
+            0.07799328377226003,
+            -0.004091183976326155,
+            -0.01793501935848886
+          ],
+          [
+            -0.07799328377226003,
+            0.017791164115978624,
+            0.01793501935848886,
+            -0.004091183976326155
+          ],
+          [
+            6.425224621301787,
+            28.1670363964341,
+            1.3025776101186812,
+            5.71026744057385
+          ],
+          [
+            -28.1670363964341,
+            6.425224621301787,
+            -5.71026744057385,
+            1.3025776101186812
+          ]
+        ],
+        "mechanical": [
+          [
+            0.9060797124380864,
+            -0.12463553990555448,
+            -0.004091183976326155,
+            -0.01793501935848886
+          ],
+          [
+            0.12463553990555448,
+            0.9060797124380864,
+            0.01793501935848886,
+            -0.004091183976326155
+          ],
+          [
+            -289.5750924751936,
+            -3.144299301219418,
+            -0.5942027312292655,
+            6.142944829096447
+          ],
+          [
+            3.144299301219418,
+            -289.5750924751936,
+            -6.142944829096447,
+            -0.5942027312292655
+          ]
+        ],
+        "symplectic_determinant": 0.9999999999998659,
+        "maximum_bz_t": 0.7775662545198305
+      },
+      "target_0025": {
+        "radial": [
+          [
+            0.10417863416562731,
+            0.0021831732007789612
+          ],
+          [
+            28.464641476881262,
+            10.195403797990977
+          ]
+        ],
+        "theta": 4.789699333921797,
+        "initial_bz_t": 0.012674387066335056,
+        "final_bz_t": 1.1138350097911995,
+        "canonical": [
+          [
+            0.008046066369260575,
+            0.1038674570430848,
+            0.00016861381040119525,
+            0.0021766521558442553
+          ],
+          [
+            -0.1038674570430848,
+            0.008046066369260575,
+            -0.0021766521558442553,
+            0.00016861381040119525
+          ],
+          [
+            2.1984200151450977,
+            28.379618810766267,
+            0.7874253322387352,
+            10.164950563098552
+          ],
+          [
+            -28.379618810766267,
+            2.1984200151450977,
+            -10.164950563098552,
+            0.7874253322387352
+          ]
+        ],
+        "mechanical": [
+          [
+            0.0014796155693328997,
+            0.10437612549854516,
+            0.00016861381040119525,
+            0.0021766521558442553
+          ],
+          [
+            -0.10437612549854516,
+            0.0014796155693328997,
+            -0.0021766521558442553,
+            0.00016861381040119525
+          ],
+          [
+            -0.7951030837614707,
+            30.362827570448605,
+            1.364490144347695,
+            10.12024838293766
+          ],
+          [
+            -30.362827570448605,
+            -0.7951030837614707,
+            -10.12024838293766,
+            1.364490144347695
+          ]
+        ],
+        "symplectic_determinant": 0.9999999999996412,
+        "maximum_bz_t": 1.1138350097911995
+      },
+      "dimensionless_radial_residual": [
+        [
+          -0.024181897768559432,
+          -0.09345548881330626
+        ],
+        [
+          0.014963677682315978,
+          -0.42553036031424557
+        ]
+      ],
+      "radial_residual_norm": 0.4365990056882573,
+      "candidate_radial_mesh_max_difference": 1.4060990034414746e-08,
+      "candidate_mechanical_mesh_max_difference": 8.224640168918995e-08
+    }
+  ],
+  "unwrapped_fundamental_phase": [
+    {
+      "candidate_unwrapped_fundamental_phase_rad": 6.3611356221141895,
+      "target_unwrapped_fundamental_phase_rad": 6.358629179073852,
+      "candidate_maximum_unwrap_step_rad": 1.0679148638382534,
+      "target_maximum_unwrap_step_rad": 1.1803770563252565
+    },
+    {
+      "candidate_unwrapped_fundamental_phase_rad": 4.128946768406751,
+      "target_unwrapped_fundamental_phase_rad": 4.120927249603948,
+      "candidate_maximum_unwrap_step_rad": 0.001491366715750564,
+      "target_maximum_unwrap_step_rad": 0.007084239925461144
+    },
+    {
+      "candidate_unwrapped_fundamental_phase_rad": 18.04248877491671,
+      "target_unwrapped_fundamental_phase_rad": 6.378067825877778,
+      "candidate_maximum_unwrap_step_rad": 0.04859569491640503,
+      "target_maximum_unwrap_step_rad": 0.018064081757269257
+    }
+  ],
+  "profile_diagnostics": {
+    "finite_axis_domain_m": [
+      -0.5,
+      3.5
+    ],
+    "point_count": 16001,
+    "relative_gaussian_l2": 5.124800129217401,
+    "q12_to_q24_relative_l2": 2.0852976834680526e-09,
+    "q12_to_q24_max_absolute_t": 2.059589476743895e-08,
+    "scope": "Finite-domain profile diagnostics only; full infinite-tail field-fit evidence is separate in round-study."
+  },
+  "decision": "No default state/profile/source cache is modified. No expensive finite-source or scanning run is justified by this failed candidate.",
+  "limits": [
+    "Current polarity reversal changes signed B but not the positive B-squared focusing term.",
+    "A converged matrix mesh does not imply agreement with the reference matrix or specimen focus.",
+    "All original winding ID/OD, centers, axial spans, poses, integer total turns and conductor areas are preserved.",
+    "The optimizer objective weights and current bounds are study choices, not modifications to project numerical tolerances."
+  ],
+  "elapsed_s": 27.12470790000225,
+  "native_recipe_parser_validation": {
+    "status": "PASSED_SYNTAX_AND_ORIGINAL_INTERVAL_TURN_DENSITY_BINDING_ONLY",
+    "windings": {
+      "condenser_lens_1:condenser_lens_1_excitation_coil": {
+        "interval_turn_counts": [
+          300
+        ],
+        "segment_count": 4
+      },
+      "condenser_lens_2:condenser_lens_2_excitation_coil": {
+        "interval_turn_counts": [
+          540
+        ],
+        "segment_count": 2
+      },
+      "condenser_lens_3:condenser_lens_3_excitation_coil": {
+        "interval_turn_counts": [
+          510
+        ],
+        "segment_count": 2
+      },
+      "adapter_lens:adapter_lens_excitation_coil": {
+        "interval_turn_counts": [
+          23
+        ],
+        "segment_count": 2
+      },
+      "probe_tl22_lens:probe_tl22_lens_excitation_coil": {
+        "interval_turn_counts": [
+          19
+        ],
+        "segment_count": 2
+      },
+      "probe_tl21_lens:probe_tl21_lens_excitation_coil": {
+        "interval_turn_counts": [
+          19
+        ],
+        "segment_count": 2
+      },
+      "probe_tl12_lens:probe_tl12_lens_excitation_coil": {
+        "interval_turn_counts": [
+          19
+        ],
+        "segment_count": 2
+      },
+      "mini_condenser:mini_condenser_excitation_coil": {
+        "interval_turn_counts": [
+          17
+        ],
+        "segment_count": 2
+      },
+      "objective_lens:objective_lens_excitation_coil": {
+        "interval_turn_counts": [
+          580,
+          580
+        ],
+        "segment_count": 4
+      },
+      "diffraction_lens:diffraction_lens_excitation_coil": {
+        "interval_turn_counts": [
+          360
+        ],
+        "segment_count": 2
+      },
+      "intermediate_lens:intermediate_lens_excitation_coil": {
+        "interval_turn_counts": [
+          648
+        ],
+        "segment_count": 2
+      },
+      "projector_lens_1:projector_lens_1_excitation_coil": {
+        "interval_turn_counts": [
+          432
+        ],
+        "segment_count": 2
+      },
+      "projector_lens_2:projector_lens_2_excitation_coil": {
+        "interval_turn_counts": [
+          648
+        ],
+        "segment_count": 2
+      }
+    }
+  },
+  "residual_jacobian_condition_note": "Raw finite-difference spectrum includes near-redundancies from symplectic radial-matrix constraints; not a unique inverse or a physical qualification."
+}

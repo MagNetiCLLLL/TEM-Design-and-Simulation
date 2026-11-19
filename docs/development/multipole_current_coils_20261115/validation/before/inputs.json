@@ -1,0 +1,72 @@
+[
+  {
+    "path": "configs/instruments/column/C3_BCOR.toml",
+    "sha256": "105570551b959038b59493940e4b2e7130591b5ad9e8c6e033198d7df82f67d3",
+    "hosts": [
+      "image_hpol_hexapole",
+      "image_qpol_quadrupole",
+      "image_hp1_hexapole",
+      "image_hp2_hexapole"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ImageCorrector.toml",
+    "sha256": "2ed82f596f363a3ac4be2f143988dbb03b46224b7eddee9e93d70844bf463ce8",
+    "hosts": [
+      "image_hpol_hexapole",
+      "image_qpol_quadrupole",
+      "image_hp1_hexapole",
+      "image_hp2_hexapole"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector.toml",
+    "sha256": "06618c52d4edec02d8dec8eadde49449d3030cecde5f4db3d324b1f9ac15e133",
+    "hosts": [
+      "probe_qph2_quadrupole",
+      "probe_hp2_hexapole",
+      "probe_hpc_hexapole",
+      "probe_qpc_quadrupole",
+      "probe_qph1_quadrupole",
+      "probe_hp1_hexapole",
+      "probe_hpol_hexapole",
+      "probe_qpol_quadrupole"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_BCOR.toml",
+    "sha256": "98915ceb63a30d30f3dd56c7bd726f113163adde442f8ee7324f386577f8a200",
+    "hosts": [
+      "probe_qph2_quadrupole",
+      "probe_hp2_hexapole",
+      "probe_hpc_hexapole",
+      "probe_qpc_quadrupole",
+      "probe_qph1_quadrupole",
+      "probe_hp1_hexapole",
+      "probe_hpol_hexapole",
+      "probe_qpol_quadrupole",
+      "image_hpol_hexapole",
+      "image_qpol_quadrupole",
+      "image_hp1_hexapole",
+      "image_hp2_hexapole"
+    ]
+  },
+  {
+    "path": "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml",
+    "sha256": "08ffd0e577701dba59b4a0801d94f2c7c288fbc2b406e16c9f578eff82f97654",
+    "hosts": [
+      "probe_qph2_quadrupole",
+      "probe_hp2_hexapole",
+      "probe_hpc_hexapole",
+      "probe_qpc_quadrupole",
+      "probe_qph1_quadrupole",
+      "probe_hp1_hexapole",
+      "probe_hpol_hexapole",
+      "probe_qpol_quadrupole",
+      "image_hpol_hexapole",
+      "image_qpol_quadrupole",
+      "image_hp1_hexapole",
+      "image_hp2_hexapole"
+    ]
+  }
+]

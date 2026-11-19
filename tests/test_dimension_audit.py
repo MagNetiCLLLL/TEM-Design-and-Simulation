@@ -128,7 +128,18 @@ def test_actual_catalog_covers_all_modules_parts_and_arrays_without_changing_fil
         (source, part["key"]) for source, rows in expected.items() for part in rows}
     assert all(Path(row.source_file).is_absolute() for row in audit.records)
     assert all(row.semantics.label and row.semantics.description and row.semantics.source_note for row in audit.records)
-    assert not {"measured", "documented"}.intersection(audit.summary["by_source"])
+    evidence_kinds = {"measured", "documented"}
+    declared_evidence = {
+        (source, part["key"], field, meta["source_kind"])
+        for source, parts in expected.items() for part in parts
+        for field, meta in part.get("parameter_metadata", {}).items()
+        if meta.get("source_kind") in evidence_kinds
+    }
+    assert {(row.source_file, row.part_key, row.path[-1], row.semantics.source_kind)
+            for row in audit.records if row.semantics.source_kind in evidence_kinds} == declared_evidence
+    photo_stems = [row for row in audit.records if row.part_key == "objective_upper_pole"
+                   and row.path[-1] == "pole_stem_outer_diameter_mm"]
+    assert photo_stems and all(row.semantics.source_kind == "estimated" for row in photo_stems)
     coil = next(row for row in audit.records if row.part_key == "intermediate_lens_excitation_coil" and row.path[-1] == "length_mm" and row.source_file.endswith("EnergyFilter.toml"))
     assert coil.value == 180 and coil.semantics.category == "physical"
     # Alternative modules (including B-COR) retain separate definitions.

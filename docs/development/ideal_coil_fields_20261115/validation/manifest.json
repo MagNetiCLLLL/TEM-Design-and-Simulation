@@ -1,0 +1,56 @@
+{
+  "scope": "Ideal-current field arrays only; no material/FEM/beam/wave runs",
+  "default_optical_inputs_and_tolerances_unchanged": true,
+  "protected_source_input_files": 834,
+  "production_quadrature_order": 12,
+  "files": {
+    "all-lens-fields.png": {
+      "bytes": 648189,
+      "sha256": "5415d3e22457aff77a8e40f5d5e547befd619d8c8cd7f9887c1b6b61312be5d5"
+    },
+    "analytic-crosscheck.json": {
+      "bytes": 2030,
+      "sha256": "742c331ee9bfa8fd8692e7ab6bc464001624c3353b597f7885db98c85f1df7e1"
+    },
+    "check.py": {
+      "bytes": 3947,
+      "sha256": "c3c4475b2fa2a980d2cbcc22c798edb5847a0fca5e325fde0a8966ba52cb648a"
+    },
+    "default-state.json": {
+      "bytes": 64241,
+      "sha256": "e8d75b4fb668d3c2e33d1a6c6ef602dd005cd79795b9236a8c0823846b81fed2"
+    },
+    "objective-axial-field.png": {
+      "bytes": 147277,
+      "sha256": "36d63dd304df33bcf0b54c37723907b3e03e77cad06efd2f04bf089ac1323f7a"
+    },
+    "receipt.json": {
+      "bytes": 10800,
+      "sha256": "f50bfb7b8d46f660c540eadbc0be4ba6488508d42ee98202b92c0a5480399468"
+    },
+    "results.json": {
+      "bytes": 53548,
+      "sha256": "934512d5ce8aa13b9e9d806ec9d3fc7205812f7fcc52f40f83e93c6f6baac145"
+    },
+    "run.log": {
+      "bytes": 1010,
+      "sha256": "c26193f451d7d8b5dc4eb904a006b10aab4fe5985a718dd69c5c9bd207c6a235"
+    },
+    "summary.csv": {
+      "bytes": 2685,
+      "sha256": "85290b884953d35b27a5a20ce9ddf80d006982ae3ea87f52a3df5f5c5d491e6a"
+    }
+  },
+  "raw_arrays": {
+    "path": "outputs/ideal-coil-fields-20261115/curves.npz",
+    "bytes": 10225887,
+    "sha256": "c24e2be4bacc17250a8f5c14129868e78ef4b15bc3398490ccb2895bbf19aab7"
+  },
+  "reproduction_script_sha256": "0af0b6097d92b5b9dc51f35113e71a9003529464c5511e3a52482d4c247cdde0",
+  "metadata_label_correction": "Renamed local_maxima to peak_search_candidates; numeric field arrays, metrics and budgets unchanged.",
+  "original_metadata_before_label_correction": {
+    "path": "outputs/ideal-coil-fields-20261115/results-initial-candidate-label.json",
+    "bytes": 53288,
+    "sha256": "1939fa3542c662723312553bc09a1994a6b668648579845723b7c960af5594eb"
+  }
+}

@@ -135,6 +135,61 @@ def test_method_selection_never_enables_retired_wave_or_changes_inputs(panel):
     assert panel.stem_particle_model.isEnabled()
 
 
+def test_mixed_calculate_button_accepts_a_stationary_virtual_raster_without_editing_inputs(panel):
+    inputs = panel._state
+    inputs.simulation_mode = "unified"
+    inputs.round_lens_field_model = "copper_coil"
+    inputs.ac_deflector.scan_enabled = inputs.descan_deflector.scan_enabled = False
+    panel.set_state(inputs)
+    before = inputs.to_dict()
+    panel.stem_scan_method.setCurrentIndex(panel.stem_scan_method.findData("mixed_coherent_cuda"))
+    requests = []
+    panel.calculation_requested.connect(lambda: requests.append(True))
+    assert panel.calculate_button.isEnabled()
+    panel.calculate_button.click()
+    assert requests == [True]
+    assert inputs.to_dict() == before
+    assert "stationary" in panel.calculate_button.toolTip()
+    assert "not changed automatically" in panel.mixed_wave_location.text()
+
+
+@pytest.mark.parametrize("field,value", [
+    ("scan_pixels_x", 8), ("scan_lines", 6),
+    ("scan_pixel_size_nm", .03125), ("scan_frame_period_s", .2),
+])
+def test_mixed_virtual_grid_edit_does_not_calibrate_physical_drives(panel, monkeypatch, field, value):
+    inputs = panel._state
+    inputs.simulation_mode = "unified"
+    inputs.round_lens_field_model = "copper_coil"
+    inputs.ac_deflector.scan_enabled = inputs.descan_deflector.scan_enabled = False
+    panel.set_state(inputs)
+    panel.stem_scan_method.setCurrentIndex(panel.stem_scan_method.findData("mixed_coherent_cuda"))
+    components = (inputs.ac_deflector, inputs.descan_deflector)
+    flags = [(part.enabled, part.scan_enabled, getattr(part, "wobble_enabled", None))
+             for part in components]
+    commands = [np.asarray(part.scan_command_matrix_mrad).copy() for part in components]
+    errors = []
+    panel.error.connect(errors.append)
+    monkeypatch.setattr(panel, "_start_scan_calibration", lambda *_:
+        pytest.fail("A virtual raster edit cannot recalibrate physical coils"))
+    panel._control_changed("ac", field, value)
+    assert not errors
+    assert [(part.enabled, part.scan_enabled, getattr(part, "wobble_enabled", None))
+            for part in components] == flags
+    for part, command in zip(components, commands):
+        assert getattr(part, field) == value
+        np.testing.assert_array_equal(part.scan_command_matrix_mrad, command)
+
+
+def test_particle_grid_edit_retains_physical_scan_calibration(panel, monkeypatch):
+    panel._state.simulation_mode = "unified"
+    requests = []
+    monkeypatch.setattr(panel, "_start_scan_calibration", requests.append)
+    panel._control_changed("ac", "scan_pixels_x", 8)
+    assert requests == ["automatic"]
+    assert not panel.mixed_coherent_selected()
+
+
 def test_mixed_method_clears_a_retired_request_only_after_user_action(panel):
     panel._state.sample.stem_wave_enabled=True
     panel.set_state(panel._state)
@@ -287,7 +342,7 @@ def test_mixed_frame_summary_names_bf_adf_without_relabeling_particle_haadf(pane
         panel._set_stem_frame(frame,state_snapshot=actual.state_snapshot)
         panel._set_playback_active(False)
     summary=panel.detector_playback_summary.text()
-    assert "Mixed coherent BF/ADF" in summary
+    assert "Mixed particle-wave BF/ADF" in summary
     assert "near_specimen_mixed_coherent_cuda" not in summary
     assert "HAADF" not in summary
     signal=frame.detector_signals["haadf"]
@@ -296,7 +351,7 @@ def test_mixed_frame_summary_names_bf_adf_without_relabeling_particle_haadf(pane
     particle_summary=panel._stem_frame_summary("Particle frame",frame=particle)
     assert "material_particle_paths" in particle_summary
     assert "HAADF mean fraction" in particle_summary
-    assert "Mixed coherent BF/ADF" not in particle_summary
+    assert "Mixed particle-wave BF/ADF" not in particle_summary
 
 
 def test_load_mixed_button_requests_inspection_without_editing_state(panel):
@@ -432,6 +487,7 @@ def test_low_particle_count_rejected_without_a_worker(controller):
 
 
 def test_window_request_uses_shared_source_and_clears_loaded_hold(window,monkeypatch):
+    window.state.ac_deflector.scan_enabled = window.state.descan_deflector.scan_enabled = False
     page=window.workspace.coherent_beam
     source=page._source_controls["source_image_rms_pm"]
     source.setValue(12.)
@@ -450,6 +506,7 @@ def test_window_request_uses_shared_source_and_clears_loaded_hold(window,monkeyp
     inputs,request=calls[0][0]
     assert inputs.electron_gun.emitter.ray_count==16384 and inputs.step_mm==.03125
     assert inputs._tuning_quality=="Preview"
+    assert not inputs.ac_deflector.scan_enabled and not inputs.descan_deflector.scan_enabled
     assert request.source.source_image_rms_pm==12.
     assert not window.state.sample.stem_wave_enabled
 

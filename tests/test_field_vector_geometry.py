@@ -1,5 +1,6 @@
 """Captured physical material versus selected field sources, without a GUI."""
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 from types import MappingProxyType, SimpleNamespace
 
@@ -196,6 +197,10 @@ def test_real_hp2_tl22_and_dph2_reuse_production_physical_regions_and_positions(
     from temsim.optics.column import default_state
     state = default_state()
     sources = [_source(key) for key in ("probe_hp2_hexapole", "probe_tl22_lens", "probe_dph2_deflector")]
+    assembly = state._resolved_assembly
+    hosts = {source.key for source in sources}
+    parts = tuple(part for part in assembly.parts if part.key in hosts or part.parent_key in hosts)
+    state._resolved_assembly = replace(assembly, parts=parts, vacuum_liner_segments=())
     result = build_field_vector_geometry(state, sources, angular_segments=8)
     assert not result.errors
     physical = assembly_model_from_assembly(state._resolved_assembly, angular_segments=8)
@@ -207,11 +212,15 @@ def test_real_hp2_tl22_and_dph2_reuse_production_physical_regions_and_positions(
         assert mesh.color == original.color and mesh.is_exact == original.is_exact
     hp = [mesh for mesh in result.meshes if mesh.key == "probe_hp2_hexapole"]
     assert sum(mesh.region.startswith("pole_pin_") for mesh in hp) == 6
-    assert {mesh.region for mesh in hp if mesh.material_class == "copper_winding"} == {
-        f"coil_{index}" for index in range(1, 7)}
+    turns = assembly.part("probe_hp2_hexapole").data["hexapole_winding_turn_count_per_coil"]
+    expected_copper = {f"winding_turn_multipole_coil_{coil}_{turn:06d}"
+                       for coil in range(1, 7) for turn in range(1, turns + 1)}
+    assert {mesh.region for mesh in hp if mesh.material_class == "copper_winding"} == expected_copper
     assert sum(mesh.region.endswith("_former") for mesh in hp) == 6
     assert sum(mesh.region.endswith("_core_bedding") for mesh in hp) == 6
-    assert len(hp) == 25
+    assert sum(mesh.region.endswith("_outer_insulation") for mesh in hp) == 6
+    assert sum(mesh.region.startswith("winding_insulation_multipole_coil_") for mesh in hp) == 6
+    assert len(hp) == 1 + 6 * 5 + len(expected_copper)
     assert {mesh.key for mesh in result.select(("probe_tl22_lens",))} == {
         "probe_tl22_lens_upper_pole", "probe_tl22_lens_lower_pole", "probe_tl22_lens_housing",
         "probe_tl22_lens_yoke", "probe_tl22_lens_excitation_coil",

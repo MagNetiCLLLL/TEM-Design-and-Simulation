@@ -573,8 +573,8 @@ class State:
     # ideal key) without changing operating values. ideal_thin is a separate mode.
     simulation_mode: str = "custom"
     simulation_mode_profiles: dict = field(default_factory=dict, repr=False)
-    round_lens_field_model: str = field(default="gaussian", kw_only=True)
-    gaussian_geometry_coupling: str = field(default="fixed_calibration", kw_only=True)
+    round_lens_field_model: str = field(default="gaussian", kw_only=True, metadata={"omit_default": True})
+    gaussian_geometry_coupling: str = field(default="fixed_calibration", kw_only=True, metadata={"omit_default": True})
 
     illumination_mode: str = "STEM"
 
@@ -1792,7 +1792,7 @@ class State:
             },
 
             "lens_field_map_descriptors":{
-                str(key): dict(value)
+                str(key): deepcopy(value)
                 for key, value in self.lens_field_map_descriptors.items()
             },
 
@@ -2497,7 +2497,7 @@ class State:
             round_lens_field_model=d.get("round_lens_field_model", "gaussian"),
             gaussian_geometry_coupling=d.get("gaussian_geometry_coupling", "fixed_calibration"),
             lens_field_map_descriptors={
-                str(key): dict(value)
+                str(key): deepcopy(value)
                 for key, value in d.get(
                     "lens_field_map_descriptors", {}
                 ).items()

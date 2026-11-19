@@ -35,6 +35,7 @@ from temsim.mechanical_profiles import (
     lens_mechanical_part_keys,
 )
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 
 MODULE_ROOT = INSTRUMENT_CONFIG_ROOT
 
@@ -596,11 +597,13 @@ def _retained_toml_comments(lines, newline):
 def _replace_part_table(lines, start, end, field, value, newline):
     """Replace a complete optional part table, including expanded descendants.
 
-    Only model_3d supports None as deletion. Material assignments use an empty
-    table to clear their regions. Other tables and all comments are retained.
+    Optional CAD and parameter provenance tables support None as deletion.
+    Material assignments use an empty table to clear their regions. Other
+    tables and all comments are retained.
     """
-    if not isinstance(value, dict) and not (field == "model_3d" and value is None):
-        raise ValueError(f"{field} must be a table" + (" or None" if field == "model_3d" else ""))
+    nullable = field in {"model_3d", "parameter_metadata"}
+    if not isinstance(value, dict) and not (nullable and value is None):
+        raise ValueError(f"{field} must be a table" + (" or None" if nullable else ""))
     statements = list(_toml_statement_spans(lines, start, end))
     headers = [(first, header) for first, _, header in statements if header is not None]
     direct_end = headers[0][0] if headers else end
@@ -683,6 +686,23 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
     optional_fields = set(OPTIONAL_NUMERICAL_FIELDS) | set(PHYSICAL_POSE_FIELDS)
     # Direct winding ID/OD edits can derive this existing optional dimension.
     optional_fields.add("mechanical_coil_radial_thickness_mm")
+    from temsim.coil_winding import WINDING_FIELDS
+    from temsim.coil_reference_metadata import OWNER_CURRENT_FIELD
+    optional_fields.update(WINDING_FIELDS)
+    from temsim.cad_probe_winding import FIELDS as PROBE_WINDING_FIELDS
+    from temsim.transverse_winding import FIELDS as TRANSVERSE_WINDING_FIELDS
+    from temsim.transverse_current import FIELDS as TRANSVERSE_CURRENT_FIELDS
+    from temsim.multipole_winding import FIELDS as MULTIPOLE_WINDING_FIELDS
+    from temsim.multipole_current import FIELDS as MULTIPOLE_CURRENT_FIELDS
+    optional_fields.update(PROBE_WINDING_FIELDS)
+    optional_fields.update(TRANSVERSE_WINDING_FIELDS | TRANSVERSE_CURRENT_FIELDS)
+    optional_fields.update(MULTIPOLE_WINDING_FIELDS | MULTIPOLE_CURRENT_FIELDS)
+    removable_winding_fields = ((WINDING_FIELDS - {"winding_turn_count"}) | PROBE_WINDING_FIELDS
+        | TRANSVERSE_WINDING_FIELDS | TRANSVERSE_CURRENT_FIELDS
+        | MULTIPOLE_WINDING_FIELDS | MULTIPOLE_CURRENT_FIELDS)
+    optional_fields.add(OWNER_CURRENT_FIELD)
+    optional_fields.add("parameter_metadata")
+    optional_fields.add('hexapole_support_outer_insulation_thickness_mm')
     text = _stage_part_structure(text, updates)
     from temsim.part_model_apertures import has_optional_plate_thickness
     optional_plate_keys = {part["key"] for part in tomllib.loads(text).get("parts", ())
@@ -694,7 +714,7 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
         if len(path) == 3 and path[0] == "parts":
             start, end = _part_span(lines, path[1])
             field = path[2]
-            if field in {"model_3d", "material_regions"}:
+            if field in {"model_3d", "material_regions", "parameter_metadata"}:
                 _replace_part_table(lines, start, end, field, value, newline)
                 continue
         elif len(path) >= 2:
@@ -705,6 +725,9 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
         try:
             first, last = _assignment_span(lines, start, end, field)
         except ValueError:
+            if (len(path) == 3 and path[0] == "parts" and value is None
+                    and field in removable_winding_fields):
+                continue
             if (len(path) == 3 and path[0] == "parts"
                     and (field in optional_fields or
                          (field == "plate_thickness_mm" and path[1] in optional_plate_keys))):
@@ -714,6 +737,10 @@ def stage_manifest_text(text, updates, *, validate=True, source_path=None):
                 lines[start:start] = [f"{field} = {_format_toml_value(value)}{newline}"]
                 continue
             raise
+        if (len(path) == 3 and path[0] == "parts" and value is None
+                and field in removable_winding_fields):
+            lines[first:last] = _retained_toml_comments(lines[first:last], newline)
+            continue
         indent = lines[first][:len(lines[first]) - len(lines[first].lstrip())]
         lines[first:last] = [
             f"{indent}{field} = {_format_toml_value(value)}{newline}"
@@ -762,6 +789,11 @@ def validate_document(document):
     from temsim.cad_tl22_lens_hardware import validate_tl22_lens_hardware
     from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
+    from temsim.cad_probe_winding import validate_probe_winding
+    from temsim.transverse_winding import validate_transverse_winding
+    from temsim.transverse_current import validate_transverse_current_inputs
+    from temsim.multipole_winding import validate_multipole_winding
+    from temsim.multipole_current import validate_multipole_current_inputs
     document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
         (
@@ -812,6 +844,11 @@ def validate_document(document):
         validate_objective_upper_hardware(part, detail_context)
         validate_probe_transfer_lens_hardware(part, detail_context)
         validate_hexapole_support(part)
+        validate_probe_winding(part)
+        validate_transverse_winding(part,detail_context)
+        validate_transverse_current_inputs(part,detail_context)
+        validate_multipole_winding(part,detail_context)
+        validate_multipole_current_inputs(part,detail_context)
         key = str(part["key"])
         start = float(part["local_start_z_mm"])
         center = float(part["local_center_z_mm"])
@@ -983,6 +1020,10 @@ def validate_document(document):
     physical_parts = tuple(part for part in parts if not is_custom_mechanical_part(part))
     from temsim.coil_reference_metadata import validate_coil_references
     validate_coil_references(physical_parts)
+    from temsim.cad_round_winding import resolve_round_winding_geometry
+    winding_context = {part["key"]: part for part in parts}
+    for part in parts:
+        resolve_round_winding_geometry(part, winding_context)
     _validate_alignment_structure(physical_parts)
     _validate_aperture_mechanism_metadata(physical_parts)
     _validate_simple_magnetic_layer_geometry(physical_parts)
@@ -3008,9 +3049,9 @@ def _validate_column_mechanical_overlaps(parts):
             from temsim.deflector_support_geometry import full_material_radial_extent
             inner, outer = full_material_radial_extent(part)
             return 2.0 * inner, 2.0 * outer
-        if part.get("pole_piece_geometry_style") == (
-            "objective_vertical_back_inserted_shank_tapered_nose"
-        ):
+        if part.get("pole_piece_geometry_style") in {
+            "objective_vertical_back_inserted_shank_tapered_nose", RECESSED_OBJECTIVE_STYLE,
+        }:
             start = float(part["local_start_z_mm"])
             end = float(part["local_end_z_mm"])
             length = float(part["pole_mounting_shank_axial_length_mm"])
@@ -3022,10 +3063,10 @@ def _validate_column_mechanical_overlaps(parts):
                 overlap_start >= shank_start - tolerance
                 and overlap_end <= shank_end + tolerance
             ):
-                return (
-                    float(part["pole_mounting_shank_inner_diameter_mm"]),
-                    float(part["pole_stem_outer_diameter_mm"]),
-                )
+                inner = float(part["pole_mounting_shank_inner_diameter_mm"])
+                if part["pole_piece_geometry_style"] == RECESSED_OBJECTIVE_STYLE:
+                    inner = float(part["mechanical_bore_diameter_mm"])
+                return inner, float(part["pole_stem_outer_diameter_mm"])
         if (
             "mechanical_inner_diameter_mm" in part
             and "mechanical_outer_diameter_mm" in part
@@ -3888,7 +3929,9 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
             else "tapered_bore_pole"
         )
         for pole in poles:
-            if pole.get("pole_piece_geometry_style") != expected_style:
+            recessed = (pole["key"] == "objective_upper_pole"
+                        and pole.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE)
+            if not recessed and pole.get("pole_piece_geometry_style") != expected_style:
                 raise ValueError(
                     f"{pole['key']} must use pole-piece style "
                     f"{expected_style}"
@@ -3906,18 +3949,17 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
                     pole.get("pole_mounting_shank_axial_length_mm", 0.0)
                 )
                 root_clearance = 0.5 * (coil_inner - stem)
+                if recessed and root_clearance <= 0.0:
+                    raise ValueError(f"{pole['key']} mounting-shank OD must be smaller than the excitation-coil ID")
+                if not recessed and abs(root_clearance) > tolerance:
+                    raise ValueError(f"{pole['key']} objective mounting-shank OD must equal the excitation-coil ID")
                 if (
                     not bore < stem <= outer
                     or not bore <= shank_inner < stem
                     or not 0.0 < shank_length < longest_pole
                     or not tip < outer
-                    or abs(root_clearance) > tolerance
                 ):
-                    raise ValueError(
-                        f"{pole['key']} objective mounting-shank OD must "
-                        "equal the excitation-coil ID and its head/bore "
-                        "geometry must remain valid"
-                    )
+                    raise ValueError(f"{pole['key']} requires a positive shank length and an open bore inside the stem and tip")
                 objective_pole_diameters.append(outer)
             elif (
                 lens_key.startswith("condenser_lens_")
@@ -4291,14 +4333,16 @@ def _validate_c1_c2_cartridge_and_vacuum_tube(parts, geometry):
         connector_length = float(
             pole["pole_vacuum_connector_axial_length_mm"]
         )
+        mouth = float(pole["pole_mounting_shank_inner_diameter_mm"])
+        recessed = pole.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE
+        # A flared entrance can meet the smaller tube bore on an annular face.
+        mouth_fits = (tube_inner <= mouth < tube_outer if recessed
+                      else abs(mouth - tube_inner) <= tolerance)
         if (
             abs(connector_outer - tube_outer) > tolerance
             or abs(float(pole["mechanical_bore_diameter_mm"]) - tube_inner)
             > tolerance
-            or abs(
-                float(pole["pole_mounting_shank_inner_diameter_mm"])
-                - tube_inner
-            ) > tolerance
+            or not mouth_fits
             or not 0.0 < connector_length < float(
                 pole["pole_mounting_shank_axial_length_mm"]
             )

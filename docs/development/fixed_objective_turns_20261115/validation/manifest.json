@@ -1,0 +1,63 @@
+{
+  "scope": "Fixed-turn code/config support and detached ideal-current component checks; no beam, wave or material run",
+  "unique_latest_passed_tests": 467,
+  "current_condition_pending": true,
+  "default_current_applied": false,
+  "fixed_interval_turns": [
+    586,
+    586
+  ],
+  "wire_diameter_mm": null,
+  "files": {
+    "calibrate.log": {
+      "bytes": 186,
+      "sha256": "e9eb8d9cd432ee2933f30da2ecd77cd9799cd0a9ab8f6787dff688836ef330ea"
+    },
+    "calibration.json": {
+      "bytes": 19394,
+      "sha256": "5e0bc30866b359dc6a814e055af1390f2b1e72720c70e2538669bcb3e978a0ea"
+    },
+    "compatibility-tests.xml": {
+      "bytes": 20981,
+      "sha256": "fb5027ca1128a539b33afaa1460306f8b81d8d85f0f23b06f4424bb524e9c658"
+    },
+    "core-cad-tests.xml": {
+      "bytes": 13614,
+      "sha256": "4ca52e4b1fa2831ac0db9725b41a544650e85f8df9a8022700c07d70548b2c74"
+    },
+    "field-tests.xml": {
+      "bytes": 13510,
+      "sha256": "6c0def43c14d46a625f1d06ef42bed1be9c390f9910a572a08320ea41a884143"
+    },
+    "fixed-counts-final-tests.xml": {
+      "bytes": 15151,
+      "sha256": "ba70708ced481a894c65690502cae5e502809c14e9ca47941dfc15c32311d082"
+    },
+    "fixed-turn-curves.npz": {
+      "bytes": 122576,
+      "sha256": "f6c73f7837732b7168dfce745a87aff06c604a457122a4b36ea6d3eac4fd09ae"
+    },
+    "gui-document-regressions.xml": {
+      "bytes": 10910,
+      "sha256": "38e5aa703f5be9f0204273ebf7788ed613c4dd5d12d80916f79d37ff6b3bb9d3"
+    },
+    "independent-check.py": {
+      "bytes": 7563,
+      "sha256": "4f267a1ed3d5746501c104a99bed82684ca5e474d825f9cbbc1ada496f2419e9"
+    },
+    "independent-receipt.json": {
+      "bytes": 5075,
+      "sha256": "a754e407abe6c2865d3301460d36d4acd22a1f1848e50ed3d9364bfa2b5e21c1"
+    },
+    "matching-conditions.png": {
+      "bytes": 140176,
+      "sha256": "177d3ebe2c7deafaac3027308280c105d385dba5488e40c1ffcfe7b6aef20cdc"
+    },
+    "inspector-tests.xml": {
+      "bytes": 1002,
+      "sha256": "f84572336b35997b2dfa74d388e56df210a8d97111995edefe197900702449ba"
+    }
+  },
+  "reproduction_script_sha256": "e8ab9a971e34a7b5a55d357889f78afd8ef5e80911104337c9a75392b7edba7f",
+  "test_report_count": 6
+}

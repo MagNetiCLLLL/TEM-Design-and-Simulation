@@ -1,0 +1,531 @@
+"""Prepare or execute a Preview control with the resolved High scan field.
+
+This separate control is not the normal default Preview automatic-calibration
+workflow. It retains the formal completed High source/Gun and resolved field,
+then uses official Preview request numerics for a genuinely new full column.
+Preparation never launches source, chief rays or column transport. Execution
+requires a reviewed preparation receipt and never permits a new Gun trial.
+Every output directory and evidence file is new-only.
+"""
+from __future__ import annotations
+
+import argparse
+from contextlib import ExitStack, contextmanager
+from dataclasses import replace
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+from time import perf_counter
+import traceback
+from unittest.mock import patch
+from zipfile import ZIP_DEFLATED
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[1]
+LABEL = "AdaptiveGunFixedHighFieldPreviewControl"
+DEFAULT_ARCHIVE = CASE / "adaptive-preview-high-1024" / "high-accuracy" / "complete-result.temsim"
+DEFAULT_SOURCE = CASE / "baseline-input" / "independent-expected-emission.npz"
+
+
+def log(message):
+    print(f"{datetime.now(timezone.utc).isoformat(timespec='seconds')} {LABEL}: {message}", flush=True)
+
+
+def load_helpers():
+    spec = importlib.util.spec_from_file_location("fixed_field_recovery_helpers", CASE / "fixed_field_support.py")
+    recovery = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(recovery)
+    return recovery, recovery.helper_module()
+
+
+def array_record(value):
+    import numpy as np
+    array = np.asarray(value)
+    return dict(dtype=array.dtype.str, shape=list(array.shape),
+                sha256=hashlib.sha256(array.tobytes()).hexdigest())
+
+
+def comparable_graph(state, recovery):
+    """Comparison copy only; never alter a runtime, captured identity or State.
+
+    Only the declared quality numerics/execution markers differ in this
+    control. Independent controls and actual calibrated operators are checked
+    separately. All other graph fields, tolerances and geometry remain exact.
+    """
+    graph = recovery.graph_without_derived(state)
+    root = graph["root"]["ref"]
+    for index, node in enumerate(graph["nodes"]):
+        attributes = node.get("attributes", {})
+        if index == root:
+            remove = {"step_mm", "history_step_mm", "_optical_tuning", "_particle_tuning", "_tuning_quality"}
+        elif node["type"] == "temsim.optics.electron_gun.emitter:ColdFieldEmitter":
+            remove = {"_tuning_boundary_probes", "_tuning_surface_probes"}
+            for name in remove & attributes.keys():
+                if attributes[name] != 0:
+                    raise ValueError("A nonzero source support-probe policy cannot be ignored")
+        else:
+            continue
+        for name in remove:
+            attributes.pop(name, None)
+        node["fields"] = [name for name in node["fields"] if name not in remove]
+    return graph
+
+
+def operator_witness(runtime):
+    """Identify every actual provider/drive and physical boundary in order.
+
+    Complete runtime/source identities are preserved and reported separately.
+    They may differ when official quality/step/history markers change. Scene
+    metadata is not used as field equivalence: exact native provider payloads,
+    full dynamic laws, gauge, complete geometry and runtime policies are used.
+    """
+    from temsim.immutable_json import json_digest, thaw_json
+    snapshot = runtime.snapshot
+    static = getattr(snapshot, "static_snapshot", snapshot)
+    providers = []
+    for row in static.contributions:
+        providers.append(dict(source_id=row.source_id, owner_ids=list(row.owner_ids), kind=row.kind,
+            provider_type=type(row.potential).__module__+":"+type(row.potential).__qualname__,
+            provider_digest=row.potential.digest, exact_payload_digest=json_digest(row.potential.to_dict())))
+    policies = thaw_json(runtime.metadata)
+    # This derived identifier includes unrelated scene/source metadata. The
+    # full native dynamic laws below are retained without normalization.
+    policies.pop("dynamic_snapshot_digest", None)
+    return dict(providers_in_original_order=providers,
+        dynamic_coils=[coil.to_dict() for coil in getattr(snapshot, "dynamic_coils", ())],
+        gauge=snapshot.gauge.to_dict(), geometry=runtime.geometry.to_dict(),
+        runtime_policies=policies)
+
+
+@contextmanager
+def execution_gates(high_gun, *, preparation):
+    """Observe legitimate reuse validation; reject all actual new upstream work."""
+    from temsim.optics.electron_gun.field_emission import FieldEmissionGun
+    from temsim.optics.electron_gun.emitter import ColdFieldEmitter
+    from temsim.optics.electron_gun import source, tracing
+    from temsim.physics import simulation, unified_scan_calibration, unified_field_particle, closed_gun_field
+    rejected, reuse_validation = [], []
+
+    def reject(label):
+        def refused(*args, **kwargs):
+            rejected.append(label)
+            raise RuntimeError(f"Forbidden control operation: {label}")
+        return refused
+
+    original_gateway = source.trace_source_to_exit
+
+    def validate_existing(*args, **kwargs):
+        # A gateway may validate an existing native result, but it must carry
+        # the identical legitimate Gun. True emit/integration remain blocked.
+        if preparation or kwargs.get("previous_trace") is not high_gun:
+            return reject("source gateway without identical legitimate Gun")(*args, **kwargs)
+        reuse_validation.append(dict(kind="ReuseValidation", gateway="trace_source_to_exit",
+            previous_trace_is_original_high_gun=True))
+        return original_gateway(*args, **kwargs)
+
+    with ExitStack() as stack:
+        for owner, name in ((FieldEmissionGun, "emit"), (FieldEmissionGun, "trace_to_exit"),
+                (ColdFieldEmitter, "emit"), (tracing, "trace_feg_to_exit"),
+                (tracing, "_trace_feg_to_exit"), (tracing, "trace_feg_with_observations"),
+                (tracing, "trace_feg_diagnostic_to_exit")):
+            stack.enter_context(patch.object(owner, name, reject(owner.__name__+"."+name)))
+        stack.enter_context(patch.object(source, "trace_source_to_exit", validate_existing))
+        stack.enter_context(patch.object(unified_scan_calibration, "_trace_scan_responses",
+            reject("new scan-response chief rays")))
+        stack.enter_context(patch.object(unified_field_particle, "trace_unified_response",
+            reject("new chief-response transport")))
+        # A missing native electric cache must not trigger an unrelated new
+        # field solve while preparing/performing this fixed-input control.
+        stack.enter_context(patch.object(closed_gun_field, "AxisymmetricCutField",
+            reject("new closed-Gun electric field solve")))
+        if preparation:
+            stack.enter_context(patch.object(simulation, "run", reject("column transport during preparation")))
+            stack.enter_context(patch.object(unified_field_particle, "execute_unified_plan",
+                reject("unified transport during preparation")))
+        yield dict(rejected=rejected, reuse_validation=reuse_validation)
+
+
+def prepare(args, recovery, helper):
+    import numpy as np
+    from temsim.calculation_cache import calculation_signatures, state_model_signature
+    from temsim.calculation_manifest import capture_calculation_manifest, solver_source_identity
+    from temsim.calculation_workflow import admit_workflow, workflow_signatures
+    from temsim.gui.calculation_request import apply_request_numerics
+    from temsim.immutable_json import json_digest
+    from temsim.instrument_snapshot import encode_instrument, decode_instrument, capture_instrument_snapshot
+    from temsim.particle_section_io import load_section_result
+    from temsim.physics.optical_tuning import prepare_tuning_snapshot
+    from temsim.physics.particle_sections import validate_section_checkpoint, gun_dependency_signature
+    from temsim.physics.unified_field_runtime import get_unified_field_runtime
+    from temsim.physics.unified_scan_calibration import calibrate_unified_scan
+
+    if not args.high_archive.is_file():
+        raise FileNotFoundError("The real completed High formal archive does not exist; no substitute seed is accepted")
+    if not args.expected_source.is_file():
+        raise FileNotFoundError("The unchanged independent original-source reference is missing")
+    original_sha = recovery.sha(args.high_archive)
+    implementation = solver_source_identity()
+    log("Loading the real formal completed High result; no synthetic checkpoint or source")
+    high = load_section_result(args.high_archive, maximum_unpacked_bytes=args.archive_gib*1024**3)
+    validate_section_checkpoint(high.simulation.section_checkpoint)
+    saved_runtime = high.simulation.incident_plan.unified_runtime
+    if saved_runtime is None:
+        raise ValueError("The High archive is not the required complete unified-field calculation")
+    checkpoints = high.simulation.incident_checkpoints
+    if checkpoints.unified_state.implementation_digest != implementation:
+        raise ValueError("High executed checkpoint implementation differs from the current source")
+    high_state = high.state_snapshot
+    if float(high_state.step_mm) != .05 or float(high_state.history_step_mm) != .5:
+        raise ValueError("The saved High request does not use the official .05/.5 mm numerics")
+    if high_state.electron_gun.emitter.ray_count != 1024:
+        raise ValueError("The High input is not the fixed 1024-original-particle request")
+    if high_state.electron_gun.emitter.energy_spread_fwhm_ev != .3:
+        raise ValueError("The original 0.3 eV source distribution was changed")
+    ids = np.asarray(high.simulation.gun_trace.emission_phase["ray_id"])
+    weights = np.asarray(high.simulation.gun_trace.emission_phase["weight"])
+    if ids.size != 1024 or np.unique(ids).size != 1024 or np.count_nonzero(weights > 0) != 1024:
+        raise ValueError("The actual retained source is not 1024 unique positive-current original particles")
+    source_checks = helper.verify_completed_source(high, args.expected_source)
+    recovery.write_json(args.output / "high-source-verification.json", source_checks)
+    original_high_graph = json_digest(encode_instrument(high_state))
+    # The complete official graph codec retains private calibration matrices.
+    # Never use the reduced State.to_dict serializer to construct this control.
+    state = decode_instrument(encode_instrument(high_state))
+    controls = recovery.independent_controls(state, helper)
+    input_graph = comparable_graph(state, recovery)
+    expected_field = operator_witness(saved_runtime)
+    with execution_gates(high.simulation.gun_trace, preparation=True) as gates:
+        actual_runtime = get_unified_field_runtime(state)
+        calibration_restored_from_existing_cache = False
+        if json_digest(operator_witness(actual_runtime)) != json_digest(expected_field):
+            log("Restoring normal High calibration from an existing response cache only")
+            # This occurs before changing any quality numerics. A cache miss
+            # hits the rejecting chief-ray gate and stops preparation.
+            calibrate_unified_scan(state, maximum_step_mm=min(.2, float(state.step_mm)))
+            calibration_restored_from_existing_cache = True
+            actual_runtime = get_unified_field_runtime(state)
+        if json_digest(operator_witness(actual_runtime)) != json_digest(expected_field):
+            raise ValueError("Restored High operators, time laws or geometry differ from its actual executed field")
+        if json_digest(recovery.independent_controls(state, helper)) != json_digest(controls):
+            raise ValueError("High calibration changed an independent source/optical/geometry control")
+        if json_digest(comparable_graph(state, recovery)) != json_digest(input_graph):
+            raise ValueError("High calibration changed a non-derived input or tolerance")
+        recovery.write_json(args.output / "resolved-high-derived-records.json", recovery.derived_records(state))
+        resolved_high_snapshot = capture_instrument_snapshot(state)
+        recovery.write_json(args.output / "resolved-high-input.json", resolved_high_snapshot.to_dict())
+        # Official numerics and official optical Preview preparation only.
+        # No automatic scan calibration is run at the Preview response step.
+        apply_request_numerics(state, "Preview", 1024, .5)
+        prepare_tuning_snapshot(state, "Preview", particle_signals=False)
+        admit_workflow(state, "rays")
+        if (float(state.step_mm), float(state.history_step_mm)) != (.5, 2.):
+            raise ValueError("Official Preview numerics differ from .5/2 mm")
+        if json_digest(recovery.independent_controls(state, helper)) != json_digest(controls):
+            raise ValueError("Official Preview preparation changed an independent physical control")
+        if json_digest(comparable_graph(state, recovery)) != json_digest(input_graph):
+            raise ValueError("Preview preparation changed inputs beyond declared quality numerics/markers")
+        preview_runtime = get_unified_field_runtime(state)
+        preview_runtime.require_state(state)
+        if json_digest(operator_witness(preview_runtime)) != json_digest(expected_field):
+            raise ValueError("Preview's own native runtime differs from the actual resolved High field/boundaries")
+        signature = gun_dependency_signature(state)
+        if not signature or signature != high.simulation.section_checkpoint.gun_dependency_signature:
+            raise ValueError("Official Gun checkpoint reuse signature failed; a new Gun run is forbidden")
+    if gates["rejected"]:
+        raise RuntimeError("A forbidden preparation operation was attempted")
+    if json_digest(encode_instrument(high_state)) != original_high_graph:
+        raise ValueError("Preparing the control mutated the original High input state")
+    if recovery.sha(args.high_archive) != original_sha:
+        raise ValueError("The original High archive changed while preparing this control")
+    snapshot = capture_instrument_snapshot(state)
+    signatures = workflow_signatures(calculation_signatures(state), "rays")
+    manifest = replace(capture_calculation_manifest(state), calculation_signatures=signatures)
+    source = dict(high_archive=str(args.high_archive), high_archive_sha256=original_sha,
+        high_package_digest=high.section_archive_info["_package_digest"],
+        source_reference=str(args.expected_source), source_reference_sha256=recovery.sha(args.expected_source),
+        implementation=implementation, original_count=1024, original_positive_count=1024,
+        source_fwhm_ev=.3, high_step_mm=.05, high_history_step_mm=.5)
+    identity = dict(high_runtime_digest=saved_runtime.digest,
+        high_runtime_source_identity=saved_runtime.source_identity,
+        preview_runtime_digest=preview_runtime.digest,
+        preview_runtime_source_identity=preview_runtime.source_identity,
+        high_snapshot_numerical_digest=saved_runtime.snapshot.numerical_digest,
+        preview_snapshot_numerical_digest=preview_runtime.snapshot.numerical_digest,
+        runtime_identities_preserved_without_rewriting=True,
+        exact_actual_operator_witness_digest=json_digest(expected_field))
+    plan = dict(label=LABEL, status="PREPARED_NO_PHYSICAL_EXECUTION", source=source,
+        runner_sha256=recovery.sha(__file__), recovery_helper_sha256=recovery.sha(CASE / "fixed_field_support.py"),
+        validation_helper_sha256=recovery.sha(CASE / "run_particle_validation.py"),
+        prepared_snapshot_id=snapshot.digest, controls_digest=json_digest(controls),
+        invariant_input_graph_digest=json_digest(input_graph), actual_field_identity=identity,
+        official_gun_signature=signature, preview_step_mm=.5, preview_history_step_mm=2.,
+        calibration_restored_from_existing_cache=calibration_restored_from_existing_cache,
+        maximum_wall_seconds=args.maximum_wall_seconds,
+        forbidden_preparation_attempts=gates["rejected"],
+        permitted_execution="Reuse the legitimate completed Gun only; newly integrate the full Preview column from the Gun exit and newly integrate its complete optical-reference post path.",
+        scope="Separate fixed-High-calibration-field Preview control. Not a fresh/default Preview automatic-calibration result, not a material Si scan, and not a coherent calculation.")
+    recovery.write_json(args.output / "actual-high-field-witness.json", expected_field)
+    recovery.write_json(args.output / "actual-preview-field-witness.json", operator_witness(preview_runtime))
+    recovery.write_json(args.output / "independent-controls.json", controls)
+    recovery.write_json(args.output / "invariant-input-graph.json", input_graph)
+    recovery.write_json(args.output / "input.json", snapshot.to_dict())
+    recovery.write_json(args.output / "manifest.json", manifest.to_dict())
+    recovery.write_json(args.output / "preparation.json", plan)
+    return high, state, plan, manifest, signatures, state_model_signature(state)
+
+
+def verify_prepared_authority(args, plan):
+    from temsim.immutable_json import canonical_json_bytes
+    if args.prepared is None:
+        raise ValueError("Execution requires --prepared pointing to a reviewed successful preparation directory")
+    original = json.loads((args.prepared / "preparation.json").read_text(encoding="utf-8"))
+    if original.get("status") != "PREPARED_NO_PHYSICAL_EXECUTION" or original.get("label") != LABEL:
+        raise ValueError("The reviewed preparation is not this fixed-field control")
+    for key in ("source", "runner_sha256", "recovery_helper_sha256", "validation_helper_sha256",
+                "prepared_snapshot_id", "controls_digest", "invariant_input_graph_digest",
+                "actual_field_identity", "official_gun_signature", "preview_step_mm", "preview_history_step_mm", "maximum_wall_seconds"):
+        if canonical_json_bytes(original[key]) != canonical_json_bytes(plan[key]):
+            raise ValueError(f"Execution differs from the reviewed preparation: {key}")
+
+
+@contextmanager
+def observe_full_coarse_column(state, high, plan, recovery, destination):
+    """Forward unchanged production integration only after strict scope checks."""
+    import numpy as np
+    from temsim.immutable_json import json_digest
+    from temsim.physics import simulation, particle_sections
+    gun_exit = float(state.electron_gun.exit_plane_z_mm)
+    sample = float(state.sample.z_mm)
+    calls = []
+    expected_witness = plan["actual_field_identity"]["exact_actual_operator_witness_digest"]
+
+    def checked(original):
+        def forward(actual_state, actual_plan, *args, **kwargs):
+            z = np.asarray(actual_plan.z_mm)
+            index = int(kwargs.get("start_index", 0))
+            start, end, resume = float(z[0]), float(z[-1]), float(z[index])
+            scope = "incident" if start == gun_exit and end == sample else "post"
+            if actual_state is not state or (float(state.step_mm), float(state.history_step_mm)) != (.5, 2.):
+                raise ValueError("Integration did not use the official prepared Preview input")
+            if index != 0 or resume != start:
+                raise ValueError("A downstream/sample/fine-grid resume is forbidden for this full-column control")
+            if scope == "incident" and np.array_equal(z, high.simulation.incident_plan.z_mm):
+                raise ValueError("The fine High incident mesh cannot be relabelled as Preview")
+            if scope == "post" and start != sample:
+                raise ValueError("A column segment starts outside the actual Gun exit or sample plane")
+            runtime = actual_plan.unified_runtime
+            runtime.require_state(state)
+            if json_digest(operator_witness(runtime)) != expected_witness:
+                raise ValueError("The actual executed plan changes the fixed High field or boundaries")
+            calls.append(dict(scope=scope, plan_signature=actual_plan.signature,
+                start_z_mm=start, stop_z_mm=end, actual_resume_z_mm=resume, start_index=index,
+                integration_nodes=int(z.size), z_mm=array_record(z),
+                actual_operator_witness_digest=expected_witness))
+            recovery.write_json(destination / f"integration-call-{len(calls):03d}.json", calls[-1])
+            return original(actual_state, actual_plan, *args, **kwargs)
+        return forward
+
+    with ExitStack() as stack:
+        stack.enter_context(patch.object(simulation, "execute_propagation_plan", checked(simulation.execute_propagation_plan)))
+        stack.enter_context(patch.object(particle_sections, "execute_propagation_plan", checked(particle_sections.execute_propagation_plan)))
+        yield calls
+
+
+def compare_saved_arrays(actual, restored):
+    import numpy as np
+    records = []
+    pairs = [("incident", actual.incident, restored.incident)]
+    if set(actual.branches) != set(restored.branches):
+        raise ValueError("The formal archive omitted an actual executed downstream branch")
+    pairs.extend(("branch:"+key, value, restored.branches[key]) for key, value in actual.branches.items())
+    for label, before, after in pairs:
+        for name in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev", "alive",
+                "blocked_z", "energy_offset_ev", "ray_weight", "source_ray_id", "source_azimuth_rad"):
+            left, right = np.asarray(getattr(before, name)), np.asarray(getattr(after, name))
+            if left.dtype != right.dtype or left.shape != right.shape or left.tobytes() != right.tobytes():
+                raise ValueError(f"Formal archive changed real executed arrays: {label}.{name}")
+            records.append(dict(segment=label, field=name, exact_bytes_equal=True, **array_record(left)))
+        if before.blocked_key != after.blocked_key:
+            raise ValueError("Formal archive changed the physical stop ledger")
+    return records
+
+
+def execute(args, recovery, helper, high, state, plan, manifest, signatures, model_signature):
+    from PySide6.QtCore import QCoreApplication, Qt
+    import numpy as np
+    from temsim.calculation_manifest import solver_source_identity
+    from temsim.gui.calculation_controller import CalculationWorker
+    from temsim.gui.calculation_request import request_numerical_preparation
+    from temsim.immutable_json import json_digest
+    from temsim.particle_section_io import save_section_result, load_section_result
+    from temsim.physics.completed_particle_section import capture_completed_particle_section
+    from temsim.physics.unified_field_runtime import get_unified_field_runtime
+    from threading import Event, Timer
+
+    verify_prepared_authority(args, plan)
+    app = QCoreApplication.instance() or QCoreApplication([])
+    worker = CalculationWorker(1, "Preview", state, model_signature=model_signature,
+        request_signatures=signatures, existing_result=high, workflow="rays",
+        calculation_manifest=manifest,
+        numerical_preparation=request_numerical_preparation("Preview", .5))
+    captures, errors, persistence_errors = [], [], []
+    archive = args.output / "fixed-high-field-preview.temsim"
+
+    def on_result(generation, quality, result, elapsed):
+        captures.append((result, elapsed))
+        # Formal raw-data persistence happens before post-run guards, native
+        # diagnostics or statistics, so a guard cannot discard new trajectories.
+        try:
+            if result.simulation.section_checkpoint is None:
+                if not capture_completed_particle_section(result):
+                    raise RuntimeError("Official capture rejected the completed real Preview result")
+            save_section_result(result, archive, maximum_unpacked_bytes=args.archive_gib*1024**3,
+                compression=ZIP_DEFLATED, compresslevel=1)
+            recovery.write_json(args.output / "formal-archive-receipt.json", dict(label=LABEL,
+                path=str(archive), sha256=recovery.sha(archive), bytes=archive.stat().st_size,
+                raw_native_outputs_saved_before_analysis=True, worker_elapsed_seconds=elapsed))
+        except Exception:
+            persistence_errors.append(traceback.format_exc())
+            # Failure evidence contains only actual executed arrays and is
+            # never promoted into an admitted restart checkpoint.
+            raw = {}
+            for index, branch in enumerate((result.simulation.incident, *result.simulation.branches.values())):
+                for name in ("z", "x", "y", "tx", "ty", "flight_time_s", "kinetic_energy_ev",
+                        "alive", "blocked_z", "ray_weight", "source_ray_id"):
+                    raw[f"segment_{index}_{name}"] = getattr(branch, name)
+            with (args.output / "failed-formal-save-real-arrays.npz").open("xb") as stream:
+                np.savez_compressed(stream, **raw)
+
+    worker.signals.result.connect(on_result, Qt.ConnectionType.DirectConnection)
+    worker.signals.error.connect(lambda *values: errors.append(str(values[-1])), Qt.ConnectionType.DirectConnection)
+    worker.signals.progress.connect(lambda generation, quality, done, total, stage:
+        log(f"{done}/{total} {stage}"), Qt.ConnectionType.DirectConnection)
+    started = perf_counter()
+    log("Executing the normal Preview worker with the legitimate High result as its reuse candidate")
+    deadline = Event()
+    def request_stop():
+        deadline.set()
+        worker.cancel_event.set()
+    timer = Timer(args.maximum_wall_seconds, request_stop)
+    timer.daemon = True
+    timer.start()
+    try:
+        with execution_gates(high.simulation.gun_trace, preparation=False) as gates:
+            with observe_full_coarse_column(state, high, plan, recovery, args.output) as calls:
+                worker.run()
+    finally:
+        timer.cancel()
+    recovery.write_json(args.output / "execution-receipt.json", dict(label=LABEL,
+        elapsed_seconds=perf_counter()-started, completed_result_count=len(captures), errors=errors,
+        persistence_errors=persistence_errors, upstream_gates=gates, actual_integration_calls=calls,
+        maximum_wall_seconds=args.maximum_wall_seconds, deadline_triggered=deadline.is_set()))
+    if deadline.is_set() and not captures:
+        recovery.write_json(args.output / "bounded-stop.json", dict(status="BOUNDED_CONTROL_STOPPED",
+            reason="Requested wall-time boundary through the existing worker cancellation token",
+            elapsed_seconds=perf_counter()-started, completed_result=False,
+            original_high_archive_unchanged=recovery.sha(args.high_archive)==plan["source"]["high_archive_sha256"]))
+        raise RuntimeError("The bounded fixed-field control stopped without a completed result")
+    if persistence_errors:
+        raise RuntimeError("Formal result persistence failed; actual arrays were retained as failure evidence")
+    if errors or len(captures) != 1:
+        raise RuntimeError("; ".join(errors) or "The official worker did not emit exactly one completed result")
+    result, elapsed = captures[0]
+    if gates["rejected"]:
+        raise RuntimeError("A forbidden physical source/Gun operation was attempted")
+    if result.simulation.gun_trace is not high.simulation.gun_trace:
+        raise ValueError("The control did not retain the same legitimate completed Gun object")
+    if solver_source_identity() != plan["source"]["implementation"]:
+        raise ValueError("Source implementation changed during execution")
+    if json_digest(recovery.independent_controls(state, helper)) != plan["controls_digest"]:
+        raise ValueError("An independent source/optical/geometry control changed during execution")
+    if json_digest(comparable_graph(state, recovery)) != plan["invariant_input_graph_digest"]:
+        raise ValueError("A non-derived input or tolerance changed during execution")
+    field_digest = json_digest(operator_witness(get_unified_field_runtime(state)))
+    if field_digest != plan["actual_field_identity"]["exact_actual_operator_witness_digest"]:
+        raise ValueError("Actual final field differs from the resolved High field")
+    cache = result.simulation.metrics["column_segment_cache"]
+    if cache["mode"] not in {"none", "checkpoint"} or float(cache["resume_z_mm"]) != float(state.electron_gun.exit_plane_z_mm):
+        raise ValueError("The control reused an incident segment beyond the genuine Gun exit")
+    if cache["recomputed_integration_nodes"] <= 0 or cache["reused_integration_nodes"] > 1:
+        raise ValueError("The official Preview did not newly integrate the complete column")
+    if len([call for call in calls if call["scope"] == "incident"]) != 1:
+        raise ValueError("The full new coarse incident column was not observed exactly once")
+    if not any(call["scope"] == "post" for call in calls):
+        raise ValueError("The full new coarse post path was not observed")
+    source_checks = helper.verify_completed_source(result, args.expected_source)
+    recovery.write_json(args.output / "completed-source-verification.json", source_checks)
+    physical = helper.verify_native_outputs(result, args.output)
+    summary = helper.completed_summary(result)
+    log("Reading the formal archive back and checking actual incident/post array bytes")
+    restored = load_section_result(archive, maximum_unpacked_bytes=args.archive_gib*1024**3)
+    roundtrip = compare_saved_arrays(result.simulation, restored.simulation)
+    recovery.write_json(args.output / "formal-roundtrip-arrays.json", roundtrip)
+    if recovery.sha(args.high_archive) != plan["source"]["high_archive_sha256"]:
+        raise ValueError("The original High archive changed during this independent control")
+    summary.update(label=LABEL, status="COMPLETE_FIXED_HIGH_FIELD_PREVIEW_CONTROL", quality="Preview",
+        worker_elapsed_seconds=elapsed, source=plan["source"], official_step_mm=.5, official_history_step_mm=2.,
+        new_original_source_particles=0, genuine_completed_gun_reused=True,
+        actual_high_field_and_boundaries_exact=True, independent_inputs_and_tolerances_unchanged=True,
+        full_coarse_incident_and_post_newly_executed=True, column_segment_cache=cache,
+        formal_archive_roundtrip_exact=True, upstream_gates=gates,
+        validate_incident_flight_times=physical["validate_incident_flight_times"],
+        scope=plan["scope"])
+    recovery.write_json(args.output / "summary.json", summary)
+    log("Completed and formally archived the separate fixed-High-field Preview control")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--high-archive", type=Path, default=DEFAULT_ARCHIVE)
+    parser.add_argument("--expected-source", type=Path, default=DEFAULT_SOURCE)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--prepared", type=Path)
+    parser.add_argument("--archive-gib", type=int, default=16)
+    parser.add_argument("--maximum-wall-seconds", type=float, default=900.,
+        help="Cooperative wall-time bound for the new column only; source/Gun work is always forbidden")
+    parser.add_argument("--execute", action="store_true")
+    args = parser.parse_args()
+    args.high_archive = args.high_archive.resolve()
+    args.expected_source = args.expected_source.resolve()
+    args.output = args.output.resolve()
+    if args.prepared is not None:
+        args.prepared = args.prepared.resolve()
+    if args.archive_gib < 1:
+        parser.error("Archive capacity must be positive")
+    if not 0 < args.maximum_wall_seconds <= 3600:
+        parser.error("The bounded control must request 0 < wall seconds <= 3600")
+    if args.execute and args.prepared is None:
+        parser.error("--execute requires a separately reviewed --prepared directory")
+    if not args.high_archive.is_file():
+        parser.error("The real completed High .temsim archive is required before preparation; nothing was run")
+    args.output.mkdir(parents=True, exist_ok=False)
+    recovery = None
+    try:
+        os.environ["TEMSIM_PROJECT_ROOT"] = str(ROOT)
+        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+        sys.pycache_prefix = str(args.output / "runtime-cache" / "python")
+        os.environ["NUMBA_CACHE_DIR"] = str(args.output / "runtime-cache" / "numba")
+        sys.path.insert(0, str(ROOT / "src"))
+        recovery, helper = load_helpers()
+        prepared = prepare(args, recovery, helper)
+        if args.execute:
+            execute(args, recovery, helper, *prepared)
+        else:
+            log("Prepared only; no new source, Gun, chief-ray or column transport was executed")
+        return 0
+    except Exception:
+        error = traceback.format_exc()
+        if recovery is not None:
+            recovery.write_json(args.output / "failure.json", dict(label=LABEL, status="FAILED", error=error,
+                execution_requested=args.execute, old_inputs_and_results_preserved=True))
+        print(error, file=sys.stderr, flush=True)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

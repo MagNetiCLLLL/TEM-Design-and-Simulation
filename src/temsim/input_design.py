@@ -32,8 +32,9 @@ def _bundled_specimen_path(value, archived_config_root):
 def restore_input_design(snapshot):
     """Rebase unchanged bundled inputs to this checkout and return fresh state.
 
-    Only known text-file newline differences are permitted. Archived identities
-    remain untouched, and calculated checkpoints never call this entry point.
+    Text newlines and valid additive round-coil metadata may migrate. Every
+    pre-existing physical value must match. Archived identities remain
+    untouched, and calculated checkpoints never call this entry point.
     """
     from temsim.paths import CONFIG_ROOT
     from temsim.instrument_snapshot import decode_instrument
@@ -74,7 +75,12 @@ def restore_input_design(snapshot):
             # Source-controlled text can use LF or CRLF on different hosts.
             same_text = (archived is not None and target.suffix.lower() in {".toml", ".cif"}
                          and content.replace(b"\r\n", b"\n") == archived.replace(b"\r\n", b"\n"))
-            if not same_text:
+            metadata_only = False
+            if (not same_text and archived is not None and in_config_root
+                    and row["role"].startswith("assembly:") and target.suffix.lower() == ".toml"):
+                from temsim.input_design_compatibility import additive_coil_metadata_only
+                metadata_only = additive_coil_metadata_only(archived, content)
+            if not (same_text or metadata_only):
                 raise ValueError(f"Changed {row['role']}: {target}; input design cannot be applied")
         if target != original:
             replacements[row["path"]] = str(target)

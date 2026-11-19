@@ -1,0 +1,264 @@
+{
+  "scope": "Area-only CAD editing, adaptive fixed-envelope insulation and authorized bounded integer turn adjustment",
+  "current_test_cases": {
+    "passed": 535,
+    "failed": 0,
+    "skipped": 0
+  },
+  "field_checks": 196,
+  "validation_files": {
+    "area-only-dialog.png": {
+      "bytes": 35584,
+      "sha256": "6a233eb5a5d1695a85d07cbc2045009e23bb36ccfd7a7c856446284e97a5e359"
+    },
+    "before/baseline.json": {
+      "bytes": 1610054,
+      "sha256": "869ec5c30bfcfd3bf8281da9ae3705919ac82a450862a126560ac8950d7f1138"
+    },
+    "before/configs/instruments/column/C2.toml": {
+      "bytes": 50826,
+      "sha256": "38b6468e10e24780a231cb4b2eb203d05649ff10766f97627d5e3c28e9923745"
+    },
+    "before/configs/instruments/column/C3.toml": {
+      "bytes": 60808,
+      "sha256": "2d1887b2bff53b64cabbaa1c0a9319eab5b8a9557dfeee63d720498861b40043"
+    },
+    "before/configs/instruments/column/C3_BCOR.toml": {
+      "bytes": 165626,
+      "sha256": "8b71b5bf612a7bcfd9fc9e7887addac8885fa81485c9f751a4010e8ae19eea19"
+    },
+    "before/configs/instruments/column/C3_ImageCorrector.toml": {
+      "bytes": 129522,
+      "sha256": "bbb57e62231b813f6bf440fb1c3da374a23a92c0498b6a15454ca112cb58ee40"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 130505,
+      "sha256": "70d88575fc2145cc1b6d1e76f54f75049379e85a9130f5d23b440e895aab0255"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 224409,
+      "sha256": "4b80bb8f853cefd7bced67927cf99fec71ca6a27cb43fa8b56097ecef2e4fd28"
+    },
+    "before/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 188096,
+      "sha256": "76ca0b6925f6bef593013e715f2d133274b120e4b6ec1ddc40ab80caf95f42af"
+    },
+    "before/configs/instruments/project_and_recording_system/NoEnergyFilter.toml": {
+      "bytes": 51081,
+      "sha256": "f25123e7fa5045f8d03dcac9c64b40b548aea743dc95f2b443fdf4a11349155f"
+    },
+    "before/configs/subassemblies/projector_stack.toml": {
+      "bytes": 38259,
+      "sha256": "5b394e92b69b3391e2c835acf9ead8448bd0abcd206c1c980428360b98aa8729"
+    },
+    "before-objective-adjustment/configs/instruments/column/C2.toml": {
+      "bytes": 51037,
+      "sha256": "1b81d61fa0f5d7aff9613f37b41438b41479ee005c82e8d884c7bf75d543f9ce"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3.toml": {
+      "bytes": 61197,
+      "sha256": "ca3e41a770a8b449d1bc1290a8d813a0757540816608e442d82fecadedfa1ff1"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3_BCOR.toml": {
+      "bytes": 165630,
+      "sha256": "51d4104fc2dc8e682d546b0d8c7099b2c67b0c3e18d031e75fb5abb31c2a2890"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3_ImageCorrector.toml": {
+      "bytes": 129822,
+      "sha256": "a9c887b9e1a02603ff2cdfe20b31b1f4cb8cc8775da55d4ce1e1bb80d048e4ba"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 130955,
+      "sha256": "8b3a5f4e791c890fadc0ed4b350f9bf6a793c17fb2a4f42b3b6a64d10bffa101"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 224474,
+      "sha256": "7bfeeac8ad31f2fb777154d94b735092ac7319d67ed2ca622aa304ac64ee1e1a"
+    },
+    "before-objective-adjustment/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 188457,
+      "sha256": "6fe982cf559557fc494ce186ef278dc7c2d664ba1a60659299a403c8904ece8e"
+    },
+    "before-objective-adjustment.json": {
+      "bytes": 61543,
+      "sha256": "500213354fe53a997de6372612395ca61a10da360e9f1811da5b18403b01cccd"
+    },
+    "field-checks.json": {
+      "bytes": 30543,
+      "sha256": "a359f8750e2865087d4219b1483fc7d1882205ec17a7f8079159657a6fb734ab"
+    },
+    "independent-cad/check.py": {
+      "bytes": 13069,
+      "sha256": "7ae86c11d5ab20411d9ed823db5619bffe2ee05ca087d768c2ba572648e7f7d0"
+    },
+    "independent-cad/objective-upper-metal-area-comparison.png": {
+      "bytes": 668237,
+      "sha256": "59f9d8b54ae99d4d1d998de1a57b488362770a95eb194c795362d44f869f9356"
+    },
+    "independent-cad/receipt.json": {
+      "bytes": 9563,
+      "sha256": "2eda7f36924a03e4aa4616d4a26189036c68bdda629ad4dc7477fb97d26cf97f"
+    },
+    "independent-cad-current/check.py": {
+      "bytes": 13403,
+      "sha256": "e34582e89c65a70dee8764a04197db6efc5a16484235e3e848c63da6242d496a"
+    },
+    "independent-cad-current/objective-upper-metal-area-comparison.png": {
+      "bytes": 663619,
+      "sha256": "4cea8e16b0ddc1393426cfa97649738de920bdbe1dea06c7c82654c34ac9bb06"
+    },
+    "independent-cad-current/original-output-check.py": {
+      "bytes": 13330,
+      "sha256": "26f5a0059f5cd1534ba21a1cf4f87b50915acde783ef6046581813f497570ad8"
+    },
+    "independent-cad-current/receipt.json": {
+      "bytes": 9565,
+      "sha256": "fd2c3b365df494f06c8078a532935ee2cc00fb77a8ca858a3acb4d5ff5a00d23"
+    },
+    "independent-input/check.py": {
+      "bytes": 5410,
+      "sha256": "ae812512928f53c71755bcbfa23733b40f6b9adb18fccef3c0101952283b53b6"
+    },
+    "independent-input/original-output-check.py": {
+      "bytes": 5150,
+      "sha256": "159a6251de5bcd591cdb8610c5f3bc003c3da4dbc9aa7c34954b21d0de405257"
+    },
+    "independent-input/receipt.json": {
+      "bytes": 30555,
+      "sha256": "0bb1201cd19f1b595497abf1ae335cdaf5a52d23e1d3404810da7ac863dad153"
+    },
+    "installed/configs/instruments/column/C2.toml": {
+      "bytes": 51836,
+      "sha256": "00bb4db5dc5a8b08f43a35334146651b5c5f7ff764bb56781aa7be36ef5a9bf5"
+    },
+    "installed/configs/instruments/column/C3.toml": {
+      "bytes": 61971,
+      "sha256": "8eeb15e397312339fc8bfed4c9d9ca78cb7f099922327dfbb9dbc7be76769520"
+    },
+    "installed/configs/instruments/column/C3_BCOR.toml": {
+      "bytes": 166404,
+      "sha256": "1f2778d2f8805f4d0528db38209f19ed0866d77377a94271303b16f03c5d6cc8"
+    },
+    "installed/configs/instruments/column/C3_ImageCorrector.toml": {
+      "bytes": 130596,
+      "sha256": "27efe0f3816813a93b12f86b6d6b172bb745c83f280d29374bdb3cc7e5c030b5"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector.toml": {
+      "bytes": 132018,
+      "sha256": "626f52c87df2a77fc78a35ae64cb55002d36468cd0b9df174af0c7f60cd580c6"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector_BCOR.toml": {
+      "bytes": 225273,
+      "sha256": "fb0a0d030049f04c4bdd823e17dd193c307abb3d2c9e46e7c96e5a12b9a1f2af"
+    },
+    "installed/configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": {
+      "bytes": 189256,
+      "sha256": "5bb786a31e49ca2d4f3d7db9a3ec0865a1909b6c31c2d2011b91670a0d6084df"
+    },
+    "installed/configs/instruments/project_and_recording_system/NoEnergyFilter.toml": {
+      "bytes": 51801,
+      "sha256": "429c59c7afda91d97a9d86d374dc8099d4582f3c421c867629ea82c36944c3f8"
+    },
+    "installed/configs/physics/coil_winding_estimates.toml": {
+      "bytes": 451,
+      "sha256": "91e68cc40d4bb76d8c62dcc793e84cd5766bb6b3bbcbc0a72cc816eb026e0d28"
+    },
+    "installed/configs/subassemblies/projector_stack.toml": {
+      "bytes": 38979,
+      "sha256": "930b3597f26ae09387b53bdf1d57885351fe277deb3be51c98576ac31e4d5b10"
+    },
+    "migration.json": {
+      "bytes": 105696,
+      "sha256": "82ae71bc41b2302fc42724a8a94ec2672f20835fbbb23ccd1b80f3d30dc7b2d4"
+    },
+    "nominal-only-migration.json": {
+      "bytes": 103519,
+      "sha256": "e1c11f1cafc77729b0217888029b96f48cc171b7d0131d652d587a050ad7a1d2"
+    },
+    "nominal-only-summary.json": {
+      "bytes": 603,
+      "sha256": "2edf3a76aed84de1055b0c5c9735fd68e10ac266bddb4710274bcaa969b10175"
+    },
+    "summary.json": {
+      "bytes": 767,
+      "sha256": "04f93813bc478182ff56e824f6efc5ceb362b59896aa39990ef38a79b222c1f8"
+    },
+    "test-summary.json": {
+      "bytes": 118434,
+      "sha256": "9faec76ed16779fe73f07e4cfcd30cab17be3c57d5181553c4944fe91360a3e2"
+    },
+    "tests/catalog-final-tests.xml": {
+      "bytes": 8437,
+      "sha256": "f572187825c9b28b7c74c3b0cba2c0c9df41cd75c326b161129366f86959e1a0"
+    },
+    "tests/consumer-tests.xml": {
+      "bytes": 12062,
+      "sha256": "90a383f7dd0dbfe20dfff4b679c4b8eb949de1eff0f81af943ba54b76fdfe623"
+    },
+    "tests/core-cad-final-tests.xml": {
+      "bytes": 17197,
+      "sha256": "e9b52219f308ac100172fbc02b988e38309787e485a7068ba9d67bbc1bcffd4d"
+    },
+    "tests/current-objective-final-tests.xml": {
+      "bytes": 7350,
+      "sha256": "7eb2f5b433347e31fa7aa66897df528550dd1291b52daa38300ef0a8c2f2f6a0"
+    },
+    "tests/dimensions-final2-tests.xml": {
+      "bytes": 10394,
+      "sha256": "1e1db2bd6ab242506f4126f1d27272464b833777aef0dc608c06bbc01cdb6842"
+    },
+    "tests/gui-document-post580-tests.xml": {
+      "bytes": 15931,
+      "sha256": "071b298269bfcdc353f75fb3386ab7f1966b7b30cfa6032b888dad1dff19d2ac"
+    },
+    "tests/integration-tests.xml": {
+      "bytes": 37615,
+      "sha256": "9665c9362842a6cea7f6451ce55e9ac49b76f0cab4b3e3e2d244069078bb4a15"
+    }
+  },
+  "installed_inputs": {
+    "configs/instruments/column/C2.toml": "00bb4db5dc5a8b08f43a35334146651b5c5f7ff764bb56781aa7be36ef5a9bf5",
+    "configs/instruments/column/C3.toml": "8eeb15e397312339fc8bfed4c9d9ca78cb7f099922327dfbb9dbc7be76769520",
+    "configs/instruments/column/C3_BCOR.toml": "1f2778d2f8805f4d0528db38209f19ed0866d77377a94271303b16f03c5d6cc8",
+    "configs/instruments/column/C3_ImageCorrector.toml": "27efe0f3816813a93b12f86b6d6b172bb745c83f280d29374bdb3cc7e5c030b5",
+    "configs/instruments/column/C3_ProbeCorrector.toml": "626f52c87df2a77fc78a35ae64cb55002d36468cd0b9df174af0c7f60cd580c6",
+    "configs/instruments/column/C3_ProbeCorrector_BCOR.toml": "fb0a0d030049f04c4bdd823e17dd193c307abb3d2c9e46e7c96e5a12b9a1f2af",
+    "configs/instruments/column/C3_ProbeCorrector_ImageCorrector.toml": "5bb786a31e49ca2d4f3d7db9a3ec0865a1909b6c31c2d2011b91670a0d6084df",
+    "configs/instruments/project_and_recording_system/NoEnergyFilter.toml": "429c59c7afda91d97a9d86d374dc8099d4582f3c421c867629ea82c36944c3f8",
+    "configs/subassemblies/projector_stack.toml": "930b3597f26ae09387b53bdf1d57885351fe277deb3be51c98576ac31e4d5b10",
+    "configs/physics/coil_winding_estimates.toml": "91e68cc40d4bb76d8c62dcc793e84cd5766bb6b3bbcbc0a72cc816eb026e0d28"
+  },
+  "implementation_sha256": {
+    "src/temsim/coil_winding.py": "b0df832349e58e73609d71e9ed495cc21c44fa028d40213c0cf219dc7fe481aa",
+    "src/temsim/coil_turn_estimation.py": "0fdaa9aa7c8e777d75ba934159d37e01beb3bf10de841fc8cfe328144a6534e4",
+    "src/temsim/coil_current_calibration.py": "fbf65ae5876f810c9f903c8bfddf84c55c8d65785134d6f6d0938f72ada24d5a",
+    "src/temsim/cad_round_winding.py": "f0bfe131190a30caed0fafc7ad9ba36fc727c51744f8bc34958221036f772904",
+    "src/temsim/gui/coil_winding_dialog.py": "85ad8f283a9ce0cd314bdca792c63ec1fb393a713397a501a45d3009bef8a5e5",
+    "src/temsim/part_model_document.py": "039623a04316c1e985c9a5aafc53da3dca64c5f8f6cce9449d26499d325d96df",
+    "src/temsim/module_manifest.py": "109226a54b3039f6022a11eabded024a1c21066dabac508c5a1cb27764085137",
+    "src/temsim/part_model_3d.py": "7915315b2ddb4f3783ac52a32d0632b77adb98f2f2821f3ac6b2f8a69f0c4d0c",
+    "src/temsim/parameter_semantics.py": "b44e096d7b5b47d58c63f9fe685b0e4e27ae42d168884fee6d75bd5982078330",
+    "src/temsim/parameter_impact.py": "36ac9e7e0a21593bd3201b552541e064d4441a67151442cb2c54f048e509711a",
+    "src/temsim/physics/lens_field_provider.py": "d91cbe608739eef1e82414a976809916932bf5a57f6e799d71e85582232692f4",
+    "src/temsim/physics/copper_coil_field_provider.py": "d117cbca9e8b31dc924b71b92afd4c9ad953e4cfe3beda2485edfab843590c54",
+    "docs/development/wire_area_20261115/migrate_and_validate.py": "f8510aec0aa02d26316ebf7482d1c81ac2e30618dbafff7dffb7b1a7fb8f4e8e",
+    "tests/test_cad_round_winding.py": "1f9f5f2b6068556fd61682f2cb7c95fdec7588e6877c85dbd72273c67de20162",
+    "tests/test_catalog_ideal_coils.py": "f63c969c5d8c3ff14f6bdb1f1274f90002ea2e9f201d7942d87e53d13aa61b24",
+    "tests/test_coil_current_calibration.py": "92ad2f4b4318f37a065232f20dc4e2b464cd0f782ae774bfad51aab9a813859f",
+    "tests/test_coil_turn_estimation.py": "b6579b96c9738844c8646baf5ad07ac88c9bf054d4e1a3a6dee57cbf4eec1b17",
+    "tests/test_coil_winding.py": "c40c44eb4e56e6bc986cae050957a18f7da339f0b2fe696128f718283397f346",
+    "tests/test_coil_winding_dialog.py": "3ae8d20a82ba490c5d02a98b63375e0dbddecd97e3819eb0a1804beedafec76c",
+    "tests/test_copper_coil_capture.py": "7eb1bafb49b8f543e61d9f10a91aa78074ef68246c17cf7ce30ba198d945d08f",
+    "tests/test_explicit_round_winding_field.py": "9c22e8c22620e912cd7726c1cc318265f8139817eee5bada4bdbfbf2741ca663",
+    "tests/test_fixed_winding_currents.py": "271cd3f42143070bd99f7c2d12c9b89802181effdfb95c6b697dd564b5d76fed",
+    "tests/test_input_design_coil_metadata.py": "30c26405f68ae2129250c8160a69bf68d6c9240046598ae1f8fe92f340a2f7d9",
+    "tests/test_part_model_3d.py": "48a63e1c9536330949555b9b4ff67d20b245b9f2950669ca89180103c22b4058",
+    "tests/test_part_model_document.py": "a55f4dff75151bb7d8415ada9c83713bc43853d64ab0b937cc51b39b1f296aca",
+    "tests/test_round_lens_cache_identity.py": "5d46912ab0ada9446a16480dcb2079ec71ae87430c5d84ecdefe35fc8ef82d7f",
+    "tests/test_round_lens_models.py": "d1f5bfc497411def5aa2905422aea090c0cb304d999f459a2cfde498269e951f",
+    "tests/test_winding_parameter_information.py": "871e478b0b7fb31ec1d6f04cd747209d56de154253fc263ece7cd9913bdac201",
+    "pyproject.toml": "00faef93da7c4f1e6a830b88f797753a6cb92196bd682346f2491c2f0bb771c6"
+  },
+  "portable_independent_replays_exact": true,
+  "authoring_policy_in_wheel_data_files": true
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "bounded-workflow-validation-artifacts-v1",
+  "copies": {
+    "regressions.xml": {
+      "sha256": "b9602379c9f096793f407109f4a4cdba770705737d70d6be991794492465e200",
+      "bytes": 48129,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\current-final-regressions.xml"
+    },
+    "wave-policy.xml": {
+      "sha256": "279beef234ecebc1b70b04592c27ffba571babf1490e83b274a61922b071a1dc",
+      "bytes": 14928,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\final-wave-policy.xml"
+    },
+    "installed-wheel.json": {
+      "sha256": "e47c96e1632749b2b698e16217c80fb8a68dfea3893b2997329fd616b034a854",
+      "bytes": 4173,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\final-install\\installed-wheel-verification.json"
+    },
+    "historical-working-points.json": {
+      "sha256": "a89572e7da443e0f6d73487fdb95f756907ecf5961718bb0656c73621a07658a",
+      "bytes": 815,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\historical-working-points.json"
+    },
+    "copper-coherent-admission.json": {
+      "sha256": "45b2c23ccb803d575d6b05d673e332082fa046b434452bf68722f55ea0477bc0",
+      "bytes": 869,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\real-cuda-copper-admission-final.json"
+    },
+    "cache-invalidation.json": {
+      "sha256": "de6288553502fed702308a31d55a4b23d42929a9c22315e647000ea18902d869",
+      "bytes": 940,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cache-invalidation-certificate.json"
+    },
+    "copper-request.json": {
+      "sha256": "763e9d1e866be8a1361bd477f49ed985606b9ae9519fca7c50ed6c8c5c309407",
+      "bytes": 4219,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\request.json"
+    },
+    "emission.json": {
+      "sha256": "22da3fe9e8cc2b86d7446b8984c53a74b0b9301c0f7254e8ec97907a581280ed",
+      "bytes": 661,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\independent-emission-report.json"
+    },
+    "expected-emission.npz": {
+      "sha256": "8516551a173faef0cc3b3d0a489ccfa2ce5919fc3ed33231e86658969f4db5c4",
+      "bytes": 81987,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\independent-expected-emission.npz"
+    },
+    "bounded-particle-status.json": {
+      "sha256": "873a2078d7f27d28811b3c2a57bb9cfb6357828ca6a264bb119272eb7a06d2a4",
+      "bytes": 809,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\bounded-interruption-receipt.json"
+    },
+    "bounded-mode-admission.json": {
+      "sha256": "c809ab20de60e8bc478a51ae8ce614d12ed07064ab45976a6c80f0eccd03b7c9",
+      "bytes": 3586,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\bounded-mode-admission.json"
+    },
+    "gun-step-audit.json": {
+      "sha256": "c4c72ca230b62d654b02119bbeb8cba052d115a7c904c22ce049c2e468bb84b0",
+      "bytes": 4518,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\copper-particles-1024-final\\gun-stagnation-field-audit.json"
+    },
+    "cuda-scan-status.json": {
+      "sha256": "5ec27cd631f633a316fb92540468784707e930d868b2fbed64e504ae4ad1f1de",
+      "bytes": 67,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\status.json"
+    },
+    "cuda-scan-verification.json": {
+      "sha256": "e2e57e6f4f5579af3b37f86caebbbc76009c99ed0d44e086c8d4b02e10f65e84",
+      "bytes": 30127,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\verification.json"
+    },
+    "cuda-scan-overview.png": {
+      "sha256": "dadb1d0b0736625631d093fc1e5051a7502256fa60c758aac1619a6fdbf870b8",
+      "bytes": 376820,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\overview.png"
+    },
+    "cuda-source-checkpoint.json": {
+      "sha256": "87fb8aeff2c44481dec3df2162b61bff9acfa8e29ecb7659ed5e8d8df95d22d4",
+      "bytes": 22302,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\source-checkpoint.json"
+    },
+    "cuda-scan-report.json.gz": {
+      "sha256": "426e6be3619a75d9cae35620ca10f2fda4d0460e99b31771cb82b6fcb86335e9",
+      "bytes": 43541,
+      "original_sha256": "d7516671e9d03caa6d5292286ef81182bb35c63bfc651dbac89f77539fd3936d",
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\report.json"
+    },
+    "detector-arrays-and-axes.npz": {
+      "sha256": "e209d0c3d63816c8e4d38bce9eb630150020c45307f88cc615044a2e555b2053",
+      "bytes": 256443,
+      "original": "F:\\tem_simulator_v2\\outputs\\copper-fixes-20261114\\cuda-mixed16384-qualified-final\\scan-and-diffraction.npz",
+      "scope": "Exact detector/coordinate arrays; full raw diffraction remains in the unchanged original archive"
+    }
+  },
+  "scope": "Read-only curation; no source, transport, wave or image processing"
+}

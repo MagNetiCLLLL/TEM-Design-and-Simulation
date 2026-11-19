@@ -16,6 +16,18 @@ def potential_capability_inventory(state):
     from temsim.simulation_modes import uses_field_maps
     scene = capture_physical_scene(state)
     rows = []
+    ideal_currents=getattr(state,'round_lens_field_model','gaussian')=='copper_coil'
+    current_hosts={}
+    if ideal_currents:
+        from temsim.transverse_current import MATRIX_FIELD,validate_transverse_current_inputs
+        from temsim.multipole_current import MATRIX_FIELD as MULTIPOLE_MATRIX_FIELD,validate_multipole_current_inputs
+        from temsim.transverse_winding import transverse_winding_owner_key
+        for part in getattr(getattr(state,'_resolved_assembly',None),'parts',()):
+            if MATRIX_FIELD in part.data and validate_transverse_current_inputs(part.data) is not None:
+                current_hosts[transverse_winding_owner_key(part.data)]=part.key
+            elif MULTIPOLE_MATRIX_FIELD in part.data and validate_multipole_current_inputs(part.data) is not None:
+                from temsim.multipole_winding import multipole_winding_owner_key
+                current_hosts[multipole_winding_owner_key(part.data)]=part.key
 
     def add(key, family, representation, classical, coherent, *, owner=None, detail=""):
         rows.append({"key": key, "physical_owner": owner or scene.owner_for(key) or key,
@@ -25,6 +37,11 @@ def potential_capability_inventory(state):
     for lens in getattr(state, "lenses", ()):
         if not lens.enabled:
             add(lens.key, "round_lens", "disabled optical source; geometry remains", "inactive", "inactive")
+            continue
+        if ideal_currents:
+            add(lens.key,'round_lens','prescribed-current annular winding in vacuum',
+                'bounded potential Lorentz','unqualified ideal-current coil wave',
+                detail='Full axial tails; magnetic materials, resistance and heating excluded; no native Gaussian substitution')
             continue
         recipe = getattr(state, "lens_field_map_descriptors", {}).get(lens.key, {}) if uses_field_maps(state) else {}
         if recipe and recipe.get("solver") not in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}:
@@ -53,6 +70,13 @@ def potential_capability_inventory(state):
         if not component.enabled:
             add(key, "multipole", "disabled optical source; geometry remains", "inactive", "inactive")
             continue
+        if key in current_hosts:
+            dynamic=bool(getattr(component,'scan_enabled',False) or getattr(component,'wobble_enabled',False))
+            add(key,'multipole_coil' if hasattr(component,'strength_m2') or hasattr(component,'strength_m3') else 'transverse_coil','closed prescribed-current winding pack in vacuum',
+                'bounded timed-current potential Lorentz' if dynamic else 'bounded potential Lorentz',
+                'unqualified ideal-current coil wave',
+                detail='Saved signed current matrix and explicit closed circuits; full axial tails; no magnetic-material response or native-field substitution')
+            continue
         native = any(hasattr(component, name) for name in (
             "quadrupole_tensor_m2", "quadrupole_strength_m2", "hexapole_strength_components_m3",
             "kick_events", "upper_x_mrad"))
@@ -73,6 +97,11 @@ def potential_capability_inventory(state):
         for name in ("deflector", "stigmator"):
             component = getattr(gun, name, None)
             if component is not None:
+                if component.key in current_hosts:
+                    add(component.key,'gun_alignment','closed prescribed-current winding pack in vacuum',
+                        'bounded potential Lorentz','unqualified ideal-current coil wave',
+                        detail='Native mT or gradient commands map to fixed signed current gains; magnetic materials excluded')
+                    continue
                 add(component.key, "gun_alignment", "native soft-window polynomial A_z",
                     "bounded potential Lorentz", "fixed-grid magnetic benchmark only",
                     detail="No resolved coil winding or Maxwell fringe solve is implied")

@@ -11,6 +11,7 @@ from copy import deepcopy
 from temsim.cad_geometry import SolidSpec, annulus, revolve
 from temsim.magnetic_circuits import is_custom_mechanical_part, part_data, radial_profile_mm
 from temsim.magnetic_geometry import objective_layer_intervals_mm
+from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 from temsim.mechanical_profiles import (
     C1_C2_POLE_PIECE_CARTRIDGE, MAGNETIC_EXCITATION_COIL,
     MAGNETIC_LENS_ASSEMBLY, MAGNETIC_LENS_HOUSING,
@@ -36,6 +37,8 @@ def _references(row, parent):
     references = [LEDGER, GENERIC_REFERENCE]
     if identity.startswith("objective_") or owner == "objective_lens":
         references.append(OBJECTIVE_REFERENCE)
+    if row.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+        references.append("docs/references/objective-pole-piece-dimensions.md")
     if identity.startswith("mini_condenser") or owner == "mini_condenser":
         references.append(MINI_REFERENCE)
     for source in (parent, row):
@@ -88,6 +91,10 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
     if profile not in SUPPORTED_PROFILES:
         return None
     if profile == MAGNETIC_EXCITATION_COIL:
+        from temsim.cad_round_winding import round_winding_solids
+        winding = round_winding_solids(part, by_key)
+        if winding is not None:
+            return winding
         from temsim.cad_objective_upper_hardware import objective_upper_hardware_solids
         detailed = objective_upper_hardware_solids(part, by_key)
         if detailed is not None:
@@ -142,6 +149,8 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
         if section is None:
             return None  # Existing unsupported pole style, not a fabricated cylinder.
         notes = []
+        if row.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE:
+            notes.append(row.get("mechanical_geometry_source", "Recessed flange with a hollow mounting stem."))
         if "pole_nose_axial_length_mm" not in row:
             notes.append("Pole nose retains the existing 0.38-times-length reconstruction.")
             params["resolved_pole_nose_axial_length_mm"] = .38 * (end - start)

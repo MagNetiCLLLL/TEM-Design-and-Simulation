@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "assembly_cases": 6,
+  "native_field_records_exact": 78,
+  "nonzero_native_field_records": 12,
+  "optical_state_exact": true,
+  "all_31_hp_solid_records_exact": true,
+  "source_or_wave_executed": false,
+  "baseline_path": "docs/development/probe_corrector_details_20261115/validation/state-fields.json",
+  "baseline_sha256": "fe7e80ad486f16a4f34526acec10bcba3482f780ca7bcf934cae79eef50f03de",
+  "capture_path": "docs/development/probe_corrector_details_20261115/validate_details.py",
+  "capture_sha256": "a5e7ce814f8b264093d2779c9c8d98f4f82f460e82b9a51f7c3283e64e4e76fe"
+}

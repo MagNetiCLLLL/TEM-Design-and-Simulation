@@ -1,0 +1,796 @@
+{
+  "scope": "Detached component arrays only. No beam, source emission, propagation, solver, configuration, physical parameter or tolerance edits.",
+  "construction": "Standard no-compatible-result GUI startup stored preset; ideal-current model selected only on the private inspection state.",
+  "sampling": "40 points per current-bearing interval: bore radii 0, 0.005, 0.2, 0.7 times inner radius, azimuths 0 and 0.7 rad, z offsets -2, -0.5, 0, 0.5, 2 times interval length.",
+  "B_comparison_tolerance": {
+    "rtol": 4e-14,
+    "atol_T": 1e-20
+  },
+  "diagnosis": "The legacy grouping (NI100*percent)*0.01*polarity differs from N*(I100*(percent*0.01*polarity)) in binary64. Nominal NI100 equality does not always yield identical captured per-interval coefficients. Both 100/30 and power-of-two 128/23.4375 can differ. Near-zero cancellation components may fail the unchanged strict absolute tolerance even when absolute field differences are tiny. Results are raw diagnostics, not an end-to-end pass claim.",
+  "rows": [
+    {
+      "key": "condenser_lens_1",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1550.0
+          ],
+          "explicit_per_interval_NI": [
+            1549.9999999999998
+          ],
+          "NI_array_equal": false,
+          "A_array_equal": false,
+          "B_array_equal": false,
+          "max_abs_B_difference_T": 3.469446951953614e-18,
+          "max_abs_A_difference_T_m": 2.710505431213761e-20,
+          "B_existing_tolerance_passed": false,
+          "B_failing_components": 6,
+          "worst_tolerance_ratio": 8.766791004065457,
+          "worst_legacy_B_T": 4.720091098574589e-19,
+          "worst_explicit_B_T": 3.843411998166388e-19,
+          "worst_point_m": [
+            0.0336,
+            0.0,
+            0.5
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1550.0
+          ],
+          "explicit_per_interval_NI": [
+            1549.9999999999998
+          ],
+          "NI_array_equal": false,
+          "A_array_equal": false,
+          "B_array_equal": false,
+          "max_abs_B_difference_T": 3.469446951953614e-18,
+          "max_abs_A_difference_T_m": 2.710505431213761e-20,
+          "B_existing_tolerance_passed": false,
+          "B_failing_components": 6,
+          "worst_tolerance_ratio": 8.766791004065457,
+          "worst_legacy_B_T": 4.720091098574589e-19,
+          "worst_explicit_B_T": 3.843411998166388e-19,
+          "worst_point_m": [
+            0.0336,
+            0.0,
+            0.5
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "condenser_lens_2",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            416.971204943181
+          ],
+          "explicit_per_interval_NI": [
+            416.971204943181
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            0.326
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            416.971204943181
+          ],
+          "explicit_per_interval_NI": [
+            416.971204943181
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            0.326
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "condenser_lens_3",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            470.6471043546408
+          ],
+          "explicit_per_interval_NI": [
+            470.6471043546407
+          ],
+          "NI_array_equal": false,
+          "A_array_equal": false,
+          "B_array_equal": false,
+          "max_abs_B_difference_T": 1.3010426069826053e-18,
+          "max_abs_A_difference_T_m": 2.0328790734103208e-20,
+          "B_existing_tolerance_passed": false,
+          "B_failing_components": 3,
+          "worst_tolerance_ratio": 2.096406544454331,
+          "worst_legacy_B_T": -7.464477847678522e-21,
+          "worst_explicit_B_T": 1.3499587596865412e-20,
+          "worst_point_m": [
+            0.0336,
+            0.0,
+            0.915
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            470.6471043546408
+          ],
+          "explicit_per_interval_NI": [
+            470.6471043546408
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            0.609
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "adapter_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            300.0
+          ],
+          "explicit_per_interval_NI": [
+            300.0
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.0226800000000005
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            300.0
+          ],
+          "explicit_per_interval_NI": [
+            300.0
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.0226800000000005
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "probe_tl22_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            -1797.9457510746606
+          ],
+          "explicit_per_interval_NI": [
+            -1797.9457510746606
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.12045
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            -1797.9457510746606
+          ],
+          "explicit_per_interval_NI": [
+            -1797.9457510746606
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.12045
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "probe_tl21_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1798.658372052589
+          ],
+          "explicit_per_interval_NI": [
+            1798.658372052589
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.2040499999999996
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1798.658372052589
+          ],
+          "explicit_per_interval_NI": [
+            1798.658372052589
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.2040499999999996
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "probe_tl12_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1080.1367612624153
+          ],
+          "explicit_per_interval_NI": [
+            1080.1367612624153
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.3205799999999999
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1080.1367612624153
+          ],
+          "explicit_per_interval_NI": [
+            1080.1367612624153
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.3205799999999999
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "mini_condenser",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            -1316.5939851667913
+          ],
+          "explicit_per_interval_NI": [
+            -1316.5939851667913
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.4865
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            -1316.5939851667913
+          ],
+          "explicit_per_interval_NI": [
+            -1316.5939851667913
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.4865
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "objective_lens",
+      "point_count": 80,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1034.6715901250875,
+            1034.6715901250875
+          ],
+          "explicit_per_interval_NI": [
+            1034.6715901250875,
+            1034.6715901250875
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.179
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1034.6715901250875,
+            1034.6715901250875
+          ],
+          "explicit_per_interval_NI": [
+            1034.6715901250875,
+            1034.6715901250875
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.179
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "diffraction_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            437.3285159150572
+          ],
+          "explicit_per_interval_NI": [
+            437.3285159150571
+          ],
+          "NI_array_equal": false,
+          "A_array_equal": false,
+          "B_array_equal": false,
+          "max_abs_B_difference_T": 2.6020852139652106e-18,
+          "max_abs_A_difference_T_m": 1.0164395367051604e-20,
+          "B_existing_tolerance_passed": false,
+          "B_failing_components": 3,
+          "worst_tolerance_ratio": 2.8587361969831653,
+          "worst_legacy_B_T": 8.629148150153185e-21,
+          "worst_explicit_B_T": -1.9958213819679452e-20,
+          "worst_point_m": [
+            0.020999999999999998,
+            0.0,
+            1.8969
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            437.3285159150572
+          ],
+          "explicit_per_interval_NI": [
+            437.3285159150572
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.7169
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "intermediate_lens",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1.0524797177819198
+          ],
+          "explicit_per_interval_NI": [
+            1.0524797177819198
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.7429
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            1.0524797177819198
+          ],
+          "explicit_per_interval_NI": [
+            1.0524797177819198
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            1.7429
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "projector_lens_1",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            963.397718156109
+          ],
+          "explicit_per_interval_NI": [
+            963.397718156109
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            2.0309
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            963.397718156109
+          ],
+          "explicit_per_interval_NI": [
+            963.397718156109
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            2.0309
+          ],
+          "worst_component": 0
+        }
+      ]
+    },
+    {
+      "key": "projector_lens_2",
+      "point_count": 40,
+      "decompositions": [
+        {
+          "N": 100,
+          "I100_A": 30.0,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            294.8062326844652
+          ],
+          "explicit_per_interval_NI": [
+            294.8062326844652
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            2.1254000000000004
+          ],
+          "worst_component": 0
+        },
+        {
+          "N": 128,
+          "I100_A": 23.4375,
+          "nominal_NI100": 3000.0,
+          "legacy_per_interval_NI": [
+            294.8062326844652
+          ],
+          "explicit_per_interval_NI": [
+            294.8062326844652
+          ],
+          "NI_array_equal": true,
+          "A_array_equal": true,
+          "B_array_equal": true,
+          "max_abs_B_difference_T": 0.0,
+          "max_abs_A_difference_T_m": 0.0,
+          "B_existing_tolerance_passed": true,
+          "B_failing_components": 0,
+          "worst_tolerance_ratio": 0.0,
+          "worst_legacy_B_T": 0.0,
+          "worst_explicit_B_T": 0.0,
+          "worst_point_m": [
+            0.0,
+            0.0,
+            2.1254000000000004
+          ],
+          "worst_component": 0
+        }
+      ]
+    }
+  ]
+}

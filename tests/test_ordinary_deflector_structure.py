@@ -5,6 +5,7 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from legacy_transverse_helpers import legacy_transverse_document,legacy_transverse_draft
 
 from temsim.cad_catalog import part_solids
 from temsim.cad_mesh import _manifold
@@ -37,7 +38,7 @@ SUPPORTS = {f"coil_{station}_{region}" for station in (1, 2) for region in (
 
 @pytest.fixture
 def document():
-    return read_document(INSTRUMENT_CONFIG_ROOT / RELATIVE)
+    return legacy_transverse_document(read_document(INSTRUMENT_CONFIG_ROOT / RELATIVE))
 
 
 @pytest.fixture
@@ -46,7 +47,7 @@ def draft(tmp_path):
 
     root = tmp_path / "instruments"
     copy_catalog_inputs(INSTRUMENT_CONFIG_ROOT, root, (RELATIVE,))
-    return PartModelDocument(root / RELATIVE)
+    return legacy_transverse_draft(root / RELATIVE,persist=True)
 
 
 def _rows(document):

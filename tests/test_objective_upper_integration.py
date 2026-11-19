@@ -24,9 +24,8 @@ DETAILS = {PREFIX + "insulation_thickness_mm": .3,
 EDITS = {**{("parts", COIL, field): value for field, value in DETAILS.items()},
          ("parts", PARENT, "mechanical_coil_axial_inset_mm"): 6.,
          ("parts", COIL, "mechanical_inner_diameter_mm"): 61.,
-         # The existing objective installation contract requires both shank
-         # ODs to match the winding ID; do not silently bypass that constraint.
-         ("parts", "objective_upper_pole", "pole_stem_outer_diameter_mm"): 61.,
+         # The lower shank mates to the winding ID. The upper stem clears it.
+         ("parts", "objective_upper_pole", "pole_stem_outer_diameter_mm"): 23.,
          ("parts", "objective_lower_pole", "pole_stem_outer_diameter_mm"): 61.}
 
 

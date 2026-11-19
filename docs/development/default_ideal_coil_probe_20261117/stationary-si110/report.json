@@ -1,0 +1,63 @@
+{
+  "status": "Fixed-source classical elastic stage-raster comparison",
+  "input_digest": "c50156444ca56e8b8fdadbccd87d4cec27badd8906f5625315e62edf1a81aed4",
+  "entrance_mm": 1599.1999975,
+  "original_positive": 3000,
+  "surviving": 3000,
+  "effective": 3000.0000000000077,
+  "incident_current_a": 1.0000000000000003e-05,
+  "pixel_pitch_nm": 0.02,
+  "thickness_nm": 5.0,
+  "raster_shape": [
+    64,
+    64
+  ],
+  "annulus_mrad": [
+    50,
+    150
+  ],
+  "bf_mrad": [
+    0,
+    15
+  ],
+  "vacuum_currents_a": [
+    1.0000000000000053e-05,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "angular_refinement_max_a": 4.8684726362087025e-15,
+  "maximum_current_closure_a": 6.268043809681823e-20,
+  "nested_profiles": [
+    {
+      "source_prefix": 1024,
+      "current_a": 3.413333333333335e-06,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_pair_nm": 0.1360925592499999,
+        "resolved_native_peaks": false
+      }
+    },
+    {
+      "source_prefix": 2048,
+      "current_a": 6.82666666666667e-06,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_pair_nm": 0.1360925592499999,
+        "resolved_native_peaks": false
+      }
+    },
+    {
+      "source_prefix": 3000,
+      "current_a": 1.0000000000000003e-05,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_pair_nm": 0.1360925592499999,
+        "resolved_native_peaks": false
+      }
+    }
+  ],
+  "cif_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "numerical_model_sha256": "bbbac951204d635235cc2cf0909ea45c4765afb0388116a6f891ed1ca4ba83f4",
+  "scope": "Laterally periodic, fixed entrance, ideal exit-angle windows. Long tails illuminate silicon. No dynamic scan-coil or coherent propagation."
+}

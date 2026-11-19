@@ -19,6 +19,14 @@ def base_state():
     return default_state()
 
 
+@pytest.fixture(autouse=True)
+def no_source_or_wave_execution(monkeypatch):
+    def forbidden(*args,**kwargs):
+        pytest.fail('Hardware readout tests must not emit or transport a source')
+    monkeypatch.setattr('temsim.optics.electron_gun.emitter.ColdFieldEmitter.emit',forbidden)
+    monkeypatch.setattr('temsim.optics.electron_gun.source.trace_source_to_exit',forbidden)
+
+
 @pytest.mark.parametrize("column,systems", [
     ("C2", ()), ("C3", ()),
     ("C3 + Probe Corrector", ("probe",)),
@@ -88,12 +96,17 @@ def test_disabled_hardware_keeps_alias_but_never_reports_nonzero_active_tensor(b
     state.condenser_stigmator.enabled = False
     state.condenser_stigmator.strength_x_percent = 10.
     state.image_diffraction_deflector.enabled = False
+    qpol=next(c for c in state.corrector_elements if c.key=='probe_qpol_quadrupole')
+    qpol.enabled=False
     report = inspect_stigmator_hardware(state)
     record = next(r for r in report.stigmators if r.key == "condenser_stigmator")
     assert not record.enabled
     assert record.channel_commands_percent == (10., 0.)
     assert record.tensor_at_reference_m2 == ((0., 0.), (0., 0.))
-    assert report.control_aliases[0].component_key == record.key
+    alias=next(a for a in report.control_aliases if a.channel=='probe.a1_fine')
+    assert alias.component_key=='probe_qpol_quadrupole'
+    assert alias.drive_fields==('strength_m2','skew_strength_m2')
+    assert alias.component_key!=record.key and not qpol.enabled
     assert not report.shared_deflector_channels[0].enabled
 
 

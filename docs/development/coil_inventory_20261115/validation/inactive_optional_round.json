@@ -1,0 +1,124 @@
+[
+  {
+    "owner": "image_adapter_lens",
+    "coil": "image_adapter_lens_excitation_coil",
+    "inner_diameter_mm": 75.0,
+    "outer_diameter_mm": 89.5151499,
+    "occupied_axial_length_mm": 32.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": 1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ImageCorrector.toml",
+      "C3_ProbeCorrector_BCOR.toml",
+      "C3_ProbeCorrector_ImageCorrector.toml"
+    ]
+  },
+  {
+    "owner": "image_tl11_lens",
+    "coil": "image_tl11_lens_excitation_coil",
+    "inner_diameter_mm": 115.18,
+    "outer_diameter_mm": 145.39845150000002,
+    "occupied_axial_length_mm": 40.5,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": -1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ImageCorrector.toml",
+      "C3_ProbeCorrector_BCOR.toml",
+      "C3_ProbeCorrector_ImageCorrector.toml"
+    ]
+  },
+  {
+    "owner": "image_tl12_lens",
+    "coil": "image_tl12_lens_excitation_coil",
+    "inner_diameter_mm": 85.7,
+    "outer_diameter_mm": 101.06541920000001,
+    "occupied_axial_length_mm": 41.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": 1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ImageCorrector.toml",
+      "C3_ProbeCorrector_BCOR.toml",
+      "C3_ProbeCorrector_ImageCorrector.toml"
+    ]
+  },
+  {
+    "owner": "image_tl21_lens",
+    "coil": "image_tl21_lens_excitation_coil",
+    "inner_diameter_mm": 75.0,
+    "outer_diameter_mm": 99.9595812,
+    "occupied_axial_length_mm": 32.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": 1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ImageCorrector.toml",
+      "C3_ProbeCorrector_BCOR.toml",
+      "C3_ProbeCorrector_ImageCorrector.toml"
+    ]
+  },
+  {
+    "owner": "image_tl22_lens",
+    "coil": "image_tl22_lens_excitation_coil",
+    "inner_diameter_mm": 75.0,
+    "outer_diameter_mm": 99.7567878,
+    "occupied_axial_length_mm": 32.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": -1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ImageCorrector.toml",
+      "C3_ProbeCorrector_BCOR.toml",
+      "C3_ProbeCorrector_ImageCorrector.toml"
+    ]
+  },
+  {
+    "owner": "image_tl31_lens",
+    "coil": "image_tl31_lens_excitation_coil",
+    "inner_diameter_mm": 75.0,
+    "outer_diameter_mm": 99.9595812,
+    "occupied_axial_length_mm": 32.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": 1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ProbeCorrector_BCOR.toml"
+    ]
+  },
+  {
+    "owner": "image_tl32_lens",
+    "coil": "image_tl32_lens_excitation_coil",
+    "inner_diameter_mm": 75.0,
+    "outer_diameter_mm": 99.7567878,
+    "occupied_axial_length_mm": 32.4,
+    "N": null,
+    "wire_diameter_mm": null,
+    "I100_a": null,
+    "NI100": 3000.0,
+    "polarity": -1,
+    "modules": [
+      "C3_BCOR.toml",
+      "C3_ProbeCorrector_BCOR.toml"
+    ]
+  }
+]

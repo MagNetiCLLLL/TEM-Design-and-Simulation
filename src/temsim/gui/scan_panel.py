@@ -217,9 +217,10 @@ class ScanControlView(QWidget):
         self.stem_scan_method = QComboBox()
         self.stem_scan_method.setObjectName("stemScanMethod")
         self.stem_scan_method.addItem("Particles", "particles")
-        self.stem_scan_method.addItem("Mixed coherent CUDA", "mixed_coherent_cuda")
+        self.stem_scan_method.addItem("Mixed particles + waves (CUDA)", "mixed_coherent_cuda")
         self.stem_scan_method.setToolTip(
-            "Mixed coherent CUDA uses actual particles near the specimen and shared Electron beam source settings. "
+            "Mixed particles + waves (CUDA) transports actual particles to the specimen entrance, "
+            "then constructs a mixed-state wave model using the shared Electron beam coherence settings. "
             "BF/ADF are ideal specimen-exit angle windows, not installed detector stations.")
         self.stem_scan_method.currentIndexChanged.connect(self._scan_method_changed)
         method_row.addWidget(self.stem_scan_method, 1)
@@ -505,9 +506,11 @@ class ScanControlView(QWidget):
         self.calculate_button = self.calculation_bar.button
         self.calculate_button.setText("Calculate STEM (single frame)")
         self.calculate_button.setToolTip(
-            "Calculate one HAADF / DF / BF frame, then keep the completed images. "
-            "Click again for another single scan. Run high-accuracy once first "
-            "to prepare the particle result. Valid upstream results can be reused."
+            "Particles: enable the physical AC raster and prepare a high-accuracy particle result first. "
+            "Mixed particles + waves (CUDA): use the selected grid, pitch and origin to translate "
+            "the stationary specimen-plane density; compatible particles can be prepared or reused. "
+            "Ideal-current coil inputs must be made stationary explicitly before particle generation. "
+            "No drive is disabled or frozen automatically. Each request keeps one completed frame."
         )
         self.calculation_bar.requested.connect(self._request_calculation)
         self.parameters_changed.connect(self.calculation_bar.mark_stale)
@@ -836,7 +839,7 @@ class ScanControlView(QWidget):
         self.result_tabs.addTab(fourdstem_page, "4D-STEM")
         self.exit_diffraction_page = QWidget()
         diffraction_layout = QVBoxLayout(self.exit_diffraction_page)
-        self.exit_diffraction_summary = QLabel("Calculate Mixed coherent CUDA to inspect a selected-position exit diffraction pattern.")
+        self.exit_diffraction_summary = QLabel("Calculate Mixed particles + waves (CUDA) to inspect a selected-position exit diffraction pattern.")
         self.exit_diffraction_summary.setWordWrap(True)
         self.exit_diffraction_summary.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         diffraction_layout.addWidget(self.exit_diffraction_summary)
@@ -1245,7 +1248,7 @@ class ScanControlView(QWidget):
         if data is None:
             self.exit_diffraction_image.clear()
             self.exit_diffraction_summary.setText(
-                "Calculate Mixed coherent CUDA to inspect a selected-position exit diffraction pattern.")
+                "Calculate Mixed particles + waves (CUDA) to inspect a selected-position exit diffraction pattern.")
             return
         values = data.probability
         maximum = max(float(values.max()), np.finfo(float).tiny)
@@ -1295,11 +1298,13 @@ class ScanControlView(QWidget):
                 + self.clear_retired_wave_request.text() + " to clear it before a new scan. "
                 if retired_requested else "")
         if mixed:
-            note += ("Mixed coherent CUDA: rigid specimen-plane probe translation. BF 0–15 mrad and "
+            note += ("Mixed particles + waves (CUDA): stationary virtual specimen-plane probe translation "
+                "using the selected grid, pitch and origin. Prepare stationary ideal-current coil inputs "
+                "explicitly before particle generation; drive switches are not changed automatically. BF 0–15 mrad and "
                 "ADF 50–150 mrad are ideal exit-angle windows, not installed detector stations. "
                 "Coherence settings are shared with Electron beam.")
         else:
-            note += ("Calculate STEM uses particle scanning. Choose Mixed coherent CUDA for a mixed-wave raster; "
+            note += ("Calculate STEM uses particle scanning. Choose Mixed particles + waves (CUDA) for a mixed-wave raster; "
                      "Electron beam and Transverse beam retain single-plane wave observations.")
         self.mixed_wave_location.setText(note)
         note += " Historical frames retain their captured method."
@@ -1951,7 +1956,12 @@ class ScanControlView(QWidget):
             restore_ac_only = (prefix == "descan" and field in {"enabled", "scan_enabled"}
                                and converted and self._state.ac_deflector.calibration_mode == "held")
             from temsim.simulation_modes import is_unified
-            if is_unified(self._state):
+            if self.mixed_coherent_selected() and field in SHARED_RASTER_FIELDS:
+                # A virtual raster changes observation positions, not physical
+                # scan-drive calibration. Particle mode retains its own solve.
+                for part in components:
+                    part.validate()
+            elif is_unified(self._state):
                 for part in components:
                     part.validate()
                 self._start_scan_calibration("restore_ac" if restore_ac_only else "automatic")
@@ -2527,12 +2537,14 @@ class ScanControlView(QWidget):
             self._wave_action_needed = True
             self._update_wave_image_action()
             self.image_model_notice.setText(
-                "No STEM frame | Select Particles or Mixed coherent CUDA, then Calculate STEM"
+                "No STEM frame | Select Particles or Mixed particles + waves (CUDA), then Calculate STEM"
             )
             self.image_model_notice.setToolTip(
-                "Enable the AC raster, then click Calculate STEM on this page. "
-                "Mixed coherent CUDA uses the current Electron beam source settings "
-                "and ideal specimen-exit BF/ADF windows. Single-plane mixed-wave "
+                "Particles requires the physical AC raster. Mixed particles + waves (CUDA) uses "
+                "the selected grid, pitch and origin for stationary virtual probe translation, "
+                "the current Electron beam source settings and ideal specimen-exit BF/ADF windows. "
+                "Prepare stationary ideal-current coil inputs explicitly before generating particles; "
+                "no drive is disabled or frozen automatically. Single-plane mixed-wave "
                 "observations remain available in Electron beam or Transverse beam."
             )
             return
@@ -2603,7 +2615,7 @@ class ScanControlView(QWidget):
                 "color: #92400e; background: #fffbeb; border: 1px solid #f59e0b;"
             )
         elif model == "near_specimen_mixed_coherent_cuda":
-            text = "Mixed coherent CUDA | ideal exit-angle BF / ADF" + compact_scale
+            text = "Mixed particles + waves (CUDA) | ideal exit-angle BF / ADF" + compact_scale
             detail_text = ("Actual particle-conditioned mixed modes propagated through the selected specimen. "
                 "The raster rigidly translates the specimen-plane probe. BF 0–15 mrad and ADF 50–150 mrad "
                 "are ideal exit-angle windows; installed detector stations and scan-coil waveforms are not retraced. "
@@ -2997,7 +3009,7 @@ class ScanControlView(QWidget):
         model = str(metrics.get("model", "detector signal"))
         mixed = model == "near_specimen_mixed_coherent_cuda"
         if mixed:
-            model = "Mixed coherent BF/ADF"
+            model = "Mixed particle-wave BF/ADF"
         values = []
         report = frame_sampling_report(metrics)
         for key in STEM_DETECTOR_KEYS:

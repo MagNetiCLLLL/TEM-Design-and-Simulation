@@ -1,0 +1,2241 @@
+{
+  "current_cases": {
+    "passed": 442,
+    "failed": 0,
+    "skipped": 0
+  },
+  "files": [
+    "tests/test_cad_multipoles.py",
+    "tests/test_cad_probe_transfer_lens_hardware.py",
+    "tests/test_cad_probe_winding.py",
+    "tests/test_cad_round_winding.py",
+    "tests/test_cad_tl22_lens_hardware.py",
+    "tests/test_catalog_ideal_coils.py",
+    "tests/test_coil_winding_dialog.py",
+    "tests/test_copper_coil_capture.py",
+    "tests/test_fixed_winding_currents.py",
+    "tests/test_part_model_document.py",
+    "tests/test_probe_hexapole_document_validation.py",
+    "tests/test_probe_hexapole_geometry.py",
+    "tests/test_probe_hexapole_support.py",
+    "tests/test_probe_winding_inputs.py",
+    "tests/test_probe_winding_region_identity.py",
+    "tests/test_winding_parameter_information.py"
+  ],
+  "superseded_case_ids": [
+    "tests/test_cad_tl22_lens_hardware.py::test_existing_neighbor_materials_have_face_contacts_not_assembly_clearance[probe_dp22_coils-probe_tl22_lens_lower_pole-729.1-1]",
+    "tests/test_cad_tl22_lens_hardware.py::test_existing_neighbor_materials_have_face_contacts_not_assembly_clearance[probe_hp2_hexapole-probe_tl22_lens_upper_pole-703.6--1]"
+  ],
+  "cases": [
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_actual_toml_scan_and_shift_tilt_coils_use_saved_finite_positions",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_bad_bore_and_finite_coil_extents_are_not_silently_repaired",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_cetcor_hp_is_explicit_family_inference_preserving_saved_envelope[image_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_cetcor_hp_is_explicit_family_inference_preserving_saved_envelope[image_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_declared_stigmator_coil_count_does_not_create_poles_or_optional_hardware",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_gun_dimension_aliases_and_filter_branch_ownership",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_native_insert_retains_exact_layers_band_windows_and_driver_identity[False]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_native_insert_retains_exact_layers_band_windows_and_driver_identity[True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_nonorthogonal_stigmator_basis_keeps_disjoint_copper_at_one_axial_station[angles0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_nonorthogonal_stigmator_basis_keeps_disjoint_copper_at_one_axial_station[angles1]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_nonorthogonal_stigmator_basis_keeps_disjoint_copper_at_one_axial_station[angles2]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_optical_deflector_centre_alone_does_not_invent_a_physical_coil_pair",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_physical_pole_count_is_not_inferred_from_active_harmonic_and_channels_remain_empty",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_source_backed_cescor_hp_has_six_joined_pins_bulk_coils_and_one_yoke[copied_hp]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_source_backed_cescor_hp_has_six_joined_pins_bulk_coils_and_one_yoke[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_source_backed_cescor_hp_has_six_joined_pins_bulk_coils_and_one_yoke[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_basis_rotation_moves_material_without_changing_axial_or_field_inputs",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles1]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles2]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles3]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles4]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_stigmator_geometry_rejects_dependent_or_nonfinite_structural_bases[angles5]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_unknown_internals_keep_only_saved_envelope_bore_open_and_source_unchanged[objective_stigmator]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_unknown_internals_keep_only_saved_envelope_bore_open_and_source_unchanged[physical_quadrupole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_multipoles.py::test_unknown_internals_keep_only_saved_envelope_bore_open_and_source_unchanged[unknown_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_conflicting_family_and_native_coil_drift_cannot_silently_render[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_conflicting_family_and_native_coil_drift_cannot_silently_render[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_direct_coil_edits_synchronize_hardware_and_gap_keeps_optical_center[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_direct_coil_edits_synchronize_hardware_and_gap_keeps_optical_center[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[coil_key-unknown_coil-missing coil-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[coil_key-unknown_coil-missing coil-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[cooling_plate_thickness_mm-1.2-ordered-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[cooling_plate_thickness_mm-1.2-ordered-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[insulation_thickness_mm-0.0-positive-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[insulation_thickness_mm-0.0-positive-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[outer_diameter_mm-nan-finite-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[outer_diameter_mm-nan-finite-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[uppper_contact_local_z_mm-800.0-unknown Probe transfer lens-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_invalid_saved_recipe_is_rejected[uppper_contact_local_z_mm-800.0-unknown Probe transfer lens-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[16-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[16-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[32-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[32-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[64-probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_original_five_materials_unchanged_and_nine_total_regions_closed_disjoint[64-probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_parent_copy_remaps_and_moves_its_own_coil_interfaces[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_parent_copy_remaps_and_moves_its_own_coil_interfaces[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_passive_dimensions_have_visible_meaning_and_replacement_restoration_is_atomic[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_passive_dimensions_have_visible_meaning_and_replacement_restoration_is_atomic[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_real_tube_clearance_converges_to_point_four_mm[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_real_tube_clearance_converges_to_point_four_mm[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_same_native_cad_materials_preserve_contacts_and_end_clearances[probe_tl12_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_same_native_cad_materials_preserve_contacts_and_end_clearances[probe_tl21_lens]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C2]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3_BCOR]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3_ProbeCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3_ProbeCorrector_BCOR]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_saved_variants_opt_in_with_their_own_winding_dimensions[C3_ProbeCorrector_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[cooling_plate_thickness_mm-adapter_lens_housing-mechanical_adapter_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[cooling_plate_thickness_mm-condenser_lens_3_housing-mechanical_c3_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[cooling_plate_thickness_mm-probe_tl12_lens_housing-mechanical_transfer_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[cooling_plate_thickness_mm-probe_tl21_lens_housing-mechanical_transfer_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[cooling_plate_thickness_mm-probe_tl22_lens_housing-mechanical_tl22_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[insulation_thickness_mm-adapter_lens_housing-mechanical_adapter_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[insulation_thickness_mm-condenser_lens_3_housing-mechanical_c3_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[insulation_thickness_mm-probe_tl12_lens_housing-mechanical_transfer_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[insulation_thickness_mm-probe_tl21_lens_housing-mechanical_transfer_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_sub_ulp_layer_thickness_is_rejected_before_build_and_edit_atomically[insulation_thickness_mm-probe_tl22_lens_housing-mechanical_tl22_end_]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_upstream_deflector_copper_and_seal_keep_positive_gap_at_all_mesh_resolutions[probe_tl12_lens-probe_dp11_coils]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_transfer_lens_hardware.py::test_upstream_deflector_copper_and_seal_keep_positive_gap_at_all_mesh_resolutions[probe_tl21_lens-probe_dp21_coils]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_all_turns_and_remaining_insulation_partition_the_six_original_coils[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_all_turns_and_remaining_insulation_partition_the_six_original_coils[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_area_or_turn_edit_repacks_only_the_original_bulk_frame",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_display_budget_counts_radial_path_complexity_without_omitting_turns",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_display_complexity_requires_a_positive_integer[-1]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_display_complexity_requires_a_positive_integer[0]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_display_complexity_requires_a_positive_integer[1.5]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_display_complexity_requires_a_positive_integer[True]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates0]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates10]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates11]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates12]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates13]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates1]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates2]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates3]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates4]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates5]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates6]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates7]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates8]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_invalid_or_unfit_inputs_reject_without_mutating_sources[updates9]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_legacy_or_metadata_only_has_no_guessed_turns_or_wire",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_nonhexapole_cannot_receive_a_radial_winding_recipe",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_one_rounded_rectangular_turn_is_connected_closed_and_radial",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_packing_is_radial_fixed_envelope_and_has_analytic_volume_witness[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_packing_is_radial_fixed_envelope_and_has_analytic_volume_witness[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_partial_recipe_cannot_guess_the_missing_definition[hexapole_winding_geometry_status]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_partial_recipe_cannot_guess_the_missing_definition[hexapole_winding_source_note]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_partial_recipe_cannot_guess_the_missing_definition[hexapole_winding_turn_count_per_coil]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_partial_recipe_cannot_guess_the_missing_definition[hexapole_winding_wire_cross_section_mm2]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_replacement_cad_disables_but_restoring_native_revalidates_recipe",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_probe_winding.py::test_step_guard_counts_physical_radial_turns_before_constructing_brep",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_all_turns_and_exact_remaining_material_are_shared_by_catalog_and_view",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_area_only_input_keeps_fixed_objective_turns_and_passive_layers",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_detailed_winding_rejects_arbitrary_replacement_geometry",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_display_budget_accepts_two_thousand_turn_estimate_without_generating_meshes",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_display_budget_rejects_explicitly_instead_of_omitting_turns",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_fixed_source_counts_reject_ambiguous_conductor_subdivision",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_fully_occupied_orthogonal_grid_retains_every_turn_and_closed_insulation",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_impossible_metal_area_or_turn_count_rejects_without_resizing[changes0]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_impossible_metal_area_or_turn_count_rejects_without_resizing[changes1]",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_metal_area_and_legacy_diameter_have_equivalent_cad_geometry",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_metal_area_input_builds_round_turns_and_fills_all_remaining_insulation",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_n_only_interval_count_uses_actual_envelope_not_guessed_split",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_n_only_still_rejects_invalid_count_and_partial_interval_sum",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_objective_fixed_photo_counts_survive_unknown_wire_then_later_cad_input",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_round_wire_display_retains_declared_profile_facets_and_torus_bounds",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_split_objective_preserves_passive_layers_and_original_field_envelope",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_turn_count_only_retains_native_envelope_without_guessing_wire_diameter",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_turn_or_metal_area_edit_refills_insulation_inside_fixed_envelope",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_unspecified_legacy_winding_keeps_its_envelope_and_has_no_invented_turns",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_round_winding.py::test_wire_diameter_without_turn_count_is_rejected",
+      "status": "passed",
+      "report": "tests/radial-core-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_added_layers_are_closed_disjoint_and_preserve_original_five_solids[16]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_added_layers_are_closed_disjoint_and_preserve_original_five_solids[32]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_added_layers_are_closed_disjoint_and_preserve_original_five_solids[64]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_constant_tube_retains_04_mm_nominal_clearance_through_both_poles",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_detached_copy_moves_its_contacts_and_explicit_replacement_keeps_priority",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearance[probe_dp22_coils-probe_tl22_lens_lower_pole-729.1-1-0.1]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearance[probe_hp2_hexapole-probe_tl22_lens_upper_pole-703.6--1-0.0]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_invalid_tl22_recipe_is_rejected[coil_key-missing_coil-missing coil]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_invalid_tl22_recipe_is_rejected[cooling_plate_thickness_mm-1.2-ordered]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_invalid_tl22_recipe_is_rejected[outer_diameter_mm-True-finite]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_invalid_tl22_recipe_is_rejected[upper_contact_local_z_mm-nan-finite]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_invalid_tl22_recipe_is_rejected[uppper_contact_local_z_mm-704.875-unknown TL22]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_native_and_cad_share_the_four_passive_layers_at_saved_tl22_contacts",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C2]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3_BCOR]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3_ProbeCorrector]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3_ProbeCorrector_BCOR]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_three_probe_variants_share_their_own_explicit_tl22_hardware_and_others_do_not[C3_ProbeCorrector_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_tl22_recipe_cannot_be_silently_hidden_by_another_family[mechanical_adapter_end_]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_cad_tl22_lens_hardware.py::test_tl22_recipe_cannot_be_silently_hidden_by_another_family[mechanical_c3_end_]",
+      "status": "passed",
+      "report": "tests/tl22-saved-clearance-final-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C2]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3_BCOR]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3_ProbeCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3_ProbeCorrector_BCOR]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[C3_ProbeCorrector_ImageCorrector]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[NoEnergyFilter]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_round_windings_have_estimated_fixed_turns_and_explicit_current[projector_stack]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_catalog_ideal_coils.py::test_catalog_scope_includes_corrector_transfer_and_composed_recording_lenses",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_action_is_hidden_for_non_winding_and_blocked_by_invalid_editor_input",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_area_and_turn_edits_repack_insulation_inside_the_unchanged_envelope",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_area_only_prefill_preserves_its_exact_saved_value",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_cancel_does_not_call_commit",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C2.toml-condenser_lens_1_excitation_coil]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C3_BCOR.toml-image_tl31_lens_excitation_coil]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_catalog_round_lens_families_share_winding_action_and_current_inputs[column/C3_ProbeCorrector.toml-probe_tl21_lens_excitation_coil]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_catalog_round_lens_families_share_winding_action_and_current_inputs[project_and_recording_system/EnergyFilter.toml-projector_lens_2_excitation_coil]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_commit_failure_preserves_dialog_and_success_is_one_explicit_call",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_dialog_rejects_stale_draft_and_runtime_updates_do_not_mutate_it",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_disabled_excitation_and_explicit_zero_reference_current_are_supported",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_fixed_turns_and_large_current_are_valid_without_inventing_wire_diameter",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586, -586]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586, 585]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586, 586, 1]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586,]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586.0, 586]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_interval_turns_do_not_enable_apply[586]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes0]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes1]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes2]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes3]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes4]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes5]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes6]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes7]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_invalid_or_overfull_inputs_do_not_enable_apply_or_mutate_inputs[changes8]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_missing_polarity_and_disconnected_runtime_are_explicit",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_packing_and_signed_operating_current_use_original_envelope_without_mutation",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_round_winding_action_can_clear_known_wire_size_and_undo_as_one_change",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_round_winding_action_stages_owner_and_coil_as_one_undo_without_saving",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_saved_current_prefill_roundtrips_exactly_without_an_edit[1.2345678901234567e+100]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_saved_current_prefill_roundtrips_exactly_without_an_edit[1575.2330285262728]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_single_interval_total_edit_updates_its_identical_count_and_insulation",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_split_turns_remain_fixed_when_current_changes_and_total_must_match",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_unchanged_legacy_diameter_is_not_reencoded_by_the_area_readback",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_unknown_legacy_winding_has_no_guessed_turn_wire_or_current_defaults",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_coil_winding_dialog.py::test_user_edits_only_metal_area_and_diameter_is_calculated_read_only",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_copper_field_is_not_silently_admitted_to_coherent_operator",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_current_and_explicit_reference_changes_invalidate_frozen_source",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_default_objective_580_per_region_preserves_the_historical_reference_ampere_turns",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_every_installed_round_lens_captures_owned_windings_without_gaussians",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_fixed_gaussian_remains_same_and_link_scales_internal_offsets_and_widths",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_missing_reference_or_winding_does_not_fall_back_to_gaussian",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_mixed_native_and_copper_sources_keep_exact_uncompiled_contribution",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_nonrigid_winding_shape_and_boolean_diameter_are_rejected",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_objective_winding_uses_split_material_intervals_and_conserves_ampere_turns",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_copper_coil_capture.py::test_prescribed_current_ignores_inactive_legacy_reference",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_default_counts_retain_authorized_integer_area_and_photo_reference_without_guessing_wire",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_fixed_regional_counts_invalidate_cache_and_change_the_field",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_geometry_mismatch_is_rejected_before_field_sampling",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_known_turns_alone_preserve_the_exact_old_legacy_field_coefficients",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_large_current_with_unknown_wire_keeps_586_turns_in_each_region",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_length_edit_does_not_redistribute_fixed_physical_turns",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_fixed_winding_currents.py::test_selected_current_matches_original_specimen_field_without_changing_controls",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_actual_area_edit_replaces_legacy_alias_and_old_size_source",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_area_can_be_cleared_from_a_batch_and_absence_survives_save",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_area_dimension_edit_rebuilds_cad_clears_alias_and_keeps_optical_controls",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_area_only_input_rebuilds_insulation_and_roundtrips_without_a_diameter_alias",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_area_only_noop_preserves_exact_area_metadata_and_undo_history",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_boolean_failure_preserves_schema_valid_draft_and_file[False]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_boolean_failure_preserves_schema_valid_draft_and_file[True]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_cleared_optional_winding_inputs_and_their_sources_survive_save_reload",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_conflicting_dimensions_stay_as_draft_and_do_not_write",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_declared_winding_rejects_nonannular_replacement_without_mutating_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_dimensions_are_staged_across_parts_then_saved_with_comments_retained",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_existing_array_dimensions_are_updated_by_index",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_existing_pole_bore_can_be_enlarged_without_changing_vacuum",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_external_reload_is_atomic_and_cannot_discard_model_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_first_model_edit_includes_editable_transform_defaults[feature]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_first_model_edit_includes_editable_transform_defaults[update]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_fixed_interval_counts_can_be_cleared_only_by_explicit_input",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_batch_preserves_every_value_source_and_undo_state",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_input_does_not_mutate_draft[70]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_input_does_not_mutate_draft[True]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_input_does_not_mutate_draft[inf]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_input_does_not_mutate_draft[nan]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_physical_lens_pose_is_atomic[2.5]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_physical_lens_pose_is_atomic[True]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_physical_lens_pose_is_atomic[inf]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_physical_lens_pose_is_atomic[nan]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_schema_replacement_and_duplicate_feature_are_atomic",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_turn_dimension_edit_is_atomic[-1.0]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_turn_dimension_edit_is_atomic[0.0]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_invalid_turn_dimension_edit_is_atomic[1.5]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_lens_pose_and_axial_placement_are_one_undoable_operation",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_manifest_editor_exposes_zero_pose_and_preserves_legacy_when_one_angle_changes",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_manual_current_updates_only_its_source_and_remains_atomic_after_save",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_manual_input_source_can_replace_expanded_metadata_tables",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_manual_turn_change_marks_affected_sources_without_recalibrating_current",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_configuration_and_nested_dimensions_are_independent_of_solver_fields",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_configuration_uses_real_manifest_editor_save_and_validation",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_feature_transactions_keep_stable_order_and_undo_as_one_change",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[boolean-field]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[missing-index]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[missing-path]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[nan]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[negative-index]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[negative-size]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[overflow]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[short-slot]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_numeric_errors_leave_document_and_history_unchanged[zero-scale]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_removal_undo_redo_and_revert_round_trip_without_empty_table",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_replacement_respects_brackets_and_headers_inside_toml_values",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_model_save_copy_preserves_full_features_after_external_source_edit",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_nested_model_tables_and_feature_arrays_are_replaced_without_stale_values",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_non_module_file_and_fixed_centre_edits_are_rejected",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_per_part_material_roundtrip_uses_new_optional_field",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_physical_lens_pose_virtual_defaults_roundtrip_and_legacy_migration",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_project_callback_must_persist_the_validated_draft[False-did not save]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_project_callback_must_persist_the_validated_draft[None-does not match]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_project_save_failure_keeps_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_same_area_dimension_value_preserves_source_alias_and_history",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_single_interval_turn_count_follows_total_without_a_duplicate_input",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_source_change_during_validation_prevents_project_callback",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_source_change_is_detected_but_save_copy_can_preserve_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_split_physical_counts_are_not_redistributed_by_a_total_turn_edit",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_split_turn_dimension_edit_keeps_regional_counts_and_rejects_inconsistent_total",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_turn_dimension_edit_retains_envelope_area_and_current_and_updates_insulation",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_turn_only_api_edit_retains_metal_area_and_current_without_double_entry",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_turns_current_and_unknown_wire_size_form_one_atomic_reversible_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_undo_redo_revert_and_two_saves_preserve_original_precision",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_unfit_area_and_conflicting_size_aliases_reject_atomically[size0]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_unfit_area_and_conflicting_size_aliases_reject_atomically[size1]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_part_model_document.py::test_winding_noop_preserves_exact_inputs_provenance_and_history",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_envelope_shrink_does_not_silently_rescale_saved_pole_length",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_material_length_is_editable_saved_and_independent_of_effective_field",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_mechanical_copy_retains_probe_validation_through_template_identity",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[-1.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[0.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[1000.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[inf]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_module_load_rejects_invalid_physical_pole_lengths_without_mutation[nan]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[-1.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[0.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[1000.0]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[inf]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_document_validation.py::test_rejected_material_edit_preserves_draft_source_and_undo_state[nan]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_accepted_narrow_yoke_clearances_keep_whole_poles_connected[0.001-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_accepted_narrow_yoke_clearances_keep_whole_poles_connected[0.001-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_accepted_narrow_yoke_clearances_keep_whole_poles_connected[1e-05-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_accepted_narrow_yoke_clearances_keep_whole_poles_connected[1e-05-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_every_pin_and_winding_is_connected_and_material_parts_do_not_overlap[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_every_pin_and_winding_is_connected_and_material_parts_do_not_overlap[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_height_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_height_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_radial_inset_mm-0.1-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_radial_inset_mm-0.1-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_radial_length_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_radial_length_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_width_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_width_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_window_height_mm-0.1-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_window_height_mm-0.1-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_window_width_mm-0.1-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[coil_window_width_mm-0.1-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-0.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-0.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-0.1-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-0.1-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-True-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-True-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-inf-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-inf-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-nan-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[pole_length_mm-nan-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[root_width_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[root_width_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[stem_height_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[stem_height_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[taper_length_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[taper_length_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[tip_width_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[tip_width_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[yoke_thickness_mm-1000.0-probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_invalid_physical_dimensions_are_rejected_before_building[yoke_thickness_mm-1000.0-probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_physical_pole_length_changes_geometry_independently_of_field_fwhm[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_physical_pole_length_changes_geometry_independently_of_field_fwhm[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_pins_join_shared_yoke_while_windings_clear_the_cores[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_pins_join_shared_yoke_while_windings_clear_the_cores[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_rotational_copies_preserve_sixfold_material_symmetry[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_rotational_copies_preserve_sixfold_material_symmetry[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_saved_hosts_preserve_material_identity_and_open_envelope[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_saved_hosts_preserve_material_identity_and_open_envelope[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_unverified_control_channels_do_not_gain_invented_material[probe_hpc_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_unverified_control_channels_do_not_gain_invented_material[probe_hpol_hexapole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_unverified_control_channels_do_not_gain_invented_material[probe_qpc_quadrupole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_geometry.py::test_unverified_control_channels_do_not_gain_invented_material[probe_qph1_quadrupole]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_added_supports_preserve_dph2_tube_clearance_and_existing_tl22_contact",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp1_hexapole-C3_ProbeCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp1_hexapole-C3_ProbeCorrector_BCOR.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp1_hexapole-C3_ProbeCorrector_ImageCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp2_hexapole-C3_ProbeCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp2_hexapole-C3_ProbeCorrector_BCOR.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation[probe_hp2_hexapole-C3_ProbeCorrector_ImageCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes0]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes1]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes2]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes3]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes4]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes5]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_bad_profiles_or_support_collisions_fail_before_building[changes6]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_former_contacts_copper_and_bedding_joins_core_without_blocking_axial_bore",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_editor_edit_is_atomic_and_replacement_keeps_inactive_recipe",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[-1.0-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[-1.0-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[-1.0-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[0.0-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[0.0-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[0.0-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[False-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[False-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[False-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[inf-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[inf-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[inf-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[nan-hexapole_support_flange_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[nan-hexapole_support_former_wall_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_invalid_support_dimensions_are_rejected[nan-hexapole_support_outer_insulation_thickness_mm]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_legacy_support_preserves_all_original_thirteen_material_shapes_and_optics",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_optional_outer_jackets_preserve_every_existing_material_record_and_envelope[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_optional_outer_jackets_preserve_every_existing_material_record_and_envelope[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell[1e+308]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell[1e-100]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell[20.0]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell[3.0]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jackets_are_closed_sixfold_and_clear_every_original_material_and_bore[probe_hp1_hexapole]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_jackets_are_closed_sixfold_and_clear_every_original_material_and_bore[probe_hp2_hexapole]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_outer_wall_edits_change_only_jackets_and_preserve_radial_end_planes",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_parameters_edit_copy_move_transform_save_and_reopen",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_probe_corrector_variants_share_supports_and_preserve_copper_and_iron[C3_ProbeCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_probe_corrector_variants_share_supports_and_preserve_copper_and_iron[C3_ProbeCorrector_BCOR.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_probe_corrector_variants_share_supports_and_preserve_copper_and_iron[C3_ProbeCorrector_ImageCorrector.toml]",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_saved_flange_dimension_changes_supports_without_changing_original_material",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_hexapole_support.py::test_supports_are_connected_closed_sixfold_and_materials_never_interpenetrate",
+      "status": "passed",
+      "report": "tests/outer-insulation-post-config-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_actual_dimensions_table_edits_per_coil_turns_and_metal_area",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_actual_editor_routes_hp_to_area_dialog_and_stages_once",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_atomic_definition_preserves_native_inputs_and_roundtrips",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_dimensions_expose_per_coil_count_area_and_calculated_diameter",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_input_explanation_does_not_imply_current_or_new_field[hexapole_winding_turn_count_per_coil]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_input_explanation_does_not_imply_current_or_new_field[hexapole_winding_wire_cross_section_mm2]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[-1-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[0-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[1.5-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[1000000-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[4-0.0]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[4-100.0]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[4-None]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[4-nan]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[None-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_invalid_inputs_preserve_draft_and_undo[True-0.01]",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_stale_dialog_does_not_commit_to_changed_draft",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_unknown_control_channel_does_not_get_a_winding_host",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_inputs.py::test_unknown_dialog_never_guesses_inputs_and_clear_is_explicit",
+      "status": "passed",
+      "report": "tests/probe-winding-input-post-default-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_replaced_or_incomplete_recipe_does_not_claim_wire_material",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_insulation_coil_0-False]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_insulation_coil_3-True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_turn_coil_1_000000-False]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_turn_coil_1_000001-True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_turn_coil_1_000003-False]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_turn_coil_6_000002-True]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_probe_winding_region_identity.py::test_wire_identity_uses_pure_layout_and_valid_regional_indices[winding_turn_coil_7_000001-False]",
+      "status": "passed",
+      "report": "tests/integration-tests.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_actual_dimensions_table_exposes_turn_and_area_edits_but_not_diameter",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_declared_turns_without_current_keep_legacy_ampere_turns",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_explicit_current_disables_legacy_winding_share",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_explicit_current_disables_only_legacy_ampere_turn_fallback",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_explicit_ideal_current_does_not_disable_fem_current_share_consumer",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_metal_area_excludes_insulation_and_changes_only_cad_packing",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_metal_area_has_editable_dimensions_and_diameter_is_only_a_readback",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_new_inputs_have_explicit_units_and_user_provenance[lens-ideal_coil_current_a_at_100_percent-A-operating]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_new_inputs_have_explicit_units_and_user_provenance[winding-winding_turn_count-turn-physical]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_new_inputs_have_explicit_units_and_user_provenance[winding-winding_wire_cross_section_mm2-mm\\xb2-physical]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_new_inputs_have_explicit_units_and_user_provenance[winding-winding_wire_diameter_mm-mm-physical]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_turns_and_current_are_active_only_for_selected_ideal_current_model[lens-ideal_coil_current_a_at_100_percent]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_turns_and_current_are_active_only_for_selected_ideal_current_model[winding-winding_turn_count]",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_valid_declared_provenance_is_not_replaced_by_user_defined_label",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    },
+    {
+      "nodeid": "tests/test_winding_parameter_information.py::test_wire_geometry_does_not_shrink_homogeneous_field_source",
+      "status": "passed",
+      "report": "tests/probe-winding-ui-regressions.xml"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "scope": "Effect of gun magnetic interpolation at the specimen after identical high-order column propagation",
+  "input_digest": "9fa2a854a7a2cfda651145e4ca0443febdb17fc3e06423aae7998842e89d301d",
+  "matched_originals": 1024,
+  "native_gun_sha256": "3d1b9d13edca8f445a2dbd2d9a9b48cbae08ce1b9ef2eb8b095723f0736d708b",
+  "tabulated_gun_sha256": "70a29e28cb74b35156f34c1c27fa057a787c31f848f627121947ae5f43159379",
+  "direct_gun_surface": {
+    "D95_nm": 2.196259485688847,
+    "D90_nm": 1.8159546674740916,
+    "D50_nm": 1.104963724831903,
+    "rms_radius_nm": 7.909984337105998,
+    "alpha95_mrad": 29.58347298770603,
+    "angular_rms_mrad": 16.24885790994903,
+    "core_50pm_current_a": 5.859375000000001e-08
+  },
+  "tabulated_gun_surface": {
+    "D95_nm": 2.1957406907775425,
+    "D90_nm": 1.8158335439667248,
+    "D50_nm": 1.1052143717091365,
+    "rms_radius_nm": 7.902937634975277,
+    "alpha95_mrad": 29.582755032437976,
+    "angular_rms_mrad": 16.248623750082597,
+    "core_50pm_current_a": 5.859375000000001e-08
+  },
+  "direct_gun_focus": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 2.1042923300732563,
+    "observed_minimum_planes_mm": [
+      1599.199990125
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.199990125,
+        1599.199990125
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.19999,
+      1599.1999902500002
+    ],
+    "neighbour_bracket_offset_nm": [
+      -7.500000037907739,
+      -7.2499999532738
+    ],
+    "representative_offset_nm": -7.37499999559077,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "tabulated_gun_focus": {
+    "status": "BOUNDED_OBSERVED_MINIMUM",
+    "minimum": 2.103839484857717,
+    "observed_minimum_planes_mm": [
+      1599.199990125
+    ],
+    "plateau_intervals_mm": [
+      [
+        1599.199990125,
+        1599.199990125
+      ]
+    ],
+    "neighbour_bracket_mm": [
+      1599.19999,
+      1599.1999902500002
+    ],
+    "neighbour_bracket_offset_nm": [
+      -7.500000037907739,
+      -7.2499999532738
+    ],
+    "representative_offset_nm": -7.37499999559077,
+    "interpretation": "Smallest observed value; no claim of an exact continuous argmin"
+  },
+  "max_absolute_difference": {
+    "x_m": 9.998967885137328e-11,
+    "y_m": 1.8824681960511426e-10,
+    "tx_rad": 7.512231590491025e-06,
+    "ty_rad": 8.110871195746161e-06,
+    "flight_time_s": 3.208635746762787e-17,
+    "kinetic_energy_ev": 3.003515303134918e-08
+  }
+}

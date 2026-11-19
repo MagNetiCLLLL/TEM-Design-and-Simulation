@@ -74,6 +74,18 @@ aperture_mechanism_evidence_source = "User identification and user-supplied Obje
 maximum_radius_mm = 1.0
 
 [[parts]]
+parameter_metadata = { "transverse_winding_turn_count_per_coil" = { "source_kind" = "estimated", "source_note" = "Fine round conductor for radial stigmator windings: metal area 0.02 mm2, radial enamel assumption 0.005 mm, nominal metal fill 0.60. Fixed initial count 672 per coil is estimated from the limiting existing pack section and validated insulated-wire packing. No measured wire gauge, OEM winding count, thermal rating or current limit is asserted. Engineering fine-wire winding reconstruction based on US5994704A, US20090079531A1 and CN102509689B; not measured or OEM data. Closed turns have explicit channel assignment and alternating current senses; unresolved lead routing is excluded. The winding pack envelope is fixed. Magnetic cores, pole pieces, resistance, heating and current ratings are excluded from the ideal vacuum field model." }, "transverse_winding_wire_cross_section_mm2" = { "source_kind" = "estimated", "source_note" = "Fine round conductor for radial stigmator windings: metal area 0.02 mm2, radial enamel assumption 0.005 mm, nominal metal fill 0.60. Fixed initial count 672 per coil is estimated from the limiting existing pack section and validated insulated-wire packing. No measured wire gauge, OEM winding count, thermal rating or current limit is asserted. Engineering fine-wire winding reconstruction based on US5994704A, US20090079531A1 and CN102509689B; not measured or OEM data. Closed turns have explicit channel assignment and alternating current senses; unresolved lead routing is excluded. The winding pack envelope is fixed. Magnetic cores, pole pieces, resistance, heating and current ratings are excluded from the ideal vacuum field model." }, "transverse_winding_insulation_thickness_mm" = { "source_kind" = "estimated", "source_note" = "Fine round conductor for radial stigmator windings: metal area 0.02 mm2, radial enamel assumption 0.005 mm, nominal metal fill 0.60. Fixed initial count 672 per coil is estimated from the limiting existing pack section and validated insulated-wire packing. No measured wire gauge, OEM winding count, thermal rating or current limit is asserted. Engineering fine-wire winding reconstruction based on US5994704A, US20090079531A1 and CN102509689B; not measured or OEM data. Closed turns have explicit channel assignment and alternating current senses; unresolved lead routing is excluded. The winding pack envelope is fixed. Magnetic cores, pole pieces, resistance, heating and current ratings are excluded from the ideal vacuum field model." }, "ideal_transverse_current_matrix_a_per_unit" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." }, "ideal_transverse_current_bias_a" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." }, "ideal_transverse_calibration_reference_energy_ev" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." }, "ideal_transverse_calibration_kind" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." }, "ideal_transverse_calibration_status" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." }, "ideal_transverse_calibration_source_note" = { "source_kind" = "estimated", "source_note" = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit." } }
+ideal_transverse_calibration_source_note = "Ideal vacuum closed-coil current calibration at original native field-reference planes; commands in percent, matrix in A/percent, reference energy 300000 eV. Full cross-station field response is included. Fixed N and pack envelopes retained. No magnetic-core/pole response, field-integral/shape equivalence, focus adjustment, thermal rating or experimental calibration is inferred. Current matrix remains fixed after beam-energy or geometry edits; re-calibration is explicit."
+ideal_transverse_calibration_status = "calibrated_native_peak"
+ideal_transverse_calibration_kind = "native_peak_field_at_reference_planes_v1"
+ideal_transverse_calibration_reference_energy_ev = 300000.0
+ideal_transverse_current_bias_a = [0.0, 0.0]
+ideal_transverse_current_matrix_a_per_unit = [[1.5380704656341873e-17, 0.07851437980548097], [-0.07851437980548033, 1.4435533266049516e-17]]
+transverse_winding_source_note = "Fine round conductor for radial stigmator windings: metal area 0.02 mm2, radial enamel assumption 0.005 mm, nominal metal fill 0.60. Fixed initial count 672 per coil is estimated from the limiting existing pack section and validated insulated-wire packing. No measured wire gauge, OEM winding count, thermal rating or current limit is asserted. Engineering fine-wire winding reconstruction based on US5994704A, US20090079531A1 and CN102509689B; not measured or OEM data. Closed turns have explicit channel assignment and alternating current senses; unresolved lead routing is excluded. The winding pack envelope is fixed. Magnetic cores, pole pieces, resistance, heating and current ratings are excluded from the ideal vacuum field model."
+transverse_winding_wire_cross_section_mm2 = 0.02
+transverse_winding_insulation_thickness_mm = 0.005
+transverse_winding_turn_count_per_coil = 672
+transverse_winding_geometry_status = "engineering_reconstruction_not_oem"
 order = 2
 key = "diffraction_stigmator"
 coil_topology = "two_interleaved_four_pole_windings"
@@ -106,6 +118,8 @@ mechanical_overlap_reason = "Physical diffraction stigmator assigned to the D al
 parent_key = "diffraction_lens"
 
 [[parts]]
+parameter_metadata = { "ideal_coil_current_a_at_100_percent" = { "source_kind" = "user_defined", "source_note" = "2026-11-15 nominal-allocation migration: prescribed reference current changed from 196.49728821529274 A at N=364 to 198.68059141768487 A at N=360, preserving the original NI and full ideal field within unchanged binary64 checks. The prior single-plane field condition remains unchanged; no focus or current rating is asserted.\nCurrent-only ideal-vacuum calibration on 2026-11-15 at the original native Gaussian absolute-peak plane, offset 0 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 0.68782001347707955 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source." } }
+ideal_coil_current_a_at_100_percent = 198.68059141768487
 order = 3
 key = "diffraction_lens"
 air_core_reference_ampere_turns = 3000.0
@@ -203,6 +217,8 @@ parent_key = "diffraction_lens"
 mechanical_profile = "magnetic_pole_piece"
 pole_piece_geometry_style = "tapered_bore_pole"
 [[parts]]
+parameter_metadata = { "ideal_coil_current_a_at_100_percent" = { "source_kind" = "user_defined", "source_note" = "2026-11-15 nominal-allocation migration: prescribed reference current changed from 174.52365074215746 A at N=655 to 176.40893709276716 A at N=648, preserving the original NI and full ideal field within unchanged binary64 checks. The prior single-plane field condition remains unchanged; no focus or current rating is asserted.\nCurrent-only ideal-vacuum calibration on 2026-11-15 at the original native Gaussian absolute-peak plane, offset 0 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 0.76168062560363048 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source." } }
+ideal_coil_current_a_at_100_percent = 176.40893709276716
 order = 6
 key = "intermediate_lens"
 air_core_reference_ampere_turns = 3000.0
@@ -300,6 +316,8 @@ parent_key = "intermediate_lens"
 mechanical_profile = "magnetic_pole_piece"
 pole_piece_geometry_style = "tapered_bore_pole"
 [[parts]]
+parameter_metadata = { "ideal_coil_current_a_at_100_percent" = { "source_kind" = "user_defined", "source_note" = "2026-11-15 nominal-allocation migration: prescribed reference current changed from 101.27941869063272 A at N=436 to 102.21719108591635 A at N=432, preserving the original NI and full ideal field within unchanged binary64 checks. The prior single-plane field condition remains unchanged; no focus or current rating is asserted.\nCurrent-only ideal-vacuum calibration on 2026-11-15 at the original native Gaussian absolute-peak plane, offset 0 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 0.3851792075471645 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source." } }
+ideal_coil_current_a_at_100_percent = 102.21719108591635
 order = 9
 key = "projector_lens_1"
 air_core_reference_ampere_turns = 3000.0
@@ -397,6 +415,8 @@ parent_key = "projector_lens_1"
 mechanical_profile = "magnetic_pole_piece"
 pole_piece_geometry_style = "tapered_bore_pole"
 [[parts]]
+parameter_metadata = { "ideal_coil_current_a_at_100_percent" = { "source_kind" = "user_defined", "source_note" = "2026-11-15 nominal-allocation migration: prescribed reference current changed from 75.647995721298145 A at N=655 to 76.465180860262791 A at N=648, preserving the original NI and full ideal field within unchanged binary64 checks. The prior single-plane field condition remains unchanged; no focus or current rating is asserted.\nCurrent-only ideal-vacuum calibration on 2026-11-15 at the original native Gaussian absolute-peak plane, offset 0 mm from the native optical z reference. At explicit enabled 100% reference excitation the original signed Bz is 0.33015360646899816 T. Preserve the saved N, envelope, working excitation and polarity. No pole-piece response, resistance, thermal/current limit or focus equivalence is asserted. Subsequent N or current edits do not auto-refit this match. The historical 3000 A-turn fallback is retained but inactive for this explicit-current source." } }
+ideal_coil_current_a_at_100_percent = 76.46518086026279
 order = 12
 key = "projector_lens_2"
 air_core_reference_ampere_turns = 3000.0
@@ -683,6 +703,9 @@ mechanical_overlap_reason = "Concentric independent mechanical layer inside the 
 parent_key = "diffraction_lens"
 
 [[parts]]
+parameter_metadata = { "winding_turn_count" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(3240 mm2 / 9 mm2)=360. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." }, "winding_interval_turn_counts" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(3240 mm2 / 9 mm2)=360. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." } }
+winding_interval_turn_counts = [360]
+winding_turn_count = 360
 order = 22
 key = "diffraction_lens_excitation_coil"
 coil_ampere_turn_fraction = 1.0
@@ -748,6 +771,9 @@ mechanical_overlap_reason = "Concentric independent mechanical layer inside the 
 parent_key = "intermediate_lens"
 
 [[parts]]
+parameter_metadata = { "winding_turn_count" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(5832 mm2 / 9 mm2)=648. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." }, "winding_interval_turn_counts" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(5832 mm2 / 9 mm2)=648. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." } }
+winding_interval_turn_counts = [648]
+winding_turn_count = 648
 order = 25
 key = "intermediate_lens_excitation_coil"
 coil_ampere_turn_fraction = 1.0
@@ -813,6 +839,9 @@ mechanical_overlap_reason = "Concentric independent mechanical layer inside the 
 parent_key = "projector_lens_1"
 
 [[parts]]
+parameter_metadata = { "winding_turn_count" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(3888 mm2 / 9 mm2)=432. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." }, "winding_interval_turn_counts" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(3888 mm2 / 9 mm2)=432. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." } }
+winding_interval_turn_counts = [432]
+winding_turn_count = 432
 order = 28
 key = "projector_lens_1_excitation_coil"
 coil_ampere_turn_fraction = 1.0
@@ -878,6 +907,9 @@ mechanical_overlap_reason = "Concentric independent mechanical layer inside the 
 parent_key = "projector_lens_2"
 
 [[parts]]
+parameter_metadata = { "winding_turn_count" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(5832 mm2 / 9 mm2)=648. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." }, "winding_interval_turn_counts" = { "source_kind" = "estimated", "source_note" = "User-authorized nominal integer allocation on 2026-11-15: N=round_half_up(5832 mm2 / 9 mm2)=648. The 9 mm2 value includes insulation and residual pack space, not conductor metal. Metal area remains an independent optional user input. This is an engineering estimate, not measured/OEM data; fixed counts do not follow later geometry edits automatically." } }
+winding_interval_turn_counts = [648]
+winding_turn_count = 648
 order = 31
 key = "projector_lens_2_excitation_coil"
 coil_ampere_turn_fraction = 1.0

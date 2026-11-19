@@ -1,0 +1,29 @@
+{
+  "scope": "Selected Objective current and ideal field validation",
+  "validation_files": {
+    "C3_ProbeCorrector.toml": "955338238e0a625c91a7c571d09c92fa796b66d0d8787720a3b80735de46f372",
+    "capture-tests.xml": "35a248d6750725f05530e3f16fec2826b4160322348c70ebbf12142434c4910a",
+    "current-regressions.xml": "02acb76f9ce8fb505e6d9d33ae13d856df149fc2bea652b0197167270e2b60f5",
+    "ideal-field-check-state.json": "4f7d18861473dfd2b3212500a7b4d882a2e95fdab8a8310902a3beb373770fbd",
+    "independent/check.py": "2ec0436d2326dfa2303ca625d05d48a03a1eeb515e0cad085d8550e1182009ce",
+    "independent/receipt.json": "62488444ae86c69d9324edf6b2c54e42833f1edbbf18e82071fcebd54edd4eed",
+    "selected-current.json": "2ee09a24f7213070221610150ca16669807b44ae130827daa6713851aba7f4cb",
+    "selected-field-comparison.png": "3a3dea6beaccd0ae65e05cd0defa74b8901fe21cb76f92da3ed3f8314b111ebf",
+    "selected-field-curves.npz": "39f840ec7308631019031ccdc6858a1e0546d79c6ca2c760f806ef2f2c82a28a",
+    "selected-potential.json": "294dd9d55245fe4cb678e3739511b33d1e87ccfa8586ef0a7591c2107bf16cca",
+    "standard-startup-state.json": "e8d75b4fb668d3c2e33d1a6c6ef602dd005cd79795b9236a8c0823846b81fed2",
+    "test-summary.json": "6f423fb1bb87b0b128a823c009b5e4434e54a6bc8ecd6b299a8ccb5deda0492c"
+  },
+  "implementation_sha256": {
+    "docs/development/fixed_objective_turns_20261115/validate_selected_current.py": "e270363d71ce283bd07680e0bdb0f14286daba9d859a0fb05fea011de3b59197",
+    "docs/development/fixed_objective_turns_20261115/calibrate.py": "be783c0633a5b737e04a1dabd20d7ddae2eb6457215deee3ee4514cf38bf0592",
+    "src/temsim/physics/copper_coil_field_provider.py": "8c51d343e18b1c86c92e6d3836dfc592f77036f3b1fb0c02e3434870cb9a67da",
+    "src/temsim/physics/annular_coil_potential.py": "62d4b150dfc6bec68a03d60ef5b6f0d845cf555fd2e6696bebb4b7e8892bc68a",
+    "src/temsim/physics/lens_field_provider.py": "3ddf29c0ce09277cf7a43e25dad988dcd2229b32e04f8407ad4534e1594a8364",
+    "src/temsim/coil_reference_metadata.py": "8f49eb7757a49919769819f5b9a825d14ec5f40ba17a4c50369c5c245dc188ad",
+    "src/temsim/coil_winding.py": "71ba2681b2f402201fa0ebdc2d6bd2e6a04910b6721c8745466e4f720a6dd4ae",
+    "src/temsim/round_lens_models.py": "b9ee0c32352c3494ae0b2a60d2a88eeafc3d0fe490e7224654e7ecefe5104d23",
+    "tests/test_fixed_winding_currents.py": "a03e34f091f92cfb1f8c304a9bf67e9ca7daa0a0be9994ed7e5b6bcb633a86f3",
+    "tests/test_copper_coil_capture.py": "505b0fc972c78c4d349269571a59396287c57163a3b3382023428a9c24d2bd0e"
+  }
+}

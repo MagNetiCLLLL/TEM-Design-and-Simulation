@@ -65,6 +65,9 @@ _RUNTIME_NAMES = frozenset({
     "_instrument_magnetic_query_upper_m",
     "_instrument_electric_end_mm",  # Canonical worker domain, derived from resolved mechanics.
     "_runtime_lens_field_provider_cache", "_field_provider_diagnostics",
+    "_runtime_copper_coil_provider_cache",
+    "_runtime_nonlinear_provider_cache",
+    "_effective_aberration_cache", "_multiplane_transfer_cache",
     "_runtime_posed_nonlinear_provider_cache",
     "_lens_pose_registration_cache",
     "_lens_pose_bore_cache",
@@ -73,6 +76,7 @@ _RUNTIME_NAMES = frozenset({
     "_last_ray_device_receipt",  # Timing only; copied to result performance.
     "_scan_execution_receipt",  # Response evidence; resolved drive values remain captured inputs.
     "_archive_inputs", "_archive_resolver",  # Retained in the graph header; never encoded as a model object.
+    "_snapshot_explicit_default_fields",  # Preserve field presence in earlier exact graphs.
 })
 # Older pipeline revisions attached these outputs to State as well as keeping
 # them in CalculationResult. They are not source/optics inputs or checkpoints.
@@ -160,6 +164,10 @@ def encode_instrument(state, *, asset_store=None) -> Mapping:
                        and type(getattr(value, f.name)) is float
                        and getattr(value, f.name).hex() == (0.).hex()}
             omitted.update(f.name for f in declared if f.metadata.get("omit_none") and getattr(value, f.name) is None)
+            omitted.update(f.name for f in declared if f.metadata.get("omit_default")
+                           and f.name not in getattr(value, "_snapshot_explicit_default_fields", ())
+                           and type(getattr(value, f.name)) is type(f.default)
+                           and getattr(value, f.name) == f.default)
             node["fields"] = [f.name for f in declared if f.name not in omitted]
             names = [k for k in _attribute_names(value) if k not in omitted]
             if type_key == "temsim.optics.model:State":
@@ -210,7 +218,9 @@ def decode_instrument(graph, *, assets=None):
                               and f.name not in node["fields"] and f.name not in node["attributes"]}
             missing_optional = {f.name for f in declared if f.metadata.get("omit_none")
                                 and f.name not in node["fields"] and f.name not in node["attributes"]}
-            current_fields = [f.name for f in declared if f.name not in missing_drives|missing_optional]
+            missing_defaults = {f.name: f.default for f in declared if f.metadata.get("omit_default")
+                                and f.name not in node["fields"] and f.name not in node["attributes"]}
+            current_fields = [f.name for f in declared if f.name not in missing_drives|missing_optional|missing_defaults.keys()]
             if list(node["fields"]) != current_fields:
                 raise ValueError(f"Unsupported model schema for {node['type']}; only current fields are accepted")
             attributes = node["attributes"]
@@ -226,10 +236,16 @@ def decode_instrument(graph, *, assets=None):
                 raise ValueError("Invalid working-point attribute")
             result = object.__new__(cls)
             restored[index] = result
+            explicit_defaults = frozenset(f.name for f in declared if f.metadata.get("omit_default")
+                                           and f.name in node["fields"])
+            if explicit_defaults:
+                object.__setattr__(result, "_snapshot_explicit_default_fields", explicit_defaults)
             for name in missing_drives:
                 object.__setattr__(result, name, 0.0)
             for name in missing_optional:
                 object.__setattr__(result, name, None)
+            for name, value in missing_defaults.items():
+                object.__setattr__(result, name, value)
             for k, v in attributes.items():
                 if isinstance(getattr(cls, k, None), property) or callable(getattr(cls, k, None)):
                     raise ValueError("Working-point attributes cannot invoke model methods or setters")

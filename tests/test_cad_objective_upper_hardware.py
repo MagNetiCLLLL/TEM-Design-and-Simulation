@@ -64,8 +64,11 @@ def test_inner_insulation_preserves_pack_envelope_and_separates_copper_from_pole
     assert specs[1].shape == annulus(1206.9, 1351.9, 30., 66.)
     pole = _manifold(part_solids(rows["objective_upper_pole"], rows)[0].shape, count)
     assert all((pole ^ solid).volume() < 1e-7 for solid in by_region.values())
-    assert pole.min_gap(by_region["upper"], .3) == pytest.approx(.2 * np.cos(np.pi/count), abs=2e-8)
-    assert pole.min_gap(by_region["upper_winding_inner_insulation"], .1) == pytest.approx(0., abs=1e-10)
+    # The narrow stem clears the winding bore. The rear flange now sets the
+    # shortest distance to the upper copper, inner liner and downstream plate.
+    assert pole.min_gap(by_region["upper"], 6.) == pytest.approx(5.)
+    assert pole.min_gap(by_region["upper_winding_inner_insulation"], 6.) == pytest.approx(5.)
+    assert pole.min_gap(by_region["lower_cooling_plate"], 6.) == pytest.approx(3.8)
     for mesh in meshes_from_solids(specs, count):
         assert np.isfinite(mesh.vertices).all()
         edges = np.sort(mesh.faces[:, ((0, 1), (1, 2), (2, 0))].reshape(-1, 2), axis=1)

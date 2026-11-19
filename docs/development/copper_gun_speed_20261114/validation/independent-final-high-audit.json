@@ -1,0 +1,205 @@
+{
+  "status": "INDEPENDENT_COMPLETE_HIGH_RECOVERY_AUDIT_PASSED",
+  "scope": "Read-only audit of the complete formal archive and persisted raw arrays. No new emission, transport, field solve, benchmark or coherent calculation.",
+  "source_implementation": "50af4539a3dcd8e97b5ab7d586c13111659057fb98d3ada7a76c64abfc18ef35",
+  "archive": {
+    "path": "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\high-post-recovered\\high-post-recovered.temsim",
+    "bytes": 2924108230,
+    "sha256": "fd408971df86d07edb491021f348cdd92e9a4e9dea70f368a8d25a30b2a42b87",
+    "official_typed_load_succeeded": true,
+    "file_size_and_mtime_unchanged": true
+  },
+  "original_high_failure_and_failed_audit_preserved": {
+    "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\independent-complete-audit.json": "c3e75d807737a0979919746db1558e5b0facabb1f6c88643ffba76e01e528613",
+    "F:\\tem_simulator_v2\\outputs\\copper-gun-speed-20261114\\optimized-preview-high-1024\\failure.json": "f1fde91d7706c8380314c7a7ecfb5ed6307f0f80acb927e041f36001977ad825"
+  },
+  "recovery_scope": "Original High Gun and entire pre-sample incident retained; sample-to-end optical reference was newly transported once by the recovery producer.",
+  "new_finite_source_particles": 0,
+  "producer_forbidden_upstream_attempts": [],
+  "producer_post_transport_seconds": 1108.1023425000021,
+  "upstream_native_arrays_exact_to_original_high_disk": {
+    "native_array_count": 63,
+    "exact_dtype_shape_and_bytes": true,
+    "checked_fields": [
+      "incident.z",
+      "incident.x",
+      "incident.y",
+      "incident.tx",
+      "incident.ty",
+      "incident.alive",
+      "incident.blocked_z",
+      "incident.energy_offset_ev",
+      "incident.ray_weight",
+      "incident.source_ray_id",
+      "incident.source_azimuth_rad",
+      "incident.flight_time_s",
+      "incident.kinetic_energy_ev",
+      "gun.z_mm",
+      "gun.x_m",
+      "gun.y_m",
+      "gun.tx_rad",
+      "gun.ty_rad",
+      "gun.blocked_z_mm",
+      "gun.flight_time_s",
+      "gun_exit.x_m",
+      "gun_exit.y_m",
+      "gun_exit.tx_rad",
+      "gun_exit.ty_rad",
+      "gun_exit.energy_offset_ev",
+      "gun_exit.weight",
+      "gun_exit.ray_id",
+      "gun_exit.alive",
+      "gun_exit.flight_time_s",
+      "gun_time_history.time_s",
+      "gun_time_history.z_mm",
+      "gun_time_history.x_m",
+      "gun_time_history.y_m",
+      "gun_time_history.tx_rad",
+      "gun_time_history.ty_rad",
+      "gun_time_history.alive",
+      "gun_time_history.completed",
+      "checkpoint.z_mm",
+      "checkpoint.x_m",
+      "checkpoint.y_m",
+      "checkpoint.tx_rad",
+      "checkpoint.ty_rad",
+      "checkpoint.kinetic_energy_ev",
+      "checkpoint.flight_time_s",
+      "arrival0.time_s",
+      "arrival0.x_m",
+      "arrival0.y_m",
+      "arrival0.reached",
+      "arrival0.transmitted",
+      "arrival1.time_s",
+      "arrival1.x_m",
+      "arrival1.y_m",
+      "arrival1.reached",
+      "arrival1.transmitted",
+      "arrival2.time_s",
+      "arrival2.x_m",
+      "arrival2.y_m",
+      "arrival2.reached",
+      "arrival2.transmitted",
+      "emission.ray_id",
+      "emission.position_m",
+      "emission.direction",
+      "emission.normal"
+    ],
+    "codec_validation": "Official loader additionally verifies every numeric checksum and logical content digest"
+  },
+  "full_gun_numeric_and_metadata_fingerprint_exact_to_original_high": true,
+  "all_original_source_fields_exact_to_independent_emission": true,
+  "original_positive_source_count": 1024,
+  "configured_energy_fwhm_ev": 0.3,
+  "independent_controls_before_after_exact": true,
+  "full_runtime_snapshot_drives_gauge_and_geometry_exact_to_original_high": true,
+  "actual_runtime_digest": "50c1d6995691954e597bfc8c58ad0c9e65f343aeeffeb596426f0bae7be579a2",
+  "actual_field_numerical_digest": "0d893312694840ecd630e0ac962f376dba01e76d943c9f56400c640739f9422e",
+  "sample_checkpoint_to_post_entrance_exact_fields": [
+    "x",
+    "tx",
+    "y",
+    "ty",
+    "kinetic_energy_ev",
+    "flight_time_s"
+  ],
+  "complete_original_and_post_clocks_valid": true,
+  "branches": [
+    {
+      "name": "incident",
+      "shape": [
+        23239,
+        1024
+      ],
+      "coordinate_dtype": "<f8",
+      "raw_npz_exact_fields": [
+        "z",
+        "kinetic_energy_ev",
+        "flight_time_s",
+        "alive",
+        "blocked_z",
+        "ray_weight",
+        "source_ray_id"
+      ],
+      "required_pre_stop_energy_clock_points": 23565312,
+      "finite_positive_energy_before_stops": true,
+      "finite_nondecreasing_clocks_before_stops": true,
+      "minimum_adjacent_clock_increment_s": 8.271806125530277e-25,
+      "energy_range_ev": [
+        300000.01509454974,
+        300000.7013494626
+      ],
+      "maximum_energy_minus_nominal_plus_launch_ev": 3.597233444452286e-07,
+      "original_source_count": 1024,
+      "unique_source_ids": 1024,
+      "positive_final_survivors": 1024,
+      "source_weight_sum": 1.0,
+      "transmitted_source_fraction": 1.0,
+      "absorbed_source_fraction": 0.0,
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 1e-05,
+      "absorbed_current_a": 0.0,
+      "physical_stops": {},
+      "retained_z_range_mm": [
+        0.0,
+        1599.2
+      ]
+    },
+    {
+      "name": "000",
+      "shape": [
+        27847,
+        1024
+      ],
+      "coordinate_dtype": "<f8",
+      "raw_npz_exact_fields": [
+        "z",
+        "kinetic_energy_ev",
+        "flight_time_s",
+        "alive",
+        "blocked_z",
+        "ray_weight",
+        "source_ray_id"
+      ],
+      "required_pre_stop_energy_clock_points": 22916096,
+      "finite_positive_energy_before_stops": true,
+      "finite_nondecreasing_clocks_before_stops": true,
+      "minimum_adjacent_clock_increment_s": 0.0,
+      "energy_range_ev": [
+        300000.01509454125,
+        300000.7013494626
+      ],
+      "maximum_energy_minus_nominal_plus_launch_ev": 3.597233444452286e-07,
+      "original_source_count": 1024,
+      "unique_source_ids": 1024,
+      "positive_final_survivors": 0,
+      "source_weight_sum": 1.0,
+      "transmitted_source_fraction": 0.0,
+      "absorbed_source_fraction": 1.0,
+      "source_weight_ledger_residual": 0.0,
+      "physical_path_multiplier": 1.0,
+      "transmitted_current_a": 0.0,
+      "absorbed_current_a": 1e-05,
+      "physical_stops": {
+        "flu_screen": {
+          "count": 1024,
+          "source_fraction": 1.0,
+          "current_a": 1e-05,
+          "z_mm": [
+            2714.15
+          ]
+        }
+      },
+      "retained_z_range_mm": [
+        1599.2,
+        2987.1499999999996
+      ]
+    }
+  ],
+  "gun_exit_energy_error_ev": 9.097857400774956e-08,
+  "unchanged_gun_exit_energy_budget_ev": 0.001,
+  "sampling_and_physics_limit": "N=1024 is the original unchanged source population, not a source-sampling convergence study. Optical reference excludes material scattering, coherent propagation and scanning-image qualification. Original Preview used a different scan field and is not a fixed-field numerical control.",
+  "restart_limit": "Complete post branch readouts are present. The current rebuild API did not save native internal post-section checkpoints, so the formal file does not prove arbitrary-plane post restart support.",
+  "audit_elapsed_seconds": 18.490099599999667
+}

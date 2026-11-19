@@ -37,7 +37,7 @@ def test_invalid_raster_is_rejected(attribute, value):
 @pytest.fixture
 def mocked(monkeypatch):
     from temsim.physics import compute_backend, mixed_wave_particles
-    from temsim import simulation_pipeline, instrument_snapshot, simulation_modes
+    from temsim import simulation_pipeline, instrument_snapshot
     from temsim.specimen import source
     calls = []
     input_state = state()
@@ -46,7 +46,6 @@ def mocked(monkeypatch):
     inputs = SimpleNamespace(digest=digest, restore=lambda: captured)
     monkeypatch.setattr(instrument_snapshot, "capture_instrument_snapshot", lambda _state: inputs)
     monkeypatch.setattr(compute_backend, "require_coherent_cuda", lambda *_: calls.append("cuda"))
-    monkeypatch.setattr(simulation_modes, "require_coherent_mode", lambda *_: None)
     monkeypatch.setattr(source, "validate_sample_source", lambda *_: None)
     monkeypatch.setattr(source, "specimen_is_vacuum", lambda *_: False)
     request = SimpleNamespace(validate=lambda: request)

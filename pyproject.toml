@@ -81,6 +81,7 @@ bdist_wheel = "temsim._build.FreshWheel"
 [tool.setuptools.data-files]
 "." = ["requirements-cad.txt"]
 "configs/environments" = ["configs/environments/*.toml"]
+"configs/physics" = ["configs/physics/*.toml"]
 "configs/sources" = ["configs/sources/*.toml"]
 "configs/subassemblies" = ["configs/subassemblies/*.toml"]
 "configs/instruments" = ["configs/instruments/catalog.toml"]

@@ -1,0 +1,119 @@
+"""Copy the exact installed reference, adding only proven observer hooks.
+
+This preparation reads/copies files and compares Python syntax trees. It does
+not emit particles, evaluate a field or start transport. The original wheel
+installation and earlier evidence are never modified.
+"""
+import argparse
+import ast
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import shutil
+
+
+ROOT = Path(__file__).resolve().parents[2]
+WORK = Path(__file__).resolve().parent
+REFERENCE = Path("C:/Users/54019/AppData/Local/Temp/temsim-source-growth-wheel-v0hij8i_/installed/Lib/site-packages/temsim")
+REFERENCE_IDENTITY = "508dbecbcbbef6132b8b880adad4635e3ad3f18d9bca9cc3c1147c1894344456"
+TRACING_REFERENCE_SHA = "f8c91f1d9a53b676db6f412e1c567c3018cc53f2b3e0572278cb3a23ddfa1762"
+
+
+def source_identity(root):
+    # Preserve the production component-wise Windows ordering and raw bytes.
+    root = os.path.realpath(root)
+    files = []
+    for directory, directories, names in os.walk(root):
+        for name in (*directories, *names):
+            if os.path.normcase(name).endswith(".py"):
+                files.append(os.path.join(directory, name))
+    h = sha256()
+    for path in sorted(files, key=lambda p: tuple(os.path.normcase(p).split(os.sep))):
+        h.update(path[len(root)+1:].replace(os.sep, "/").encode())
+        h.update(Path(path).read_bytes())
+    return h.hexdigest()
+
+
+class RemoveObserver(ast.NodeTransformer):
+    """Extract the original default branch; reject any other code difference."""
+    def visit_ImportFrom(self, node):
+        return None if node.module == "temsim.physics.gun_step_diagnostics" else node
+
+    def visit_Assign(self, node):
+        if any(isinstance(target, ast.Name) and target.id in {"diagnostics", "step_diagnostics"}
+               for target in node.targets):
+            return None
+        return self.generic_visit(node)
+
+    def visit_If(self, node):
+        test = node.test
+        if (isinstance(test, ast.Compare) and isinstance(test.left, ast.Name)
+                and test.left.id in {"diagnostics", "step_diagnostics"}
+                and len(test.ops) == len(test.comparators) == 1
+                and isinstance(test.comparators[0], ast.Constant) and test.comparators[0].value is None):
+            if isinstance(test.ops[0], ast.Is):
+                return [self.visit(item) for item in node.body]
+            if isinstance(test.ops[0], ast.IsNot):
+                return None
+        return self.generic_visit(node)
+
+    def visit_For(self, node):
+        if (isinstance(node.target, ast.Name) and node.target.id == "attempt"
+                and isinstance(node.iter, ast.Call) and isinstance(node.iter.func, ast.Name)
+                and node.iter.func.id == "range" and len(node.iter.args) == 1
+                and isinstance(node.iter.args[0], ast.Name) and node.iter.args[0].id == "GEOMETRY_STEP_MAXIMUM_RETRIES"):
+            node.target.id = "_"
+        return self.generic_visit(node)
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--reference", type=Path, default=REFERENCE)
+    p.add_argument("--destination", type=Path, default=WORK / "baseline-package")
+    args = p.parse_args(argv)
+    reference, destination = args.reference.resolve(), args.destination.resolve()
+    if destination.exists():
+        raise FileExistsError("Choose a new baseline-package directory")
+    if destination.is_relative_to(reference) or reference.is_relative_to(destination):
+        raise ValueError("The copied reference must be separate from the original installation")
+    original_identity = source_identity(reference)
+    if original_identity != REFERENCE_IDENTITY:
+        raise ValueError("The installed reference does not have the declared exact source identity")
+    relative = Path("optics/electron_gun/tracing.py")
+    original = (reference / relative).read_bytes()
+    if sha256(original).hexdigest() != TRACING_REFERENCE_SHA:
+        raise ValueError("The original tracing file differs from its recorded baseline")
+    observed = (ROOT / "src/temsim" / relative).read_bytes()
+    old_ast = ast.parse(original.decode("utf-8"))
+    numerical_ast = RemoveObserver().visit(ast.parse(observed.decode("utf-8")))
+    if ast.dump(old_ast, include_attributes=False) != ast.dump(numerical_ast, include_attributes=False):
+        raise ValueError("Observer removal does not reproduce the complete original tracing syntax tree")
+    destination.mkdir(parents=True, exist_ok=False)
+    copied = destination / "temsim"
+    shutil.copytree(reference, copied, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.nbc", "*.nbi"))
+    if source_identity(copied) != REFERENCE_IDENTITY:
+        raise ValueError("The raw reference copy does not preserve its source identity")
+    (copied / relative).write_bytes(observed)
+    helper = Path("physics/gun_step_diagnostics.py")
+    shutil.copy2(ROOT / "src/temsim" / helper, copied / helper)
+    changed = {}
+    for path in copied.rglob("*.py"):
+        old = reference / path.relative_to(copied)
+        if not old.is_file() or old.read_bytes() != path.read_bytes():
+            changed[path.relative_to(copied).as_posix()] = sha256(path.read_bytes()).hexdigest()
+    if set(changed) != {relative.as_posix(), helper.as_posix()}:
+        raise ValueError("Unexpected source changes in instrumented reference")
+    record = dict(status="PREPARED_NO_PHYSICAL_EXECUTION", original_source_identity=REFERENCE_IDENTITY,
+        instrumented_source_identity=source_identity(copied), reference_directory=str(reference),
+        package_root=str(destination), original_tracing_sha256=TRACING_REFERENCE_SHA,
+        complete_default_tracing_numerical_ast_equal=True, changed_observer_files=changed,
+        scope="Exact old algorithm/providers plus optional pure observer hooks. Not the optimized working tree. No emission, field evaluation or propagation during preparation.")
+    with (destination / "preparation.json").open("x", encoding="utf-8") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+    print(json.dumps(record), flush=True)
+
+
+if __name__ == "__main__":
+    main()

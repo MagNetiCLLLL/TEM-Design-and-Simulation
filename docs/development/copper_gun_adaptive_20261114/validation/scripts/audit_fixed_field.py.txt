@@ -1,0 +1,146 @@
+"""Read saved High/coarse formal results; no emission, field solve or transport."""
+import argparse
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+
+import numpy as np
+
+
+CASE = Path(__file__).resolve().parent
+ROOT = CASE.parents[1]
+
+
+def module(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    value = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(value)
+    return value
+
+
+def ids(branch):
+    value = np.asarray(branch.source_ray_id)
+    if value.shape != (1024,) or value.dtype.kind not in "iu" or np.unique(value).size != 1024:
+        raise ValueError("Sample comparison requires 1024 actual unique original source IDs")
+    return value, np.argsort(value)
+
+
+def metrics(first, second, mask, unit):
+    delta = np.asarray(second, np.float64)[mask]-np.asarray(first, np.float64)[mask]
+    if not delta.size or not np.isfinite(delta).all():
+        raise ValueError("A saved sample endpoint comparison is missing finite shared physical values")
+    return dict(unit=unit, count=int(delta.size), max_abs=float(np.max(np.abs(delta))),
+        rms=float(np.sqrt(np.mean(delta*delta))), mean_signed=float(np.mean(delta)),
+        convention="Coarse minus High on the same original source IDs; no recentering/refocusing")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--high", type=Path, default=CASE / "adaptive-preview-high-1024/high-accuracy/complete-result.temsim")
+    parser.add_argument("--coarse", type=Path, default=CASE / "fixed-high-field-preview-execution/fixed-high-field-preview.temsim")
+    parser.add_argument("--archive-gib", type=int, default=16)
+    args = parser.parse_args()
+    os.environ["TEMSIM_PROJECT_ROOT"] = str(ROOT)
+    sys.path.insert(0, str(ROOT / "src"))
+    from temsim.particle_section_io import load_section_result
+    from temsim.immutable_json import json_digest
+    from temsim.physics.simulation import validate_incident_flight_times
+    from temsim.calculation_manifest import solver_source_identity
+    control = module(CASE / "fixed_field_preview.py", "fixed_field_audit_subject")
+    support, helper = control.load_helpers()
+    execution = json.loads((args.coarse.parent / "summary.json").read_text(encoding="utf-8"))
+    if execution["status"] != "COMPLETE_FIXED_HIGH_FIELD_PREVIEW_CONTROL":
+        raise ValueError("No completed, archived fixed-field control exists")
+    high = load_section_result(args.high, maximum_unpacked_bytes=args.archive_gib*1024**3)
+    coarse = load_section_result(args.coarse, maximum_unpacked_bytes=args.archive_gib*1024**3)
+    if not validate_incident_flight_times(high.simulation) or not validate_incident_flight_times(coarse.simulation):
+        raise ValueError("Formal results lack complete native clock provenance")
+    hi, co = high.simulation, coarse.simulation
+    if json_digest(control.operator_witness(hi.incident_plan.unified_runtime)) != json_digest(control.operator_witness(co.incident_plan.unified_runtime)):
+        raise ValueError("Saved results do not use the same actual providers/drives/gauge/boundaries")
+    if json_digest(support.independent_controls(high.state_snapshot, helper)) != json_digest(support.independent_controls(coarse.state_snapshot, helper)):
+        raise ValueError("Independent source/optical inputs differ")
+    if json_digest(control.comparable_graph(high.state_snapshot, support)) != json_digest(control.comparable_graph(coarse.state_snapshot, support)):
+        raise ValueError("A non-quality physical input or tolerance differs")
+    original_ids, high_order = ids(hi.incident)
+    coarse_ids, coarse_order = ids(co.incident)
+    np.testing.assert_array_equal(original_ids[high_order], coarse_ids[coarse_order])
+    weights_high = np.asarray(hi.incident.ray_weight)[high_order]
+    weights_coarse = np.asarray(co.incident.ray_weight)[coarse_order]
+    if weights_high.tobytes() != weights_coarse.tobytes():
+        raise ValueError("Source weights changed in the coarse control")
+    source = []
+    for owner in ("emission_phase", "emission_reference"):
+        before, after = getattr(hi.gun_trace, owner), getattr(co.gun_trace, owner)
+        if set(before) != set(after):
+            raise ValueError("Original Gun launch fields differ")
+        for key in before:
+            a, b = np.asarray(before[key]), np.asarray(after[key])
+            equal = a.dtype == b.dtype and a.shape == b.shape and a.tobytes() == b.tobytes()
+            if not equal:
+                raise ValueError("Original Gun launch changed: "+owner+"."+key)
+            source.append(dict(field=owner+"."+key, exact_bytes_equal=True, **control.array_record(a)))
+    gun_exit = []
+    for key in ("x_m", "y_m", "tx_rad", "ty_rad", "energy_offset_ev", "weight", "ray_id", "alive", "flight_time_s"):
+        a, b = np.asarray(getattr(hi.gun_trace.exit_bundle, key)), np.asarray(getattr(co.gun_trace.exit_bundle, key))
+        equal = a.dtype == b.dtype and a.shape == b.shape and a.tobytes() == b.tobytes()
+        if not equal:
+            raise ValueError("The genuine completed Gun exit changed: "+key)
+        gun_exit.append(dict(field=key, exact_bytes_equal=True, **control.array_record(a)))
+    hp, cp = hi.incident_checkpoints, co.incident_checkpoints
+    if hp.z_mm[-1] != cp.z_mm[-1] or hp.z_mm[-1] != high.state_snapshot.sample.z_mm:
+        raise ValueError("Results do not share an exact legitimate sample checkpoint")
+    alive_high, alive_coarse = np.asarray(hi.incident.alive)[high_order], np.asarray(co.incident.alive)[coarse_order]
+    common = alive_high & alive_coarse & (weights_high > 0) & (weights_coarse > 0)
+    endpoint = {}
+    for key, unit in (("x_m", "m"), ("y_m", "m"), ("tx_rad", "rad"), ("ty_rad", "rad"),
+            ("flight_time_s", "s"), ("kinetic_energy_ev", "eV")):
+        endpoint[key] = metrics(np.asarray(getattr(hp, key)[-1])[high_order],
+            np.asarray(getattr(cp, key)[-1])[coarse_order], common, unit)
+    flags = dict(sample_alive_exact=alive_high.tobytes()==alive_coarse.tobytes(),
+        sample_blocked_z_exact=np.asarray(hi.incident.blocked_z)[high_order].tobytes()==np.asarray(co.incident.blocked_z)[coarse_order].tobytes(),
+        sample_blocked_key_exact=[hi.incident.blocked_key[i] for i in high_order]==[co.incident.blocked_key[i] for i in coarse_order],
+        original_source_weight_bytes_exact=True)
+    post = {}
+    if set(hi.branches) != set(co.branches):
+        raise ValueError("The formal coarse result omitted a downstream path")
+    for key in hi.branches:
+        a, b = hi.branches[key], co.branches[key]
+        _, ao = ids(a)
+        _, bo = ids(b)
+        post[key] = dict(alive_exact=np.asarray(a.alive)[ao].tobytes()==np.asarray(b.alive)[bo].tobytes(),
+            weight_bytes_exact=np.asarray(a.ray_weight)[ao].tobytes()==np.asarray(b.ray_weight)[bo].tobytes(),
+            blocked_key_exact=[a.blocked_key[i] for i in ao]==[b.blocked_key[i] for i in bo],
+            high_stop_z_range_mm=[float(np.nanmin(a.blocked_z)),float(np.nanmax(a.blocked_z))],
+            coarse_stop_z_range_mm=[float(np.nanmin(b.blocked_z)),float(np.nanmax(b.blocked_z))])
+    record = dict(status="VERIFIED_SAVED_FIXED_HIGH_FIELD_COARSE_CONTROL", physical_execution=False,
+        implementation=solver_source_identity(),
+        high_archive=dict(path=str(args.high.resolve()), sha256=support.sha(args.high), package_digest=high.section_archive_info["_package_digest"]),
+        coarse_archive=dict(path=str(args.coarse.resolve()), sha256=support.sha(args.coarse), package_digest=coarse.section_archive_info["_package_digest"]),
+        actual_operator_witness_exact=True, independent_physical_inputs_and_tolerances_exact=True,
+        original_count=1024, original_positive_count=int(np.count_nonzero(weights_high > 0)),
+        source_launch_fields=source, original_gun_exit_fields=gun_exit,
+        original_weight_sum=float(weights_high.sum()), emitted_current_a=float(hi.gun_trace.emitted_current_a),
+        compared_common_sample_count=int(np.count_nonzero(common)), sample_z_mm=float(hp.z_mm[-1]),
+        sample_max_rms_differences=endpoint, flags=flags, post_stop_ledger=post,
+        quality_numerics=dict(high_step_mm=high.state_snapshot.step_mm, coarse_step_mm=coarse.state_snapshot.step_mm,
+            high_history_step_mm=high.state_snapshot.history_step_mm, coarse_history_step_mm=coarse.state_snapshot.history_step_mm),
+        scope="Raw exact sample checkpoints compared by original source ID. New coarse integration reused only the genuine High Gun. This is a step-size sensitivity control at one fixed actual field, not a multi-grid convergence certificate, refocus, material scattering or coherent/scan qualification.")
+    path = CASE / "independent-fixed-field-audit.json"
+    support.write_json(path, record)
+    lines = ["Saved fixed-actual-High-field Preview control independently verified.",
+        "All 1024 original source IDs/weights/launch fields and the genuine Gun exit remain byte-exact.",
+        "Actual providers, drive time laws, gauge, boundaries and independent inputs/tolerances match.",
+        f"Compared {record['compared_common_sample_count']} actual common sample rays at Z={record['sample_z_mm']} mm.",
+        "Raw differences (coarse minus High; max absolute / RMS):"]
+    lines.extend(f"{key}: {value['max_abs']:.9g} / {value['rms']:.9g} {value['unit']}" for key,value in endpoint.items())
+    lines.extend(["No centroid removal, refocusing, source-current restoration or trajectory interpolation was applied.", record["scope"]])
+    with (CASE / "independent-fixed-field-audit-brief.txt").open("x",encoding="utf-8") as stream:
+        stream.write("\n".join(lines)+"\n")
+    print(json.dumps(dict(path=str(path),sample_differences=endpoint,flags=flags),indent=2),flush=True)
+
+
+if __name__ == "__main__":
+    main()
