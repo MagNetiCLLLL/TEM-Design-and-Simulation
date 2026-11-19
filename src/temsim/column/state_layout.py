@@ -214,8 +214,6 @@ def layout_configuration_from_state(
     assembly=None,
 ):
     """Translate persisted topology selections into layout configuration."""
-    if assembly is None and assembly_root is None:
-        assembly = getattr(state, "_resolved_assembly", None)
     from temsim.optics.image_corrector import ensure_image_corrector_design
     ensure_image_corrector_design(state)
     hardware = C3Hardware(getattr(state, "layout_c3_hardware", "three_condenser"))
@@ -379,7 +377,17 @@ def layout_configuration_from_state(
     # The selected TOML assembly is the sole mechanical and optical-reference
     # authority. Runtime operating controls are preserved while manifest-owned
     # geometry and field calibration are reloaded here.
-    from temsim.column.module_assembly import apply_column_manifest_geometry
+    from temsim.column.module_assembly import apply_column_manifest_geometry, resolve_module_assembly
+    if assembly is None and assembly_root is None:
+        assembly = getattr(state, "_resolved_assembly", None)
+        if assembly is not None and configuration.nanopulser_installed != (
+            "beam_blanker" in dict(assembly.selected_module_paths)
+        ):
+            # An installation edit changes the module chain. Resolve it from
+            # the instrument's own inputs, including any archived geometry.
+            from temsim import input_io
+            with input_io.input_scope(state):
+                assembly = resolve_module_assembly(configuration, root=assembly.root)
     apply_column_manifest_geometry(
         state,
         configuration,
@@ -389,6 +397,7 @@ def layout_configuration_from_state(
     )
     configuration = replace(
         configuration,
+        nanopulser_installed=state.nanopulser.installed,
         sample_center_from_source_mm=float(state.sample.z_mm),
         objective=ObjectiveLayout(
             inner_face_gap_mm=state.objective_lens.inner_face_gap_mm,
@@ -472,6 +481,7 @@ def apply_physical_layout_to_state(
 
     A state that already owns a :class:`ResolvedAssembly` must keep using that
     exact immutable assembly for ordinary layout refreshes and calculations.
+    Changing the optional blanker installation selects a different module chain.
     Re-resolving from the process-default TOML catalog can silently substitute
     a different module length (notably FEG + Mono or Electrostatic beam blanker) in detached
     worker states.  Supplying ``assembly_root`` remains the explicit request to
@@ -483,8 +493,6 @@ def apply_physical_layout_to_state(
         clear_module_state_offsets,
     )
 
-    if assembly is None and assembly_root is None:
-        assembly = getattr(state, "_resolved_assembly", None)
     clear_module_state_offsets(state)
     configuration = layout_configuration_from_state(
         state,

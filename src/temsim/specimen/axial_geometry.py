@@ -12,10 +12,13 @@ from temsim import input_io
 from temsim.immutable_json import thaw_json, json_digest
 
 
-def _validate_faces(sample, assembly):
+def _validate_faces(sample, assembly, *, upper_surface_z_mm=None):
+    if upper_surface_z_mm is None:
+        upper_surface_z_mm = sample.upper_surface_z_mm
+    lower_surface_z_mm = upper_surface_z_mm + float(sample.thickness_nm) * 1e-6
     parts = {part.key: part for part in assembly.parts}
-    lower = max(parts[key].start_z_mm for key in ("sample_stage",))
-    upper = min(parts[key].end_z_mm for key in ("sample_stage",))
+    stage = parts["sample_stage"]
+    lower, upper = stage.start_z_mm, stage.end_z_mm
     if "objective_upper_pole" in parts:
         lower = max(lower, parts["objective_upper_pole"].end_z_mm)
     if "objective_lower_pole" in parts:
@@ -27,29 +30,58 @@ def _validate_faces(sample, assembly):
     # Retain the module's existing mechanical-coordinate tolerance. The
     # actual slab faces are checked in addition to its mechanical marker.
     tolerance = 1e-9
-    if sample.upper_surface_z_mm < lower-tolerance or sample.lower_surface_z_mm > upper+tolerance:
-        raise ValueError("The complete specimen thickness must remain inside the fixed holder, stage and Objective pole gap")
+    if upper_surface_z_mm < lower-tolerance or lower_surface_z_mm > upper+tolerance:
+        raise ValueError(
+            "The complete specimen thickness must remain inside the fixed holder, stage and Objective pole gap "
+            f"(specimen Z {upper_surface_z_mm:.12g} to {lower_surface_z_mm:.12g} mm, "
+            f"allowed Z {lower:.12g} to {upper:.12g} mm)"
+        )
+
+
+def _mount_center_z_mm(assembly):
+    # Older columns describe the specimen support with the stage alone.
+    try:
+        return assembly.part("sample_holder").center_z_mm
+    except KeyError:
+        return assembly.part("sample_stage").center_z_mm
+
+
+def _mount_translation_mm(previous, assembly):
+    if previous is None or previous is assembly:
+        return 0.0
+    before = dict(previous.selected_module_paths)
+    after = dict(assembly.selected_module_paths)
+    if all(before.get(key) == after.get(key) for key in ("gun", "beam_blanker", "column")):
+        return 0.0
+    return _mount_center_z_mm(assembly) - _mount_center_z_mm(previous)
 
 
 def anchored_sample_assembly(state, assembly, configuration, *, preserve_operating_parameters=True):
-    """Resolve only the foil placement into a private archived column TOML."""
-    from temsim.column.module_assembly import resolve_module_assembly
-    from temsim.part_model_document import PartModelDocument
+    """Keep the specimen entrance fixed in its mount when installing hardware."""
     sample = state.sample
     part = assembly.part("sample")
-    # An explicit hardware installation chooses its new reference. Ordinary
-    # catalog reloads must not be mistaken for user foil placement; an
-    # intentional Place action first assigns sample.z_mm explicitly.
-    if not preserve_operating_parameters:
-        object.__setattr__(sample, "z_mm", float(part.center_z_mm))
-        object.__setattr__(sample, "upper_surface_reference_z_mm", float(part.center_z_mm)-sample.thickness_nm*.5e-6)
-    upper = sample.ensure_upper_surface_reference()
-    target = upper+float(sample.thickness_nm)*.5e-6
+    thickness_mm = float(sample.thickness_nm) * 1e-6
+    if preserve_operating_parameters:
+        previous = getattr(state, "_resolved_assembly", None)
+        upper = sample.ensure_upper_surface_reference() + _mount_translation_mm(previous, assembly)
+    else:
+        upper = part.center_z_mm - thickness_mm * 0.5
+    target = upper + thickness_mm * 0.5
+    _validate_faces(sample, assembly, upper_surface_z_mm=upper)
+    tolerance = 4 * abs(float(np.spacing(target)))
+    if not math.isclose(target, part.center_z_mm, rel_tol=0, abs_tol=tolerance):
+        assembly = _place_sample_part(state, assembly, configuration, part, target, tolerance)
+    object.__setattr__(sample, "upper_surface_reference_z_mm", upper)
     object.__setattr__(sample, "z_mm", target)
-    _validate_faces(sample, assembly)
-    tolerance = 4*abs(float(np.spacing(target)))
-    if math.isclose(target, part.center_z_mm, rel_tol=0, abs_tol=tolerance):
-        return assembly
+    sample.ensure_upper_surface_reference()
+    return assembly
+
+
+def _place_sample_part(state, assembly, configuration, part, target, tolerance):
+    """Move only the specimen marker in a private copy of the column TOML."""
+    from temsim.column.module_assembly import resolve_module_assembly
+    from temsim.part_model_document import PartModelDocument
+
     if getattr(state, "_resolved_assembly", None) is None:
         state._resolved_assembly = assembly
     archive = input_io.capture_input_archive(state)

@@ -2,6 +2,7 @@
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
+from shutil import copytree
 
 import numpy as np
 import pytest
@@ -18,11 +19,44 @@ from temsim.working_point import WorkingPointCheckpoint
 PROFILE = Path(__file__).resolve().parents[1]/"profiles/feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp"
 
 
+@pytest.fixture(scope="module")
+def historical_config_root(tmp_path_factory):
+    """Load the recorded column and gun against their original file identities."""
+    from temsim import paths
+    from temsim.input_design import _archive_path
+
+    checkpoint = WorkingPointCheckpoint.read_package(PROFILE)
+    inputs = checkpoint.snapshot.external_inputs
+    catalog = next(row for row in inputs if row["role"] == "assembly:catalog")
+    recorded_root = _archive_path(catalog["path"]).parent.parent
+    root = tmp_path_factory.mktemp("historical-profile") / "configs"
+    copytree(paths.CONFIG_ROOT, root)
+    for row in inputs:
+        relative = _archive_path(row["path"]).relative_to(recorded_root)
+        content = bytes.fromhex(row["content_hex"])
+        assert sha256(content).hexdigest() == row["sha256"]
+        root.joinpath(*relative.parts).write_bytes(content)
+    return root
+
+
+@pytest.fixture(scope="module")
+def restore_historical_state(historical_config_root):
+    from temsim import input_io, paths
+
+    def restore():
+        with pytest.MonkeyPatch.context() as patch:
+            patch.setattr(paths, "CONFIG_ROOT", historical_config_root)
+            result = WorkingPointCheckpoint.read_package(PROFILE).compatible_state()
+            input_io.bind_archive(result, input_io.capture_input_archive(result))
+        return result
+
+    return restore
+
+
 @pytest.fixture
-def state():
+def state(restore_historical_state):
     before = sha256(PROFILE.read_bytes()).hexdigest()
-    result = WorkingPointCheckpoint.read_package(PROFILE).compatible_state()
-    yield result
+    yield restore_historical_state()
     assert sha256(PROFILE.read_bytes()).hexdigest() == before
 
 
@@ -88,7 +122,7 @@ def test_repeated_layout_snapshot_restore_and_state_roundtrip_do_not_drift(state
 def test_catalog_reload_cannot_replace_the_fixed_entrance_with_live_toml_centre(state):
     set_sample_thickness(state, 10.)
     upper = state.sample.upper_surface_z_mm
-    catalog = AssemblyCatalog()
+    catalog = AssemblyCatalog(state._resolved_assembly.root)
     selection = catalog.selection_for_resolved(state._resolved_assembly)
     catalog.apply(state, selection, preserve_operating_parameters=True)
     assert state.sample.upper_surface_z_mm == upper
@@ -171,7 +205,7 @@ def test_already_correct_ten_nm_legacy_sample_initializes_its_own_phase_and_uppe
     assert state.sample.lattice_reference_thickness_nm == 10.
 
 
-def test_operating_profile_persists_both_references_and_restores_before_thickness_edit(state, tmp_path):
+def test_operating_profile_persists_both_references_and_restores_before_thickness_edit(state, tmp_path, restore_historical_state):
     from temsim.profile_io import save_profile, read_profile, apply_profile_values
     set_sample_thickness(state, 10.)
     upper = state.sample.upper_surface_z_mm
@@ -179,7 +213,7 @@ def test_operating_profile_persists_both_references_and_restores_before_thicknes
     path = tmp_path/"anchored-operating.toml"
     save_profile(path, state, catalog.selection_for_resolved(state._resolved_assembly))
     _, values = read_profile(path)
-    fresh = WorkingPointCheckpoint.read_package(PROFILE).compatible_state()
+    fresh = restore_historical_state()
     apply_profile_values(fresh, values)
     apply_physical_layout_to_state(fresh, preserve_operating_parameters=True)
     assert fresh.sample.upper_surface_z_mm == upper

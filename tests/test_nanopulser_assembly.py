@@ -109,6 +109,18 @@ def test_physical_layout_exposes_installed_electrostatic_blanker():
     assert by_key[NANOPULSER_DEFLECTOR].field_model.kind == "electrostatic_field"
     assert by_key[NANOPULSER_APERTURE].field_model.kind == "hard_aperture"
     assert by_key[NANOPULSER_APERTURE].effective_aperture_radius_mm == 0.1
+    installed = configuration.resolved_assembly
+    assert layout_configuration_from_state(state).resolved_assembly is installed
+
+    state.nanopulser.installed = False
+    removed = layout_configuration_from_state(state)
+    assert "beam_blanker" not in dict(removed.resolved_assembly.selected_module_paths)
+    assert {NANOPULSER_DEFLECTOR, NANOPULSER_APERTURE}.isdisjoint(item.key for item in build_optics_layout(removed))
+
+    restored = layout_configuration_from_state(state, assembly=installed)
+    assert restored.resolved_assembly is installed
+    assert restored.nanopulser_installed and state.nanopulser.installed
+    assert NANOPULSER_DEFLECTOR in {item.key for item in build_optics_layout(restored)}
 
 
 def test_blanker_toml_geometry_rebuild_preserves_operating_settings(tmp_path: Path):
@@ -133,6 +145,11 @@ def test_blanker_toml_geometry_rebuild_preserves_operating_settings(tmp_path: Pa
         layout_configuration_from_state(state, assembly_root=root),
     )
     catalog.apply(state, selection)
+    for installed in (False, True):
+        state.nanopulser.installed = installed
+        configuration = layout_configuration_from_state(state)
+        assert configuration.resolved_assembly.root == root
+        assert ("beam_blanker" in dict(configuration.resolved_assembly.selected_module_paths)) == installed
     assert state.nanopulser.plate_length_mm == 8.0
     assert state.nanopulser.plate_gap_mm == 0.8
     assert state.nanopulser.aperture_radius_mm == 0.08

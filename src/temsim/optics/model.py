@@ -749,15 +749,6 @@ class State:
             captured_monochromator = "feg_monochromator_wien" in installed
             if not required <= installed or captured_monochromator != self.monochromator_installed:
                 catalog_root = selected_assembly.root
-                # The downstream module chain is rigidly attached to the gun
-                # exit port. Preserve the foil's placement within that chain
-                # when explicit replacement hardware changes its origin;
-                # fixed-entrance thickness edits still retain their own anchor.
-                captured_gun = next(module for module in selected_assembly.modules if module.type == "gun")
-                old_exit = float(captured_gun.exit_z_mm-captured_gun.entrance_z_mm)
-                delta = float(self.electron_gun.exit_plane_z_mm)-old_exit
-                if delta != 0.:
-                    self.sample.z_mm = float(self.sample.z_mm)+delta
         from temsim import input_io
         with input_io.input_scope(self):
             apply_column_manifest_geometry(

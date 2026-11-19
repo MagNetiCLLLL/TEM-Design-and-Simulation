@@ -10,6 +10,7 @@ import tomllib
 from temsim import module_manifest
 from temsim.column.state_layout import apply_physical_layout_to_state
 from temsim.optics.corrector_structure import ensure_corrector_structure
+from temsim.optics.nanopulser import ensure_nanopulser
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
 
 
@@ -274,9 +275,6 @@ class AssemblyCatalog:
         recording = self._by_name(self.recording_systems, selection.recording)
         retained_component_keys = set(getattr(state, "image_corrector_initialized_keys", ()))
         retained_component_keys.update(getattr(state, "_module_manifest_parts", {}))
-        from temsim.optics.nanopulser import ensure_nanopulser
-        ensure_nanopulser(state).installed = selection.beam_blanker != "None"
-
         gun_type = (
             "thermionic"
             if gun.properties["electron_gun"] == "Thermionic"
@@ -290,6 +288,9 @@ class AssemblyCatalog:
             # must keep this catalog's resolved defaults and live overrides.
             state.monochromator_installed = installed
 
+        # Gun changes can reload the previous manifest and its blanker flag.
+        # Set the requested installation after these intermediate layouts.
+        ensure_nanopulser(state).installed = selection.beam_blanker != "None"
         has_c3 = bool(column.properties["c3_lens"])
         has_probe = bool(column.properties["probe_corrector"])
         has_image = bool(column.properties["image_corrector"])

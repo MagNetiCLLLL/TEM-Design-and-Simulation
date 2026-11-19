@@ -89,7 +89,10 @@ def check_instrument_configuration(state, catalog, units):
     candidate = original.restore()
     current = catalog.selection_for_resolved(state._resolved_assembly)
     if selection != current:
-        catalog.apply(candidate, selection, preserve_operating_parameters=True)
+        assembly = catalog.apply(candidate, selection, preserve_operating_parameters=True)
+        resolved = catalog.selection_for_resolved(assembly)
+        if resolved != selection:
+            raise ValueError(f"Resolved instrument modules {resolved} differ from the requested modules {selection}")
     # Preserve exact settings on an unchanged selection; do not reset a live
     # tip, lens or aperture merely by applying an unchanged configuration.
     candidate.electron_gun.validate()
