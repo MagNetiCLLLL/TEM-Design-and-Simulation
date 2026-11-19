@@ -8,6 +8,10 @@ from time import monotonic
 _CURRENT = ContextVar("temsim_job_trace", default=None)
 
 
+def is_job_scalar(value):
+    return value is None or isinstance(value, (str, int, float, bool))
+
+
 class JobEvents:
     def __init__(self, maximum=4096):
         self._rows = deque(maxlen=maximum)
@@ -16,7 +20,7 @@ class JobEvents:
     def record(self, event, *, metadata=None, timestamp=None, **details):
         row = dict(metadata or {})
         row.update(details)
-        if any(value is not None and not isinstance(value, (str, int, float, bool)) for value in row.values()):
+        if not all(is_job_scalar(value) for value in row.values()):
             raise TypeError("Job evidence accepts scalar metadata, never arrays or model objects")
         row.update(event=str(event), monotonic_s=monotonic() if timestamp is None else timestamp,
                    thread_id=get_ident())

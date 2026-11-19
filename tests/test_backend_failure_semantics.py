@@ -224,25 +224,46 @@ def test_mixed_stages_and_requested_actual_backend_are_not_collapsed():
     assert any("energy_filter: requested Require GPU; actual CPU" in line for line in lines)
 
 
-def test_completed_worker_publishes_backend_receipt_without_mutating_old_result(monkeypatch):
+def test_traced_worker_publishes_full_backend_receipts_and_scalar_events(monkeypatch):
     from temsim.gui import calculation_controller as module
+    from temsim.job_events import JobEvents, traced_job
     from temsim.optics.column import default_state
+
     state = default_state()
     state.sample.wave_enabled = False
+    trace = JobEvents()
+    identity = {"backend": "CUDA GPU"}
+    field_evidence = {"counts": {"queries": 4}}
+    field_execution = {"backend": "CPU", "execution": "canonical CPU sampler"}
     seen, errors = [], []
+
     def calculate(snapshot, **kwargs):
-        record_backend("gun", "Auto", "CPU")
-        record_backend("column", "Auto", "Numba CPU")
+        record_backend("gun_magnetic_sampling", "Auto", "CUDA GPU",
+                       execution_identity=identity, field_evidence=field_evidence)
+        record_backend("column", "Auto", "CPU", field_execution=field_execution,
+                       integration_nodes=12, retried=False, display_history_step_mm=None)
         return module.CalculationResult(simulation=None, energy_filter=None)
+
     monkeypatch.setattr(module, "calculate", calculate)
     worker = module.CalculationWorker(1, "High accuracy", state)
     worker.signals.result.connect(lambda *args: seen.append(args[2]))
     worker.signals.error.connect(lambda *args: errors.append(args[-1]))
-    worker.run()
+    with traced_job(trace, {"request_id": "fixture"}):
+        worker.run()
     assert not errors
     assert len(seen) == 1
-    assert [row["stage"] for row in seen[0].performance["backend_stages"]] == ["gun", "column"]
+    gun, column = seen[0].performance["backend_stages"]
+    assert gun["execution_identity"] == identity and gun["field_evidence"] == field_evidence
+    assert column["field_execution"] == field_execution
     assert "not hardware qualification" in seen[0].performance["backend_scope"]
+
+    gun_event, column_event = [row for row in trace.snapshot() if row["event"] == "backend_stage"]
+    assert (gun_event["stage"], gun_event["actual"]) == ("gun_magnetic_sampling", "CUDA GPU")
+    assert "execution_identity" not in gun_event and "field_evidence" not in gun_event
+    assert (column_event["stage"], column_event["actual"]) == ("column", "CPU")
+    assert "field_execution" not in column_event
+    assert column_event["integration_nodes"] == 12 and column_event["retried"] is False
+    assert column_event["display_history_step_mm"] is None
 
 
 def test_compatible_reset_rebuilds_but_illegal_access_is_not_recovered(monkeypatch):

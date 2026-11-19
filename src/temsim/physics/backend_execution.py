@@ -1,11 +1,11 @@
-"""Scalar execution receipts and inexpensive capability preflight, not physics."""
+"""Backend execution receipts and inexpensive capability preflight."""
 from collections import deque
 from contextlib import contextmanager
 from contextvars import ContextVar
 from functools import wraps
 from time import monotonic
 
-from temsim.job_events import job_event
+from temsim.job_events import is_job_scalar, job_event
 from temsim.physics.compute_backend import BACKEND_REQUIRE_GPU, GPUExecutionError, normalise_backend
 
 _RECEIPTS = ContextVar("backend_execution_receipts", default=None)
@@ -23,7 +23,9 @@ def backend_receipts(rows):
 def record_backend(stage, requested, actual, *, outcome="returned", reason="", **details):
     row = dict(stage=str(stage), requested=str(requested), actual=str(actual),
                outcome=outcome, reason=str(reason), monotonic_s=monotonic(), **details)
-    job_event("backend_stage", **row)
+    # Nested field diagnostics belong to the calculation result. The lifecycle
+    # trace keeps the stage identity and scalar execution details.
+    job_event("backend_stage", **{key: value for key, value in row.items() if is_job_scalar(value)})
     rows = _RECEIPTS.get()
     if rows is not None:
         rows.append(row)
