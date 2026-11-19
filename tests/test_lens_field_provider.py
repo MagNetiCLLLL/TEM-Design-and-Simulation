@@ -147,9 +147,11 @@ def test_imported_map_survives_edits_to_inactive_calibrations(tmp_path, old_file
         np.testing.assert_array_equal(resolved.magnetic_field_t([lens.z_mm]), expected)
 
 
-def test_fields_reuses_provider_and_rejects_map_after_pole_geometry_change(
-    tmp_path,
-):
+@pytest.mark.parametrize("pole_key, field, value", [
+    ("objective_upper_pole", "mechanical_tip_diameter_mm", 8.2),
+    ("objective_lower_pole", "pole_rear_recess_depth_mm", 16.0),
+])
+def test_fields_reuses_provider_and_rejects_map_after_pole_geometry_change(tmp_path, pole_key, field, value):
     state = default_state()
     lens = _objective(state)
     path = tmp_path / "objective_field.npz"
@@ -177,9 +179,9 @@ def test_fields_reuses_provider_and_rejects_map_after_pole_geometry_change(
     changed_parts = tuple(
         replace(
             part,
-            data={**dict(part.data), "mechanical_tip_diameter_mm": 8.2},
+            data={**dict(part.data), field: value},
         )
-        if part.key == "objective_upper_pole"
+        if part.key == pole_key
         else part
         for part in assembly.parts
     )

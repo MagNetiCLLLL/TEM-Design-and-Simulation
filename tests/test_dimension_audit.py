@@ -137,9 +137,12 @@ def test_actual_catalog_covers_all_modules_parts_and_arrays_without_changing_fil
     }
     assert {(row.source_file, row.part_key, row.path[-1], row.semantics.source_kind)
             for row in audit.records if row.semantics.source_kind in evidence_kinds} == declared_evidence
-    photo_stems = [row for row in audit.records if row.part_key == "objective_upper_pole"
-                   and row.path[-1] == "pole_stem_outer_diameter_mm"]
-    assert photo_stems and all(row.semantics.source_kind == "estimated" for row in photo_stems)
+    stems = [row for row in audit.records if row.part_key in {"objective_upper_pole", "objective_lower_pole"}
+             and row.path[-1] == "pole_stem_outer_diameter_mm"]
+    assert {row.part_key for row in stems} == {"objective_upper_pole", "objective_lower_pole"}
+    assert all(row.semantics.source_kind == "estimated" for row in stems)
+    assert all("assumed to mirror" in row.semantics.source_note for row in stems
+               if row.part_key == "objective_lower_pole")
     coil = next(row for row in audit.records if row.part_key == "intermediate_lens_excitation_coil" and row.path[-1] == "length_mm" and row.source_file.endswith("EnergyFilter.toml"))
     assert coil.value == 180 and coil.semantics.category == "physical"
     # Alternative modules (including B-COR) retain separate definitions.

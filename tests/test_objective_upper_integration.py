@@ -2,9 +2,11 @@
 from copy import deepcopy
 from dataclasses import replace
 import json
+import tomllib
 
 import numpy as np
 import pytest
+import tomli_w
 
 from temsim.cad_catalog import part_solids
 from temsim.cad_objective_upper_hardware import PREFIX
@@ -13,6 +15,7 @@ from temsim.parameter_impact import describe_parameter_impact
 from temsim.part_model_3d import part_dimension_specs, part_model_from_document
 from temsim.part_model_document import PartModelDocument
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
+from temsim.pole_geometry import RECESSED_FIELDS
 
 
 MODULE = "column/C3_ProbeCorrector.toml"
@@ -24,9 +27,8 @@ DETAILS = {PREFIX + "insulation_thickness_mm": .3,
 EDITS = {**{("parts", COIL, field): value for field, value in DETAILS.items()},
          ("parts", PARENT, "mechanical_coil_axial_inset_mm"): 6.,
          ("parts", COIL, "mechanical_inner_diameter_mm"): 61.,
-         # The lower shank mates to the winding ID. The upper stem clears it.
          ("parts", "objective_upper_pole", "pole_stem_outer_diameter_mm"): 23.,
-         ("parts", "objective_lower_pole", "pole_stem_outer_diameter_mm"): 61.}
+         ("parts", "objective_lower_pole", "pole_stem_outer_diameter_mm"): 23.}
 
 
 def rows(document):
@@ -97,7 +99,17 @@ def test_real_editors_roundtrip_detail_parent_and_radial_bindings(draft, route):
     assert all(actual[region] != previous[region] for region in actual)
 
 
-def test_unmatched_objective_id_remains_a_draft_and_cannot_be_saved(draft):
+def test_legacy_single_taper_lower_shank_still_requires_matching_winding_id(draft):
+    document = tomllib.loads(draft.independent_copy_text())
+    lower = rows(document)["objective_lower_pole"]
+    for field in (*RECESSED_FIELDS, "mechanical_geometry_source", "mechanical_geometry_status"):
+        del lower[field]
+    lower.update(pole_piece_geometry_style="objective_vertical_back_inserted_shank_tapered_nose",
+                 pole_nose_axial_length_mm=27.5584, pole_cone_angle_to_axis_deg=57.94,
+                 pole_stem_outer_diameter_mm=60., pole_mounting_shank_inner_diameter_mm=5.76,
+                 pole_vacuum_connector_axial_length_mm=6.)
+    draft.path.write_text(tomli_w.dumps(document), encoding="utf-8")
+    draft = PartModelDocument(draft.path)
     before = deepcopy(draft.document)
     data = draft.path.read_bytes()
     draft.set_dimension(("parts", COIL, "mechanical_inner_diameter_mm"), 61.)

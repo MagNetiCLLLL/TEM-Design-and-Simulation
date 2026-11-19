@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import math
 import tomllib
 
+import numpy as np
 import pytest
 
 from temsim.assembly_catalog import AssemblyCatalog
@@ -167,9 +168,9 @@ def test_eds_reference_ray_clears_constraint_derived_pole_profile():
             assert pole["mechanical_outer_diameter_mm"] == pytest.approx(96.0)
             assert pole["mechanical_tip_diameter_mm"] == pytest.approx(8.0)
         assert upper["pole_nose_axial_length_mm"] == pytest.approx(24.)
-        assert lower["pole_nose_axial_length_mm"] == pytest.approx(27.5584)
-        assert lower["pole_cone_angle_to_axis_deg"] == pytest.approx(57.94)
         section = _pole_section(upper, -upper["length_mm"], 0.)
+        lower_section = _pole_section(lower, 0., lower["length_mm"])
+        np.testing.assert_allclose(lower_section, [(-z, r) for z, r in section], atol=1e-10, rtol=0)
 
         assessment = assess_axisymmetric_pole_centerline(
             takeoff_angle_deg=geometry.takeoff_angle_deg,

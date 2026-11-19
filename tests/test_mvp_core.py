@@ -346,10 +346,12 @@ def test_magnetic_lens_mechanical_layers_are_required_and_radially_nested():
 
     document = read_document(path)
     by_key = {part["key"]: part for part in document["parts"]}
-    by_key["objective_lower_pole"]["pole_stem_outer_diameter_mm"] = 59.0
+    lower = by_key["objective_lower_pole"]
+    lower["pole_rear_recess_diameter_mm"] = 68.0
+    lower["pole_stem_outer_diameter_mm"] = by_key["objective_lens_excitation_coil"]["mechanical_inner_diameter_mm"]
     with pytest.raises(
         ValueError,
-        match="mounting-shank OD must equal the excitation-coil ID",
+        match="mounting-shank OD must be smaller than the excitation-coil ID",
     ):
         validate_document(document)
 

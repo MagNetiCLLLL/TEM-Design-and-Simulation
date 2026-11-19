@@ -3929,7 +3929,7 @@ def _validate_magnetic_lens_mechanical_parts(parts, geometry):
             else "tapered_bore_pole"
         )
         for pole in poles:
-            recessed = (pole["key"] == "objective_upper_pole"
+            recessed = (lens_key == "objective_lens"
                         and pole.get("pole_piece_geometry_style") == RECESSED_OBJECTIVE_STYLE)
             if not recessed and pole.get("pole_piece_geometry_style") != expected_style:
                 raise ValueError(

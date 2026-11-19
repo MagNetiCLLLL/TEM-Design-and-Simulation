@@ -4,6 +4,8 @@ Review date: 2026-10-20. Scope: installed C3 + Probe Corrector, with backend ver
 
 ## Three different surfaces
 
+At the upper objective, the owner confirms that the vacuum tube runs inside the polymer sleeve. The sleeve OD fits closely in the bore of the assembled upper objective. The actual tube OD and ID in that assembly are unknown. The tube dimensions below are the values used by the simulation. [Upper objective sleeve and winding audit](coil-bore-and-insert-audit.md)
+
 | Saved geometry | Default dimension | Meaning |
 | --- | --- | --- |
 | Continuous tube `inner_diameter_mm` | 5.76 mm | Beam-accessible tube interior, radius 2.88 mm |

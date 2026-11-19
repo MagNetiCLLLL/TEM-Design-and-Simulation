@@ -1558,7 +1558,7 @@ class PhysicalLayoutView(QWidget):
             face_z = start
         style = str(record.pole_piece_geometry_style)
         if style == RECESSED_OBJECTIVE_STYLE:
-            shape_name = "Upper objective pole with a hollow stem, recessed flange and two-stage nose"
+            shape_name = "Objective pole with a hollow stem, recessed flange and two-stage nose"
         elif style == "objective_vertical_back_inserted_shank_tapered_nose":
             shape_name = (
                 "Objective pole piece: inserted mounting shank / shoulder / "
@@ -1582,9 +1582,10 @@ class PhysicalLayoutView(QWidget):
         if style == RECESSED_OBJECTIVE_STYLE:
             tooltip += (
                 f"\nStem OD {record.pole_stem_outer_diameter_mm:g} mm, "
-                f"projection above rear flange {record.pole_mounting_shank_axial_length_mm:g} mm"
-                "\nThe separate vacuum tube meets the tail. Its magnetic response is unverified."
+                f"projection from rear flange {record.pole_mounting_shank_axial_length_mm:g} mm"
             )
+            if record.key == "objective_upper_pole":
+                tooltip += "\nThe upstream vacuum tube meets the tail. Its magnetic response is unverified."
         elif record.pole_mounting_shank_axial_length_mm > 0.0:
             tooltip += (
                 "\nMounting shank "

@@ -173,7 +173,7 @@ def test_objective_entrance_follows_real_order_and_keeps_stigmator_position(colu
     first = ("ac_deflector", "condenser_stigmator") if ac_first else (
         "condenser_stigmator", "ac_deflector")
     expected_order = (*first, "mini_condenser", "objective_upper_pole", "sample")
-    source_z = assembly.part("feg_tip").center_z_mm
+    source_z = assembly.part("feg_tip").end_z_mm  # Downstream emission apex.
     for selected in (configuration, bare):
         axis = resolve_objective_entrance_mechanical_axis(selected)
         assert axis.axis_order == expected_order
@@ -251,7 +251,7 @@ def _assert_axis_matches_physical_parts(axis, assembly, keys):
                       key=lambda part: part.center_z_mm)
     assert axis.axis_order == tuple(part.key for part in expected)
     assert set(axis.by_key) == set(keys)
-    source_z = assembly.part("feg_tip").center_z_mm
+    source_z = assembly.part("feg_tip").end_z_mm
     for part in expected:
         placement = axis.by_key[part.key]
         assert (placement.start_z_mm, placement.center_z_mm,
@@ -373,7 +373,7 @@ def test_image_corrector_exit_checks_materials_not_field_channels(image_correcto
         # omitting a virtual marker must not erase the actual aperture body.
         aperture = assembly.part("selected_area_aperture")
         assert axis.by_key[aperture.key].center_z_mm == pytest.approx(
-            aperture.center_z_mm - assembly.part("feg_tip").center_z_mm)
+            aperture.center_z_mm - assembly.part("feg_tip").end_z_mm)
     assert capture_instrument_snapshot(state).digest == before
 
 
@@ -484,7 +484,7 @@ def test_image_corrector_replacement_uses_declared_envelope_not_inactive_winding
     axis = resolve_installed_image_corrector_exit_mechanical_axis(
         _configuration_with_part_replacements(configuration, assembly, replacement))
     actual = axis.by_key[coil.key]
-    source_z = assembly.part("feg_tip").center_z_mm
+    source_z = assembly.part("feg_tip").end_z_mm
     # This helper validates the declared installation envelope, not the posed
     # replacement CAD. Inactive native winding settings must not be evaluated.
     assert (actual.start_z_mm, actual.center_z_mm, actual.end_z_mm) == pytest.approx((

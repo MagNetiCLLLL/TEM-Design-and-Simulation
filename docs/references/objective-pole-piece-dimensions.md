@@ -1,12 +1,20 @@
 # Objective pole-piece dimensions and profile audit
 
-## Upper objective reconstructed from five views
+## Current objective pole pair
 
-All seven column configurations use the photographed rear well, tubular stem and compound nose for the upper pole. The specimen-facing tips lie 5.4 mm apart. The lower pole retains its earlier single taper. The Ø96 mm maximum diameter, 62 mm installed length, Ø19.2 mm tube joint and Ø5.76 mm clear passage supply the dimensional scale. The photographs provide relative dimensions. [Column configuration](../../configs/instruments/column/C3_ProbeCorrector.toml) · [Section generator](../../src/temsim/pole_geometry.py)
+All seven column configurations use the same pair. Five photographs constrain the upper pole. The lower pole is assumed to be its complete axial reflection, including the rear well, tubular stem, entrance chamfer and compound nose. The Ø8.00 mm pole faces lie at −2.70 and +2.70 mm about the gap midplane. Both bores open to Ø5.76 mm. [Column configuration](../../configs/instruments/column/C3_ProbeCorrector.toml) · [Section generator](../../src/temsim/pole_geometry.py)
+
+![Axial section of the two objective poles reflected about the middle of the 5.40 mm gap.](objective-pole-pair-section.svg)
+
+The pair STEP contains two separately selectable pole solids with the origin at the gap midplane and positive Z downstream. After reimport, the reflected upper solid and the lower solid have zero volume difference in both subtraction directions. A Ø5.76 mm cylinder passes through the pair with zero material intersection. The lower pole clears its winding copper by 5.00 mm in every column configuration. [Objective pole pair, STEP](objective-pole-pair.step)
+
+### Upper-pole and tube reference
+
+The upper reconstruction uses the Ø96 mm flange, 62 mm installed length and Ø19.2 mm tube joint as scale anchors. The five photographs provide the relative dimensions.
 
 ![Three views of the reimported upper pole and terminal vacuum tube, showing the rear recess, compound nose and cut through the open joint.](../development/assets/upper-objective-3d.png)
 
-The STEP assembly contains two individually selectable solids. The vacuum tube includes its terminal 40 mm to expose the joint. Both solids passed a Ø5.76 mm coaxial clearance check after reimport. [Upper pole and vacuum tube, STEP](upper-objective-and-tube.step)
+The separate upper-pole STEP includes the terminal 40 mm of the upstream vacuum tube to show its joint. Both solids passed a Ø5.76 mm coaxial clearance check after reimport. [Upper pole and vacuum tube, STEP](upper-objective-and-tube.step)
 
 ![Axial section of the upper objective with its separate vacuum tube and rear view showing the projected stem, annular recess and open bore.](upper-objective-photo-section.svg)
 
@@ -30,12 +38,12 @@ A small-signal axisymmetric FEM comparison used the installed split objective wi
 
 | Tube relative permeability | Axial flux through the mating annulus | Axial field at specimen center |
 |---:|---:|---:|
-| 1 | 2.22 nWb | 5.22 µT |
-| 1,000 | 24.81 nWb | 6.80 µT |
+| 1 | 2.21 nWb | 5.40 µT |
+| 1,000 | 24.74 nWb | 6.99 µT |
 
-The contact flux equals the difference in $2\pi r A_\phi$ between the outer and inner mating radii. Four mesh/domain pairs gave a contact flux ratio of 10.6–11.2 at 1 A·turn. Enlarging the domain at the same local mesh spacing moved the absolute specimen field by about 7%, and the final local refinement changed the high-permeability contact flux by 1.5%. Predicting the operating field requires the measured tube material, interface and excitation.
+The table uses the mirrored poles and the finest mesh (196 radial by 542 axial nodes). The contact flux equals the difference in $2\pi r A_\phi$ between the outer and inner mating radii. Four mesh/domain pairs gave a contact flux ratio of 10.6–11.2 at 1 A·turn. Enlarging the domain at the same local mesh spacing changed the specimen field by 6.4–6.6%. The final local refinement changed the high-permeability contact flux by 1.5%. In the earlier run with a single-taper lower pole, the corresponding fluxes were 2.22 and 24.81 nWb and the specimen fields were 5.22 and 6.80 µT. Predicting the operating field requires the measured tube material, interface and excitation.
 
-## Earlier mirrored-pair audit
+## Earlier single-taper pair
 
 Before the photographs of the upper pole were available, the simulator used a mirrored pair. The geometry, figure and validation counts below document that earlier version. The 5.4 mm model gap matches the S-TWIN specifications for Themis Z and Spectra Ultra. The product sheets leave the bore, tip diameter, nose contour and mounting dimensions open. [Themis Z, p. 3][z] · [Spectra Ultra, p. 4][ultra] · [Philips CM12/STEM, Fig. 7, p. 279][cm12]
 

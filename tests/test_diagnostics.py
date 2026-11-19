@@ -158,12 +158,14 @@ def test_physical_layout_records_use_resolved_geometry_and_optical_references():
         and item.profile == "magnetic_pole_piece"
     ]
     upper, lower = sorted(objective_poles, key=lambda item: item.start_z_mm)
-    assert upper.pole_piece_geometry_style == "objective_recessed_back_compound_nose"
-    assert lower.pole_piece_geometry_style == "objective_vertical_back_inserted_shank_tapered_nose"
-    assert (upper.pole_stem_outer_diameter_mm, upper.pole_mounting_shank_inner_diameter_mm,
-            upper.pole_vacuum_connector_axial_length_mm) == pytest.approx((22., 7.2, 1.5))
-    assert (lower.pole_stem_outer_diameter_mm, lower.pole_mounting_shank_inner_diameter_mm,
-            lower.pole_vacuum_connector_axial_length_mm) == pytest.approx((60., 5.76, 6.))
+    for pole in (upper, lower):
+        assert pole.pole_piece_geometry_style == "objective_recessed_back_compound_nose"
+        assert (pole.pole_stem_outer_diameter_mm, pole.pole_mounting_shank_inner_diameter_mm,
+                pole.pole_vacuum_connector_axial_length_mm) == pytest.approx((22., 7.2, 1.5))
+    upper_z, upper_r = np.asarray(upper.pole_section_zr_mm).T
+    lower_z, lower_r = np.asarray(lower.pole_section_zr_mm).T
+    np.testing.assert_allclose(upper_z + lower_z, 2 * objective.center_z_mm, atol=1e-9, rtol=0)
+    np.testing.assert_array_equal(upper_r, lower_r)
     assert all(
         item.pole_mounting_shank_axial_length_mm
         == pytest.approx(12.0)

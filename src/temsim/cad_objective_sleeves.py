@@ -121,6 +121,8 @@ def sleeve_solids(part, by_key):
             "nominal engineering clearance allocations. Recheck containment and interference after editing. "
             "No end caps, field, vacuum wall, charge "
             "response or magnetic-material model are added.")
+    if not copied and part.get("mechanical_geometry_source"):
+        note += " " + part["mechanical_geometry_source"]
     return (SolidSpec(str(part["key"]), "body", material, annulus(start, end, inner, outer), (),
         status="engineering_reconstruction",
         note=note,

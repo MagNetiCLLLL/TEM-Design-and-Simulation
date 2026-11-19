@@ -18,6 +18,28 @@ def box(centre, size):
 
 @unittest.skipUnless(importlib.util.find_spec("cadquery"), "Optional CadQuery CAD environment is not installed")
 class AnalyticStepTests(unittest.TestCase):
+    def test_objective_reference_pair_has_two_reflected_poles_and_a_clear_bore(self):
+        import cadquery as cq
+
+        path = Path(__file__).resolve().parents[1] / "docs/references/objective-pole-pair.step"
+        assembly, layers = cad._read_step(path)
+        parts = {name.rsplit("/", 1)[-1]: leaf["shape"] for name, leaf in cad._leaves(assembly).items()}
+        self.assertEqual(set(parts), {"objective_upper_pole", "objective_lower_pole"})
+        self.assertEqual(layers["objective_lower_pole"], layers["objective_upper_pole"])
+        bore = cq.Solid.makeCylinder(2.88, 132., cq.Vector(0., 0., -66.))
+        for name, part in parts.items():
+            self.assertTrue(any(layer.startswith("material:") for layer in layers[name]))
+            self.assertTrue(part.isValid())
+            self.assertEqual(len(part.Solids()), 1)
+            self.assertAlmostEqual(part.intersect(bore).Volume(), 0., places=7)
+        upper, lower = parts["objective_upper_pole"], parts["objective_lower_pole"]
+        self.assertAlmostEqual(upper.BoundingBox().zmax, -2.7, places=6)
+        self.assertAlmostEqual(lower.BoundingBox().zmin, 2.7, places=6)
+        self.assertAlmostEqual(upper.distance(lower), 5.4, places=6)
+        reflected = upper.mirror("XY")
+        self.assertAlmostEqual(reflected.cut(lower).Volume(), 0., places=6)
+        self.assertAlmostEqual(lower.cut(reflected).Volume(), 0., places=6)
+
     def test_primitives_have_analytic_volume_and_rigid_pose(self):
         annulus = cad.build_shape(dict(kind="revolve", section_zr_mm=[[0, 1], [0, 2], [3, 2], [3, 1]]))
         self.assertAlmostEqual(annulus.Volume(), 9*math.pi, places=11)
