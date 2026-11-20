@@ -6,6 +6,8 @@ Catalog audit, 20 November 2026. All dimensions are nominal millimetres. Diamete
 
 In the supplied cutaways, the owner identifies the lower unit in photograph 2 as the upper objective and the upper unit as a condenser of unspecified stage. Photograph 1 provides another view of the magnetic body around the copper. Photographs 3 and 4 show the wired polymer carrier and its central opening. The owner identifies the Mini Condenser, beam shift/tilt coils and condenser stigmator as occupants of this carrier.
 
+The owner identifies all three windings in the separate Tecnai TF30 stack in frames 121–122. From the top they are the C2 lens, upper objective and lower objective. The lower winding sits in a magnetic and heat-conducting part, and the indicated intermediate passages carry cooling water. [TF30 winding and metalwork measurements](tecnai-tf30-photo-dimensions.md#identified-windings-and-metalwork)
+
 The owner confirms that the **sleeve outer surface fits closely in the bore of the assembled upper objective** and that **the vacuum tube passes inside the sleeve**. The fit clearance, the tube's actual OD and ID, and the spacing between the tube and the sleeve are unknown. The cutaways establish the presence of magnetic material inboard of the winding. Its radial profile and axial span remain undimensioned.
 
 Two features in the catalog need reconciliation with this assembly.

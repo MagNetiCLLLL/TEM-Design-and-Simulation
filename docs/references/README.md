@@ -28,6 +28,13 @@ copies outside the repository; pulling the removal can delete those copies.
 
 ## Research checkpoints
 
+- Measurements from 41 Tecnai TF30 photographs cover the two-piece condenser
+  pole cartridge, the C2 lens and objective windings, the stepped vacuum tube
+  and a loose objective-profile pole. A section drawing shows where the tube
+  passes through the seated poles. The dark band near the bore in two side views
+  gives an estimated axial gap of about 3 mm.
+  [TF30 cutaway measurements and column comparison](tecnai-tf30-photo-dimensions.md)
+
 - Locate the round poles, beam-side sleeves, corrector pole pins and shared
   returns in two installed assemblies. The atlas includes axial and transverse
   sections, selectable 3D solids and the evidence for each reconstruction.

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1110" height="640" viewBox="0 0 1110 640" role="img" aria-labelledby="title description">
+  <title id="title">Vacuum tube through the TF30 condenser poles</title>
+  <desc id="description">Axial section of two seated, separate magnetic poles. A hollow stepped tube enters from below, passes through the inner circle at B and spans the inter-pole gap. The dark band in frames 87 and 90 gives an estimated axial gap of about 3 mm. The tip is expected to enter a larger receiving bore beneath the upper opening A. Tip depth and flare angles are schematic.</desc>
+  <defs>
+    <!-- Each path represents the left half of a meridional section about x = 520. -->
+    <path id="upper" d="M359 144 H448 L496 179 V191 L483 203 V257 H452 L426 239 H368 L359 227 Z"/>
+    <path id="lower" d="M465 294 H490 V316 L471 343 V448 L445 500 V523 H359 V368 L414 335 L447 304 Z"/>
+    <path id="tube" d="M501 216 H507 V374 L494 384 V555 H483 V376 L501 367 Z"/>
+  </defs>
+  <rect width="1110" height="640" fill="#ffffff"/>
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#172e38">
+    <text x="44" y="53" font-size="32" font-weight="700">Vacuum tube through the condenser poles</text>
+    <text x="45" y="84" font-size="18" fill="#47606a">Tecnai TF30 · C1 lens and C2 lens · Axial section, not to scale</text>
+    <path d="M45 103 H1065" stroke="#c9d6d9" stroke-width="1.4"/>
+  </g>
+
+  <g stroke="#344f58" stroke-width="2.3" stroke-linejoin="round" fill="#d8e3e6">
+    <use xlink:href="#upper"/>
+    <use xlink:href="#upper" transform="translate(1040 0) scale(-1 1)"/>
+    <use xlink:href="#lower"/>
+    <use xlink:href="#lower" transform="translate(1040 0) scale(-1 1)"/>
+  </g>
+  <g fill="#e7a14b" stroke="#784714" stroke-width="1.6" stroke-linejoin="round">
+    <use xlink:href="#tube"/>
+    <use xlink:href="#tube" transform="translate(1040 0) scale(-1 1)"/>
+  </g>
+  <path d="M520 125 V561" fill="none" stroke="#9bafb4" stroke-width="1.2" stroke-dasharray="7 6"/>
+
+  <g stroke="#26717a" stroke-width="1.7" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M312 157 H338 L400 181 H496"/>
+    <path d="M725 180 H690 L628 222 H557"/>
+    <path d="M293 312 H340 L377 279 H449 L490 305"/>
+    <path d="M725 399 H690 L635 419 H569"/>
+    <path d="M293 489 H354 L425 499 H488"/>
+    <path d="M581 257 H686 M573 294 H686" stroke-dasharray="4 5" stroke-width="1.2"/>
+    <path d="M678 257 V294 M672 257 H684 M672 294 H684 M678 275.5 H725"/>
+    <path d="M577 558 V531 M571 539 L577 531 L583 539" stroke="#975916" stroke-width="2.4"/>
+  </g>
+  <g fill="#126a73" stroke="#ffffff" stroke-width="1.25">
+    <circle cx="496" cy="181" r="3.8"/>
+    <circle cx="557" cy="222" r="3.8"/>
+    <circle cx="490" cy="305" r="3.8"/>
+    <circle cx="569" cy="419" r="3.8"/>
+    <circle cx="488" cy="499" r="3.8"/>
+  </g>
+
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#172e38">
+    <g font-size="22" font-weight="650">
+      <text x="45" y="164">A · Upper pole opening</text>
+      <text x="45" y="318">B · Lower pole bore</text>
+      <text x="45" y="496">Hollow vacuum tube</text>
+      <text x="740" y="187">Upper receiving bore</text>
+      <text x="740" y="281">Gap between pole faces</text>
+      <text x="740" y="405">Long pole and cut sector</text>
+    </g>
+    <g font-size="15.5" fill="#455d66">
+      <text x="45" y="189">Small opening seen from above in 91.</text>
+      <text x="45" y="212">Projected span about 5 mm.</text>
+      <text x="45" y="343">The inner circle in 91 spans about 7 mm.</text>
+      <text x="45" y="366">Several slopes surround the opening.</text>
+      <text x="45" y="389">The pole end face is planar.</text>
+      <text x="45" y="521">Slender tip at right in 105.</text>
+      <text x="45" y="544">At the tip, OD ≈ 4 mm and ID ≈ 3 mm.</text>
+      <text x="740" y="212">A wider bore is expected below A.</text>
+      <text x="740" y="235">The installed tip depth is unknown.</text>
+      <text x="740" y="306">Both poles are seated in 87.</text>
+      <text x="740" y="329">Estimated axial gap ≈ 3 mm (87 and 90).</text>
+      <text x="740" y="430">B lies near the narrow end in 93 and 118.</text>
+      <text x="740" y="453">A straight channel joins the two flares.</text>
+      <text x="593" y="551" fill="#81501a">Inserts from below</text>
+    </g>
+  </g>
+
+  <path d="M45 580 H1065" fill="none" stroke="#c9d6d9" stroke-width="1.4"/>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#334c55">
+    <rect x="45" y="603" width="22" height="13" fill="#d8e3e6" stroke="#344f58" stroke-width="1.5"/>
+    <text x="78" y="615">Pole material</text>
+    <rect x="254" y="603" width="22" height="13" fill="#e7a14b" stroke="#784714" stroke-width="1.5"/>
+    <text x="287" y="615">Vacuum tube wall</text>
+    <path d="M536 610 H570" stroke="#93a8ad" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text x="582" y="615">Axis of the open passage</text>
+  </g>
+</svg>

@@ -1,0 +1,1281 @@
+{
+  "instrument": "Tecnai TF30 reference, without C3 lens or probe corrector",
+  "coordinate_system": "Displayed original JPEG pixels. Origin at upper left, x right, y down.",
+  "measurement": "For the stated scale_axis q, interpolate printed millimetres F(q) linearly between adjacent tick centers and use abs(F(q_end)-F(q_start)). Outside the tick range use the nearest interval slope. Only the projection along the calibrated image coordinate is reported. Digits are for replay, not uncertainty.",
+  "angle_method": "image_angle_deg is the acute angle between the two indicated pixel vectors. A metric meridional half-angle needs independent radial and axial calibration of the same meridional section, including its pose.",
+  "frames": [
+    {
+      "frame": 86,
+      "file": "Image_20261120143509_86_161.jpg",
+      "sha256": "2617b7991ca7be36df72437324a0d9dcd8820658b857782f72b1c42c12123cb3",
+      "image_size_px": [1280, 1707],
+      "view": "Stepped vacuum hardware beside the tape. Measurements end at the front flange seat.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 400, 250],
+        [40, 402, 541],
+        [80, 403, 910],
+        [120, 405, 1278]
+      ],
+      "readings": [
+        {
+          "feature": "Tip to slim-to-wide shoulder",
+          "from_px": [701, 190],
+          "to_px": [707, 509],
+          "apparent_mm": 32.89
+        },
+        {
+          "feature": "Shoulder to front flange seat",
+          "from_px": [707, 509],
+          "to_px": [720, 1264],
+          "apparent_mm": 81.78
+        },
+        {
+          "feature": "Tip to front flange seat",
+          "from_px": [701, 190],
+          "to_px": [720, 1264],
+          "apparent_mm": 114.66
+        }
+      ]
+    },
+    {
+      "frame": 87,
+      "file": "Image_20261120143509_87_161.jpg",
+      "sha256": "63f156ba3cba122d53829a3efdb870b4cc25bb246b00cf77d85bc5c586bd1434",
+      "image_size_px": [1280, 1707],
+      "view": "The owner confirms that the two pole pieces are fully seated. An axial gap remains between them. The tube is shown alongside the cutaway here and crosses the gap when installed. The cutout exposes the reflective far inner wall, also visible in frame 93.",
+      "installed_pole_gap_mm": 3,
+      "installed_pole_gap_basis": "Rounded modelling estimate from the axial span of the dark band near the bore in this seated view. The opposite-side view in frame 90 independently rounds to the same value using its own ruler.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 776, 276],
+        [50, 779, 644],
+        [100, 783, 1085],
+        [150, 786, 1511]
+      ],
+      "readings": [
+        {
+          "feature": "Two reflections on the far inner wall visible through the cutout",
+          "status": "excluded_from_gap_measurement",
+          "from_px": [441, 409],
+          "to_px": [441, 434],
+          "apparent_mm": 2.72
+        },
+        {
+          "feature": "Tip to tube flange seat",
+          "from_px": [1046, 183],
+          "to_px": [1080, 1248],
+          "apparent_mm": 119.24
+        },
+        {
+          "feature": "Cartridge outside axial silhouette",
+          "from_px": [504, 110],
+          "to_px": [495, 1521],
+          "apparent_mm": 159.22
+        },
+        {
+          "feature": "Dark band between the opposing pole nose contours near the bore",
+          "from_px": [403, 386],
+          "to_px": [403, 413],
+          "apparent_mm": 2.93
+        }
+      ]
+    },
+    {
+      "frame": 88,
+      "file": "Image_20261120143509_88_161.jpg",
+      "sha256": "f8a7435fb4076ba4c471a78c6d7b96b455cea394596dee84888eadc1e30a2124",
+      "image_size_px": [1280, 1707],
+      "view": "End of loose cut cartridge. Tape displaced from the end face.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [10, 274, 685],
+        [90, 949, 668],
+        [120, 1198, 662]
+      ],
+      "readings": [
+        {
+          "feature": "Cartridge end outer rim",
+          "from_px": [248, 998],
+          "to_px": [620, 998],
+          "apparent_mm": 44.09
+        },
+        {
+          "feature": "Cone entrance rim visible span",
+          "from_px": [336, 997],
+          "to_px": [553, 997],
+          "apparent_mm": 25.72
+        }
+      ]
+    },
+    {
+      "frame": 89,
+      "file": "Image_20261120143509_89_161.jpg",
+      "sha256": "b03d2ad246b8f7de0946d0be7fcafd90be40150100259558f78ab37b582bb24d",
+      "image_size_px": [1280, 1707],
+      "view": "Reversed side view of cartridge and tube.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 697, 1329],
+        [50, 692, 1032],
+        [100, 686, 688],
+        [150, 680, 355]
+      ],
+      "readings": [
+        {
+          "feature": "Cartridge outside axial silhouette",
+          "from_px": [1009, 325],
+          "to_px": [964, 1419],
+          "apparent_mm": 156.63
+        },
+        {
+          "feature": "Tube tip to front flange seat",
+          "from_px": [680, 1419],
+          "to_px": [525, 590],
+          "apparent_mm": 116.84
+        }
+      ]
+    },
+    {
+      "frame": 90,
+      "file": "Image_20261120143509_90_161.jpg",
+      "sha256": "098e0ed7ab33722e85a4089406a761d6bf0c856a669fbbe2bd26b888ab5e5c07",
+      "image_size_px": [1280, 1707],
+      "view": "Assembled cartridge, opposite side view.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 448, 1319],
+        [50, 455, 994],
+        [100, 463, 614],
+        [140, 470, 320]
+      ],
+      "readings": [
+        {
+          "feature": "Cartridge outside axial silhouette",
+          "from_px": [786, 270],
+          "to_px": [889, 1460],
+          "apparent_mm": 154.16
+        },
+        {
+          "feature": "Dark band between the opposing pole nose contours near the bore",
+          "from_px": [812, 509],
+          "to_px": [812, 530],
+          "apparent_mm": 2.86
+        }
+      ]
+    },
+    {
+      "frame": 91,
+      "file": "Image_20261120143509_91_161.jpg",
+      "sha256": "ef3ac5cca2f645448ff546dd2476e718a057d73114be1a274e6e2bc3b375afb5",
+      "image_size_px": [960, 1280],
+      "view": "Top view of the separated poles. A (above) is the recessed upper part with a small visible opening. A larger receiving bore underneath is expected to accommodate the tube tip. B (below) is the projecting lower part. Its inner circle passes the tube and corresponds to the bore near the narrow end in 93 and 118. Several inclined surfaces surround B, and the upper end face is planar. The ruler and the two pole ends lie at different heights.",
+      "identical_supplied_copy": "Image_20261120143509_91_161(1).jpg",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 578, 118],
+        [40, 581, 334],
+        [70, 583, 543],
+        [100, 585, 747],
+        [140, 588, 1014]
+      ],
+      "readings": [
+        {
+          "feature": "Upper cut face outer span",
+          "from_px": [370, 148],
+          "to_px": [371, 483],
+          "apparent_mm": 47.22
+        },
+        {
+          "feature": "Lower front face outer span",
+          "from_px": [323, 577],
+          "to_px": [323, 1004],
+          "apparent_mm": 63.5
+        },
+        {
+          "feature": "B inner opening, trace extending to the lip highlight",
+          "interpretation": "Includes the bright lip at one end. The inner-edge trace below gives the reference span for the tube passage.",
+          "from_px": [314, 778],
+          "to_px": [314, 826],
+          "apparent_mm": 7.19
+        },
+        {
+          "feature": "Upper recessed cone, lip of wide entrance",
+          "from_px": [370, 215],
+          "to_px": [370, 420],
+          "apparent_mm": 28.87
+        },
+        {
+          "feature": "Upper recessed cone, shadowed throat at image x=378",
+          "from_px": [378, 324],
+          "to_px": [378, 357],
+          "apparent_mm": 4.69
+        },
+        {
+          "feature": "Upper recessed cone, shadowed throat at image x=382",
+          "from_px": [382, 322],
+          "to_px": [382, 357],
+          "apparent_mm": 4.97
+        },
+        {
+          "feature": "Upper recessed cone, shadowed throat at image x=386",
+          "from_px": [386, 323],
+          "to_px": [386, 356],
+          "apparent_mm": 4.69
+        },
+        {
+          "feature": "Lower projecting nose, clear opening between the inner edges of the bright rim",
+          "interpretation": "Passage at B near the narrow end in 93 and 118. Projected along the ruler direction.",
+          "from_px": [314, 778],
+          "to_px": [314, 823],
+          "apparent_mm": 6.74
+        },
+        {
+          "feature": "B outside span of the dark region surrounding the inner circle",
+          "interpretation": "Boundary of the visible sloping surfaces around the bore.",
+          "from_px": [314, 735],
+          "to_px": [314, 869],
+          "apparent_mm": 20.04
+        }
+      ]
+    },
+    {
+      "frame": 92,
+      "file": "Image_20261120143509_92_161.jpg",
+      "sha256": "c98791dafb28c13a7a6402cbc6d0bd6b742fd21e44db6a216430e07a750718b6",
+      "image_size_px": [1707, 1280],
+      "view": "Open shell and central cartridge. Left and right feet are at different depths.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 360, 934],
+        [40, 346, 788],
+        [80, 325, 567],
+        [120, 302, 316],
+        [150, 281, 102]
+      ],
+      "readings": [
+        {
+          "feature": "Shell at left rim, table-side edge",
+          "from_px": [438, 103],
+          "to_px": [475, 977],
+          "apparent_mm": 148.7
+        },
+        {
+          "feature": "Shell at nearer cut edge, apparent span",
+          "from_px": [501, 100],
+          "to_px": [517, 1040],
+          "apparent_mm": 162.06
+        }
+      ]
+    },
+    {
+      "frame": 93,
+      "file": "Image_20261120143509_93_161.jpg",
+      "sha256": "940fb3b39256d3885ff3d4404a4ffb5db159c80bbdd0b08f262a1627658a5abf",
+      "image_size_px": [1280, 1707],
+      "view": "Shared C1 lens and C2 lens pole cartridge in two separable pieces. The cutout exposes the far inner wall and its reflections. The owner places the inner circle in 91-B near the narrow end of the long body. The distance between the loose parts on the bench is independent of their installed gap.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 794, 149],
+        [50, 798, 492],
+        [70, 800, 658],
+        [120, 806, 1058],
+        [160, 810, 1371],
+        [190, 813, 1602]
+      ],
+      "readings": [
+        {
+          "feature": "Loose short cup, visible rim to rim",
+          "from_px": [411, 83],
+          "to_px": [414, 482],
+          "apparent_mm": 46.53
+        },
+        {
+          "feature": "Long member, nose to groove exit lip",
+          "from_px": [501, 645],
+          "to_px": [508, 1484],
+          "apparent_mm": 106.24
+        },
+        {
+          "feature": "Long member, nose to foremost exterior rim",
+          "from_px": [501, 645],
+          "to_px": [581, 1597],
+          "apparent_mm": 120.92
+        },
+        {
+          "feature": "Short cup side port, visible vertical span",
+          "from_px": [539, 327],
+          "to_px": [539, 389],
+          "apparent_mm": 7.23
+        },
+        {
+          "feature": "Short cup, apparent inner taper shoulder to neck",
+          "from_px": [514, 206],
+          "to_px": [515, 279],
+          "apparent_mm": 8.51
+        },
+        {
+          "feature": "Short cup, apparent neck to lip",
+          "from_px": [515, 279],
+          "to_px": [517, 317],
+          "apparent_mm": 4.43
+        }
+      ],
+      "image_angles": [
+        {
+          "feature": "External nose, right silhouette of remaining body",
+          "axis_line_px": [
+            [673, 721],
+            [673, 767]
+          ],
+          "edge_line_px": [
+            [546, 647],
+            [670, 710]
+          ],
+          "image_angle_deg": 63.07
+        }
+      ]
+    },
+    {
+      "frame": 94,
+      "file": "Image_20261120143509_94_161.jpg",
+      "sha256": "6730fed5c3ef99632a0adaa3c67366f28e845dc51140d91b6ed2edb2dff7ed31",
+      "image_size_px": [1707, 1280],
+      "view": "Wedge-cut conical end face. One rim sector is missing.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [10, 1187, 727],
+        [30, 1034, 720],
+        [60, 808, 709],
+        [110, 434, 693]
+      ],
+      "readings": [
+        {
+          "feature": "Outer surviving width across cut cone",
+          "from_px": [673, 446],
+          "to_px": [1263, 446],
+          "apparent_mm": 77.98
+        }
+      ]
+    },
+    {
+      "frame": 95,
+      "file": "Image_20261120143509_95_161.jpg",
+      "sha256": "9961c798e6c677ee7c48935102373a9bb9b5ccccd5aeadc78c191a15c1e8788c",
+      "image_size_px": [1280, 1707],
+      "view": "Rear of detached objective-profile pole, nearly axial.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [20, 876, 1328],
+        [40, 881, 1070],
+        [60, 886, 819],
+        [80, 891, 571],
+        [100, 895, 324]
+      ],
+      "readings": [
+        {
+          "feature": "Rear flange OD",
+          "from_px": [469, 597],
+          "to_px": [469, 1366],
+          "apparent_mm": 60.85
+        },
+        {
+          "feature": "Rear annular well opening",
+          "from_px": [469, 775],
+          "to_px": [469, 1184],
+          "apparent_mm": 32.39
+        },
+        {
+          "feature": "Rear cylindrical boss end OD",
+          "from_px": [461, 885],
+          "to_px": [461, 1064],
+          "apparent_mm": 14.26
+        },
+        {
+          "feature": "Rear center entrance",
+          "from_px": [460, 946],
+          "to_px": [460, 1004],
+          "apparent_mm": 4.62
+        }
+      ]
+    },
+    {
+      "frame": 96,
+      "file": "Image_20261120143509_96_161.jpg",
+      "sha256": "46e7859a4fd8165ce35cd6406d1d103f27ca3bbef44a33d9a0000e8a5ce13d2a",
+      "image_size_px": [1280, 1707],
+      "view": "Side of detached objective-profile pole.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [50, 937, 1067],
+        [60, 932, 946],
+        [70, 928, 826],
+        [80, 923, 707],
+        [90, 919, 588]
+      ],
+      "readings": [
+        {
+          "feature": "Nose to back of flange",
+          "from_px": [533, 621],
+          "to_px": [534, 1018],
+          "apparent_mm": 33.18
+        },
+        {
+          "feature": "Nose to rear boss end",
+          "from_px": [533, 621],
+          "to_px": [540, 1102],
+          "apparent_mm": 40.12
+        },
+        {
+          "feature": "Boss projection behind flange",
+          "from_px": [534, 1018],
+          "to_px": [540, 1102],
+          "apparent_mm": 6.94
+        },
+        {
+          "feature": "Nose to main cone root",
+          "from_px": [533, 621],
+          "to_px": [533, 768],
+          "apparent_mm": 12.35
+        }
+      ]
+    },
+    {
+      "frame": 97,
+      "file": "Image_20261120143509_97_161.jpg",
+      "sha256": "2060804427063d1a0c51b1cd50d32e795901ce438a795c294a636d3081dea0b3",
+      "image_size_px": [1280, 1707],
+      "view": "Nose of detached objective-profile pole, nearly axial.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [30, 1003, 1201],
+        [50, 964, 914],
+        [70, 927, 647],
+        [80, 909, 514]
+      ],
+      "readings": [
+        {
+          "feature": "Front center opening",
+          "from_px": [508, 905],
+          "to_px": [508, 949],
+          "apparent_mm": 3.11
+        },
+        {
+          "feature": "Front face land OD",
+          "from_px": [509, 882],
+          "to_px": [509, 975],
+          "apparent_mm": 6.65
+        },
+        {
+          "feature": "Front cone knee diameter",
+          "from_px": [513, 759],
+          "to_px": [513, 1090],
+          "apparent_mm": 23.88
+        }
+      ]
+    },
+    {
+      "frame": 98,
+      "file": "Image_20261120143509_98_161.jpg",
+      "sha256": "29d3c122c01df236dd86903e3d6932a0f448db6460d9cbba98d4003830749182",
+      "image_size_px": [1280, 1707],
+      "view": "Oblique nose. Distinguishes the land, opening and cone transition."
+    },
+    {
+      "frame": 99,
+      "file": "Image_20261120143509_99_161.jpg",
+      "sha256": "796c4340b7dd3be8891309631f3aa3320056367858344774aa0fb2a777a95ba8",
+      "image_size_px": [1280, 1707],
+      "view": "Second rear face.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [30, 1007, 1398],
+        [50, 987, 1149],
+        [70, 967, 907],
+        [90, 947, 666]
+      ],
+      "readings": [
+        {
+          "feature": "Rear center entrance",
+          "from_px": [513, 1034],
+          "to_px": [513, 1088],
+          "apparent_mm": 4.46
+        },
+        {
+          "feature": "Rear annular well opening",
+          "from_px": [515, 864],
+          "to_px": [515, 1257],
+          "apparent_mm": 32.24
+        },
+        {
+          "feature": "Rear boss end OD",
+          "from_px": [513, 976],
+          "to_px": [513, 1147],
+          "apparent_mm": 14.13
+        }
+      ]
+    },
+    {
+      "frame": 100,
+      "file": "Image_20261120143509_100_161.jpg",
+      "sha256": "339d9a269e6f9fac02357164676f5ba2ed47ddd3d05bd374a263a27f3c52f986",
+      "image_size_px": [1280, 1707],
+      "view": "Second side view.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [40, 831, 1186],
+        [50, 830, 1065],
+        [70, 829, 828],
+        [90, 828, 592]
+      ],
+      "readings": [
+        {
+          "feature": "Nose to back of flange",
+          "from_px": [397, 676],
+          "to_px": [396, 1073],
+          "apparent_mm": 33.54
+        },
+        {
+          "feature": "Nose to rear boss end",
+          "from_px": [397, 676],
+          "to_px": [396, 1148],
+          "apparent_mm": 39.74
+        },
+        {
+          "feature": "Boss projection behind flange",
+          "from_px": [396, 1073],
+          "to_px": [396, 1148],
+          "apparent_mm": 6.2
+        },
+        {
+          "feature": "Nose to main cone root",
+          "from_px": [397, 676],
+          "to_px": [397, 827],
+          "apparent_mm": 12.8
+        }
+      ]
+    },
+    {
+      "frame": 101,
+      "file": "Image_20261120143509_101_161.jpg",
+      "sha256": "2f9c461e12e27e748d2172b33d4906a353857c96947780299bce70bc7a248d3b",
+      "image_size_px": [1280, 1707],
+      "view": "Oblique rear view of the well floor and projecting boss."
+    },
+    {
+      "frame": 102,
+      "file": "Image_20261120143509_102_161.jpg",
+      "sha256": "86d953855209cd609f533a6a1f389feb5234636474b23b2d7e62c437e27156e3",
+      "image_size_px": [1280, 1707],
+      "view": "End-on small condenser vacuum tube.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [20, 895, 802],
+        [30, 724, 798],
+        [40, 555, 795]
+      ],
+      "readings": [
+        {
+          "feature": "Narrow tube OD",
+          "from_px": [789, 679],
+          "to_px": [860, 679],
+          "apparent_mm": 4.15
+        },
+        {
+          "feature": "Narrow tube ID",
+          "from_px": [799, 679],
+          "to_px": [849, 679],
+          "apparent_mm": 2.92
+        }
+      ]
+    },
+    {
+      "frame": 103,
+      "file": "Image_20261120143509_103_161.jpg",
+      "sha256": "9141249c57914cb722777e0a4917dc9e6d270f0c1738c93389781a7125d70b5d",
+      "image_size_px": [1280, 1707],
+      "view": "Repeat small tube end.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [20, 941, 817],
+        [30, 774, 816],
+        [40, 610, 814]
+      ],
+      "readings": [
+        {
+          "feature": "Narrow tube OD",
+          "from_px": [837, 694],
+          "to_px": [905, 694],
+          "apparent_mm": 4.07
+        },
+        {
+          "feature": "Narrow tube ID",
+          "from_px": [846, 694],
+          "to_px": [895, 694],
+          "apparent_mm": 2.93
+        }
+      ]
+    },
+    {
+      "frame": 104,
+      "file": "Image_20261120143509_104_161.jpg",
+      "sha256": "1b00823ad2e722d1f54420cbd4502c6211630d0b50da32e6e9fb1390697ac629",
+      "image_size_px": [1280, 1707],
+      "view": "End-on larger tube with a rough lip.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [10, 84, 925],
+        [20, 258, 924],
+        [30, 432, 921]
+      ],
+      "readings": [
+        {
+          "feature": "Large tube OD",
+          "from_px": [53, 1103],
+          "to_px": [271, 1103],
+          "apparent_mm": 12.53
+        },
+        {
+          "feature": "Large tube ID",
+          "from_px": [74, 1103],
+          "to_px": [251, 1103],
+          "apparent_mm": 10.17
+        }
+      ]
+    },
+    {
+      "frame": 105,
+      "file": "Image_20261120143509_105_161.jpg",
+      "sha256": "ee95d75fe5fffd694244326bef4179f0d6257a71484b6b42e0b7e53f5ec5ece6",
+      "image_size_px": [1707, 1280],
+      "view": "Stepped vacuum hardware, bellows and side branch. The slender right-hand end inserts from below, passes through 91-B and crosses the gap. The owner expects the tip to enter the underside of the upper pole. The stop and final insertion depth are unresolved. No tape."
+    },
+    {
+      "frame": 106,
+      "file": "Image_20261120143509_106_161.jpg",
+      "sha256": "c88b04a942bd042c7b42a968ad981a6904d4ce3b2137665f79c7a0e930ee0ad9",
+      "image_size_px": [1707, 1280],
+      "view": "Second assembly view. No tape."
+    },
+    {
+      "frame": 107,
+      "file": "Image_20261120143509_107_161.jpg",
+      "sha256": "d58842ac8d31a473525ec4a7814690600352df75eb7c688f40e54bfdb6474f56",
+      "image_size_px": [1280, 1707],
+      "view": "Complete and sectioned pole-like parts side by side. No tape.",
+      "identical_supplied_copy": "Image_20261120143509_107_161(1).jpg"
+    },
+    {
+      "frame": 108,
+      "file": "Image_20261120143509_108_161.jpg",
+      "sha256": "095ea6bd682ebe8d5c998722c96d423f3d8b8371137940354c71d33b5b973f71",
+      "image_size_px": [1280, 1707],
+      "view": "Second comparison view. No tape.",
+      "identical_supplied_copy": "Image_20261120143509_108_161(1).jpg"
+    },
+    {
+      "frame": 109,
+      "file": "Image_20261120143509_109_161.jpg",
+      "sha256": "328769071285451ce49de0d0a70ce6282fcc8c311076c256640fe2e3fa5a2fb7",
+      "image_size_px": [1707, 1280],
+      "view": "Notched open shell and recessed circular opening.",
+      "identical_supplied_copy": "Image_20261120143509_109_161(1).jpg",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [20, 1470, 405],
+        [50, 1237, 433],
+        [100, 845, 480],
+        [150, 448, 528],
+        [170, 285, 547]
+      ],
+      "readings": [
+        {
+          "feature": "Notched shell outer span",
+          "from_px": [256, 691],
+          "to_px": [1517, 691],
+          "apparent_mm": 159.61
+        },
+        {
+          "feature": "Recessed center opening",
+          "from_px": [692, 696],
+          "to_px": [980, 696],
+          "apparent_mm": 36.49
+        }
+      ]
+    },
+    {
+      "frame": 110,
+      "file": "Image_20261120143509_110_161.jpg",
+      "sha256": "f4265c3aade774a55dc363673a9e2900a2babd630c52755cc37fba0c6b99868b",
+      "image_size_px": [1707, 1280],
+      "view": "Repeat of notched shell in a different frame.",
+      "identical_supplied_copy": "Image_20261120143509_110_161(1).jpg",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [20, 1462, 368],
+        [50, 1230, 396],
+        [100, 841, 443],
+        [150, 447, 490],
+        [170, 286, 510]
+      ],
+      "readings": [
+        {
+          "feature": "Notched shell outer span",
+          "from_px": [256, 657],
+          "to_px": [1508, 657],
+          "apparent_mm": 159.67
+        },
+        {
+          "feature": "Recessed center opening",
+          "from_px": [689, 654],
+          "to_px": [979, 654],
+          "apparent_mm": 37.03
+        }
+      ]
+    },
+    {
+      "frame": 111,
+      "file": "Image_20261120143509_111_161.jpg",
+      "sha256": "bcfde3d02e80d8920972a8670812e48c23451a9ba7a43885cdba325fbaf8ce2f",
+      "image_size_px": [1366, 1024],
+      "view": "Two-level cutaway. Compare black potted pack with the top of frame 121.",
+      "identical_supplied_copy": "Image_20261120143509_111_161(1).jpg",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 426, 899],
+        [40, 407, 753],
+        [60, 394, 655],
+        [80, 380, 552],
+        [100, 366, 444],
+        [120, 351, 330],
+        [140, 336, 212]
+      ],
+      "readings": [
+        {
+          "feature": "C2 lens copper, outer end of left cut",
+          "from_px": [600, 308],
+          "to_px": [604, 516],
+          "apparent_mm": 37.06
+        },
+        {
+          "feature": "Copper below C2 lens, outer end of left cut",
+          "from_px": [582, 726],
+          "to_px": [588, 874],
+          "apparent_mm": 30.37
+        }
+      ]
+    },
+    {
+      "frame": 112,
+      "file": "Image_20261120143509_112_161.jpg",
+      "sha256": "3e81c95fd8fb956c097f2c7c38856385023acba779780dd7769629a4247b7645",
+      "image_size_px": [1280, 1707],
+      "view": "Sector-cut annular metal body, identifiable by its 146 marking and fasteners.",
+      "identical_supplied_copy": "Image_20261120143509_112_161(1).jpg",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [30, 227, 1191],
+        [60, 369, 1192],
+        [100, 562, 1193],
+        [160, 858, 1194],
+        [200, 1060, 1195]
+      ],
+      "readings": [
+        {
+          "feature": "Marked metal body, outer rim OD",
+          "from_px": [195, 697],
+          "to_px": [1123, 697],
+          "apparent_mm": 189.24
+        },
+        {
+          "feature": "Marked metal body, center opening",
+          "from_px": [569, 685],
+          "to_px": [713, 685],
+          "apparent_mm": 29.19
+        }
+      ]
+    },
+    {
+      "frame": 113,
+      "file": "Image_20261120143509_113_161.jpg",
+      "sha256": "bf893a2b8b2a2f37496eda6c4282c46062d0293a2caeeb7d6929d2d6fbbc0fa1",
+      "image_size_px": [1280, 1707],
+      "view": "Detached potted C2 lens from the top of the stack. Opening uses the near rim.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [50, 180, 1237],
+        [80, 371, 1231],
+        [120, 639, 1223],
+        [150, 846, 1217],
+        [190, 1133, 1209]
+      ],
+      "readings": [
+        {
+          "feature": "C2 lens encapsulated body OD",
+          "from_px": [202, 700],
+          "to_px": [1122, 700],
+          "apparent_mm": 135.01
+        },
+        {
+          "feature": "C2 lens near housing opening, retained arc",
+          "from_px": [495, 709],
+          "to_px": [787, 709],
+          "apparent_mm": 42.94
+        }
+      ]
+    },
+    {
+      "frame": 114,
+      "file": "Image_20261120143509_114_161.jpg",
+      "sha256": "c312b0125fd812869c83491982e40168b57f5b1076e932acf195bd1496e4d868",
+      "image_size_px": [1707, 1280],
+      "view": "Detached C2 lens. Contrasting copper and blue liner expose pack boundaries.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 396, 938],
+        [20, 387, 834],
+        [30, 379, 730],
+        [40, 370, 625],
+        [50, 361, 519],
+        [60, 353, 413]
+      ],
+      "readings": [
+        {
+          "feature": "C2 lens copper, outer end of left cut",
+          "from_px": [530, 583],
+          "to_px": [537, 1015],
+          "apparent_mm": 41.37
+        },
+        {
+          "feature": "C2 lens copper, inner end of left cut",
+          "from_px": [875, 561],
+          "to_px": [876, 914],
+          "apparent_mm": 33.73
+        },
+        {
+          "feature": "C2 lens case at outer end of left cut, without fittings",
+          "from_px": [502, 563],
+          "to_px": [502, 1057],
+          "apparent_mm": 47.29
+        },
+        {
+          "feature": "Exposed left top copper tube, outside vertical span",
+          "from_px": [618, 478],
+          "to_px": [618, 545],
+          "apparent_mm": 6.32
+        },
+        {
+          "feature": "Exposed left top copper tube, inside vertical span",
+          "from_px": [618, 489],
+          "to_px": [618, 536],
+          "apparent_mm": 4.43
+        }
+      ]
+    },
+    {
+      "frame": 115,
+      "file": "Image_20261120143509_115_161.jpg",
+      "sha256": "baa2e844aa9af8d38e3af4316fbe7986db6a70be40a131021e1b4ea06a49f39f",
+      "image_size_px": [1280, 1707],
+      "view": "Second tape across the marked annular metal body.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [30, 1124, 719],
+        [60, 954, 724],
+        [100, 732, 730],
+        [140, 502, 736],
+        [190, 201, 744]
+      ],
+      "readings": [
+        {
+          "feature": "Marked metal body, outer rim OD",
+          "from_px": [69, 923],
+          "to_px": [1136, 923],
+          "apparent_mm": 184.04
+        },
+        {
+          "feature": "Marked metal body, center opening",
+          "from_px": [545, 939],
+          "to_px": [711, 939],
+          "apparent_mm": 28.87
+        }
+      ]
+    },
+    {
+      "frame": 116,
+      "file": "Image_20261120143509_116_161.jpg",
+      "sha256": "99f14d4f779555d943a056f869b006c681477e42faf78024286a30956472e97a",
+      "image_size_px": [1280, 1707],
+      "view": "Side cut surface of the long cartridge sector. A single visible long wall provides the local axis.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [150, 251, 1343],
+        [180, 576, 1315],
+        [200, 786, 1297],
+        [210, 890, 1288]
+      ],
+      "readings": [
+        {
+          "feature": "Cut sector local thickness at wide-end rim",
+          "from_px": [747, 1206],
+          "to_px": [816, 1206],
+          "apparent_mm": 6.6
+        }
+      ],
+      "image_angles": [
+        {
+          "feature": "Large inner flare, exposed side edge",
+          "axis_line_px": [
+            [610, 318],
+            [647, 906]
+          ],
+          "edge_line_px": [
+            [647, 911],
+            [733, 1131]
+          ],
+          "image_angle_deg": 17.75
+        }
+      ]
+    },
+    {
+      "frame": 117,
+      "file": "Image_20261120143509_117_161.jpg",
+      "sha256": "cca8cdfa5a8daccbd6d9389a0658a13237dec07814a0dffa7a2d02d6fece4912",
+      "image_size_px": [1280, 1707],
+      "view": "Removed long sector, tape across the groove. Read chords along the tape.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [150, 221, 1437],
+        [170, 450, 1429],
+        [190, 674, 1422],
+        [210, 892, 1416]
+      ],
+      "readings": [
+        {
+          "feature": "Narrow groove chord, small land",
+          "from_px": [662, 236],
+          "to_px": [677, 236],
+          "apparent_mm": 1.35
+        },
+        {
+          "feature": "Straight groove chord at small flare",
+          "from_px": [650, 337],
+          "to_px": [696, 337],
+          "apparent_mm": 4.16
+        },
+        {
+          "feature": "Straight groove chord at large flare",
+          "from_px": [673, 998],
+          "to_px": [720, 998],
+          "apparent_mm": 4.31
+        },
+        {
+          "feature": "Large groove chord, wide land",
+          "from_px": [644, 1260],
+          "to_px": [766, 1260],
+          "apparent_mm": 11.12
+        },
+        {
+          "feature": "Long sector material span at wide end",
+          "from_px": [615, 1290],
+          "to_px": [791, 1290],
+          "apparent_mm": 16.0
+        }
+      ]
+    },
+    {
+      "frame": 118,
+      "file": "Image_20261120143509_118_161.jpg",
+      "sha256": "417a7bf97a47002f24e5b7d046297724f4de1c424851eb8c09d5bf89d36c4ed9",
+      "image_size_px": [1280, 1707],
+      "view": "Removed sector that fits the long condenser pole body in 93. The owner identifies the bore near its narrow end with the inner circle in 91-B. Its exact axial position within that region is unresolved. The tape follows the axial groove.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [60, 832, 1472],
+        [80, 828, 1265],
+        [120, 821, 851],
+        [140, 817, 648],
+        [160, 813, 443],
+        [170, 811, 342]
+      ],
+      "readings": [
+        {
+          "feature": "Axial narrow nose land",
+          "from_px": [659, 396],
+          "to_px": [659, 478],
+          "apparent_mm": 8.07
+        },
+        {
+          "feature": "Axial small inner flare",
+          "from_px": [659, 478],
+          "to_px": [659, 527],
+          "apparent_mm": 4.78
+        },
+        {
+          "feature": "Axial straight internal channel",
+          "from_px": [659, 527],
+          "to_px": [659, 1173],
+          "apparent_mm": 62.92
+        },
+        {
+          "feature": "Axial large inner flare",
+          "from_px": [659, 1173],
+          "to_px": [659, 1355],
+          "apparent_mm": 17.58
+        },
+        {
+          "feature": "Axial wide-end land",
+          "from_px": [659, 1355],
+          "to_px": [659, 1421],
+          "apparent_mm": 6.38
+        },
+        {
+          "feature": "Axis of long cut sector, end to end",
+          "from_px": [659, 396],
+          "to_px": [659, 1421],
+          "apparent_mm": 99.73
+        }
+      ],
+      "image_angles": [
+        {
+          "feature": "External nose, left sector silhouette",
+          "axis_line_px": [
+            [581, 606],
+            [578, 820]
+          ],
+          "edge_line_px": [
+            [581, 509],
+            [640, 405]
+          ],
+          "image_angle_deg": 28.76
+        }
+      ]
+    },
+    {
+      "frame": 119,
+      "file": "Image_20261120143509_119_161.jpg",
+      "sha256": "532d3b0f4a9476c297ac28eefc352ca44e20dd38c4797259d3a127eeacc28214",
+      "image_size_px": [1280, 1707],
+      "view": "Short loose sector showing an inner taper. Exact installed seat unassigned.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [50, 893, 886],
+        [60, 899, 735],
+        [70, 905, 582],
+        [80, 911, 430]
+      ],
+      "readings": [
+        {
+          "feature": "Short sector, base projected span",
+          "from_px": [733, 574],
+          "to_px": [733, 809],
+          "apparent_mm": 15.43
+        }
+      ]
+    },
+    {
+      "frame": 120,
+      "file": "Image_20261120143509_120_161.jpg",
+      "sha256": "fb52ae987b3a257304325dad5a7f212175c6e8123f2ac6b94251e7289c4e0ea5",
+      "image_size_px": [1280, 1707],
+      "view": "Reverse/side view of short loose sector.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [40, 945, 1018],
+        [50, 949, 874],
+        [60, 953, 731],
+        [70, 958, 587]
+      ],
+      "readings": [
+        {
+          "feature": "Short sector, side view end-body visible height",
+          "from_px": [829, 677],
+          "to_px": [829, 837],
+          "apparent_mm": 11.16
+        }
+      ]
+    },
+    {
+      "frame": 121,
+      "file": "Image_20261120143509_121_161.jpg",
+      "sha256": "5bd7cf1f3098ac7e0dff08f76e0ca9d8e09e181106d5fd5d9dd37b1ee506d253",
+      "image_size_px": [1280, 1707],
+      "view": "Owner identifies C2 lens, upper objective and lower objective from top to bottom. Lower winding is seated in a magnetic and heat-conducting part. The indicated intermediate passages carry cooling water.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 304, 1435],
+        [30, 294, 1364],
+        [50, 283, 1289],
+        [70, 271, 1210],
+        [90, 259, 1124],
+        [110, 246, 1035],
+        [130, 232, 941],
+        [150, 217, 841],
+        [170, 202, 735],
+        [190, 185, 621],
+        [210, 167, 499]
+      ],
+      "readings": [
+        {
+          "feature": "C2 lens copper, near left edge",
+          "from_px": [411, 687],
+          "to_px": [427, 878],
+          "apparent_mm": 35.82
+        },
+        {
+          "feature": "Upper objective copper, near left edge",
+          "from_px": [365, 947],
+          "to_px": [385, 1097],
+          "apparent_mm": 32.66
+        },
+        {
+          "feature": "Lower objective copper, near left edge",
+          "from_px": [466, 1229],
+          "to_px": [476, 1355],
+          "apparent_mm": 32.79
+        },
+        {
+          "feature": "Stack axial silhouette, including raised fittings",
+          "from_px": [685, 492],
+          "to_px": [415, 1498],
+          "apparent_mm": 218.89
+        }
+      ]
+    },
+    {
+      "frame": 122,
+      "file": "Image_20261120143509_122_161.jpg",
+      "sha256": "99d6f195d7a81937a55c4f60aabc2dad0f14d97484011eacaa33198cfc5d3d6d",
+      "image_size_px": [1024, 1366],
+      "view": "Second view of the identified stack, at another framing/scale.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [20, 251, 1156],
+        [50, 239, 1070],
+        [80, 226, 973],
+        [110, 211, 867],
+        [140, 195, 753],
+        [170, 178, 627],
+        [200, 158, 488]
+      ],
+      "readings": [
+        {
+          "feature": "C2 lens copper, near left edge",
+          "from_px": [320, 558],
+          "to_px": [338, 719],
+          "apparent_mm": 36.8
+        },
+        {
+          "feature": "Upper objective copper, near left edge",
+          "from_px": [286, 785],
+          "to_px": [301, 895],
+          "apparent_mm": 29.5
+        },
+        {
+          "feature": "Lower objective copper, near left edge",
+          "from_px": [370, 999],
+          "to_px": [378, 1108],
+          "apparent_mm": 35.21
+        },
+        {
+          "feature": "Stack axial silhouette, including raised fittings",
+          "from_px": [543, 405],
+          "to_px": [338, 1214],
+          "apparent_mm": 218.15
+        }
+      ]
+    },
+    {
+      "frame": 123,
+      "file": "Image_20261120143509_123_161.jpg",
+      "sha256": "b01a74c60bb7525c2d848c301c3ce624dc8993b68a9bb2d057a652fe233911e7",
+      "image_size_px": [1707, 1280],
+      "view": "Side view of stepped thick metal sector and adjacent support.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [40, 1097, 474],
+        [60, 929, 468],
+        [90, 681, 459],
+        [120, 434, 451],
+        [150, 194, 443]
+      ],
+      "readings": [
+        {
+          "feature": "Stepped sector, base to end",
+          "from_px": [485, 752],
+          "to_px": [1110, 752],
+          "apparent_mm": 75.35
+        }
+      ]
+    },
+    {
+      "frame": 124,
+      "file": "Image_20261120143509_124_161.jpg",
+      "sha256": "34dc2e9bd80c1b4ccf53233b61c5671b9fb3706b6b2d1a69ba7247b36a4d2e98",
+      "image_size_px": [1707, 1280],
+      "view": "Second side view with tape along the same dimension.",
+      "scale_axis": "x",
+      "ruler_ticks_mm_x_y": [
+        [40, 1106, 468],
+        [60, 934, 459],
+        [90, 682, 447],
+        [120, 434, 435],
+        [150, 197, 424]
+      ],
+      "readings": [
+        {
+          "feature": "Stepped sector, base to end",
+          "from_px": [488, 748],
+          "to_px": [1121, 748],
+          "apparent_mm": 75.21
+        }
+      ]
+    },
+    {
+      "frame": 125,
+      "file": "Image_20261120143509_125_161.jpg",
+      "sha256": "39c9e96134a1887a8faa3f66fd8a5e66ab81a251771d9d19ff26d8422aca8f07",
+      "image_size_px": [1280, 1707],
+      "view": "Wide flange sector. A surviving chord does not establish full flange diameter.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [40, 347, 358],
+        [60, 346, 505],
+        [100, 342, 786],
+        [130, 340, 997],
+        [160, 337, 1212]
+      ],
+      "readings": [
+        {
+          "feature": "Outer flange sector, visible chord projected on tape axis",
+          "from_px": [633, 406],
+          "to_px": [548, 1186],
+          "apparent_mm": 109.84
+        }
+      ]
+    },
+    {
+      "frame": 126,
+      "file": "Image_20261120143509_126_161.jpg",
+      "sha256": "0449a5b7ba37ea2236b1f8577f140611a820bfc39ed27f57081b8909888b0e00",
+      "image_size_px": [960, 1280],
+      "view": "Stepped metal sector in the foreground. Tape scale applies to the foreground part.",
+      "scale_axis": "y",
+      "ruler_ticks_mm_x_y": [
+        [10, 216, 1057],
+        [30, 202, 946],
+        [50, 186, 820],
+        [70, 167, 676],
+        [80, 158, 603]
+      ],
+      "readings": [
+        {
+          "feature": "Foreground stepped sector, base to end",
+          "from_px": [410, 1101],
+          "to_px": [410, 604],
+          "apparent_mm": 77.79
+        }
+      ]
+    }
+  ]
+}

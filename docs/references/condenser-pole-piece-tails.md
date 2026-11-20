@@ -4,6 +4,8 @@ The operator identified the loose cylindrical component in the three supplied ph
 
 ## The loose component in the photographs
 
+The TF30 cartridge comes apart into two members. Its removed sector shows a long straight channel between two inner flares. Rulers across the sector in frame 117 and along it in 118 constrain the exposed widths and axial lengths independently. In frame 91, the inner circle of the lower pole (B) corresponds to the bore near the narrow end in 93 and 118. The slender tube in 105 passes upward through B and spans the gap in the seated cartridge. Its tip is expected to enter the upper pole from below. The dark interval near the bore in frames 87 and 90 gives an estimated axial gap of about 3 mm for the simplified TF30 geometry. [TF30 tube entry, pole bores and spacing](tecnai-tf30-photo-dimensions.md#tube-entry-pole-bores-and-installed-spacing) · [TF30 inner taper measurements](tecnai-tf30-photo-dimensions.md#inner-taper-with-independent-axial-and-transverse-scales)
+
 | Photograph | Feature visible or identified | Geometric constraint |
 |---|---|---|
 | 1, side view | The cylindrical wall has a round radial opening. The operator identifies the narrow span inside the opening as the pole gap. The edges bounding that span are the facing pole surfaces. | The opening in the outer wall and the axial separation of the pole faces require separate dimensions. |
