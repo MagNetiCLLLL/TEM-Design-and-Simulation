@@ -41,10 +41,10 @@ The currently cited [US20150021476A1](https://patents.google.com/patent/US201500
 | `image_tl21_lens` | Image-corrector relay, R1/R6 | Same native two-pole family | Preserve optical location/conjugacy; no inferred OEM winding count. |
 | `image_tl22_lens` | Image-corrector relay, R1/R6 | Same native two-pole family | Preserve its own saved section and polarity. |
 | `image_adapter_lens` | Image-corrector adapter, R1/R6 | Same native two-pole family | Reuse round-lens solids; leave internal cooling and fixings unresolved. |
-| `diffraction_lens` | Projector-stack relay, R1; R3 Fig. 1 for column role | `configs/subassemblies/projector_stack.toml` material sections | Preserve separate coil/yoke/pole/housing keys. No specimen chamber or mini-condenser auxiliary circuit here. |
-| `intermediate_lens` | Projector-stack relay, R1; R3 Fig. 1 | Native longer envelope and sections | Do not infer a longer winding or new pole shape from a desired focal length; keep saved geometry. |
-| `projector_lens_1` | Projector stack, R1; R3 Fig. 1 | Native section and child ownership | Same generic material topology. Detailed winding and cooling not measured. |
-| `projector_lens_2` | Projector stack, R1; R3 Fig. 1 | Native longer section and child ownership | Same topology, independently parameterized envelope; not a scaled objective drawing. |
+| `diffraction_lens` | CM12/STEM, Fig. 5 | Wide entrance lip and long sleeve joined to the upper IL piece | The DL winding has its own current channel. |
+| `intermediate_lens` | CM12/STEM, Fig. 5 | Flared bore and 6 mm gap below the winding centre | The lower pole joins the upper P1 sleeve. |
+| `projector_lens_1` | CM12/STEM, Fig. 5 | Wide beam-side opening between two sleeves | A radial plate joins each end of this stage to the surrounding return. |
+| `projector_lens_2` | CM12/STEM, Fig. 5 | Upper and lower flared poles with a 7 mm gap near the entrance | A separate exit plate closes the return to the P2 yoke. |
 | `c1_c2_pole_piece_cartridge` | Shared mechanical cartridge; no exact OEM section found | Existing 300 mm span, 60/90.75 mm inner/outer diameters; explicit three-section engineering partition in the installed C3+Probe profile (2026-10-20 update below) | One physical assembly, linked to both C1/C2 fields. Preserve continuous tube and existing pole members. Carrier sections remain unresolved mixed material; the saved separator is an assumed generic construction, not an observed OEM spacer or another magnetic gap. |
 
 The former interpretation of `image_tl12_lens` as a 1 mm integrated/control plane was contradicted by the CETCOR diagram and has been removed. There are still 18 distinct round-lens parent keys: retiring `image_ol_post_lens` and making TL12 physical does not add a sixth image-corrector lens. Virtual upper/lower objective optical references do not imply additional physical coils.
@@ -61,6 +61,8 @@ The former interpretation of `image_tl12_lens` as a 1 mm integrated/control plan
 The first executable CAD stage can preserve every current material surface without inventing new dimensions. A later source-backed internal-detail stage needs explicit saved parameters and evidence before introducing spacers, cooling channels or a modified magnetic connection. Geometry refinement alone must not silently change the analytical field model or its saved settings.
 
 ## 2026-10-20: installed C1/C2 carrier subdivision
+
+The [C1/C2 pole-piece photo audit](condenser-pole-piece-tails.md) compares the loose cylindrical cartridge, its radial openings and its internal taper with the installed CAD section. It gives separate dimensions for the modeled exterior tapers and defines the axial depth needed to size the observed internal taper.
 
 The earlier single unresolved annulus obscured the distinction between the common carrier and its independently owned C1/C2 poles, coils and yokes. All seven column variants share the same saved carrier and contained-pole dimensions, so each now opts into the same three separately named solids. Only this shared upper component was synchronized; image-corrector internals were not changed. Older manifests without the explicit fields keep their previous single-body fallback.
 
@@ -150,6 +152,8 @@ The neighboring parts need a stronger distinction than “no overlap”:
 Both TL22 poles have 0.4 mm nominal separation from the constant OD19.2 mm tube. Mesh gaps at32/64/128 segments are 0.398073891 / 0.399518182 / 0.399879527 mm, with zero intersection. The tube bore remains the beam-space authority. Focused regressions also cover all configuration variants, the 36 internal material pairs at16/32/64 segments, unchanged original solids and field-source inventory, native/CAD correspondence, actual neighboring material contacts and saved/editable copy behavior.
 
 ## Projector pole face lands: saved dimensions now consumed (2026-10-21)
+
+Both recording modules now use shared beam-side iron, radial return plates, and flared IL/P2 pole faces. The following paragraphs document the earlier eight-pole geometry. [Current projector geometry and its Philips sources](post-specimen-lens-geometry.md)
 
 The eight DL/IL/P1/P2 poles in `NoEnergyFilter.toml` and the shared `projector_stack.toml` have long saved `pole_face_land_axial_thickness_mm = 3`. Previously the renderer and CAD ignored that value and tapered the outer contour all the way to the pole face. The revised common contour reserves the final 3 mm at the saved tip radius for a cylindrical land. The nose length is interpreted as the **complete shoulder-to-face interval including the land**: the taper runs from `length - nose` at the outer radius to `length - land` at the tip radius, followed by the cylindrical tip up to the unchanged face. This is an explicit engineering interpretation of existing dimensions, not newly obtained manufacturer geometry.
 

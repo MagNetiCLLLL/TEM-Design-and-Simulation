@@ -101,6 +101,24 @@ def test_complete_gap_and_pole_batch_accepts_consistency_and_rejects_explicit_co
         complete(before, bad)
 
 
+@pytest.mark.parametrize("key,offset,gap", [("intermediate_lens", 37., 8.), ("projector_lens_2", -68., 6.)])
+def test_offset_gap_batch_and_individual_face_edits_preserve_both_return_joints(key, offset, gap):
+    draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT/RECORDING)
+    original = deepcopy(draft.document)
+    changes = {("parts", key, "pole_gap_center_offset_mm"): offset, ("parts", key, "pole_gap_mm"): gap}
+    ends = draft.part(key+"_upper_pole")["local_start_z_mm"], draft.part(key+"_lower_pole")["local_end_z_mm"]
+    for path, value in changes.items():
+        draft.set_dimension(path, value)
+    for batch in (changes, dict(reversed(changes.items()))):
+        candidate, _ = complete(original, batch)
+        assert candidate == draft.document
+        validate_document(candidate)
+    center = draft.part(key)["local_center_z_mm"] + offset
+    assert draft.part(key+"_upper_pole")["local_end_z_mm"] == center-gap/2
+    assert draft.part(key+"_lower_pole")["local_start_z_mm"] == center+gap/2
+    assert ends == (draft.part(key+"_upper_pole")["local_start_z_mm"], draft.part(key+"_lower_pole")["local_end_z_mm"])
+
+
 @pytest.mark.parametrize("case", ["three_radials", "shared_radials", "shared_thickness", "passive_interface"])
 def test_contradictory_explicit_constraints_are_rejected_without_overwriting(case):
     document = read_document(INSTRUMENT_CONFIG_ROOT/COLUMN)

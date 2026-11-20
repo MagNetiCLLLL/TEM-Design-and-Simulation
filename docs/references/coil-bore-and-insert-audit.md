@@ -1,6 +1,6 @@
 # Coil bores and nested objective hardware
 
-Catalog audit, 19 November 2026. All dimensions are nominal millimetres. Diameters are marked Ø. Radial clearance is measured on one side at the same axial position. Axial coordinates in the objective tables are relative to the middle of the pole gap, with positive Z downstream.
+Catalog audit, 20 November 2026. All dimensions are nominal millimetres. Diameters are marked Ø. Radial clearance is measured on one side at the same axial position. Axial coordinates in the objective tables are relative to the middle of the pole gap, with positive Z downstream.
 
 ## The photographed assembly and the current CAD
 
@@ -65,7 +65,9 @@ The 13 catalog module choices comprise three guns, one optional blanker, seven c
 | Image TL12 | 85.70 | 13 | Ø73.70 pole roots. |
 | Image TL21, TL22 and B-COR TL31, TL32 | 75 | 13 | Ø62.645 pole roots. |
 | Image adapter | 75 | 13 | Ø58.96 pole roots. |
-| Diffraction, intermediate, projector 1 and projector 2 | 60 | 21.5 | Ø52 pole roots. Nominal liner ID20 / OD21.5 seats at zero radial clearance in the poles. Both recording selections share these dimensions. |
+| Diffraction | 60 | 40 | The entrance return lip has a Ø66 opening. The downstream sleeve has a Ø40 bore and joins the intermediate lens. |
+| Intermediate and projector 2 | 60 | 21.5 | The Ø21.5 OD liner meets the narrow pole faces at zero nominal radial clearance. The intermediate sleeve has a Ø40 straight bore. The projector 2 exit sleeve opens to Ø44. |
+| Projector 1 | 60 | 40 | Two Ø40 ID sleeves bound an axial opening 40 mm long. Both recording selections use the same iron profiles. [Recording-stage sections](post-specimen-lens-geometry.md) |
 
 The continuous upstream tube has Ø5.76 ID. At the Mini Condenser, AC and condenser stigmator centers, the assembled beam-wall model resolves Ø5.76. At the separate Beam Shift/Tilt center it resolves Ø5.0. At the diffraction lens center it resolves Ø20.0. Aperture working holes are separate local restrictions. [Tube profile and resolved beam boundaries](cad-vacuum-tube.md)
 

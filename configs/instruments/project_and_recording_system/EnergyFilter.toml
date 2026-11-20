@@ -35,7 +35,7 @@ magnetic_lens_geometry_source_urls = [
 projector_stack_inter_lens_gap_mm = 5.0
 projector_stack_vacuum_inner_diameter_mm = 20.0
 projector_stack_geometry_status = "user_defined_non_oem_principle_model"
-projector_stack_geometry_source = "User requirement: compact D-I-P1-P2 stack with uniform vacuum tube; not an OEM production drawing."
+projector_stack_geometry_source = "Gross, Mescher and Tiemeijer, Philips Technical Review 43 (1987), Fig. 5, p. 278. Four separately driven windings, a long DL/IL inner wall, opposed IL faces, an open P1 region and opposed faces at the P2 entrance. The continuous outer return and all dimensions are engineering assumptions."
 parts_start_z_mm = 0.0
 parts_end_z_mm = 1400.0
 

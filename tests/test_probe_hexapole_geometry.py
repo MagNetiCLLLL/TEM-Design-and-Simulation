@@ -22,7 +22,7 @@ CONFIG = Path(__file__).resolve().parents[1] / "configs/instruments/column/C3_Pr
 def _row(key):
     document = tomllib.loads(CONFIG.read_text(encoding="utf-8"))
     row = next(row for row in document["parts"] if row["key"] == key)
-    # Baseline contact and envelope checks exercise the original bulk winding.
+    # Baseline contact and envelope checks use the bulk winding and unsleeved pins.
     row, = legacy_transverse_document({"parts": [row]})["parts"]
     return {name: value for name, value in row.items() if not name.startswith("hexapole_support_")}
 
@@ -62,11 +62,13 @@ def test_installed_closed_turns_clear_all_six_original_iron_poles(key):
     original = {s.region: s.shape for s in multipole_solids(_row(key), {})
                 if s.material == "soft_magnetic"}
     iron = {s.region: s.shape for s in installed if s.material == "soft_magnetic"}
-    assert set(iron) == {"return_yoke"} | {f"pole_pin_{i}" for i in range(1, 7)}
+    assert set(original) == {"return_yoke"} | {f"pole_pin_{i}" for i in range(1, 7)}
+    assert set(iron) == set(original) | {f"pole_root_sleeve_{i}" for i in range(1, 7)}
     azimuth = rows[key]["multipole_winding_basis_angle_deg"]
     iron_bodies = {region: _manifold(shape, 24) for region, shape in iron.items()}
-    for region, body in iron_bodies.items():
-        expected = _manifold(original[region], 24).rotate((0., 0., azimuth))
+    for region, shape in original.items():
+        body = iron_bodies[region]
+        expected = _manifold(shape, 24).rotate((0., 0., azimuth))
         assert (body - expected).volume() == pytest.approx(0., abs=1e-6)
         assert (expected - body).volume() == pytest.approx(0., abs=1e-6)
     turns = [s for s in installed if s.material == "copper_winding"]

@@ -18,6 +18,7 @@ from temsim.assembly_model_3d import (
     assembly_model_fingerprint, assembly_model_from_assembly,
 )
 from temsim.assembly_optical_visibility import OPTICAL_VISIBILITY_HELP, optical_mesh_visible
+from temsim.component_representation import belongs_to_material_selection
 from temsim.gui.part_model_view import PartModelView
 
 
@@ -286,8 +287,7 @@ class AssemblyModelPage(QWidget):
         keys = {key}
         while True:
             more = {part.key for part in self._parts.values()
-                    if part.data.get("parent_key") in keys
-                    or keys.intersection(part.data.get("magnetic_lens_keys", ()))}
+                    if belongs_to_material_selection(part.data, keys)}
             if more <= keys:
                 return keys
             keys.update(more)

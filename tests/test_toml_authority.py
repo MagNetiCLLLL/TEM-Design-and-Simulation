@@ -35,24 +35,25 @@ def test_scan_and_shared_image_descan_keep_their_physical_order_in_every_column_
         assert descan_z == pytest.approx(host["local_center_z_mm"])
         assert parts["descan_deflector"]["interaction_centers_local_z_mm"] == host["interaction_centers_local_z_mm"]
         assert parts["descan_deflector"]["physical_host_key"] == host["key"]
-        assert (
-            float(parts["image_diffraction_deflector"]["local_start_z_mm"])
-            - float(parts["objective_stigmator"]["local_end_z_mm"])
-        ) == pytest.approx(5.0)
+        stigmator = parts["objective_stigmator"]
+        if values["module"]["probe_corrector"] and not values["module"]["image_corrector"]:
+            assert stigmator["local_start_z_mm"] - host["local_end_z_mm"] == pytest.approx(25.)
+        else:
+            assert host["local_start_z_mm"] - stigmator["local_end_z_mm"] == pytest.approx(5.)
         checked += 1
-    assert checked == 5
+    assert checked == 7
 
 
 def test_catalog_reports_variant_scope_and_unique_active_authorities():
     audit = ManifestEditor().validate_catalog()
 
-    assert audit.module_count == 11
-    assert audit.part_definition_count == 482
-    assert audit.logical_part_key_count == 198
-    assert audit.variant_scoped_duplicate_count == 284
+    assert audit.module_count == 13
+    assert audit.part_definition_count == 893
+    assert audit.logical_part_key_count == 263
+    assert audit.variant_scoped_duplicate_count == 630
     catalog = AssemblyCatalog()
     assert audit.assembly_count == len(catalog.guns) * len(catalog.columns) * len(catalog.recording_systems) * len(catalog.beam_blankers)
-    assert audit.resolved_part_authority_count == 7576
+    assert audit.resolved_part_authority_count == 14138
 
 
 def test_selected_runtime_components_record_their_one_toml_authority():

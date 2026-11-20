@@ -1,9 +1,11 @@
 # Magnetic circuits and lens-structure evidence
 
-Implementation stages 1 and 2, 2026-09-05. All dimensions remain TOML-owned.
-Changing geometry never runs lens-preset optimisation. The shipped D/I/P1/P2
-dimensions, operating strengths and independent-pole drawings are retained.
-Their topology is explicitly an engineering assumption, not a Titan service drawing.
+All dimensions are owned by the instrument TOML. Both recording modules
+install one shared DL/IL/P1/P2 iron circuit with four independently driven
+windings. The narrow working gaps lie low in IL and near the entrance of P2.
+The original optical reference planes and winding calibrations are retained.
+The outer return and the millimetre dimensions are engineering assumptions.
+[Installed sections and historical evidence](references/post-specimen-lens-geometry.md)
 
 ## Supported scope
 

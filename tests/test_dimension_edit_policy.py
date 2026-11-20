@@ -16,7 +16,10 @@ from temsim.paths import INSTRUMENT_CONFIG_ROOT
         'condenser_aperture_2', 'condenser_aperture_3', 'objective_aperture')],
     ('project_and_recording_system/NoEnergyFilter.toml', 'selected_area_aperture', 'mechanical_bore_diameter_mm'),
     ('project_and_recording_system/EnergyFilter.toml', 'energy_filter_entrance_aperture', 'mechanical_bore_diameter_mm'),
-    ('project_and_recording_system/NoEnergyFilter.toml', 'diffraction_lens_upper_pole', 'pole_cone_angle_to_axis_deg'),
+    ('column/C3_ProbeCorrector.toml', 'objective_upper_pole', 'pole_cone_angle_to_axis_deg'),
+    ('project_and_recording_system/NoEnergyFilter.toml', 'diffraction_lens', 'pole_gap_mm'),
+    ('project_and_recording_system/NoEnergyFilter.toml', 'projector_lens_1', 'pole_gap_mm'),
+    ('project_and_recording_system/NoEnergyFilter.toml', 'projector_lens_1_upper_pole', 'mechanical_bore_diameter_mm'),
 ])
 def test_nonmaterial_reference_cannot_pretend_to_resize_a_surface(module, key, field):
     draft = PartModelDocument(INSTRUMENT_CONFIG_ROOT / module)

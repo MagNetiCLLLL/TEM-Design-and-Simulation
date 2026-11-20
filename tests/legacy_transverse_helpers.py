@@ -16,7 +16,7 @@ def legacy_transverse_document(document):
     for part in result['parts']:
         multipole=any(str(field).startswith('multipole_winding_') for field in part)
         prefixes=('transverse_winding_','ideal_transverse_',
-                  'multipole_winding_','ideal_multipole_')
+                  'multipole_winding_','ideal_multipole_','pole_root_sleeve_')
         removed=set()
         for field in tuple(part):
             if field.startswith(prefixes):

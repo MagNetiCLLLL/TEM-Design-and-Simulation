@@ -126,18 +126,20 @@ def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearanc
             expected = count * .5 * np.sin(2 * np.pi/count) * (33.165**2 - 31.89**2)
             assert positive["return_yoke"] == pytest.approx(expected, abs=2e-6)
         else:
-            # The saved 2026-10-21 contact-isolation reconstruction retracts
-            # DP22 copper by 0.14 mm and adds a 0.04 mm axial end seal. The
-            # resulting complete laminate has 0.10 mm clearance; it no longer
-            # makes the earlier copper end-face contact at the TL22 pole.
+            # The winding allocation stops 0.14 mm from TL22. The metal
+            # turns sit inside it and the outer seal is the closest body.
             assert rows[neighbor]["winding_axial_length_mm"] == pytest.approx(14.22)
-            copper = reduce(lambda a, b: a + b, [solid for spec, solid in zip(other_specs, opposite)
-                                               if spec.material == "copper_winding"])
-            assert lens.min_gap(copper, .5) == pytest.approx(.14, abs=1e-10)
+            turns = [(spec.shape, solid) for spec, solid in zip(other_specs, opposite)
+                     if spec.material == "copper_winding"]
+            copper = reduce(lambda a, b: a + b, (solid for _, solid in turns))
+            first = min(wire["lower_z_mm"] - wire["wire_radius_mm"] for wire, _ in turns)
+            last = max(wire["upper_z_mm"] + wire["wire_radius_mm"] for wire, _ in turns)
+            assert 729.24 < first < last < 743.46
+            assert lens.min_gap(copper, .5) == pytest.approx(first-z, abs=1e-7)
             np.testing.assert_allclose([combined.bounding_box()[2], combined.bounding_box()[5]],
                                        [729.20, 743.50], atol=1e-10, rtol=0.)
             np.testing.assert_allclose([copper.bounding_box()[2], copper.bounding_box()[5]],
-                                       [729.24, 743.46], atol=1e-10, rtol=0.)
+                                       [first, last], atol=1e-7, rtol=0.)
             assert positive == {}
     if expected_gap == 0.:
         assert all(area > 60. for area in contact_areas)

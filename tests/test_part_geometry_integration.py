@@ -51,6 +51,13 @@ def _part(document):
     return next(part for part in document["parts"] if part["key"] == KEY)
 
 
+def _expected_coil_edit(document, field, value):
+    coil = _part(document)
+    coil[field] = value
+    owner = next(part for part in document["parts"] if part["key"] == coil["parent_key"])
+    owner["mechanical_coil_radial_thickness_mm"] = (coil["mechanical_outer_diameter_mm"]-coil["mechanical_inner_diameter_mm"])/2
+
+
 def _change(dialog, dimension, value):
     control = dialog.dimension_controls[dimension]
     control.setValue(value)
@@ -79,7 +86,7 @@ def test_layout_selection_opens_editor_and_applies_only_material_diameter(window
     assert _document(window) == before  # Draft changes never write TOML.
     qtbot.mouseClick(dialog.apply_button, Qt.MouseButton.LeftButton)
     expected = deepcopy(before)
-    _part(expected)["mechanical_inner_diameter_mm"] = 70.0
+    _expected_coil_edit(expected, "mechanical_inner_diameter_mm", 70.0)
     assert _document(window) == expected
     assert dialog.error_label.text() == ""
     assert not dialog.apply_button.isEnabled()
@@ -90,7 +97,7 @@ def test_layout_selection_opens_editor_and_applies_only_material_diameter(window
     # A second Apply uses the new baseline and does not trip stale-file protection.
     _change(dialog, "outer_diameter_mm", 95.0)
     dialog.apply()
-    _part(expected)["mechanical_outer_diameter_mm"] = 95.0
+    _expected_coil_edit(expected, "mechanical_outer_diameter_mm", 95.0)
     assert _document(window) == expected
     dialog.reject()
     assert window._part_geometry_dialog is None
@@ -176,7 +183,7 @@ def test_apply_preserves_existing_toml_drafts_including_invalid_text(window):
     _change(dialog, "inner_diameter_mm", 70.0)
     dialog.apply()
     expected = deepcopy(before)
-    _part(expected)["mechanical_inner_diameter_mm"] = 70.0
+    _expected_coil_edit(expected, "mechanical_inner_diameter_mm", 70.0)
     assert _document(window) == expected
     assert dialog.error_label.text() == ""
     assert "ID 70 mm" in panel.geometry_summary.text()

@@ -186,8 +186,8 @@ def test_passive_sleeve_does_not_block_moving_existing_electronics(key):
     from temsim.component_operations import placed_component_document
     doc = read_document(ROOT/"configs/instruments/column/C3_ProbeCorrector.toml")
     original = next(r for r in doc["parts"] if r["key"] == key)
-    # Respect the pre-existing upstream-corrector and objective-pole limits.
-    delta = -.5 if key == "ac_deflector" else -200.
+    # Cross the carrier boundary within the clearance to TL12 or the upper pole.
+    delta = -.5 if key == "ac_deflector" else 1.5
     doc, _ = placed_component_document(doc, key, original["local_center_z_mm"]+delta)
     rows = {r["key"]: r for r in doc["parts"]}
     validate_document(doc)

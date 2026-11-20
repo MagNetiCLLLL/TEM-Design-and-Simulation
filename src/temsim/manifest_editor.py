@@ -111,8 +111,8 @@ def _complete_material_dimension_updates(document, updates, explicit):
     from temsim.component_operations import CUSTOM_COMPONENT_ROLES
     from temsim.dimension_edit_policy import dimension_reference_reason
     from temsim.mechanical_dimension_bindings import (
-        FIELDS, _coil_for, _native, _positive, _synchronize_coil_radials,
-        synchronize_dimension_edit,
+        FIELDS, GAP_FIELDS, _coil_for, _native, _positive, _synchronize_coil_radials,
+        synchronize_gap_faces,
     )
 
     original = {str(part["key"]): part for part in document.get("parts", ())}
@@ -148,6 +148,10 @@ def _complete_material_dimension_updates(document, updates, explicit):
             if reason and value != original[path[1]].get(path[2]):
                 raise ValueError(f"{path[1]}.{path[2]}: {reason}")
     staged = deepcopy(parts)
+    from temsim.magnetic_geometry import corrector_return_extent
+    for key, part in parts.items():
+        if ("parts", key, "material_intervals_mm") in explicit:
+            part.update(corrector_return_extent(part))
 
     def same(first, second):
         if isinstance(first, bool) or isinstance(second, bool):
@@ -165,23 +169,17 @@ def _complete_material_dimension_updates(document, updates, explicit):
                explicit[(section, key, field)] != original[key].get(field) and _native(parts[key])]
     # Gap derivation sees all other explicit dimensions first (e.g. a shorter
     # nose or changed back face), but starts from the old declared face law.
-    for key, field in sorted(changed):
+    for key in sorted({key for key, field in changed if field in GAP_FIELDS}):
         lens = parts[key]
-        if field != "pole_gap_mm" or lens.get("mechanical_profile") != "magnetic_lens_assembly":
+        if lens.get("mechanical_profile") != "magnetic_lens_assembly":
             continue
         poles = sorted((part for part in parts.values() if part.get("parent_key") == key
                         and part.get("mechanical_profile") == "magnetic_pole_piece"),
                        key=lambda part: float(original[part["key"]]["local_start_z_mm"]))
-        previous = original[key][field]
         if len(poles) == 2:
-            old_center = float(original[key]["local_center_z_mm"])
-            if (not same(original[poles[0]["key"]]["local_end_z_mm"], old_center-previous/2)
-                    or not same(original[poles[1]["key"]]["local_start_z_mm"], old_center+previous/2)):
-                raise ValueError(f"{key}: saved pole faces do not bound the previous gap about its fixed centre")
-            center = float(lens["local_center_z_mm"])
-            poles[0]["local_end_z_mm"] = center-previous/2
-            poles[1]["local_start_z_mm"] = center+previous/2
-        synchronize_dimension_edit(candidate, key, field, previous)
+            poles[0]["local_end_z_mm"] = original[poles[0]["key"]]["local_end_z_mm"]
+            poles[1]["local_start_z_mm"] = original[poles[1]["key"]]["local_start_z_mm"]
+        synchronize_gap_faces(candidate, lens, original[key])
 
     groups = {}
     for key, field in changed:
@@ -489,6 +487,7 @@ class ManifestEditor:
                         monochromator_installed=bool(gun["monochromator"]),
                         gun_components=(),
                         corrector=SimpleNamespace(value=corrector),
+                        image_corrector_design=column.get("image_corrector_design", "cetcor"),
                         c3_hardware=SimpleNamespace(value=(
                             "three_condenser"
                             if column["c3_lens"] else "two_condenser"

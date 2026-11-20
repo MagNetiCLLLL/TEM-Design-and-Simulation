@@ -2,6 +2,11 @@
 
 This policy applies throughout the repository.
 
+## Git workflow
+
+Work directly on `master` for all project changes. Create or switch to a different
+branch only at the user's explicit request.
+
 ## Optical tuning contract
 
 - Follow [optical control roles and illumination constraints](docs/OPTICAL_CONTROL_ROLES.md)

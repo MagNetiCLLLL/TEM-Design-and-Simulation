@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
 
 from temsim.assembly_section import assembly_section_from_model
 from temsim.cell_geometry import CellPhysicalContext
+from temsim.component_representation import belongs_to_material_selection
 from temsim.gui.assembly_geometry_cache import AssemblyGeometryCache
 from temsim.gui.projection_angle_controls import ProjectionAngleControls
 from temsim.gui.transverse_projection import format_projection_angle
@@ -314,8 +315,7 @@ class AssemblySectionPage(QWidget):
         keys = {key} if key else set()
         while True:
             more = {part.key for part in self._parts.values()
-                    if part.data.get("parent_key") in keys
-                    or keys.intersection(part.data.get("magnetic_lens_keys", ()))}
+                    if belongs_to_material_selection(part.data, keys)}
             if more <= keys:
                 return keys
             keys.update(more)

@@ -301,9 +301,11 @@ def test_projector_manifest_accepts_air_core_without_a_pair_of_poles(tmp_path):
     path = INSTRUMENT_CONFIG_ROOT / "project_and_recording_system" / "EnergyFilter.toml"
     document = tomllib.loads(PartModelDocument(path).independent_copy_text())
     document["parts"] = [p for p in document["parts"] if p["key"] not in {
-        "projector_lens_2_yoke", "projector_lens_2_upper_pole", "projector_lens_2_lower_pole"}]
+        "projector_lens_2_yoke", "projector_lens_2_upper_pole", "projector_lens_2_lower_pole", "p2_exit_return_yoke"}]
     parent = next(p for p in document["parts"] if p["key"] == "projector_lens_2")
     parent.pop("pole_piece_topology")
+    parent.pop("pole_gap_center_offset_mm")
+    parent["magnetic_circuit_id"] = "independent_air_core_p2"
     parent["magnetic_circuit_topology"] = "air_core"
     validate_document(document)
     root = tmp_path / "instruments"

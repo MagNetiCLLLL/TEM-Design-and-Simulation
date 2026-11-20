@@ -69,6 +69,12 @@ def shared_deflector_field_owner(part_key, field) -> str:
     return ""
 
 
+def belongs_to_material_selection(row, keys):
+    """Include a physical child or a single return shared by selected windings."""
+    return (row.get("parent_key") in keys or bool(keys.intersection(row.get("magnetic_lens_keys", ())))
+            or bool(keys.intersection(row.get("mechanical_shared_winding_keys", ()))))
+
+
 def non_material_role(part_data, *, profile=None) -> str:
     """Return the non-material role, including compatibility for older files.
 
@@ -89,6 +95,15 @@ In particular, a detector plane is not virtual merely because it is thin.
             or part_data.get("virtual") or part_data.get("is_virtual")):
         return "virtual_reference"
     return ""
+
+
+def is_reference_without_material(part):
+    """A control channel can own an explicit winding even with no cartridge."""
+    if not non_material_role(part):
+        return False
+    from temsim.multipole_winding import FIELDS
+    native = part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"
+    return not (native and FIELDS.intersection(part))
 
 
 def representation_note(part_data, *, profile=None) -> str:

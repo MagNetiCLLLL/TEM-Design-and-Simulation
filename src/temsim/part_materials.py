@@ -178,10 +178,10 @@ def validate_part_materials(parts) -> None:
         parent = by_key.get(row.get("parent_key"), {})
         split = ()
         if row.get("mechanical_profile") in {"magnetic_lens_yoke", MAGNETIC_EXCITATION_COIL}:
-            if is_custom_mechanical_part(row):
-                split = row.get("material_intervals_mm", ())
-            else:
+            if not is_custom_mechanical_part(row):
                 split = objective_layer_intervals_mm(parent, float(parent.get("local_start_z_mm", 0)), row["mechanical_profile"])
+            if not split:
+                split = row.get("material_intervals_mm", ())
         if len(split) != 2 or "magnetic_radial_profile_mm" in row:
             raise ValueError(f"{row['key']}: upper/lower material assignments require existing split material intervals")
 

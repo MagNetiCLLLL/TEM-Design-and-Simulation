@@ -182,6 +182,8 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_objective_upper_hardware import validate_objective_upper_hardware
     from temsim.cad_probe_hexapole_support import validate_hexapole_support
     from temsim.cad_probe_winding import validate_probe_winding
+    from temsim.cad_multipoles import pole_root_sleeve_solids, validate_auxiliary_return_sleeve
+    from temsim.magnetic_geometry import validate_corrector_return_extent
     from temsim.transverse_winding import validate_transverse_winding
     from temsim.transverse_current import validate_transverse_current_inputs
     from temsim.multipole_winding import validate_multipole_winding
@@ -206,6 +208,9 @@ def _validate_internal_details(parts, geometry=None):
         validate_objective_upper_hardware(part, by_key)
         validate_probe_transfer_lens_hardware(part, by_key)
         validate_hexapole_support(part)
+        pole_root_sleeve_solids(part)
+        validate_auxiliary_return_sleeve(part, by_key)
+        validate_corrector_return_extent(part)
         validate_probe_winding(part)
         validate_transverse_winding(part,by_key)
         validate_transverse_current_inputs(part,by_key)
@@ -974,6 +979,9 @@ class PartModelDocument:
         else:
             current, index = self._numeric_target(part[field], path[3:])
             current[index] = float(value)
+            if field == "material_intervals_mm":
+                from temsim.magnetic_geometry import corrector_return_extent
+                part.update(corrector_return_extent(part))
         self._commit_part(path[1], part)
 
     def set_model_3d(self, key, configuration):

@@ -141,6 +141,34 @@ def pole_face_land_mm(part, nose):
     return land
 
 
+def flared_pole_profile_mm(part, length, *, key=None):
+    """Build the axial bore and exterior of a pole with a wider return-side bore."""
+    from temsim.part_model_3d import _number
+
+    def radius(field):
+        return _number(part[field], field) / 2
+
+    bore = radius('mechanical_bore_diameter_mm')
+    back = radius('pole_back_bore_diameter_mm')
+    tip = radius('mechanical_tip_diameter_mm')
+    outer = radius('mechanical_outer_diameter_mm')
+    nose = _number(part['pole_nose_axial_length_mm'], 'pole_nose_axial_length_mm')
+    if not (0 < bore <= back < outer and bore < tip <= outer and 0 < nose <= length + 1e-9):
+        raise ValueError('Flared pole requires a clear tip, a wider or equal back bore, positive walls and a nose inside its length')
+    land = pole_face_land_mm(part, nose)
+    # Start at the pole face. The bore and exterior taper between the same
+    # face land and shoulder, then run parallel to the axis to the return.
+    profile = [(0., bore, tip)]
+    if land:
+        profile.append((land, bore, tip))
+    if nose < length - 1e-9:
+        profile.append((nose, back, outer))
+    profile.append((length, back, outer))
+    if pole_face_at_end(part, key=key):
+        return [(length-z, inner, outer) for z, inner, outer in reversed(profile)]
+    return profile
+
+
 def validate_pole_face_land_geometry(part):
     """Validate an active native pole recipe before it can enter a saved draft.
 

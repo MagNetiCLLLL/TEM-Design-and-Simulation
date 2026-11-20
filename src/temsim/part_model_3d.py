@@ -14,7 +14,7 @@ from numbers import Integral, Real
 import numpy as np
 
 from temsim.component_representation import (
-    non_material_role, representation_note, shared_deflector_field_owner,
+    belongs_to_material_selection, non_material_role, representation_note, shared_deflector_field_owner,
 )
 from temsim.magnetic_circuits import is_custom_mechanical_part, radial_profile_mm
 from temsim.magnetic_geometry import objective_layer_intervals_mm
@@ -235,7 +235,7 @@ def _dimensions(part, by_key=None):
             continue
         holder_parameter = (part.get("mechanical_profile") in {"transverse_goniometer", "side_entry_sample_holder"}
                             and name.startswith(("holder_", "stage_")))
-        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "winding_support_"))
+        internal_detail = name.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "deflector_support_", "hexapole_support_", "pole_root_sleeve_", "winding_support_"))
         if not holder_parameter and not internal_detail and name not in detector_fields and not any(token in name for token in ("diameter", "radius", "length", "width", "height", "thickness", "gap", "inset", "angle", "angular_span", "radial_profile", "material_intervals", "path_center", "path_entrance", "strip_center_pitch")):
             continue
         append(value, ("parts", part["key"], name),
@@ -503,9 +503,11 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
             intervals = part["material_intervals_mm"]
         elif not is_custom_mechanical_part(part) and profile in {"magnetic_excitation_coil", "magnetic_lens_yoke"}:
             intervals = objective_layer_intervals_mm(parent, parent.get("local_start_z_mm", 0), profile)
-        if intervals and (not explicit_intervals or len(intervals) == 2):
+        if not intervals:
+            intervals = part.get("material_intervals_mm", ())
+        if len(intervals) == 2:
             return tuple(emit(_annulus(a, b, inner, outer), region,
-                              description="Copied physical material interval" if explicit_intervals else "Parent-defined physical material interval")
+                              description="Configured physical material interval")
                          for region, (a, b) in zip(("upper", "lower"), intervals)), ()
         if part.get("material_intervals_mm") is not None:
             intervals = part["material_intervals_mm"]
@@ -724,8 +726,7 @@ def part_model_from_document(document, part_key, *, angular_segments=32, include
     keys = {part_key}
     if include_children:
         while True:
-            more = {key for key, part in by_key.items()
-                    if part.get("parent_key") in keys or keys.intersection(part.get("magnetic_lens_keys", ()))}
+            more = {key for key, part in by_key.items() if belongs_to_material_selection(part, keys)}
             if more <= keys:
                 break
             keys.update(more)

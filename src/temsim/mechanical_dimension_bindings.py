@@ -8,7 +8,8 @@ with an explanation, and an active replacement keeps its old recipe inactive.
 import math
 
 
-FIELDS = frozenset({'pole_gap_mm', 'mechanical_coil_radial_thickness_mm',
+GAP_FIELDS = frozenset({'pole_gap_mm', 'pole_gap_center_offset_mm'})
+FIELDS = GAP_FIELDS | frozenset({'mechanical_coil_radial_thickness_mm',
                     'mechanical_inner_diameter_mm', 'mechanical_outer_diameter_mm'})
 REFERENCE_GAP_KEYS = frozenset({'condenser_lens_1', 'condenser_lens_2'})
 
@@ -37,6 +38,40 @@ def _set_extent(part, start, end):
         raise ValueError(f"{part['key']}: pole gap leaves no positive pole length")
     part.update(local_start_z_mm=start, local_end_z_mm=end,
                 local_center_z_mm=(start + end)/2, length_mm=end-start)
+
+
+def mechanical_gap_center_mm(lens):
+    offset = lens.get('pole_gap_center_offset_mm', 0.)
+    if isinstance(offset, bool) or not isinstance(offset, (int, float)) or not math.isfinite(offset):
+        raise ValueError(f"{lens['key']}: pole gap centre offset must be finite")
+    return float(lens['local_center_z_mm']) + offset
+
+
+def synchronize_gap_faces(document, lens, previous_lens):
+    """Move both active faces while keeping each return-side interface fixed."""
+    key = lens['key']
+    if lens.get('pole_gap_role') == 'optical_reference' or _identity(lens) in REFERENCE_GAP_KEYS:
+        raise ValueError(f'{key}: pole_gap_mm is a reference-only optical dimension in the shared magnetic circuit')
+    poles = sorted((p for p in document['parts'] if p.get('parent_key') == key
+                    and p.get('mechanical_profile') == 'magnetic_pole_piece'),
+                   key=lambda p: float(p['local_start_z_mm']))
+    if len(poles) != 2:
+        raise ValueError(f'{key}: editing a material pole gap requires two declared pole children')
+    upper, lower = poles
+    for pole in poles:
+        _native_child(pole, 'pole gap')
+    old_center = mechanical_gap_center_mm(previous_lens)
+    old_gap = _positive(previous_lens['pole_gap_mm'], 'previous pole gap')
+    if (not math.isclose(upper['local_end_z_mm'], old_center-old_gap/2, abs_tol=1e-8, rel_tol=0)
+            or not math.isclose(lower['local_start_z_mm'], old_center+old_gap/2, abs_tol=1e-8, rel_tol=0)):
+        raise ValueError(f'{key}: saved pole faces do not bound the previous gap about its fixed centre')
+    center = mechanical_gap_center_mm(lens)
+    gap = _positive(lens['pole_gap_mm'], 'pole gap')
+    _set_extent(upper, float(upper['local_start_z_mm']), center-gap/2)
+    _set_extent(lower, center+gap/2, float(lower['local_end_z_mm']))
+    from temsim.part_model_3d import _pole_section
+    for pole in poles:
+        _pole_section(pole, pole['local_start_z_mm'], pole['local_end_z_mm'])
 
 
 def _coil_for(document, lens):
@@ -88,9 +123,12 @@ def synchronize_dimension_edit(document, key, field, old_value):
     profile = row.get('mechanical_profile')
     direct_coil = profile == 'magnetic_excitation_coil' and field in {
         'mechanical_inner_diameter_mm', 'mechanical_outer_diameter_mm'}
-    parent_dimension = profile == 'magnetic_lens_assembly' and field in {
-        'pole_gap_mm', 'mechanical_coil_radial_thickness_mm'}
+    parent_dimension = profile == 'magnetic_lens_assembly' and (field in GAP_FIELDS or field == 'mechanical_coil_radial_thickness_mm')
     if not (direct_coil or parent_dimension) or not _native(row):
+        return
+    if field in GAP_FIELDS:
+        if row[field] != old_value:
+            synchronize_gap_faces(document, row, {**row, field: old_value})
         return
     value = _positive(row[field], f'{key}.{field}')
     previous = _positive(old_value, f'{key}.{field} previous value')
@@ -105,34 +143,12 @@ def synchronize_dimension_edit(document, key, field, old_value):
                                  float(row['mechanical_outer_diameter_mm']))
         return
     lens = row
-    children = [part for part in document['parts'] if part.get('parent_key') == key]
-    if field == 'pole_gap_mm':
-        if _identity(lens) in REFERENCE_GAP_KEYS:
-            raise ValueError(f'{key}: pole_gap_mm is a reference-only optical dimension; this shared C1/C2 cartridge declares only one pole per channel, so an independent material gap cannot be edited')
-        poles = sorted((p for p in children if p.get('mechanical_profile') == 'magnetic_pole_piece'),
-                       key=lambda p: float(p['local_start_z_mm']))
-        if len(poles) != 2:
-            raise ValueError(f'{key}: editing a material pole gap requires two declared pole children')
-        upper, lower = poles
-        for pole in poles:
-            _native_child(pole, field)
-        center = float(lens['local_center_z_mm'])
-        if (not math.isclose(float(upper['local_end_z_mm']), center-previous/2, abs_tol=1e-8, rel_tol=0)
-                or not math.isclose(float(lower['local_start_z_mm']), center+previous/2, abs_tol=1e-8, rel_tol=0)):
-            raise ValueError(f'{key}: saved pole faces do not bound the previous gap about its fixed centre; edit the declared pole geometry explicitly')
-        _set_extent(upper, float(upper['local_start_z_mm']), center-value/2)
-        _set_extent(lower, center+value/2, float(lower['local_end_z_mm']))
-        # The production section builder also checks explicit noses/shanks.
-        from temsim.part_model_3d import _pole_section
-        for pole in poles:
-            _pole_section(pole, pole['local_start_z_mm'], pole['local_end_z_mm'])
-    else:
-        coil = _coil_for(document, lens)
-        _native_child(coil, field)
-        inner, outer = (float(coil[name]) for name in ('mechanical_inner_diameter_mm', 'mechanical_outer_diameter_mm'))
-        if not math.isclose((outer-inner)/2, previous, abs_tol=1e-8, rel_tol=0):
-            raise ValueError(f'{key}: saved coil diameters do not match the previous radial thickness; edit the declared coil geometry explicitly')
-        _synchronize_coil_radials(document, lens, inner, inner+2*value)
+    coil = _coil_for(document, lens)
+    _native_child(coil, field)
+    inner, outer = (float(coil[name]) for name in ('mechanical_inner_diameter_mm', 'mechanical_outer_diameter_mm'))
+    if not math.isclose((outer-inner)/2, previous, abs_tol=1e-8, rel_tol=0):
+        raise ValueError(f'{key}: saved coil diameters do not match the previous radial thickness; edit the declared coil geometry explicitly')
+    _synchronize_coil_radials(document, lens, inner, inner+2*value)
     # The document transaction next checks each native construction. Keep
     # buildable inter-component conflicts as drafts for the overlap list;
     # full assembly validation still gates Save, as before this binding.

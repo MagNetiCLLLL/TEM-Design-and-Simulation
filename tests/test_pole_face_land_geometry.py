@@ -1,6 +1,7 @@
 """Pole face lands are material dimensions shared by native and CAD routes."""
 from copy import deepcopy
 import math
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -16,7 +17,11 @@ from temsim.pole_geometry import validate_pole_face_land_geometry
 
 
 FIELD = "pole_face_land_axial_thickness_mm"
-MODULE = "project_and_recording_system/NoEnergyFilter.toml"
+# Preserve the original straight-bore, eight-pole regression and its measured
+# volume change using the shipped pre-CM12 input. Current flared surfaces and
+# shared material are exercised by test_projector_iron.py.
+LEGACY_ROOT = Path(__file__).resolve().parents[1]/'docs/development/wire_area_20261115/validation/installed/configs'
+MODULE = LEGACY_ROOT/'instruments/project_and_recording_system/NoEnergyFilter.toml'
 LENSES = ("diffraction_lens", "intermediate_lens", "projector_lens_1", "projector_lens_2")
 
 
@@ -26,7 +31,7 @@ def _volume(section):
                    for a, b in zip(section, section[1:]+section[:1])))
 
 
-@pytest.mark.parametrize("module", (MODULE, "project_and_recording_system/EnergyFilter.toml"))
+@pytest.mark.parametrize("module", (MODULE, LEGACY_ROOT/'subassemblies/projector_stack.toml'))
 @pytest.mark.parametrize("lens", LENSES)
 @pytest.mark.parametrize("side", ("upper", "lower"))
 def test_saved_land_has_correct_span_and_matches_native_cad_without_moving_faces(module, lens, side):
@@ -166,7 +171,7 @@ def test_fem_material_mask_matches_saved_polygon_including_terminal_land(lens, s
     assert _part_mask(legacy, np.array([20.1])*1e-3, near_face[:1])[0]
 
 
-def test_land_stales_only_own_map_while_analytic_field_and_optical_providers_are_unchanged():
+def test_installed_land_stales_shared_maps_while_analytic_fields_are_unchanged():
     from dataclasses import replace
     from temsim.optics.column import default_state
     from temsim.physics.lens_field_provider import lens_geometry_binding
@@ -177,12 +182,11 @@ def test_land_stales_only_own_map_while_analytic_field_and_optical_providers_are
     providers = deepcopy(state.lenses)
     before = {key: lens_geometry_binding(state, key).geometry_fingerprint for key in LENSES}
     assembly = state._resolved_assembly
-    changed = {"diffraction_lens_upper_pole", "diffraction_lens_lower_pole"}
+    changed = {"intermediate_lens_upper_pole", "intermediate_lens_lower_pole"}
     state._resolved_assembly = replace(assembly, parts=tuple(
         replace(part, data={**part.data, FIELD: 4.}) if part.key in changed else part for part in assembly.parts))
     after = {key: lens_geometry_binding(state, key).geometry_fingerprint for key in LENSES}
-    assert after["diffraction_lens"] != before["diffraction_lens"]
-    assert all(after[key] == before[key] for key in LENSES if key != "diffraction_lens")
+    assert all(after[key] != before[key] for key in LENSES)
     for lens, previous in zip(state.lenses, providers):
         assert vars(lens) == vars(previous)
         if lens.key in fields:

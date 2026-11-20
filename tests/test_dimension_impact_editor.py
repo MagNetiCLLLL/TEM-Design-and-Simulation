@@ -131,7 +131,7 @@ def test_result_status_does_not_mark_unsaved_geometry_as_calculated(page):
 def test_audit_filters_and_navigation_preserve_component_identity(page, qtbot):
     dialog = page.show_dimension_audit()
     qtbot.addWidget(dialog)
-    assert dialog.audit.module_count == 11 and dialog.audit.part_count == 482
+    assert dialog.audit.module_count == 13 and dialog.audit.part_count == 893
     dialog.search.setText(C2)
     assert dialog.table.rowCount()
     dialog.filter.setCurrentIndex(dialog.filter.findData("envelope"))

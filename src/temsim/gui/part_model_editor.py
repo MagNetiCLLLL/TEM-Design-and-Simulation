@@ -15,7 +15,9 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
-from temsim.component_representation import SHARED_DEFLECTOR_HOSTS, non_material_role, representation_note
+from temsim.component_representation import (
+    SHARED_DEFLECTOR_HOSTS, belongs_to_material_selection, non_material_role, representation_note,
+)
 from temsim.manifest_editor import format_toml_value
 from temsim.part_model_document import PartModelDocument
 
@@ -693,9 +695,7 @@ class PartModelEditorPage(QWidget):
             keys = {self._selected_key}
             # Match part_model_from_document's descendant/shared-body closure.
             while True:
-                more = {key for key, part in parts.items()
-                        if part.get("parent_key") in keys
-                        or keys.intersection(part.get("magnetic_lens_keys", ()))}
+                more = {key for key, part in parts.items() if belongs_to_material_selection(part, keys)}
                 if more <= keys:
                     break
                 keys.update(more)

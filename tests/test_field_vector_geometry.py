@@ -66,6 +66,20 @@ def test_field_overlay_uses_both_captured_gun_aperture_openings_and_offsets(gun_
         assert "working_opening" in shown.surfaces
 
 
+def test_each_image_polarizer_has_its_copper_and_the_same_passive_sleeve():
+    from temsim.module_manifest import read_document
+    from temsim.paths import INSTRUMENT_CONFIG_ROOT
+
+    doc = read_document(INSTRUMENT_CONFIG_ROOT / "column/C3_ImageCorrector.toml")
+    hpol, qpol, sleeve = "image_hpol_hexapole", "image_qpol_quadrupole", "image_polarizer_return_sleeve"
+    state = _state([p for p in doc["parts"] if p["key"] in {hpol, qpol, sleeve}])
+    geometry = build_field_vector_geometry(state, [_source(hpol), _source(qpol)], angular_segments=16)
+    for key in (hpol, qpol):
+        assert set(geometry.source_mesh_keys[key]) == {key, sleeve}
+        assert any(m.key == key and m.material_class == "copper_winding" for m in geometry.select((key,)))
+    assert sum(m.key == sleeve for m in geometry.select((hpol, qpol))) == 1
+
+
 def test_global_xyz_metres_matches_physical_layout_and_converts_edges_once():
     state = _state([_part()], shift=987.)
     original = assembly_model_from_assembly(state._resolved_assembly, angular_segments=8).meshes[0]
@@ -212,6 +226,7 @@ def test_real_hp2_tl22_and_dph2_reuse_production_physical_regions_and_positions(
         assert mesh.color == original.color and mesh.is_exact == original.is_exact
     hp = [mesh for mesh in result.meshes if mesh.key == "probe_hp2_hexapole"]
     assert sum(mesh.region.startswith("pole_pin_") for mesh in hp) == 6
+    assert sum(mesh.region.startswith("pole_root_sleeve_") for mesh in hp) == 6
     turns = assembly.part("probe_hp2_hexapole").data["hexapole_winding_turn_count_per_coil"]
     expected_copper = {f"winding_turn_multipole_coil_{coil}_{turn:06d}"
                        for coil in range(1, 7) for turn in range(1, turns + 1)}
@@ -220,10 +235,11 @@ def test_real_hp2_tl22_and_dph2_reuse_production_physical_regions_and_positions(
     assert sum(mesh.region.endswith("_core_bedding") for mesh in hp) == 6
     assert sum(mesh.region.endswith("_outer_insulation") for mesh in hp) == 6
     assert sum(mesh.region.startswith("winding_insulation_multipole_coil_") for mesh in hp) == 6
-    assert len(hp) == 1 + 6 * 5 + len(expected_copper)
+    assert len(hp) == 1 + 6 * 6 + len(expected_copper)
     assert {mesh.key for mesh in result.select(("probe_tl22_lens",))} == {
         "probe_tl22_lens_upper_pole", "probe_tl22_lens_lower_pole", "probe_tl22_lens_housing",
-        "probe_tl22_lens_yoke", "probe_tl22_lens_excitation_coil",
+        "probe_tl22_lens_yoke", "probe_tl22_lens_excitation_coil", "probe_tl22_lens_pole_sleeves",
+        "probe_tl22_lens_return_plates",
     }
     hp2 = next(component for component in state.corrector_elements if component.key == "probe_hp2_hexapole")
     yoke = next(mesh for mesh in hp if mesh.region == "return_yoke")

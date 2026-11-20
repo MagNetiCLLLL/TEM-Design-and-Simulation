@@ -42,7 +42,7 @@ def _references(row, parent):
     if identity.startswith("mini_condenser") or owner == "mini_condenser":
         references.append(MINI_REFERENCE)
     for source in (parent, row):
-        for name in ("mechanical_pole_mounting_geometry_source_urls", "geometry_source_urls"):
+        for name in ("mechanical_pole_mounting_geometry_source_urls", "mechanical_geometry_source_urls", "geometry_source_urls"):
             for url in source.get(name, ()):
                 if isinstance(url, str) and url not in references:
                     references.append(url)
@@ -129,6 +129,9 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
     refs = _references(row, parent)
     note = "Native configured material section; public references establish topology, not OEM dimensions."
     status = "engineering_reconstruction"
+    if row.get("mechanical_part_role") in {"pole_sleeves", "radial_return_plates", "auxiliary_return_sleeve"}:
+        refs = ("docs/references/column-magnetic-hardware/README.md",)
+        note = row.get("mechanical_geometry_source", note)
     if profile == C1_C2_POLE_PIECE_CARTRIDGE:
         status = "mixed_material_cartridge_unresolved"
         note = ("One photo-identified shared C1/C2 carrier; retained contour only. "

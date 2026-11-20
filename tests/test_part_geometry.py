@@ -311,7 +311,7 @@ def test_current_c1_c2_layer_gating_uses_its_shared_parent_context(actual_column
         geometry_from_part(part, parent=parent)
 
 
-def test_current_independent_projector_lens_layers_stay_supported_with_parent_context():
+def test_independent_annuli_in_shared_projector_stay_editable_with_parent_context():
     from temsim.paths import INSTRUMENT_CONFIG_ROOT
 
     path = Path(INSTRUMENT_CONFIG_ROOT) / MODULE_PATH
@@ -320,7 +320,7 @@ def test_current_independent_projector_lens_layers_stay_supported_with_parent_co
     for key in (COIL, HOUSING, YOKE):
         part = parts[key]
         parent = parts[part["parent_key"]]
-        assert parent["magnetic_circuit_topology"] == "two_pole_single_gap"
+        assert parent["magnetic_circuit_topology"] == "shared_pole_multi_gap"
         assert geometry_from_part(part, parent=parent) == geometry_from_part(part)
 
 
@@ -395,6 +395,9 @@ def test_material_dimension_save_reloads_assembly_without_changing_unrelated_con
     expected = deepcopy(before)
     expected_part = next(part for part in expected["parts"] if part["key"] == key)
     expected_part.update({field: value for (_section, _key, field), value in updates.items()})
+    if key == COIL and dimension != "length_mm":
+        owner = next(part for part in expected["parts"] if part["key"] == expected_part["parent_key"])
+        owner["mechanical_coil_radial_thickness_mm"] = (changed.outer_diameter_mm-changed.inner_diameter_mm)/2
     assert saved == expected
     assert set(originals) == {"../subassemblies/projector_stack.toml"}
     assert tomllib.loads(originals["../subassemblies/projector_stack.toml"]) == tomllib.loads(
@@ -406,7 +409,9 @@ def test_material_dimension_save_reloads_assembly_without_changing_unrelated_con
     for resolved in assembly.parts:
         old = initial_assembly.part(resolved.key)
         assert resolved.center_z_mm == old.center_z_mm
-        if resolved.key != key:
+        if key == COIL and dimension != "length_mm" and resolved.key == expected_part["parent_key"]:
+            assert resolved.data == {**old.data, "mechanical_coil_radial_thickness_mm": owner["mechanical_coil_radial_thickness_mm"]}
+        elif resolved.key != key:
             assert resolved.data == old.data
     reloaded = geometry_from_part(assembly.part(key).data)
     assert reloaded == changed

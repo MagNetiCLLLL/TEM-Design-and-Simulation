@@ -84,13 +84,16 @@ def belongs_to_circuit(part, lens_key: str, by_key, channels=None) -> bool:
             or bool(channels.intersection(row.get("magnetic_lens_keys", ()))))
 
 
-def radial_profile_mm(data, length_mm: float) -> np.ndarray | None:
+def radial_profile_mm(data, length_mm: float, *, key=None) -> np.ndarray | None:
     """Return [offset Z, inner radius, outer radius] in mm, linear between knots.
 
     The profile spans the entire part. It is shared by rendering and the field
     material mask; it is not an extra drawing-only shape or an inferred B-H law.
     """
     values = data.get("magnetic_radial_profile_mm")
+    if values is None and "pole_back_bore_diameter_mm" in data:
+        from temsim.pole_geometry import flared_pole_profile_mm
+        values = flared_pole_profile_mm(data, length_mm, key=key)
     if values is None:
         return None
     profile = np.asarray(values, dtype=float)
@@ -169,7 +172,7 @@ def validate_circuit_declarations(parts) -> None:
             owner = optical_owner(row, by_key)
             if owner and row["field_source_key"] not in circuit_channels(by_key, owner):
                 raise ValueError(f"{key}: coil owner must belong to its magnetic circuit")
-        if "magnetic_radial_profile_mm" in row:
+        if "magnetic_radial_profile_mm" in row or "pole_back_bore_diameter_mm" in row:
             if row.get("mechanical_profile") not in MAGNETIC_BODIES:
                 raise ValueError(f"{key}: radial profiles describe passive magnetic bodies only")
             radial_profile_mm(row, float(row["length_mm"]))

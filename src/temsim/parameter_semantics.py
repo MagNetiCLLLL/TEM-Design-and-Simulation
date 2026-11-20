@@ -309,10 +309,11 @@ def _meaning(part, path, by_key):
                 "Envelope length")
             return reference_label, "envelope", reason
         return ("Reference pole gap" if field == "pole_gap_mm" else
+                "Pole bore reference" if profile == "magnetic_pole_piece" and "bore" in field else
                 "Carrier bore reference" if "bore" in field else
                 "Mechanism envelope diameter" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else
                 "Reference cone angle"), "envelope" if field in {"mechanical_outer_diameter_mm", "outer_diameter_mm"} else "unknown", reason
-    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "hexapole_support_"))
+    if (field.startswith(("gun_stigmator_", "mechanical_cartridge_", "stigmator_support_", "aperture_support_", "mechanical_c3_end_", "mechanical_adapter_end_", "mechanical_tl22_end_", "mechanical_transfer_end_", "mechanical_objective_upper_end_", "hexapole_support_", "pole_root_sleeve_"))
             and field.endswith(("_mm", "_deg"))):
         return label, "physical", (
             "Explicit engineering dimension of the reconstructed internal material. "
@@ -469,6 +470,8 @@ def _meaning(part, path, by_key):
         if field == "magnetic_radial_profile_mm" or any(word in field for word in _DIMENSION_WORDS):
             return label, "physical", "Configured pole material geometry, including its open bore, shoulder, mounting shank or nose. A geometric meaning does not establish measurement provenance."
     if profile == "magnetic_lens_assembly":
+        if field == "pole_gap_center_offset_mm":
+            return "Pole gap centre offset", "physical", "Signed axial distance from the lens reference plane to the midpoint between the two material faces. Positive values point downstream."
         if field in {"pole_gap_mm", "mechanical_coil_radial_thickness_mm"}:
             return label, "physical", "Assembly-owned spacing or material reconstruction dimension, used by its constituent magnetic parts."
         if field in _ENVELOPE_FIELDS or field in {"bore_diameter_mm", "mechanical_clear_bore_diameter_mm"}:
@@ -609,6 +612,8 @@ def _source(part, path, category):
     if field.startswith("mechanical_objective_upper_end_") and category == "physical":
         return _source_from_text(part.get("mechanical_objective_upper_end_geometry_status"),
                                  part.get("mechanical_objective_upper_end_geometry_source"), explicit_field=False)
+    if field.startswith("pole_root_sleeve_") and category == "physical":
+        return "estimated", part.get("pole_root_sleeve_geometry_source", "")
     if field.startswith("hexapole_support_") and category == "physical":
         return _source_from_text(part.get("hexapole_support_geometry_status"),
                                  part.get("hexapole_support_source_note"), explicit_field=False)
