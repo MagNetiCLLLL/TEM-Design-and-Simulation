@@ -9,13 +9,13 @@ The caller applies saved CAD features and rigid placement after this base stage.
 from copy import deepcopy
 
 from temsim.cad_geometry import SolidSpec, annulus, revolve
-from temsim.magnetic_circuits import is_custom_mechanical_part, part_data, radial_profile_mm
-from temsim.magnetic_geometry import objective_layer_intervals_mm
+from temsim.magnetic_circuits import part_data, radial_profile_mm
+from temsim.magnetic_geometry import annular_material_intervals_mm
 from temsim.pole_geometry import RECESSED_OBJECTIVE_STYLE
 from temsim.mechanical_profiles import (
     C1_C2_POLE_PIECE_CARTRIDGE, MAGNETIC_EXCITATION_COIL,
     MAGNETIC_LENS_ASSEMBLY, MAGNETIC_LENS_HOUSING,
-    MAGNETIC_LENS_MECHANICAL_PROFILES, MAGNETIC_LENS_YOKE, MAGNETIC_POLE_PIECE,
+    MAGNETIC_LENS_MECHANICAL_PROFILES, MAGNETIC_POLE_PIECE,
 )
 
 
@@ -116,7 +116,7 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
 
     # Local imports prevent a cycle when the native view consumes these specs.
     from temsim.component_representation import non_material_role
-    from temsim.part_model_3d import _extent, _number, _pole_section, _radius
+    from temsim.part_model_3d import _extent, _pole_section, _radius
 
     if non_material_role(row):
         return ()
@@ -129,9 +129,10 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
     refs = _references(row, parent)
     note = "Native configured material section; public references establish topology, not OEM dimensions."
     status = "engineering_reconstruction"
-    if row.get("mechanical_part_role") in {"pole_sleeves", "radial_return_plates", "auxiliary_return_sleeve"}:
+    if row.get("mechanical_part_role") in {"pole_sleeves", "radial_return_plates", "auxiliary_return_sleeve",
+                                           "objective_pole_sleeves", "objective_return_plates"}:
         refs = ("docs/references/column-magnetic-hardware/README.md",)
-        note = row.get("mechanical_geometry_source", note)
+        note = f"{row.get('mechanical_geometry_source', '')} Nominal geometry; OEM dimensions are unverified.".strip()
     if profile == C1_C2_POLE_PIECE_CARTRIDGE:
         status = "mixed_material_cartridge_unresolved"
         note = ("One photo-identified shared C1/C2 carrier; retained contour only. "
@@ -172,26 +173,8 @@ def round_lens_solids(part, by_key) -> tuple[SolidSpec, ...] | None:
         return None
     if not 0 <= inner < outer:
         raise ValueError(f"{row['key']}: material radii require 0 <= inner < outer")
-    intervals = ()
-    custom = is_custom_mechanical_part(row)
-    if custom and "material_intervals_mm" in row:
-        intervals = row["material_intervals_mm"]
-        if not intervals:
-            raise ValueError(f"{row['key']}: material intervals must not be empty")
-    elif (not custom
-          and profile in {MAGNETIC_EXCITATION_COIL, MAGNETIC_LENS_YOKE}):
-        intervals = objective_layer_intervals_mm(parent, parent.get("local_start_z_mm", 0), profile)
-    if not intervals and "material_intervals_mm" in row:
-        intervals = row["material_intervals_mm"]
-        if not intervals:
-            raise ValueError(f"{row['key']}: material intervals must not be empty")
+    intervals = annular_material_intervals_mm(row, parent)
     if not intervals:
         return (emit(annulus(start, end, inner, outer)),)
-    checked = tuple((_number(a, "interval start"), _number(b, "interval end")) for a, b in intervals)
-    if any(b <= a for a, b in checked):
-        raise ValueError(f"{row['key']}: material intervals require positive lengths")
-    ordered = sorted(checked)
-    if any(a < last_end for (_, last_end), (a, _) in zip(ordered, ordered[1:])):
-        raise ValueError(f"{row['key']}: material intervals overlap")
-    regions = ("upper", "lower") if len(checked) == 2 else tuple(f"interval_{i}" for i in range(len(checked)))
-    return tuple(emit(annulus(a, b, inner, outer), region) for region, (a, b) in zip(regions, checked))
+    regions = ("upper", "lower") if len(intervals) == 2 else tuple(f"interval_{i}" for i in range(len(intervals)))
+    return tuple(emit(annulus(a, b, inner, outer), region) for region, (a, b) in zip(regions, intervals))

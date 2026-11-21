@@ -91,9 +91,8 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
           <li>Select <b>Projection</b>: Image or Diffraction. Click
           <b>Apply stored lens preset</b> to change the optical controls.</li>
           <li>Use <b>Calculate setup</b> to review calculation settings.
-          Use <b>Update rays</b> for a preview and <b>Run high-accuracy once</b>
-          for a captured particle calculation. The latter is also available through
-          <b>Simulation → Calculate classical rays</b>.</li>
+          Use <b>Update rays</b> for a preview. For a captured particle calculation,
+          click <b>Run high-accuracy once</b> on the calculation toolbar.</li>
           <li>Use the page's own Calculate button to acquire its image or spectrum.
           Simply opening a tab does not acquire a new result.</li>
         </ol>
@@ -154,10 +153,29 @@ HELP_TOPICS: tuple[HelpTopic, ...] = (
           vacuum, thermal and mechanical coupling, including specimen drift.
           This category is not available yet.</li>
         </ul>
-        <p><b>High accuracy</b> controls numerical resolution, independently of the
-        physical model. Particle calculations use <b>High-accuracy rays</b> and
-        <b>Step (mm)</b>. <b>Coherent settings</b> opens separate grid, energy-sample,
-        propagation-step and memory inputs. Grid cells are not particles.</p>
+        <p>The <b>Simulation</b> menu lists each calculation method directly.
+        The check mark shows the active method. Select <b>Configure lens models...</b>
+        to open <b>Model Inspector</b>. Use the first two controls to configure the column's round lenses.</p>
+        <ul>
+          <li>Under <b>Round-lens field</b>, <b>Gaussian calibration / saved lens models</b> uses the calibrated
+          field profiles or the per-lens fields supported by the selected method.
+          <b>Ideal prescribed-current coils in vacuum</b> uses winding geometry
+          and prescribed currents to calculate vacuum fields in shared Finite-Field Optics.</li>
+          <li><b>Gaussian geometry relation</b> controls how native Gaussian profiles
+          respond to changes in coil length. <b>Fixed Gaussian calibration</b> keeps
+          the calibrated widths. <b>Link Gaussian widths to coil length</b> scales
+          widths and internal offsets by the ratio of actual to reference winding length.</li>
+        </ul>
+        <p>For an individual lens, select it in <b>Model Inspector</b> to set its
+        field model, ampere-turns and magnetic material. For job memory limits,
+        cache limits and statistics, open <b>Simulation → Performance and cache...</b>.</p>
+        <p><b>High accuracy changes numerical resolution only.</b> On the calculation
+        toolbar, <b>High-accuracy rays</b> sets the particle count and <b>Step (mm)</b>
+        sets the requested maximum axial integration step. Both apply to the selected
+        physical model when you calculate classical rays with <b>Run high-accuracy once</b>.</p>
+        <p>The toolbar's <b>Coherent settings</b> button opens the mixed-wave settings
+        on the <b>Electron beam</b> page. Set the grid, retained modes, propagation step
+        and memory limits there. The accepted particles supply the energies.</p>
         <p>Use Finite-Field Optics for coherent propagation and for finite-volume
         material histories that intersect an excited thin optical action. The thin
         model does not replay inverse optical actions through random scattering.

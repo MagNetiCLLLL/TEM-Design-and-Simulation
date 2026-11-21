@@ -597,6 +597,14 @@ def _external_inputs(state: object) -> tuple[ExternalInputIdentity, ...]:
                     rows[(dependency.role, dependency.path)] = dependency
         catalog = _file_identity("assembly:catalog", root / "catalog.toml")
         rows[(catalog.role, catalog.path)] = catalog
+        from temsim.part_materials import POLE_GRADES
+        from temsim.magnetic_materials import reference_directory
+        library_keys = {region["library_key"] for part in getattr(assembly, "parts", ())
+                        for region in getattr(part, "data", {}).get("material_regions", {}).values()
+                        if region.get("library_key") in POLE_GRADES}
+        for key in sorted(library_keys):
+            material = _file_identity(f"material:{key}", reference_directory() / (key + ".toml"))
+            rows[(material.role, material.path)] = material
     sample = getattr(state, "sample", None)
     if sample is not None:
         mode = str(getattr(sample, "specimen_mode", "")).strip().lower()

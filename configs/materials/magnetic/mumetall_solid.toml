@@ -1,0 +1,9 @@
+key = "mumetall_solid"
+label = "MUMETALL (solid Ni-Fe-Cu-Mo)"
+source_url = "https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20MUMETALL%20Solid.pdf"
+source_sha256 = "2b74a25127b81a1d2f872adf79c38835efe1f56e7eeacd908f4d65564fc621ac"
+source_block = "VACUUMSCHMELZE, MUMETALL solid material, page 1, Static Initial Curve."
+scope = "Typical laboratory initial magnetization of solid material. Digitized blue B(H) trace, log H and linear left-hand B axis, plus the demagnetized origin. The tabulated isolated high-field point is outside this trace."
+linear_reference_h_a_per_m = 0.13
+h_a_per_m = [0, 0.055, 0.07, 0.1, 0.13, 0.17, 0.21, 0.25, 0.28, 0.3, 0.33, 0.37, 0.42, 0.5, 0.6, 0.8, 1, 1.2, 1.6, 2, 3, 5, 10, 20, 50, 99]
+b_t = [0, 0.007, 0.009, 0.015, 0.021, 0.030, 0.045, 0.069, 0.103, 0.138, 0.198, 0.255, 0.302, 0.354, 0.394, 0.445, 0.479, 0.499, 0.531, 0.554, 0.587, 0.611, 0.640, 0.676, 0.727, 0.756]

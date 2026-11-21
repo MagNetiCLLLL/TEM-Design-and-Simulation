@@ -3,6 +3,7 @@ from copy import deepcopy
 from types import SimpleNamespace as NS
 
 import pytest
+from test_working_point_restore_gui import window
 
 from temsim.round_lens_models import (
     gaussian_geometry_metadata, gaussian_geometry_scale,
@@ -245,25 +246,33 @@ def test_linked_gaussian_roundtrips_without_rewriting_native_calibrations(state,
     assert restored.gaussian_geometry_coupling == "axial_length"
 
 
-def test_menu_model_and_length_choices_are_explicit_and_reenable_old_modes(state, qtbot):
-    from temsim.gui.simulation_menu import SimulationMenu
-    from temsim.simulation_modes import switch_mode
-    menu = SimulationMenu(); qtbot.addWidget(menu)
-    menu.set_state(state)
-    assert menu.round_lens_model_actions["gaussian"].isChecked()
-    assert not menu.round_lens_model_actions["copper_coil"].isEnabled()
-    switch_mode(state, "unified"); menu.set_state(state)
-    before = deepcopy(state.to_dict())
-    with qtbot.waitSignal(menu.round_lens_model_requested) as signal:
-        menu.round_lens_model_actions["copper_coil"].trigger()
-    assert signal.args == ["copper_coil"]
-    assert state.to_dict() == before  # A menu emits a request; it does not retune optics.
-    set_round_lens_field_model(state, "copper_coil"); menu.set_state(state)
+def test_configure_lens_models_opens_inspector_and_updates_available_modes(window, monkeypatch):
+    monkeypatch.setattr(window, "schedule_preview", lambda *args, **kwargs: None)
+    menu = window.simulation_menu
+    configure = next(action for action in menu.actions() if action.text() == "Configure lens models...")
+    configure.trigger()
+    page = window.workspace.model_inspector
+    assert window.workspace.tabs.currentWidget() is page
+    source = page.round_lens_model
+    relation = page.gaussian_geometry_coupling
+    coils = source.findData("copper_coil")
+    linked = relation.findData("axial_length")
+    assert source.currentData() == "gaussian" and relation.currentData() == "fixed_calibration"
+    menu.mode_actions["ideal_thin"].trigger()
+    assert not source.model().item(coils).isEnabled()
+    menu.mode_actions["unified"].trigger()
+    assert source.model().item(coils).isEnabled()
+    source.setCurrentIndex(coils)
+    assert window.state.round_lens_field_model == "copper_coil"
     assert not menu.mode_actions["ideal_thin"].isEnabled()
-    assert not menu.gaussian_geometry_actions["axial_length"].isEnabled()
-    set_round_lens_field_model(state, "gaussian"); menu.set_state(state)
+    assert not relation.model().item(linked).isEnabled()
+    source.setCurrentIndex(source.findData("gaussian"))
+    assert relation.model().item(linked).isEnabled()
+    relation.setCurrentIndex(linked)
+    assert window.state.gaussian_geometry_coupling == "axial_length"
+    assert not menu.mode_actions["ideal_thin"].isEnabled()
+    relation.setCurrentIndex(relation.findData("fixed_calibration"))
     assert menu.mode_actions["ideal_thin"].isEnabled()
-    assert menu.gaussian_geometry_actions["axial_length"].isEnabled()
 
 
 def test_model_inspector_changes_round_source_without_emission_or_excitation_edits(state, qtbot):

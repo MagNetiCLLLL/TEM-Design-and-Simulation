@@ -75,6 +75,13 @@ def belongs_to_material_selection(row, keys):
             or bool(keys.intersection(row.get("mechanical_shared_winding_keys", ()))))
 
 
+def vacuum_context_only(row):
+    """Return plates surround a separate beam tube, including in older manifests."""
+    return (bool(row.get("axial_vacuum_context_only"))
+            or row.get("mechanical_part_role") in {"return_plate", "radial_return_plates", "objective_return_plates",
+                                                  "objective_pole_sleeves"})
+
+
 def non_material_role(part_data, *, profile=None) -> str:
     """Return the non-material role, including compatibility for older files.
 

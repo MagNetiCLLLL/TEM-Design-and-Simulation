@@ -163,6 +163,10 @@ def input_signature(state, key, options):
     parts = tuple((p.key, p.parent_key, p.start_z_mm, p.end_z_mm, _part_geometry_data(p))
                   for p in state._resolved_assembly.parts
                   if p.key in affected and p.data.get("mechanical_profile") in _FIELD_STRUCTURE_PROFILES)
+    from temsim.cad_vacuum_tube import terminal_field_part
+    tube = terminal_field_part(state._resolved_assembly)
+    if tube is not None and (not owned or tube["start_z_mm"] <= centre+half and tube["end_z_mm"] >= centre-half):
+        parts += ((tube["key"], tube["parent_key"], tube["start_z_mm"], tube["end_z_mm"], tube["data"]),)
     lenses = tuple((l.key, _runtime_excitation(l),
                     tuple((name, getattr(l, name)) for name in _GEOMETRY_ATTRIBUTES if hasattr(l, name)))
                    for l in state.lenses if l.key in excitation_keys)

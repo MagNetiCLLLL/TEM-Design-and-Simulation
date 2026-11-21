@@ -146,7 +146,6 @@ def test_contradictory_explicit_constraints_are_rejected_without_overwriting(cas
 
 @pytest.mark.parametrize("key,field", [
     ("condenser_lens_1", "pole_gap_mm"),
-    ("objective_upper_pole", "pole_cone_angle_to_axis_deg"),
     ("condenser_aperture_2", "mechanical_bore_diameter_mm"),
     ("condenser_deflector", "length_mm"),
 ])
@@ -160,6 +159,28 @@ def test_reference_fields_are_visible_read_only_and_changed_values_rejected(key,
         complete(document, {entry.path: entry.value*1.01})
     candidate, _ = complete(document, {entry.path: entry.value})
     assert candidate == document
+
+
+def test_compound_objective_and_archived_cone_angle_controls(copied_catalog):
+    editor = ManifestEditor(copied_catalog)
+    angle = "pole_cone_angle_to_axis_deg"
+    for key in ("objective_upper_pole", "objective_lower_pole"):
+        fields = {item.label: item for item in editor.fields(ManifestTarget(COLUMN, key))}
+        assert angle not in fields
+        assert fields["pole_nose_knee_diameter_mm"].editable
+
+    # Earlier documents may retain a single derived angle alongside their pole dimensions.
+    path = copied_catalog / COLUMN
+    key = "mini_condenser_upper_pole"
+    marker = f'key = "{key}"\n'
+    text = path.read_text(encoding="utf-8-sig")
+    assert text.count(marker) == 1
+    path.write_text(text.replace(marker, marker + f"{angle} = 45.0\n"), encoding="utf-8")
+    target = ManifestTarget(COLUMN, key)
+    entry = next(item for item in ManifestEditor(copied_catalog).fields(target) if item.label == angle)
+    assert not entry.editable
+    with pytest.raises(ValueError, match="[Rr]eference"):
+        complete(read_document(path), {entry.path: 46.0})
 
 
 def test_replacement_metadata_and_unrelated_optical_fields_do_not_trigger_native_binding():
@@ -192,7 +213,8 @@ def test_manifest_save_uses_existing_shared_storage_transaction(copied_catalog):
     raw = tomllib.loads(parent.read_text(encoding="utf-8-sig"))
     key = "probe_tl22_lens"
     selected = [row for row in raw["parts"] if row["key"] == key or row.get("parent_key") == key]
-    assert len(selected) == 6
+    assert {row["key"] for row in selected} == {key, *(f"{key}_{suffix}" for suffix in
+        ("upper_pole", "lower_pole", "housing", "yoke", "excitation_coil", "pole_sleeves", "return_plates"))}
     raw["parts"] = [row for row in raw["parts"] if row not in selected]
     dependency = root.parent/"subassemblies"/"manifest_tl22_fixture.toml"
     dependency.write_text(tomli_w.dumps(dict(coordinate_system="module_local_z_mm",
@@ -214,6 +236,24 @@ def test_manifest_save_uses_existing_shared_storage_transaction(copied_catalog):
     assert (root/COLUMN).read_bytes() == raw_parent
     assert read_document(root/COLUMN) == expected
     assert read_document(INSTRUMENT_CONFIG_ROOT/COLUMN) == source_before
+
+
+def test_manifest_save_checks_the_final_fitted_return_dimensions(copied_catalog):
+    path = copied_catalog/COLUMN
+    lens = "probe_tl22_lens"
+    sleeve, plate = lens + "_pole_sleeves", lens + "_return_plates"
+    editor = ManifestEditor(copied_catalog)
+    target = ManifestTarget(COLUMN, sleeve)
+    before = path.read_bytes()
+    updates = {("parts", sleeve, OUTER): 70.53}
+    with pytest.raises(ValueError, match="pole_sleeves to return_plates: material overlap"):
+        editor.save(target, updates, None)
+    assert path.read_bytes() == before
+    updates[("parts", plate, INNER)] = 70.53
+    editor.save(target, updates, None)
+    saved = validate_document(read_document(path))
+    rows = {part["key"]: part for part in saved["parts"]}
+    assert rows[sleeve][OUTER] == rows[plate][INNER] == 70.53
 
 
 @pytest.mark.parametrize("reverse", [False, True])

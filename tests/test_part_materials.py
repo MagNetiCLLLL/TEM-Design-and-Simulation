@@ -58,8 +58,9 @@ def test_assignment_adds_only_whitelisted_toml_field_and_preserves_geometry(name
     updates = part_material_updates(part, "femm_pure_iron")
     assert part == before
     staged = stage_manifest_text(text, updates)
-    assert "".join(line for line in staged.splitlines(keepends=True)
-                   if not line.startswith("material_regions = ")) == text
+    added_line = "material_regions = " + _format_toml_value(next(iter(updates.values()))) + "\n"
+    assert staged.count(added_line) == 1
+    assert staged.replace(added_line, "", 1) == text
     result = tomllib.loads(staged)
     validate_document(result)
     edited = _part(result, part["key"])
@@ -69,7 +70,7 @@ def test_assignment_adds_only_whitelisted_toml_field_and_preserves_geometry(name
     # Updating an existing inline snapshot must not duplicate the assignment.
     edited["material_regions"] = assignment
     twice = stage_manifest_text(staged, part_material_updates(edited, "aluminum"))
-    assert twice.count("material_regions = ") == 1
+    assert twice.count("material_regions = ") == text.count("material_regions = ") + 1
     assert material_for_region(_part(tomllib.loads(twice), part["key"]))["material_key"] == "aluminum"
     with pytest.raises(ValueError, match="Missing TOML field"):
         stage_manifest_text(text, {("parts", part["key"], "invented_property"): 1})

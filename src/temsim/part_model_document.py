@@ -184,6 +184,7 @@ def _validate_internal_details(parts, geometry=None):
     from temsim.cad_probe_winding import validate_probe_winding
     from temsim.cad_multipoles import pole_root_sleeve_solids, validate_auxiliary_return_sleeve
     from temsim.magnetic_geometry import validate_corrector_return_extent
+    from temsim.magnetic_return_fits import validate_magnetic_return_fits
     from temsim.transverse_winding import validate_transverse_winding
     from temsim.transverse_current import validate_transverse_current_inputs
     from temsim.multipole_winding import validate_multipole_winding
@@ -216,6 +217,7 @@ def _validate_internal_details(parts, geometry=None):
         validate_transverse_current_inputs(part,by_key)
         validate_multipole_winding(part,by_key)
         validate_multipole_current_inputs(part,by_key)
+    validate_magnetic_return_fits(by_key)
 
 
 class PartModelDocument:

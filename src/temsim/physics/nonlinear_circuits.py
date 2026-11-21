@@ -39,6 +39,10 @@ def operator_settings(recipe):
                 padding_factor=float(recipe.get("padding_factor", 2)),
                 relative_tolerance=float(recipe.get("relative_tolerance", 1e-7)),
                 max_iterations=int(recipe.get("max_iterations", 80)))
+    if not isinstance(recipe.get("refine_pole_mesh", False), bool):
+        raise ValueError("Pole mesh refinement must be a boolean")
+    if recipe.get("refine_pole_mesh"):
+        settings["refine_pole_mesh"] = True
     if not (12 <= settings["radial_nodes"] <= 256 and 16 <= settings["axial_nodes"] <= 512
             and np.isfinite(settings["padding_factor"]) and 1.5 <= settings["padding_factor"] <= 10
             and np.isfinite(settings["relative_tolerance"]) and 1e-12 <= settings["relative_tolerance"] <= 1e-3
@@ -117,6 +121,10 @@ def resolve_nonlinear_provider(state, key, native, binding, *, prepare_only=Fals
         if part.key not in parts and is_magnetostatic_body(part.data) and part.start_z_mm < centre+half and part.end_z_mm > centre-half:
             data = _global_part_geometry_data(part, by_key)
             neighbours[part.key] = dict(key=part.key, start_z_mm=part.start_z_mm, end_z_mm=part.end_z_mm, data=data)
+    from temsim.cad_vacuum_tube import terminal_field_part
+    tube = terminal_field_part(state._resolved_assembly)
+    if tube is not None and tube["start_z_mm"] < centre+half and tube["end_z_mm"] > centre-half:
+        neighbours[tube["key"]] = tube
     geometry = dict(lens_key="joint_bh", lens_assembly=dict(
         magnetic_circuit_topology="joint_nonlinear", magnetic_circuit_channels=keys,
         parts=[parts[k] for k in sorted(parts)],

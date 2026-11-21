@@ -169,6 +169,7 @@ mechanical_bore_diameter_mm = 66.0
 magnetic_radial_profile_mm = [[0.0, 33.0, 70.0], [4.0, 33.0, 70.0]]
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "diffraction_lens"
 mechanical_overlap_group = "diffraction_lens_assembly"
@@ -190,6 +191,7 @@ mechanical_bore_diameter_mm = 40.0
 magnetic_radial_profile_mm = [[0.0, 20.0, 26.0], [75.0, 20.0, 26.0]]
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "diffraction_lens"
 mechanical_overlap_group = "diffraction_lens_assembly"
@@ -284,6 +286,7 @@ pole_nose_axial_length_mm = 18.0
 pole_face_land_axial_thickness_mm = 3.0
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "intermediate_lens"
 mechanical_overlap_group = "intermediate_lens_assembly"
@@ -308,6 +311,7 @@ pole_nose_axial_length_mm = 18.0
 pole_face_land_axial_thickness_mm = 3.0
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "intermediate_lens"
 mechanical_overlap_group = "intermediate_lens_assembly"
@@ -399,6 +403,7 @@ mechanical_bore_diameter_mm = 40.0
 magnetic_radial_profile_mm = [[0.0, 20.0, 26.0], [48.5, 20.0, 26.0]]
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "projector_lens_1"
 mechanical_overlap_group = "projector_lens_1_assembly"
@@ -420,6 +425,7 @@ mechanical_bore_diameter_mm = 40.0
 magnetic_radial_profile_mm = [[0.0, 20.0, 26.0], [36.5, 20.0, 26.0]]
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "projector_lens_1"
 mechanical_overlap_group = "projector_lens_1_assembly"
@@ -514,6 +520,7 @@ pole_nose_axial_length_mm = 22.0
 pole_face_land_axial_thickness_mm = 3.0
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "projector_lens_2"
 mechanical_overlap_group = "projector_lens_2_assembly"
@@ -538,6 +545,7 @@ pole_nose_axial_length_mm = 22.0
 pole_face_land_axial_thickness_mm = 3.0
 material_class = "soft_magnetic"
 mechanical_profile = "magnetic_pole_piece"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 mechanical_only = true
 parent_key = "projector_lens_2"
 mechanical_overlap_group = "projector_lens_2_assembly"
@@ -832,6 +840,7 @@ mechanical_profile = "magnetic_lens_yoke"
 mechanical_part_role = "return_plate"
 material_class = "soft_magnetic"
 mechanical_only = true
+axial_vacuum_context_only = true
 parent_key = "diffraction_lens"
 
 [[parts]]
@@ -850,6 +859,7 @@ mechanical_profile = "magnetic_lens_yoke"
 mechanical_part_role = "return_plate"
 material_class = "soft_magnetic"
 mechanical_only = true
+axial_vacuum_context_only = true
 parent_key = "intermediate_lens"
 
 [[parts]]
@@ -868,6 +878,7 @@ mechanical_profile = "magnetic_lens_yoke"
 mechanical_part_role = "return_plate"
 material_class = "soft_magnetic"
 mechanical_only = true
+axial_vacuum_context_only = true
 parent_key = "projector_lens_1"
 
 [[parts]]
@@ -886,4 +897,5 @@ mechanical_profile = "magnetic_lens_yoke"
 mechanical_part_role = "return_plate"
 material_class = "soft_magnetic"
 mechanical_only = true
+axial_vacuum_context_only = true
 parent_key = "projector_lens_2"

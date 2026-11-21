@@ -5,7 +5,7 @@ from pathlib import Path
 from types import MappingProxyType
 
 from temsim import module_manifest
-from temsim.component_representation import non_material_role
+from temsim.component_representation import non_material_role, vacuum_context_only
 from temsim.component_keys import (
     AC_DEFLECTOR,
     BEAM_DEFLECTOR,
@@ -240,7 +240,7 @@ def _module_vacuum_segments(module, origin, resolved_parts):
 
     module_start = origin + module.entrance_z_mm
     module_end = origin + module.exit_z_mm
-    if module.type == "gun":
+    if getattr(module, "type", None) == "gun":
         # Extend physical hardware upstream while leaving the source port at 0.
         module_start = min(module_start, origin+float(module.geometry["parts_start_z_mm"]))
     # Field/control planes retain their numerical coordinates, but neither
@@ -299,9 +299,7 @@ def _module_vacuum_segments(module, origin, resolved_parts):
             if (
                 part.start_z_mm <= midpoint <= part.end_z_mm
                 and "vacuum_inner_diameter_mm" in part.data
-                and not bool(
-                    part.data.get("axial_vacuum_context_only", False)
-                )
+                and not vacuum_context_only(part.data)
             )
         ]
         if active:

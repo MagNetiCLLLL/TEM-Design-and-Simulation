@@ -23,9 +23,10 @@ previous mixed models are not silently replaced.
 | Coupled Multiphysics | Disabled. Circuit/thermal/structural feedback is not implemented. |
 | Custom / Per-lens Models | Existing per-lens analytic, geometry and imported-map configuration, including legacy behaviour and its explicit approximation warnings. |
 
-The independent **Column round-lens field** selector offers Gaussian/saved
-models and **Ideal prescribed-current coils in vacuum**. This model requires
-shared `unified` execution. It supports classical particles and purpose-specific
+Open **Simulation > Configure lens models...** to find **Round-lens field** in
+**Model Inspector**. It offers Gaussian/saved models and **Ideal prescribed-current
+coils in vacuum**. The coil model requires shared `unified` execution. It
+supports classical particles and purpose-specific
 local stationary mixed particle-wave STEM admission, subject to actual
 per-request field and numerical qualification. General/downstream coherent
 propagation with these sources remains unqualified and rejected.

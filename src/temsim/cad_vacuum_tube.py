@@ -18,6 +18,44 @@ STATUS = PREFIX + "status"
 SOURCE = PREFIX + "source"
 SLOTS = PREFIX + "aperture_slots"
 FIELDS = (PROFILE, SLOT_KEYS, CLEARANCE, STATUS, SOURCE)
+TERMINAL_KEY = "objective_terminal_vacuum_tube"
+
+
+def terminal_profile(geometry, length):
+    """Clip the installed OD profile to the selected terminal length (local mm)."""
+    start, end, outer = (float(geometry["c1_c2_objective_vacuum_tube_" + k])
+                         for k in ("start_z_mm", "end_z_mm", "outer_diameter_mm"))
+    length = _finite(length, "terminal_tube_length_mm")
+    if not 0 < length <= end - start:
+        raise ValueError("The objective terminal tube length must fit the installed tube")
+    cut = end - length
+    points = geometry.get(PROFILE, ((start, outer), (end, outer)))
+    for (a, da), (b, db) in zip(points, points[1:]):
+        if a <= cut <= b:
+            return [(cut, da + (db - da)*(cut-a)/(b-a)), *((z, d) for z, d in points if z > cut)]
+    raise ValueError("Terminal tube lies outside the material wall profile")
+
+
+def terminal_field_part(assembly):
+    """Use the same wall and placement for magnetic and nonmagnetic FEM runs."""
+    from temsim.part_materials import material_for_region, nonmagnetic_tube_material
+    upper = next((p for p in assembly.parts if p.key == "objective_upper_pole"), None)
+    if upper is None or "terminal_tube_length_mm" not in upper.data:
+        return None
+    module = next(m for m in assembly.modules if m.key == upper.module_key)
+    liner = next(s for s in assembly.vacuum_liner_segments if s.key == CONTINUOUS_TUBE_KEY)
+    points = terminal_profile(module.geometry, upper.data["terminal_tube_length_mm"])
+    start, end = points[0][0], points[-1][0]
+    origin = liner.end_z_mm - end
+    inner = liner.inner_diameter_mm
+    material = material_for_region(upper, "terminal_tube") or nonmagnetic_tube_material()
+    data = dict(mechanical_profile="magnetic_lens_yoke", material_class="objective_terminal_wall",
+                mechanical_inner_diameter_mm=inner, mechanical_outer_diameter_mm=max(d for _, d in points),
+                magnetic_radial_profile_mm=[[z-start, inner/2, d/2] for z, d in points],
+                material_regions={"body": material})
+    return dict(key=TERMINAL_KEY, parent_key="objective_lens", module_key=upper.module_key,
+                start_z_mm=start+origin, end_z_mm=end+origin, center_z_mm=(start+end)/2+origin,
+                length_mm=end-start, data=data)
 
 
 def _finite(value, name):
@@ -65,6 +103,15 @@ def validate_material_tube_geometry(parts, geometry):
         thickness = float(part.get("plate_thickness_mm", part.get("active_length_mm", 0.)))
         if not math.isfinite(thickness) or thickness <= 0 or not start <= z-thickness/2 < z+thickness/2 <= end:
             raise ValueError(f"Material tube slot {key} must lie within the continuous tube span")
+    pole = by_key.get("objective_upper_pole", {})
+    if "terminal_tube_length_mm" in pole:
+        cut = terminal_profile(geometry, pole["terminal_tube_length_mm"])[0][0]
+        for key in keys:
+            aperture = by_key[key]
+            slot_end = (aperture.get("optical_reference_local_z_mm", aperture["local_center_z_mm"])
+                        + aperture.get("plate_thickness_mm", aperture.get("active_length_mm", 0.))/2 + geometry[CLEARANCE])
+            if slot_end > cut:
+                raise ValueError("The terminal tube wall overlaps an aperture side-entry slot")
     # An edited OD profile must not silently restore the known C3 pole collision.
     def diameter_at(z):
         for (a, da), (b, db) in zip(points, points[1:]):
@@ -146,6 +193,11 @@ def decorate_physical_tube_row(row, assembly, *, runtime_values=None, aperture_i
             rotation_local_to_global=rotation.tolist(), translation_local_mm=translation.tolist(),
             module_origin_z_mm=origin, shape=slot))
     result[SLOTS] = slots
+    pole = active.get("objective_upper_pole")
+    if pole is not None and "terminal_tube" in pole.data.get("material_regions", {}):
+        from temsim.part_materials import material_for_region
+        result["terminal_tube_length_mm"] = pole.data["terminal_tube_length_mm"]
+        result["material_regions"] = {"terminal_tube": material_for_region(pole, "terminal_tube")}
     return result
 
 
@@ -155,6 +207,20 @@ def tube_solids(row):
         return None
     points = [(float(z), float(d)/2) for z, d in row[PROFILE]]
     inner = float(row["mechanical_inner_diameter_mm"])/2
+    terminal = ()
+    if "terminal_tube_length_mm" in row:
+        cut = points[-1][0] - row["terminal_tube_length_mm"]
+        a, b = next((a, b) for a, b in zip(points, points[1:]) if a[0] <= cut <= b[0])
+        radius = a[1] + (b[1]-a[1])*(cut-a[0])/(b[0]-a[0])
+        tail = [(cut, radius), *(p for p in points if p[0] > cut)]
+        points = [*(p for p in points if p[0] < cut), (cut, radius)]
+        material = row["material_regions"]["terminal_tube"]
+        terminal = (SolidSpec(row["key"], "terminal_tube", material["material_key"],
+                              revolve([*tail, (tail[-1][0], inner), (cut, inner)]),
+                              status=row[STATUS], note="Assigned terminal wall of the continuous vacuum tube.",
+                              parameters={"material_assignment": material}),)
+        if len(points) == 1:
+            return terminal
     shape = revolve([*points, (points[-1][0], inner), (points[0][0], inner)])
     slots = row.get(SLOTS, ())
     if slots:
@@ -163,4 +229,4 @@ def tube_solids(row):
         status=row[STATUS], note=str(row[SOURCE]) + " The side-entry slots describe the material around the beam passage. The passive tube material is a model assumption. Its alloy and magnetic contact at the upper objective require independent evidence.",
         parameters={PROFILE: row[PROFILE], CLEARANCE: row[CLEARANCE],
             SLOT_KEYS: row[SLOT_KEYS], "aperture_slots": [{key: value for key, value in slot.items() if key != "shape"} for slot in slots],
-            "inner_diameter_mm": 2*inner}),)
+            "inner_diameter_mm": 2*inner}),) + terminal

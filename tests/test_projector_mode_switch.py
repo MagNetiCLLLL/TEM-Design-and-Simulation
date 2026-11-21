@@ -164,14 +164,17 @@ def test_gui_projector_switch_preserves_working_point_and_invalidates_pair(windo
 
 def test_gui_reapplying_same_keys_still_reapplies_complete_presets(window, monkeypatch):
     state = _working_point(window.state)
+    gun_voltage = state.electron_gun.electrostatic_lens.voltage_kv
     errors = []
     monkeypatch.setattr(window, "_show_error", errors.append)
     window.apply_operating_modes("nano_probe", "diffraction")
     window.preview_timer.stop()
     assert not errors
-    assert runtime_targets(state)["condenser_lens_3"].obj.percent == mode_by_key("nano_probe").devices["condenser_lens_3"]["percent"]
-    assert state.objective_lens.percent == mode_by_key("nano_probe").devices["objective_lens"]["percent"]
-    assert state.electron_gun.electrostatic_lens.voltage_kv == 1.2
+    preset = mode_by_key("nano_probe", load_operating_mode_catalog(state.simulation_mode), column_name=window.selection.column)
+    assert runtime_targets(state)["condenser_lens_3"].obj.percent == preset.devices["condenser_lens_3"]["percent"]
+    assert state.objective_lens.percent == preset.devices["objective_lens"]["percent"]
+    # Neither selected device table specifies the independent gun-lens supply.
+    assert state.electron_gun.electrostatic_lens.voltage_kv == gun_voltage
     assert not state.fluorescent_screen.inserted
 
 

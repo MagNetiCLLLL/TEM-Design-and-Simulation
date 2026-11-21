@@ -1,7 +1,7 @@
 """Window routing preserves classical source editing and uses accepted particles."""
 from types import SimpleNamespace
 import pytest
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QPushButton, QToolBar
 from temsim.instrument_snapshot import capture_instrument_snapshot
 from test_working_point_restore_gui import window
 
@@ -10,8 +10,10 @@ def test_particle_toolbar_and_mixed_page_have_separate_entries(window):
     page = window.workspace.coherent_beam
     assert page.calculate_button.text() == "Calculate mixed wave"
     assert not hasattr(page, "tip_boundary") and not hasattr(page, "state_list")
-    assert window.findChild(QPushButton, "highAccuracyButton") is not None
-    assert window.classical_rays_action in window.simulation_menu.actions()
+    toolbar = window.findChild(QToolBar, "calculationToolbar")
+    assert toolbar.isAncestorOf(window.high_rays)
+    assert toolbar.isAncestorOf(window.high_step)
+    assert toolbar.findChild(QPushButton, "highAccuracyButton") is not None
 
 
 def test_particle_toolbar_preserves_optics_and_does_not_start_a_wave(window, monkeypatch):
@@ -45,11 +47,17 @@ def test_window_provider_rejects_stale_particle_snapshot(window):
     assert workspace.coherent_beam.particle_result_provider() is None
 
 
-def test_classical_menu_keeps_explicit_ray_workflow(window, monkeypatch):
-    submitted = []
-    monkeypatch.setattr(window, "_submit_high_accuracy", lambda **kwargs: submitted.append(kwargs))
-    window.classical_rays_action.trigger()
-    assert submitted == [{"workflow": "rays"}]
+def test_coherent_toolbar_opens_mixed_wave_settings_without_calculating(window, monkeypatch):
+    page = window.workspace.coherent_beam
+    revealed = []
+    monkeypatch.setattr(page.controls_scroll, "ensureWidgetVisible", revealed.append)
+    before = capture_instrument_snapshot(window.state)
+    toolbar = window.findChild(QToolBar, "calculationToolbar")
+    toolbar.findChild(QPushButton, "coherentNumericalSettingsButton").click()
+    assert window.workspace.tabs.currentWidget() is page
+    assert revealed == [page.numerical_settings]
+    assert page._worker is None
+    assert capture_instrument_snapshot(window.state).digest == before.digest
 
 
 def test_shared_projection_updates_beam_observation_without_calculating(window, monkeypatch):

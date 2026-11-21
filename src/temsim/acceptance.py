@@ -242,7 +242,8 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_lens_pose_clipping.py", "tests/test_lens_pose_transport.py",
                 "tests/test_rigid_lens_field_registration.py")),
             "lens-geometry/LG-03": ("Assembled material sections and linear/nonlinear FEM coordinates", (
-                "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py")),
+                "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py",
+                "tests/test_pole_material_library.py")),
             "lens-geometry/LG-04": ("Retained native potentials, immutable source coverage and explicit validity domains", (
                 "tests/test_axisymmetric_potential.py", "tests/test_electric_potential_snapshot.py",
                 "tests/test_analytic_potential.py", "tests/test_potential_snapshot.py",

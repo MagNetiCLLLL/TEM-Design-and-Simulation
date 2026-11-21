@@ -548,6 +548,7 @@ mechanical_coil_radial_thickness_mm = 30.0
 [[parts]]
 order = 3
 key = "condenser_lens_1_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C1 Lower Pole Piece"
 branch = "common"
 local_start_z_mm = 40
@@ -599,6 +600,7 @@ mechanical_back_wall_mm = 0.50
 [[parts]]
 order = 5
 key = "condenser_lens_2_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C2 Upper Pole Piece"
 branch = "common"
 local_start_z_mm = 110
@@ -619,6 +621,8 @@ pole_piece_geometry_style = "embedded_hourglass_bore"
 [[parts]]
 order = 14
 key = "objective_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
+terminal_tube_length_mm = 40.0
 name = "Upper Objective"
 branch = "common"
 local_start_z_mm = 510.5
@@ -655,6 +659,7 @@ mechanical_geometry_source = "Five user-supplied upper objective views. Rear-vie
 [[parts]]
 order = 17
 key = "objective_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Lower Objective"
 branch = "common"
 local_start_z_mm = 577.9
@@ -692,6 +697,7 @@ mechanical_geometry_source = "The lower pole is assumed to mirror the five-view 
 [[parts]]
 order = 21
 key = "mini_condenser_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Mini Condenser Lens Upper Pole Piece"
 branch = "illumination"
 local_start_z_mm = 488.5
@@ -712,6 +718,7 @@ parent_key = "mini_condenser"
 [[parts]]
 order = 22
 key = "mini_condenser_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Mini Condenser Lens Lower Pole Piece"
 branch = "illumination"
 local_start_z_mm = 504.5
@@ -1090,3 +1097,53 @@ mechanical_geometry_source = "User-requested hollow polymer carrier, 2026-10-19.
 mechanical_overlap_group = "objective_assembly"
 mechanical_overlap_role = "member"
 mechanical_overlap_reason = "Passive open-ended sleeve around independently mounted objective electronics; nominal radial clearances checked separately."
+
+[[parts]]
+order = 8201
+key = "objective_pole_sleeves"
+name = "Objective Pole Shoulder Sleeves"
+branch = "common"
+local_start_z_mm = 520.5000
+local_center_z_mm = 575.2000
+local_end_z_mm = 629.9000
+length_mm = 109.4000
+vacuum_inner_diameter_mm = 5.76
+mechanical_inner_diameter_mm = 90.0
+mechanical_outer_diameter_mm = 100.0
+material_intervals_mm = [[520.5000, 522.5000], [627.9000, 629.9000]]
+mechanical_profile = "magnetic_lens_yoke"
+mechanical_part_role = "objective_pole_sleeves"
+material_class = "soft_magnetic"
+parent_key = "objective_lens_yoke"
+mechanical_only = true
+axial_vacuum_context_only = true
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Annular magnetic return in the objective winding end clearance."
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "Nominal shoulder contact between the installed pole rear faces and outer yoke. No internal return dimensions are available from the pole photographs."
+
+[[parts]]
+order = 8202
+key = "objective_return_plates"
+name = "Objective Annular Return Plates"
+branch = "common"
+local_start_z_mm = 521.0000
+local_center_z_mm = 575.2000
+local_end_z_mm = 629.4000
+length_mm = 108.4000
+vacuum_inner_diameter_mm = 5.76
+mechanical_inner_diameter_mm = 100.0
+mechanical_outer_diameter_mm = 140.0
+material_intervals_mm = [[521.0000, 522.0000], [628.4000, 629.4000]]
+mechanical_profile = "magnetic_lens_yoke"
+mechanical_part_role = "objective_return_plates"
+material_class = "soft_magnetic"
+parent_key = "objective_lens_yoke"
+mechanical_only = true
+axial_vacuum_context_only = true
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Annular magnetic return in the objective winding end clearance."
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "Nominal shoulder contact between the installed pole rear faces and outer yoke. No internal return dimensions are available from the pole photographs."

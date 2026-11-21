@@ -1,5 +1,6 @@
 """Magnetic fits in the installed corrector CAD, bore layout and round-lens FEM."""
 from dataclasses import replace
+from copy import deepcopy
 import json
 import math
 
@@ -134,6 +135,76 @@ def test_editor_keeps_split_regions_and_rejects_intersecting_sleeves_atomically(
     assert material_for_region(saved_part, "lower") is None
     colours = [configured_region_colour(saved_part, m.region, m.color) for m in meshes]
     assert colours[0] != colours[1]
+
+
+@pytest.mark.parametrize("part,field,value,joint,defect", [
+    ("pole_sleeves", ("mechanical_inner_diameter_mm",), 66.83, "upper_pole to pole_sleeves", "air gap"),
+    ("pole_sleeves", ("mechanical_inner_diameter_mm",), 65.33, "upper_pole to pole_sleeves", "overlap"),
+    ("lower_pole", ("mechanical_outer_diameter_mm",), 67.33, "lower_pole to pole_sleeves", "overlap"),
+    ("return_plates", ("mechanical_inner_diameter_mm",), 71.33, "pole_sleeves to return_plates", "air gap"),
+    ("return_plates", ("mechanical_inner_diameter_mm",), 69.33, "pole_sleeves to return_plates", "overlap"),
+    ("return_plates", ("mechanical_outer_diameter_mm",), 100.5109425, "return_plates to yoke", "air gap"),
+    ("yoke", ("mechanical_inner_diameter_mm",), 100.5109425, "return_plates to yoke", "overlap"),
+    ("pole_sleeves", ("material_intervals_mm", 0, 0), 704.35, "pole_sleeves to return_plates", "air gap"),
+    ("pole_sleeves", ("material_intervals_mm", 0, 0), 704.15, "pole_sleeves to return_plates", "edge"),
+    ("pole_sleeves", ("material_intervals_mm", 1, 1), 728.35, "lower end, pole_sleeves to return_plates", "air gap"),
+])
+def test_edited_return_joints_reject_gaps_edge_contacts_and_interpenetration(part, field, value, joint, defect):
+    source = COLUMN / "C3_ProbeCorrector.toml"
+    draft = PartModelDocument(source)
+    key = "probe_tl22_lens_" + part
+    before = deepcopy(draft.document)
+    with pytest.raises(ValueError, match=f"{joint}.*{defect}"):
+        draft.set_dimension(("parts", key, *field), value)
+    assert draft.document == before and not draft.can_undo
+
+    # Also exercise a direct manifest edit that bypasses the 3D editor.
+    doc = read_document(source)
+    row = next(row for row in doc["parts"] if row["key"] == key)
+    if len(field) == 1:
+        row[field[0]] = value
+    else:
+        from temsim.magnetic_geometry import corrector_return_extent
+        row[field[0]][field[1]][field[2]] = value
+        row.update(corrector_return_extent(row))
+    with pytest.raises(ValueError, match=f"{joint}.*{defect}"):
+        validate_document(doc)
+
+
+def test_pole_shoulder_cannot_intersect_a_plate_beyond_the_sleeve():
+    doc = read_document(COLUMN / "C3_ImageCorrector.toml")
+    rows = {part["key"]: part for part in doc["parts"]}
+    pole = rows["image_tl11_lens_upper_pole"]
+    plate = rows["image_tl11_lens_return_plates"]
+    # The pole still seats on the sleeve for its full axial span. Beyond it,
+    # a wider shoulder clears the original plate, but not this extended plate.
+    pole["mechanical_outer_diameter_mm"] = 112.
+    pole["magnetic_radial_profile_mm"] = [[0., 10., 51.59], [2.2, 10., 51.59],
+                                         [3.2, 10., 56.], [4., 10., 56.], [12.5, 10., 20.]]
+    validate_document(doc)
+    plate["material_intervals_mm"][0][1] = 1044.3
+    with pytest.raises(ValueError, match="upper_pole/body to return_plates/upper.*material overlap"):
+        validate_document(doc)
+
+
+def test_local_plate_cut_preserves_contact_but_an_offset_causes_interference(tmp_path):
+    draft = PartModelDocument(COLUMN / "C3_ProbeCorrector.toml")
+    key = "probe_tl22_lens_return_plates"
+    hole = dict(id="through_plate", kind="hole", axis="z", center_mm=[42., 0., 0.],
+                depth_mm=40., diameter_mm=2.)
+    # A rotation moves the hole around the axis but preserves both round seats.
+    draft.set_model_3d(key, dict(schema_version=1, transform={"rotation_deg": [0., 0., 13.]}))
+    draft.set_model_3d(key, dict(schema_version=1, features=[hole]))
+    draft.update_model_3d(key, {"transform": {"rotation_deg": [0., 0., 13.]}})
+    before = deepcopy(draft.document)
+    with pytest.raises(ValueError, match=r"air gap 0\.\d+ mm in the 3D mesh"):
+        draft.update_model_3d(key, {"transform": {"scale_xy": [1.01, 1.01]}})
+    with pytest.raises(ValueError, match="material overlap"):
+        draft.update_model_3d(key, {"transform": {"offset_mm": [.2, 0., 0.]}})
+    assert draft.document == before
+    path = tmp_path / "plate-with-hole.toml"
+    draft.save_copy(path)
+    PartModelDocument(path).validate()
 
 
 @pytest.mark.parametrize("host", ["image_hpol_hexapole", "image_qpol_quadrupole"])

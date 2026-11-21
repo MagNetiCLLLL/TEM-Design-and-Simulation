@@ -2,29 +2,27 @@
 
 The current [calculation scope matrix](CALCULATION_SCOPE_MATRIX.md) separates
 field sources, trajectory equations, GUI request paths, material/wave products
-and execution backends. It also records the classical-only restriction for
-**Ideal prescribed-current coils in vacuum** and the mixed-wave CUDA policy.
+and execution backends. It also records the supported particle and local mixed-STEM
+uses of **Ideal prescribed-current coils in vacuum** and the mixed-wave CUDA policy.
 Historical Tip-wave controls/operators below
 must not be read as newly available production workflows.
 
-The **Simulation** menu separates the column model from numerical resolution.
-Changing a label does not reinterpret a saved model key or reset the electrical
-operating point.
+The **Simulation** menu lists the column models directly, with **Ideal Optics**
+first. The check mark identifies the active model. **Configure lens models...**
+opens **Model Inspector**, where **Round-lens field** selects Gaussian/saved
+models or ideal vacuum coils and **Gaussian geometry relation** sets the length
+coupling. **Performance and cache...** opens job memory and cache settings.
 
-| Menu category | Saved key | Meaning |
+| Menu choice | Saved key | Meaning |
 | --- | --- | --- |
 | Ideal Optics | `ideal_thin` | Thin-lens approximation: fast particle transport with optical actions at declared planes instead of resolved field thickness or magnetic materials. Component positions and apertures remain meaningful. |
-| Finite-Field Optics / Shared potentials and geometry | `unified` | Particle and coherent column execution consume one immutable potential and finite geometry definition. Natural field aberrations replace empirical screens in that interval. Unsupported configurations fail explicitly. |
-| Finite-Field Optics / Parameterized fields (legacy) | `ideal` | The existing finite analytical fields, configured aberrations, multipoles and actual electron energies. The historical key retains its original behavior. |
-| Finite-Field Optics / Analytical Field (compatibility) | `analytical` | Existing profile alias for the parameterized finite-field laws. The saved key remains unchanged. |
-| Finite-Field Optics / Linear Geometry Field | `linear_geometry` | Existing linear FEM field recipes, with explicit geometry, current and material inputs. Unconfigured recipes are unavailable. |
-| Finite-Field Optics / Nonlinear Material Field | `nonlinear_material` | Existing static isotropic B-H field recipes at the selected currents. This is not coupled circuit, thermal or structural simulation. |
-| Finite-Field Optics / Custom / Per-lens Models | `custom` | Existing explicit per-lens analytical, generated or imported field selection. |
+| Finite-Field Optics (shared potentials and geometry) | `unified` | Particle and coherent column execution consume one immutable potential and finite geometry definition. Natural field aberrations replace empirical screens in that interval. Unsupported configurations fail explicitly. |
+| Parameterized fields (legacy) | `ideal` | The existing finite analytical fields, configured aberrations, multipoles and actual electron energies. The historical key retains its original behavior. |
+| Linear Geometry Field | `linear_geometry` | Existing linear FEM field recipes, with explicit geometry, current and material inputs. Unconfigured recipes are unavailable. |
+| Nonlinear Material Field | `nonlinear_material` | Existing static isotropic B-H field recipes at the selected currents. This is not coupled circuit, thermal or structural simulation. |
+| Custom / Per-lens Models | `custom` | Existing explicit per-lens analytical, generated or imported field selection. |
+| Analytical Field (compatibility) | `analytical` | Existing profile alias for the parameterized finite-field laws. The saved key remains unchanged. |
 | Coupled Multiphysics | `coupled_multiphysics` | Future coupled electromagnetic, vacuum, thermal and mechanical model, including explicitly defined specimen drift. Disabled. Existing independent vacuum scattering is not this coupling. |
-
-Linear, nonlinear and custom field sources belong to the finite-field category;
-the menu grouping does not replace their current solvers or qualify additional
-field models.
 
 Ideal Optics retains the saved empirical Cs/Cc inputs but does not execute their
 screens. Energy-dependent thin magnetic power and explicit integrated multipole
@@ -85,12 +83,10 @@ indeterminate, and only accepted publication completes a task.
 
 ## Particle calculations
 
-**High-accuracy rays** and **Step (mm)** remain directly accessible in the
-calculation toolbar. **Simulation > Particle: count and integration step**
-focuses these controls. They use the existing emitter particle count and
-instrument integration step. An explicit Tip quadrature still owns its complete
-position, direction and energy population; its derived count is not replaced by
-an unrelated requested number.
+Set **High-accuracy rays** and **Step (mm)** on the calculation toolbar. They
+control the emitter particle count and the requested maximum integration step.
+High accuracy changes numerical resolution only. For an explicit Tip quadrature,
+the position, direction and energy samples together determine the particle count.
 
 The step editor accepts scientific notation and preserves the complete stored
 floating-point value through restoration and request capture. It does not
@@ -155,6 +151,11 @@ when a segment is split at that plane.
 
 ## Coherent calculations
 
+On the calculation toolbar, **Coherent settings** opens **Mixed-wave numerical
+settings** on the **Electron beam** page. Set the wave grid, retained modes,
+downstream propagation step and memory limits there. The accepted particle
+snapshot supplies the energies.
+
 > **Retired Tip-origin execution.** The Tip-to-observation calculation described below
 > is retained as historical documentation and evidence, not an executable workflow.
 > New work uses [particle transport and near-specimen mixed coherence](MIXED_COHERENCE.md).
@@ -165,17 +166,15 @@ when a segment is split at that plane.
 > requires usable CUDA, uses a local source and one stationary mean wavelength,
 > and has the distinct material/field limits in the scope matrix.
 
-The **Coherent settings** toolbar button and **Simulation > Coherent: grid,
-energy and memory** open the Electron beam page. Its **Coherent numerical
-settings** group is visible without opening advanced options:
+The retired Tip-origin controls included the following inputs.
 
 - Initial grid pixels and maximum refined grid pixels per axis.
 - Energy samples for the selected coherent source.
 - Column propagation step.
 - Working memory per stage and the separate GPU working-memory limit.
 
-These controls construct the existing captured `TipWaveRequest`; they do not
-create another numerical state or translate particle count into wave cells.
+The historical `TipWaveRequest` captured the wave-grid size independently of
+the particle count.
 The prescribed source width, emission energy distribution and coherence model
 remain physical source inputs. The physical grid extent follows that source
 and the existing support-admission rules; a larger numerical grid does not

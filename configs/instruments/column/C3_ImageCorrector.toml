@@ -889,6 +889,7 @@ multipole_winding_wire_cross_section_mm2 = 0.02
 multipole_winding_turn_count_per_coil = 19
 order = 34
 key = "image_hp1_hexapole"
+material_regions = { pole_pins = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 pole_root_sleeve_depth_mm = 3.0
 pole_root_sleeve_wall_mm = 1.5
 pole_root_sleeve_geometry_source = "Nominal rectangular soft-magnetic collar on each pin root, outside the winding. The wall and radial seating depth are engineering assumptions; the instrument joint and alloy are unmeasured."
@@ -1083,6 +1084,7 @@ multipole_winding_wire_cross_section_mm2 = 0.02
 multipole_winding_turn_count_per_coil = 19
 order = 40
 key = "image_hp2_hexapole"
+material_regions = { pole_pins = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 pole_root_sleeve_depth_mm = 3.0
 pole_root_sleeve_wall_mm = 1.5
 pole_root_sleeve_geometry_source = "Nominal rectangular soft-magnetic collar on each pin root, outside the winding. The wall and radial seating depth are engineering assumptions; the instrument joint and alloy are unmeasured."
@@ -1223,6 +1225,7 @@ optical_reference_local_z_mm = 1476.4
 [[parts]]
 order = 3
 key = "condenser_lens_1_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C1 Lower Pole Piece"
 branch = "common"
 local_start_z_mm = 40
@@ -1274,6 +1277,7 @@ mechanical_back_wall_mm = 0.50
 [[parts]]
 order = 5
 key = "condenser_lens_2_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C2 Upper Pole Piece"
 branch = "common"
 local_start_z_mm = 110
@@ -1294,6 +1298,7 @@ pole_piece_geometry_style = "embedded_hourglass_bore"
 [[parts]]
 order = 10
 key = "condenser_lens_3_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C3 Upper Pole Piece"
 branch = "common"
 local_start_z_mm = 380
@@ -1313,6 +1318,7 @@ pole_piece_geometry_style = "embedded_hourglass_bore"
 [[parts]]
 order = 11
 key = "condenser_lens_3_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "C3 Lower Pole Piece"
 branch = "common"
 local_start_z_mm = 474
@@ -1332,6 +1338,8 @@ pole_piece_geometry_style = "embedded_hourglass_bore"
 [[parts]]
 order = 19
 key = "objective_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
+terminal_tube_length_mm = 40.0
 name = "Upper Objective"
 branch = "common"
 local_start_z_mm = 760.5
@@ -1368,6 +1376,7 @@ mechanical_geometry_source = "Five user-supplied upper objective views. Rear-vie
 [[parts]]
 order = 22
 key = "objective_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Lower Objective"
 branch = "common"
 local_start_z_mm = 827.9
@@ -1405,6 +1414,7 @@ mechanical_geometry_source = "The lower pole is assumed to mirror the five-view 
 [[parts]]
 order = 46
 key = "mini_condenser_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Mini Condenser Lens Upper Pole Piece"
 branch = "illumination"
 local_start_z_mm = 738.5
@@ -1425,6 +1435,7 @@ parent_key = "mini_condenser"
 [[parts]]
 order = 47
 key = "mini_condenser_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Mini Condenser Lens Lower Pole Piece"
 branch = "illumination"
 local_start_z_mm = 754.5
@@ -1445,6 +1456,7 @@ parent_key = "mini_condenser"
 [[parts]]
 order = 48
 key = "image_tl11_lens_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL11 Lens Upper Pole Piece"
 branch = "image"
 local_start_z_mm = 1040.4
@@ -1468,6 +1480,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 49
 key = "image_tl11_lens_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL11 Lens Lower Pole Piece"
 branch = "image"
 local_start_z_mm = 1072.9
@@ -1491,6 +1504,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 50
 key = "image_tl12_lens_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL12 Upper Pole Piece"
 branch = "image"
 local_start_z_mm = 1113.9
@@ -1514,6 +1528,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 51
 key = "image_tl12_lens_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL12 Lower Pole Piece"
 branch = "image"
 local_start_z_mm = 1146.9
@@ -1537,6 +1552,7 @@ mechanical_geometry_source = "CEOS Linck MC2025 p26 and Lu2025 optical topology 
 [[parts]]
 order = 52
 key = "image_tl21_lens_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL21 Upper Pole Piece"
 branch = "image"
 local_start_z_mm = 1238.4
@@ -1558,6 +1574,7 @@ parent_key = "image_tl21_lens"
 [[parts]]
 order = 53
 key = "image_tl21_lens_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL21 Lower Pole Piece"
 branch = "image"
 local_start_z_mm = 1266.4
@@ -1579,6 +1596,7 @@ parent_key = "image_tl21_lens"
 [[parts]]
 order = 54
 key = "image_tl22_lens_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL22 Upper Pole Piece"
 branch = "image"
 local_start_z_mm = 1288.4
@@ -1600,6 +1618,7 @@ parent_key = "image_tl22_lens"
 [[parts]]
 order = 55
 key = "image_tl22_lens_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector TL22 Lower Pole Piece"
 branch = "image"
 local_start_z_mm = 1316.4
@@ -1621,6 +1640,7 @@ parent_key = "image_tl22_lens"
 [[parts]]
 order = 56
 key = "image_adapter_lens_upper_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector ADL Upper Pole Piece"
 branch = "image"
 local_start_z_mm = 1368.4
@@ -1642,6 +1662,7 @@ parent_key = "image_adapter_lens"
 [[parts]]
 order = 57
 key = "image_adapter_lens_lower_pole"
+material_regions = { body = { library_key = "armco_pure_iron", library_sha256 = "fee3024d0028bde2e32ad7bf19c06f7da06fc8d52b3f7ee9386ee46619c96185" } }
 name = "Image Corrector ADL Lower Pole Piece"
 branch = "image"
 local_start_z_mm = 1396.4
@@ -3068,3 +3089,53 @@ parent_key = "image_hpol_hexapole"
 mechanical_shared_winding_keys = ["image_hpol_hexapole", "image_qpol_quadrupole"]
 mechanical_geometry_status = "engineering_reconstruction_not_oem"
 mechanical_geometry_source = "Nominal passive outer sleeve around the existing auxiliary winding allocation. Internal cores, pole counts, joint geometry and measured magnetic material remain unresolved."
+
+[[parts]]
+order = 8201
+key = "objective_pole_sleeves"
+name = "Objective Pole Shoulder Sleeves"
+branch = "common"
+local_start_z_mm = 770.5000
+local_center_z_mm = 825.2000
+local_end_z_mm = 879.9000
+length_mm = 109.4000
+vacuum_inner_diameter_mm = 5.76
+mechanical_inner_diameter_mm = 90.0
+mechanical_outer_diameter_mm = 100.0
+material_intervals_mm = [[770.5000, 772.5000], [877.9000, 879.9000]]
+mechanical_profile = "magnetic_lens_yoke"
+mechanical_part_role = "objective_pole_sleeves"
+material_class = "soft_magnetic"
+parent_key = "objective_lens_yoke"
+mechanical_only = true
+axial_vacuum_context_only = true
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Annular magnetic return in the objective winding end clearance."
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "Nominal shoulder contact between the installed pole rear faces and outer yoke. No internal return dimensions are available from the pole photographs."
+
+[[parts]]
+order = 8202
+key = "objective_return_plates"
+name = "Objective Annular Return Plates"
+branch = "common"
+local_start_z_mm = 771.0000
+local_center_z_mm = 825.2000
+local_end_z_mm = 879.4000
+length_mm = 108.4000
+vacuum_inner_diameter_mm = 5.76
+mechanical_inner_diameter_mm = 100.0
+mechanical_outer_diameter_mm = 140.0
+material_intervals_mm = [[771.0000, 772.0000], [878.4000, 879.4000]]
+mechanical_profile = "magnetic_lens_yoke"
+mechanical_part_role = "objective_return_plates"
+material_class = "soft_magnetic"
+parent_key = "objective_lens_yoke"
+mechanical_only = true
+axial_vacuum_context_only = true
+mechanical_overlap_group = "objective_assembly"
+mechanical_overlap_role = "member"
+mechanical_overlap_reason = "Annular magnetic return in the objective winding end clearance."
+mechanical_geometry_status = "engineering_reconstruction_not_oem"
+mechanical_geometry_source = "Nominal shoulder contact between the installed pole rear faces and outer yoke. No internal return dimensions are available from the pole photographs."

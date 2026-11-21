@@ -3,8 +3,9 @@
 from copy import deepcopy
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QPushButton, QLineEdit, QTabWidget, QFileDialog, QPlainTextEdit, QCheckBox
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLabel, QTableWidget, QTableWidgetItem, QPushButton, QLineEdit, QTabWidget, QFileDialog, QPlainTextEdit, QCheckBox
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox, WheelSafeSpinBox as QSpinBox
+from temsim.gui.material_reference import MaterialReferenceLabel
 
 
 class ModelInspectorPage(QWidget):
@@ -51,9 +52,7 @@ class ModelInspectorPage(QWidget):
         self.default_material = QPushButton("Use default material")
         self.default_material.setToolTip("Use the generic pure-iron reference in this draft. Coil inputs and saved per-material overrides are retained; apply with Use geometry field.")
         self.default_material.clicked.connect(self._use_default_material)
-        self.material_hint = QLabel()
-        self.material_hint.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.material_hint.setWordWrap(True)
+        self.material_hint = MaterialReferenceLabel()
         self.permeability = QLineEdit()
         self.permeability.setPlaceholderText("Relative permeability")
         self.permeability.setToolTip("Relative permeability (dimensionless). A constant linear approximation, not a saturation model; source details are below.")
@@ -63,6 +62,8 @@ class ModelInspectorPage(QWidget):
         self.mesh.setRange(12, 128)
         self.mesh.setValue(40)
         self.mesh.setPrefix("Radial nodes: ")
+        self.refine_poles = QCheckBox("Refine pole bores and faces")
+        self.refine_poles.setToolTip("Add radial nodes inside the pole bore and axial nodes along the nose and into the gap. Refined grids are limited to 250,000 nodes.")
         self.padding = QLineEdit("2")
         self.padding.setMaximumWidth(90)
         self.padding.setToolTip("Finite boundary padding factor (1.5–10). Increase it and compare results to check domain convergence.")
@@ -144,6 +145,9 @@ class ModelInspectorPage(QWidget):
         tables.setObjectName("modelInspectorTabs")
         tables.addTab(self.table, "Model checks")
         tables.addTab(self.circuit_table, "Magnetic circuits")
+        from temsim.gui.pole_materials import PoleMaterialsPage
+        self.pole_materials = PoleMaterialsPage()
+        tables.addTab(self.pole_materials, "Pole materials")
         stigmator_page = QWidget()
         stigmator_layout = QVBoxLayout(stigmator_page)
         self.stigmator_note = QLabel()
@@ -183,16 +187,16 @@ class ModelInspectorPage(QWidget):
         fit_evidence_layout.addWidget(self.export_fit)
         tables.addTab(fit_evidence_page, "Aberration evidence")
         layout = QVBoxLayout(self)
-        round_controls = QHBoxLayout()
-        round_controls.addWidget(QLabel("Round-lens field"))
-        round_controls.addWidget(self.round_lens_model)
-        round_controls.addWidget(self.gaussian_geometry_coupling)
+        round_controls = QFormLayout()
+        round_controls.addRow("Round-lens field", self.round_lens_model)
+        round_controls.addRow("Gaussian geometry relation", self.gaussian_geometry_coupling)
         layout.addLayout(round_controls)
         layout.addWidget(self.round_lens_hint)
         layout.addLayout(controls)
         layout.addLayout(material_controls)
         layout.addWidget(self.material_hint)
         layout.addLayout(numerical_controls)
+        layout.addWidget(self.refine_poles)
         layout.addWidget(self.dimension_approximation)
         layout.addLayout(electrical_controls)
         layout.addWidget(hint)
@@ -216,7 +220,11 @@ class ModelInspectorPage(QWidget):
         return tuple(lens for lens in state.lenses if lens.key in keys)
 
     def set_state(self, state):
+        from temsim.input_io import archive_payload, input_scope
         self._state = state
+        with input_scope(state, inherit=False):
+            self.pole_materials.set_assembly(getattr(state, "_resolved_assembly", None),
+                                             read_only=archive_payload(state) is not None)
         self.gun_source_button.setEnabled(state.electron_gun.type_key == "cold_feg")
         selected = self.lens.currentData()
         self.lens.blockSignals(True)
@@ -245,6 +253,7 @@ class ModelInspectorPage(QWidget):
         self.gaussian_geometry_coupling.model().item(self.gaussian_geometry_coupling.findData("axial_length")).setEnabled(shared and model == "gaussian")
         self.round_lens_hint.setText(round_lens_model_description(self._state))
         self.geometry_field_button.setEnabled(model != "copper_coil")
+        self.refine_poles.setEnabled(model != "copper_coil")
         self.analytic_field_button.setEnabled(model != "copper_coil")
         self.current_segments_button.setEnabled(shared and model == "copper_coil")
         self.round_lens_model.setToolTip("Ideal prescribed-current coils require shared Finite-Field Optics; current lens drives are retained.")
@@ -289,6 +298,7 @@ class ModelInspectorPage(QWidget):
         self.dimension_approximation.setChecked(row.get("geometry_policy") == "authoritative_dimensions")
         self._refresh_current_summary()
         self.mesh.setValue(int(row.get("radial_nodes", 40)))
+        self.refine_poles.setChecked(row.get("refine_pole_mesh", False))
         self.padding.setText(str(row.get("padding_factor", 2)))
         self.field_solver.setCurrentIndex(max(0, self.field_solver.findData(row.get("solver", "axisymmetric_linear_fem"))))
         # A new lens must not inherit the previously selected lens's custom CSV.
@@ -372,13 +382,15 @@ class ModelInspectorPage(QWidget):
         self.bh_material.setToolTip(f"{material.get('scope', '')}\n{material.get('source_url', '')}\nDefault for magnetic regions; no automatic OEM material assignment.")
         reference = self._linear_reference()
         if nonlinear:
-            self.material_hint.setText(f"Magnetic bodies: {material.get('label', 'Select material')} | B-H curve")
+            self.material_hint.set_reference(f"Unassigned magnetic bodies: {material.get('label', 'Select material')} | B-H curve",
+                                             material.get("source_url"))
             self.material_hint.setToolTip(self.bh_material.toolTip())
         elif reference:
-            self.material_hint.setText(f"Magnetic bodies: {reference['label']} | constant permeability")
+            self.material_hint.set_reference(f"Unassigned magnetic bodies: {reference['label']} | constant permeability",
+                                             reference["source_url"])
             self.material_hint.setToolTip(f"{reference['scope']}\n{reference['source_url']}\nSource fields: Mu_x / Mu_y. Per-material overrides, if saved, take precedence.")
         else:
-            self.material_hint.setText("Magnetic bodies: user-defined constant permeability")
+            self.material_hint.set_reference("Unassigned magnetic bodies: user-defined constant permeability")
             self.material_hint.setToolTip("Explicit linear permeability; no reference-material identity inferred from its value. Per-material overrides, if saved, take precedence.")
 
     def _import_bh(self):
@@ -465,6 +477,8 @@ class ModelInspectorPage(QWidget):
                 "geometry_policy": "authoritative_dimensions" if self.dimension_approximation.isChecked() else "require_full_geometry",
             }
             previous = self._state.lens_field_map_descriptors.get(key, {})
+            if self.refine_poles.isChecked():
+                recipe["refine_pole_mesh"] = True
             from temsim.ideal_coil_segments import CURRENT_RECIPE_FIELDS
             for field in CURRENT_RECIPE_FIELDS:
                 if field in previous:

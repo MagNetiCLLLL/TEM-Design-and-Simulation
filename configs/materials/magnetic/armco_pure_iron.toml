@@ -1,0 +1,9 @@
+key = "armco_pure_iron"
+label = "ARMCO Pure Iron (recrystallization annealed)"
+source_url = "https://www.aksteel.nl/files/downloads/clf_productdata__armco_pure_iron_pdb_euro_final_072022_92.pdf"
+source_sha256 = "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9"
+source_block = "Cleveland-Cliffs, ARMCO Pure Iron, Figure 7, printed page 6 (PDF page 8)."
+scope = "Representative DC B(H) after recrystallization annealing. Digitized from the plotted vector trace on log H and linear B axes. The origin is the demagnetized reference. The high-field intrinsic polarization plot in Figure 8 is a separate curve."
+linear_reference_h_a_per_m = 10.0
+h_a_per_m = [0, 5.2, 6, 7, 8, 9, 10, 11, 12, 14, 16, 20, 25, 32, 40, 50, 65, 80, 100, 125, 160, 220, 320, 500, 800, 1200, 2000, 3500, 5000, 8000, 10000, 14000, 17000]
+b_t = [0, 0.009, 0.013, 0.021, 0.033, 0.049, 0.068, 0.096, 0.133, 0.223, 0.311, 0.452, 0.575, 0.695, 0.814, 0.935, 1.076, 1.183, 1.289, 1.378, 1.446, 1.507, 1.558, 1.597, 1.624, 1.649, 1.685, 1.732, 1.778, 1.855, 1.895, 1.958, 1.996]

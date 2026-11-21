@@ -494,9 +494,8 @@ the record cannot convert it into a new particle source.
    once, executes classical transport and active specimen interactions, then
    starts the wave calculation from those same inputs. It uses the toolbar's
    particle count/step and this page's separate wave numerical budgets.
-   **Update rays** and **Run high-accuracy once** (also available as
-   **Simulation → Calculate classical rays**) remain explicit classical
-   operations and do not establish a matched pair. Unapplied source
+   **Update rays** and **Run high-accuracy once** on the calculation toolbar
+   produce standalone classical particle results. Unapplied source
    edits are rejected. Failed source-domain checks do not change tip dimensions,
    energy or energy spread.
 4. After Calculate, return to **Ray Diagram**, enable **Beam analysis**, and

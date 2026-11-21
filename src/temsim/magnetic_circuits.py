@@ -35,7 +35,9 @@ def part_data(part) -> dict:
     """Accept both manifest dictionaries and resolved immutable parts."""
     if isinstance(part, Mapping):
         return dict(part)
-    return {**dict(part.data), "key": part.key, "parent_key": part.parent_key}
+    row = dict(part.data)
+    row.update(key=part.key, parent_key=getattr(part, "parent_key", row.get("parent_key")))
+    return row
 
 
 def is_custom_mechanical_part(part) -> bool:

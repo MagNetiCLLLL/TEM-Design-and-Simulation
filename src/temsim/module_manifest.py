@@ -797,6 +797,7 @@ def validate_document(document):
     from temsim.multipole_winding import validate_multipole_winding
     from temsim.cad_multipoles import pole_root_sleeve_solids, validate_auxiliary_return_sleeve
     from temsim.magnetic_geometry import validate_corrector_return_extent
+    from temsim.magnetic_return_fits import validate_magnetic_return_fits
     from temsim.multipole_current import validate_multipole_current_inputs
     document = dict(resolve_field_hardware_parts(resolve_shared_deflector_parts(document)))
     document["parts"] = [
@@ -991,6 +992,7 @@ def validate_document(document):
                 f"Symmetric component {key} must use its mechanical "
                 "centre as the TOML optical reference"
             )
+    validate_magnetic_return_fits(detail_context)
     if document.get("module", {}).get("type") == "mechanical":
         if any(not is_custom_mechanical_part(part) for part in parts):
             raise ValueError("An independent mechanical document cannot declare optical hardware")

@@ -7,6 +7,7 @@ import pytest
 from matplotlib.path import Path as Polygon
 
 from temsim.assembly_catalog import AssemblyCatalog
+from temsim.column.module_assembly import _module_vacuum_segments
 from temsim.cad_mesh import _manifold
 from temsim.cad_round_lenses import round_lens_solids
 from temsim.magnetic_circuits import circuit_inventory
@@ -14,6 +15,7 @@ from temsim.module_manifest import read_document, validate_document
 from temsim.optics.column import default_state
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
 from temsim.physics.axisymmetric_magnetostatics import _part_mask
+from temsim.physics.column_wall import clip_column_wall, _partition_vacuum_segments
 from temsim.physics.lens_field_provider import lens_geometry_binding, resolve_runtime_lens_field_provider
 from temsim.projector_iron import _sections_intersect
 
@@ -21,6 +23,42 @@ from temsim.projector_iron import _sections_intersect
 LENSES = ('diffraction_lens', 'intermediate_lens', 'projector_lens_1', 'projector_lens_2')
 PLATES = ('dl_il_return_yoke', 'il_p1_return_yoke', 'p1_p2_return_yoke', 'p2_exit_return_yoke')
 BASE = INSTRUMENT_CONFIG_ROOT/'project_and_recording_system'
+
+
+@pytest.mark.parametrize('recording', ['No Energy Filter', 'Energy Filter'])
+def test_return_plates_never_clip_at_the_context_bore_when_lens_is_displaced(recording):
+    state, catalog = default_state(), AssemblyCatalog()
+    assembly = catalog.apply(state, replace(catalog.default_selection(), recording=recording))
+    assert all(assembly.part(key).data['axial_vacuum_context_only'] for key in PLATES)
+    assert not set(PLATES).intersection(s.key for s in assembly.vacuum_bore_segments)
+
+    # A saved manifest may predate the explicit context flag. Its mechanical
+    # role still describes an iron plate outside the stationary 20 mm beam tube.
+    parts = []
+    for part in assembly.parts:
+        if part.key in PLATES:
+            data = dict(part.data)
+            del data['axial_vacuum_context_only']
+            part = replace(part, data=data)
+        elif part.key == LENSES[0]:
+            part = replace(part, data={**part.data, 'offset_x_mm': .1})
+        parts.append(part)
+    segments = []
+    for module in assembly.modules:
+        ref = next(p for p in parts if p.module_key == module.key)
+        origin = ref.center_z_mm - ref.data['local_center_z_mm']
+        segments.extend(_module_vacuum_segments(module, origin, parts))
+    state._resolved_assembly = replace(assembly, parts=tuple(parts), vacuum_bore_segments=tuple(segments))
+    stationary, placed = _partition_vacuum_segments(state, state._resolved_assembly.vacuum_bore_segments)
+    assert not set(PLATES).intersection(s.key for s in stationary)
+    assert not set(PLATES).intersection(s.key for s, _ in placed)
+
+    z = assembly.part(PLATES[0]).center_z_mm + np.array([.3, 1.3])
+    x = np.tile(np.r_[np.linspace(-9.98, -9.92, 1024), -10.02, 10.02]*1e-3, (2, 1))
+    alive, stops, keys = clip_column_wall(state, z, x, np.zeros_like(x))
+    assert alive[:-2].all() and np.isnan(stops[:-2]).all()
+    assert not alive[-2:].any() and keys[-2:] == ['column_wall', 'column_wall']
+    np.testing.assert_allclose(stops[-2:], z[0])
 
 
 @pytest.mark.parametrize('name,recording,turns', [
@@ -153,6 +191,22 @@ def test_inconsistent_installed_iron_is_rejected(key, field, value, error):
     next(row for row in doc['parts'] if row['key'] == key)[field] = value
     with pytest.raises(ValueError, match=error):
         validate_document(doc)
+
+
+@pytest.mark.parametrize('key,field,value,defect', [
+    ('dl_il_return_yoke', 'mechanical_inner_diameter_mm', 53., 'air gap 0.5 mm'),
+    ('p1_p2_return_yoke', 'mechanical_inner_diameter_mm', 50., 'material overlap'),
+    ('p2_exit_return_yoke', 'mechanical_outer_diameter_mm', 139., 'air gap 0.5 mm'),
+])
+def test_projector_plate_fit_is_checked_during_dimension_edit(key, field, value, defect):
+    from copy import deepcopy
+    from temsim.part_model_document import PartModelDocument
+
+    editor = PartModelDocument(BASE/'NoEnergyFilter.toml')
+    before = deepcopy(editor.document)
+    with pytest.raises(ValueError, match=defect):
+        editor.set_dimension(('parts', key, field), value)
+    assert editor.document == before and not editor.can_undo
 
 
 def test_intersecting_tapers_are_detected_between_disjoint_end_sections():

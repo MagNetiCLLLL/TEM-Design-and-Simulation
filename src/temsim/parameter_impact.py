@@ -11,6 +11,7 @@ from dataclasses import dataclass, replace
 import math
 
 from temsim.component_keys import APERTURE_KEYS, FIXED_APERTURE_KEYS
+from temsim.component_representation import vacuum_context_only
 from temsim.magnetic_circuits import circuit_channels, is_custom_mechanical_part, optical_owner, part_data
 from temsim.part_materials import MATERIAL_PROFILES, is_magnetostatic_body
 from temsim.parameter_semantics import describe_parameter
@@ -239,7 +240,9 @@ def _magnetic_impact(row, index, mode, descriptors, *, material=False):
 def _wall_effect(row, field):
     if field not in _AXIAL_EXTENTS | {"vacuum_inner_diameter_mm", "axial_vacuum_context_only"}:
         return False
-    if "vacuum_inner_diameter_mm" not in row or (row.get("axial_vacuum_context_only") and field != "axial_vacuum_context_only"):
+    if field == "axial_vacuum_context_only":
+        row = {**row, field: False}
+    if "vacuum_inner_diameter_mm" not in row or vacuum_context_only(row):
         return False
     try:
         start, end = float(row["local_start_z_mm"]), float(row["local_end_z_mm"])
@@ -519,7 +522,8 @@ def _describe_parameter_impact(part, path, *, by_key=None, simulation_mode="idea
                        detail,
                        effects=("display", "geometry", "beam_clearance"), results=("physical_layout", "ray_transport", "beam_transmission"))
     if field == "vacuum_inner_diameter_mm":
-        return _impact("inactive" if row.get("axial_vacuum_context_only") else "unknown", "Vacuum context only" if row.get("axial_vacuum_context_only") else "Vacuum extent needs verification",
+        context_only = vacuum_context_only(row)
+        return _impact("inactive" if context_only else "unknown", "Vacuum context only" if context_only else "Vacuum extent needs verification",
                        "Context-only vacuum rows do not narrow the wall profile; a finite resolved axial segment is needed to verify other rows.")
     if semantics.category == "envelope":
         detail = "This is a mechanical/display envelope, not a solved material or aperture opening."

@@ -252,6 +252,7 @@ class MainWindow(QMainWindow):
         self.workspace.model_inspector.set_state(self.state)
         self.workspace.model_inspector.changed.connect(self._runtime_parameter_changed)
         self.workspace.model_inspector.error.connect(self._show_error)
+        self.workspace.model_inspector.pole_materials.save_requested.connect(self._save_manifest_updates)
         self.workspace.hardware_tuning.runtime_changed.connect(self._hardware_tuning_changed)
         self.setCentralWidget(self.workspace)
 
@@ -637,27 +638,12 @@ class MainWindow(QMainWindow):
         self.simulation_menu = SimulationMenu(self)
         self.menuBar().addMenu(self.simulation_menu)
         self.simulation_menu.mode_requested.connect(self.set_simulation_mode)
-        self.simulation_menu.round_lens_model_requested.connect(self.set_round_lens_field_model)
-        self.simulation_menu.gaussian_geometry_coupling_requested.connect(self.set_gaussian_geometry_coupling)
-        self.simulation_menu.particle_settings_requested.connect(self._show_particle_numerics)
-        self.simulation_menu.coherent_settings_requested.connect(self._show_coherent_numerics)
         self.simulation_menu.configure_requested.connect(
             lambda: self.workspace.tabs.setCurrentWidget(self.workspace.model_inspector)
         )
         self.simulation_menu.aboutToShow.connect(self._refresh_simulation_mode)
         self.simulation_menu.set_state(self.state)
-        self.simulation_menu.addSeparator()
-        self.classical_rays_action = self.simulation_menu.addAction("Calculate classical rays")
-        self.classical_rays_action.setObjectName("calculateClassicalRaysAction")
-        self.classical_rays_action.setToolTip(
-            "Calculate the classical trajectory approximation for comparison. "
-            "This updates Ray Diagram and retains the executed beam before the sample; "
-            "it does not calculate diffraction or the complex beam state."
-        )
-        self.classical_rays_action.triggered.connect(self.run_high_accuracy)
-        self.simulation_menu.addSeparator()
-        self.cache_settings_action = self.simulation_menu.addAction("Performance and cache...")
-        self.cache_settings_action.setObjectName("performanceCacheAction")
+        self.cache_settings_action = self.simulation_menu.cache_settings_action
         self.cache_settings_action.triggered.connect(self._show_cache_settings)
 
         microscope_menu = self.menuBar().addMenu("Microscope")
@@ -759,11 +745,6 @@ class MainWindow(QMainWindow):
         if hasattr(self, "workspace"):
             self.workspace.coherent_beam.update_simulation_mode(self.state)
         self._refresh_parameter_simulation_context()
-
-    def _show_particle_numerics(self):
-        self.high_rays.setFocus(Qt.FocusReason.ShortcutFocusReason)
-        self.high_rays.selectAll()
-        self.status_label.setText("Particle sampling: edit High-accuracy rays and Step in the calculation toolbar. Coherent grids use separate controls.")
 
     def _show_coherent_numerics(self):
         page = self.workspace.coherent_beam
@@ -945,7 +926,10 @@ class MainWindow(QMainWindow):
         toolbar.addWidget(high_button)
         wave_settings_button = QPushButton("Coherent settings")
         wave_settings_button.setObjectName("coherentNumericalSettingsButton")
-        wave_settings_button.setToolTip("Open independent coherent grid, energy sampling, propagation step and memory limits. Particle count and integration step remain in this toolbar.")
+        wave_settings_button.setToolTip(
+            "Open the Electron beam page to set the wave grid, mode limits, propagation step and memory budgets. "
+            "The mixed wave uses energies from the accepted particles."
+        )
         wave_settings_button.clicked.connect(self._show_coherent_numerics)
         toolbar.addWidget(wave_settings_button)
         cancel_button = QPushButton("Cancel calculations")

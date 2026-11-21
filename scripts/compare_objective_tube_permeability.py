@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
-from temsim.cad_vacuum_tube import CONTINUOUS_TUBE_KEY
+from temsim.cad_vacuum_tube import CONTINUOUS_TUBE_KEY, TERMINAL_KEY
 from temsim.optics.column import default_state
 from temsim.physics.axisymmetric_magnetostatics import solve_geometry_field_details
 from temsim.physics.lens_field_provider import lens_geometry_binding
@@ -46,14 +46,13 @@ def compare_tube_materials():
     outer_radius = yoke["data"]["mechanical_outer_diameter_mm"] / 2
     center = (yoke["start_z_mm"] + yoke["end_z_mm"]) / 2
     half_length = (yoke["end_z_mm"] - yoke["start_z_mm"]) / 2
-    # Isolate the objective and the final straight 40 mm of the passive tube.
-    # Only the existing objective winding carries imposed current.
-    lens["magnetostatic_neighbours"] = [{
-        "key": "upper_objective_terminal_tube", "start_z_mm": end - 40., "end_z_mm": end,
-        "data": {"mechanical_inner_diameter_mm": tube.inner_diameter_mm,
-                 "mechanical_outer_diameter_mm": tube.outer_diameter_mm,
-                 "material_class": "trial_tube_wall"},
-    }]
+    # The controlled linear study fixes the iron permeability at 1000.
+    # Reuse the installed wall once and override only its constitutive law.
+    lens["magnetostatic_neighbours"] = []
+    for part in lens["parts"]:
+        if part["key"] == TERMINAL_KEY:
+            part["data"]["material_class"] = "trial_tube_wall"
+        part["data"].pop("material_regions", None)
     binding = replace(binding, canonical_geometry_json=json.dumps(geometry, sort_keys=True))
     results = []
     for dr, dz, padding in ((1., 1.5, 2.5), (.5, .75, 2.5), (.5, .75, 3.5), (.3, .5, 3.5)):

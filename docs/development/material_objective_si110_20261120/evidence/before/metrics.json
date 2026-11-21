@@ -1,0 +1,53 @@
+{
+  "gun_sha256": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+  "field_digest": "8835cd8b992d515a59ef16045b0e685bfa7798a1e87588ced61c79eceda02c10",
+  "objective_ampere_turns": -3000.0,
+  "hexapole_scale": 0,
+  "controls": [
+    0.938505536010396,
+    0.5761927893239965,
+    0.33195301186618353,
+    3.741058574895399,
+    0.8931301330173161,
+    2.3550076726519635,
+    1.3809549169364583,
+    0.8648348571788197
+  ],
+  "transport_sha256": {
+    "columns": "64afd22cb69773e720ea68949449ee17971a2c86954ab62db1384d9543ada940",
+    "electric": "fca299dc892cf18aa9fa87f3feb2af1f00d3868b007aa166a5cafb714a1a3097",
+    "mechanical": "2e5bd2ee6077a11dee6a4f771344718a3b87f5b20d180e3cbb8f4c33959c58a7"
+  },
+  "max_step_mm": 0.1,
+  "specimen_upper_surface_mm": 1599.1999975,
+  "input_digest": "3bdfa95d35edbf155bdcdf45210a4b337092fcd04abec1fdb6935522723f944d",
+  "population": {
+    "emitted_count": 32768,
+    "positive_current_count": 32768,
+    "gun_exit_surviving_count": 32768,
+    "effective_emitted_count": 32768.0,
+    "emitted_weight": 1.0,
+    "gun_exit_weight": 1.0,
+    "effective_gun_exit_count": 32768.0,
+    "scope": "Executed classical gun reference; coherent quadrature packets and exit samples are separate populations"
+  },
+  "surface": {
+    "D95_nm": 141149.2955056127,
+    "D90_nm": 128034.47122360453,
+    "rms_radius_nm": 41736.22705015047,
+    "alpha95_mrad": 29.102731227701433,
+    "core_count": 0,
+    "core_50pm_nA": 0.0,
+    "transmitted_uA": 9.981689453125
+  },
+  "original_count": 32768,
+  "surviving_count": 32708,
+  "effective_count": 32708.0,
+  "losses": {
+    "objective_lens": 60
+  },
+  "D95_drift_proposal_nm": 2536846.5796926143,
+  "rms_drift_proposal_nm": 2576032.5670587714,
+  "max_live_radius_mm": 2.8784810204878624,
+  "min_live_clearance_mm": 0.0015189795121374645
+}

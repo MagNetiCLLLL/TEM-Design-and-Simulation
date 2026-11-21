@@ -1,0 +1,1514 @@
+{
+  "fields": {
+    "armco-1500-base-p8": {
+      "ampere_turns": 1500.0,
+      "level": "base",
+      "padding": 8,
+      "shape": [
+        165,
+        465
+      ],
+      "iterations": 4,
+      "residual": 3.249990272770578e-09,
+      "peak_material_T": 0.17366857216777515,
+      "peak_axis_T": 0.009622309205619453,
+      "sample_Bz_T": 0.0008322737613542707,
+      "field_squared_integral_T2m": 1.0726681864241792e-05,
+      "max_potential_fit_error_T": 6.445162931046364e-05,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "2af69c0321e52f3e64ce10e6eb6be48269650a9a6b770da26f592436f1857ba9",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 2.953655400000571
+    },
+    "armco-1500-finer-p8": {
+      "ampere_turns": 1500.0,
+      "level": "finer",
+      "padding": 8,
+      "shape": [
+        264,
+        733
+      ],
+      "iterations": 4,
+      "residual": 1.3754219074578983e-08,
+      "peak_material_T": 0.253381402706264,
+      "peak_axis_T": 0.00973700403498605,
+      "sample_Bz_T": 0.0008360066955168115,
+      "field_squared_integral_T2m": 1.075501591779325e-05,
+      "max_potential_fit_error_T": 0.00023830337635213656,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "0a55922a9c7c22aa92986265331e1d6f91ec8595ef420373e73f4924276d7177",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 13.071310100000119
+    },
+    "armco-3000-base-p8": {
+      "ampere_turns": 3000.0,
+      "level": "base",
+      "padding": 8,
+      "shape": [
+        165,
+        465
+      ],
+      "iterations": 4,
+      "residual": 1.8642437518120213e-08,
+      "peak_material_T": 0.35641934306629997,
+      "peak_axis_T": 0.019271204091225888,
+      "sample_Bz_T": 0.001570948538247402,
+      "field_squared_integral_T2m": 4.294542997063503e-05,
+      "max_potential_fit_error_T": 0.00012891791710035756,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 6.970022499997867
+    },
+    "armco-3000-fine-p8": {
+      "ampere_turns": 3000.0,
+      "level": "fine",
+      "padding": 8,
+      "shape": [
+        190,
+        535
+      ],
+      "iterations": 4,
+      "residual": 4.2183154356397785e-08,
+      "peak_material_T": 0.44472041019510455,
+      "peak_axis_T": 0.01938108414198128,
+      "sample_Bz_T": 0.0015783870601739226,
+      "field_squared_integral_T2m": 4.3000277810540124e-05,
+      "max_potential_fit_error_T": 0.0002535023160051349,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "d5bc38cacf9f75efdf3d84d083b61601b4e9b75dfb75df110ea04b8ff89f3d16",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 8.067417599999317
+    },
+    "armco-3000-finer-p8": {
+      "ampere_turns": 3000.0,
+      "level": "finer",
+      "padding": 8,
+      "shape": [
+        264,
+        733
+      ],
+      "iterations": 4,
+      "residual": 4.5344256841927365e-08,
+      "peak_material_T": 0.4846837845868656,
+      "peak_axis_T": 0.01950098997436594,
+      "sample_Bz_T": 0.0015780155256866202,
+      "field_squared_integral_T2m": 4.305882746646353e-05,
+      "max_potential_fit_error_T": 0.000476661987375949,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "43ef1cef87cab8224647c2e6223c5ce09e1ee60959c2be7f025b05a477b6b7f7",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 12.614841000002343
+    },
+    "armco-3000-gap-fine-p8": {
+      "ampere_turns": 3000.0,
+      "level": "gap-fine",
+      "padding": 8,
+      "shape": [
+        218,
+        804
+      ],
+      "iterations": 4,
+      "residual": 3.776425264282426e-08,
+      "peak_material_T": 0.44488773887625077,
+      "peak_axis_T": 0.018790013931259526,
+      "sample_Bz_T": 0.0015776863980535196,
+      "field_squared_integral_T2m": 4.302867443602735e-05,
+      "max_potential_fit_error_T": 0.00042929121622451534,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "8835cd8b992d515a59ef16045b0e685bfa7798a1e87588ced61c79eceda02c10",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 11.236087900000712
+    },
+    "armco-4500-base-p8": {
+      "ampere_turns": 4500.0,
+      "level": "base",
+      "padding": 8,
+      "shape": [
+        165,
+        465
+      ],
+      "iterations": 5,
+      "residual": 1.2426140495606495e-08,
+      "peak_material_T": 0.5035082555052957,
+      "peak_axis_T": 0.028925844103784414,
+      "sample_Bz_T": 0.0022773883396346338,
+      "field_squared_integral_T2m": 9.667646250131293e-05,
+      "max_potential_fit_error_T": 0.00019340591725967773,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "407a92b5de83eb8e56d1a7f73b56c61b854b3357f9c681abe333f02c5855116c",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 3.470682700000907
+    },
+    "armco-4500-fine-p8": {
+      "ampere_turns": 4500.0,
+      "level": "fine",
+      "padding": 8,
+      "shape": [
+        190,
+        535
+      ],
+      "iterations": 5,
+      "residual": 1.4095107415502965e-10,
+      "peak_material_T": 0.607176137439844,
+      "peak_axis_T": 0.029090796577116988,
+      "sample_Bz_T": 0.002288171067162598,
+      "field_squared_integral_T2m": 9.67999215846121e-05,
+      "max_potential_fit_error_T": 0.000380310960094294,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "9b215fa47ae41f12ad43d3f9f43d1d584b45d2c720b057129e1ab83f313382b8",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 4.7395394999985
+    },
+    "armco-4500-finer-p8": {
+      "ampere_turns": 4500.0,
+      "level": "finer",
+      "padding": 8,
+      "shape": [
+        264,
+        733
+      ],
+      "iterations": 5,
+      "residual": 1.174651065618358e-09,
+      "peak_material_T": 0.6440623107978236,
+      "peak_axis_T": 0.029270802811947036,
+      "sample_Bz_T": 0.0022876420773532075,
+      "field_squared_integral_T2m": 9.69317189586604e-05,
+      "max_potential_fit_error_T": 0.0007151018572415227,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 10.498601700001018
+    },
+    "armco-4500-finer-p9": {
+      "ampere_turns": 4500.0,
+      "level": "finer",
+      "padding": 9.0,
+      "shape": [
+        271,
+        752
+      ],
+      "iterations": 5,
+      "residual": 1.3993434540057206e-10,
+      "peak_material_T": 0.6439907447130467,
+      "peak_axis_T": 0.02927084831175609,
+      "sample_Bz_T": 0.0023145693053138482,
+      "field_squared_integral_T2m": 9.693553986726215e-05,
+      "max_potential_fit_error_T": 0.0007150551064631656,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "7ef5bfcd3922bc11e1185e8dd6eef45b4d7f786cd2fdc360846b526ae5291783",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 14.333077800001774
+    },
+    "armco-4500-gap-fine-p8": {
+      "ampere_turns": 4500.0,
+      "level": "gap-fine",
+      "padding": 8,
+      "shape": [
+        218,
+        804
+      ],
+      "iterations": 5,
+      "residual": 1.3524028002501267e-10,
+      "peak_material_T": 0.6073521151037429,
+      "peak_axis_T": 0.02820352531880249,
+      "sample_Bz_T": 0.0022871250678259286,
+      "field_squared_integral_T2m": 9.686373062520976e-05,
+      "max_potential_fit_error_T": 0.0006440348465680101,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "508ce7e26fdfc38f714f9b748ad8b3ffc21fd741ac4916d58e639f98a9afec62",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 12.84812790000069
+    },
+    "armco-4500-gap-fine-p9": {
+      "ampere_turns": 4500.0,
+      "level": "gap-fine",
+      "padding": 9.0,
+      "shape": [
+        225,
+        823
+      ],
+      "iterations": 5,
+      "residual": 2.017814092398692e-10,
+      "peak_material_T": 0.6072780745613799,
+      "peak_axis_T": 0.02820356929322546,
+      "sample_Bz_T": 0.0023140438879544908,
+      "field_squared_integral_T2m": 9.68675556632838e-05,
+      "max_potential_fit_error_T": 0.0006439927569935975,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "03279da137edda7b4bcc72ab194c7e113b9c7035931ebfc577abec3207a48011",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 13.13576280000052
+    },
+    "armco-4500-gap-p8": {
+      "ampere_turns": 4500.0,
+      "level": "gap",
+      "padding": 8,
+      "shape": [
+        206,
+        779
+      ],
+      "iterations": 5,
+      "residual": 1.4187389306401495e-10,
+      "peak_material_T": 0.6073742107242105,
+      "peak_axis_T": 0.028212276307367796,
+      "sample_Bz_T": 0.0022895222218719887,
+      "field_squared_integral_T2m": 9.677738903713786e-05,
+      "max_potential_fit_error_T": 0.00034849657533466815,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "08c72faf07aa0cb7d8881f0a9b2351426d72b71d8d991fc77170ec1e20263516",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 11.848434700001235
+    },
+    "armco-4500-reference-p8": {
+      "ampere_turns": 4500.0,
+      "level": "reference",
+      "padding": 8,
+      "shape": [
+        211,
+        1059
+      ],
+      "iterations": 5,
+      "residual": 5.947451183106819e-10,
+      "peak_material_T": 0.7806169612287311,
+      "peak_axis_T": 0.028179931686738043,
+      "sample_Bz_T": 0.002287882208497279,
+      "field_squared_integral_T2m": 9.687161888727251e-05,
+      "max_potential_fit_error_T": 0.0007148395083546363,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "3246095e79c3c8ebaf75ebac3540645a274995d6e09e5097c9c425ed51693d0e",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 15.104915500000061
+    },
+    "armco-6000-base-p8": {
+      "ampere_turns": 6000.0,
+      "level": "base",
+      "padding": 8,
+      "shape": [
+        165,
+        465
+      ],
+      "iterations": 5,
+      "residual": 1.758264798506822e-09,
+      "peak_material_T": 0.6160137752753178,
+      "peak_axis_T": 0.03858213596923482,
+      "sample_Bz_T": 0.0029777159660712717,
+      "field_squared_integral_T2m": 0.00017191907944298922,
+      "max_potential_fit_error_T": 0.0002579002134998074,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "a5244dddc9a2130bd4eb39c5fb9b8bd61f0a9c7d0b802e9fe471266175be1a6a",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 7.612524100000883
+    },
+    "armco-7500-base-p8": {
+      "ampere_turns": 7500.0,
+      "level": "base",
+      "padding": 8,
+      "shape": [
+        165,
+        465
+      ],
+      "iterations": 5,
+      "residual": 1.6996334379580348e-08,
+      "peak_material_T": 0.7073545758896499,
+      "peak_axis_T": 0.048238532644317024,
+      "sample_Bz_T": 0.0036797749976991622,
+      "field_squared_integral_T2m": 0.00026867117704926436,
+      "max_potential_fit_error_T": 0.00032239685115715774,
+      "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "field_digest": "f660509d5c4170b871184132576c3c8f3f318dcf39e0c0abe7a0ccb4261c848c",
+      "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+      "parts": [
+        "objective_lens",
+        "objective_lens_excitation_coil",
+        "objective_lens_housing",
+        "objective_lens_yoke",
+        "objective_lower_pole",
+        "objective_pole_sleeves",
+        "objective_return_plates",
+        "objective_terminal_vacuum_tube",
+        "objective_upper_pole"
+      ],
+      "elapsed_s": 3.514238200001273
+    }
+  },
+  "trials": {
+    "after": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 6010.1407255253625,
+        "D90_nm": 5980.440888668627,
+        "rms_radius_nm": 3213.1980522563927,
+        "alpha95_mrad": 29.99998140320515,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 50.499140844100054,
+      "surviving_count": 32724
+    },
+    "after-local": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614957569745,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "508ce7e26fdfc38f714f9b748ad8b3ffc21fd741ac4916d58e639f98a9afec62",
+      "surface": {
+        "D95_nm": 6300.321447934418,
+        "D90_nm": 6272.154293217485,
+        "rms_radius_nm": 3230.892225015198,
+        "alpha95_mrad": 29.999999897260032,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 0.08515153273436833,
+      "surviving_count": 32724
+    },
+    "before": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.938505536010396,
+        0.5761927893239965,
+        0.33195301186618353,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "43ef1cef87cab8224647c2e6223c5ce09e1ee60959c2be7f025b05a477b6b7f7",
+      "surface": {
+        "D95_nm": 140721.8534467229,
+        "D90_nm": 126188.83409648777,
+        "rms_radius_nm": 41263.467942695366,
+        "alpha95_mrad": 29.108720645836357,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.981689453125
+      },
+      "D95_drift_proposal_nm": 2522638.3088141717,
+      "surviving_count": 32708
+    },
+    "before-local": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.938505536010396,
+        0.5761927893239965,
+        0.33195301186618353,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "8835cd8b992d515a59ef16045b0e685bfa7798a1e87588ced61c79eceda02c10",
+      "surface": {
+        "D95_nm": 141149.2955056127,
+        "D90_nm": 128034.47122360453,
+        "rms_radius_nm": 41736.22705015047,
+        "alpha95_mrad": 29.102731227701433,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.981689453125
+      },
+      "D95_drift_proposal_nm": 2536846.5796926143,
+      "surviving_count": 32708
+    },
+    "c3-0.37": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9349091610818683,
+        0.37,
+        0.3358172759118567,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 6765.804187506006,
+        "D90_nm": 6740.747804019903,
+        "rms_radius_nm": 3306.488660070106,
+        "alpha95_mrad": 29.461518150762345,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.98687744140625
+      },
+      "D95_drift_proposal_nm": 7167.864254779673,
+      "surviving_count": 32725
+    },
+    "c3-0.46": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9372015472599244,
+        0.46,
+        0.33581764523158686,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 6833.615643867917,
+        "D90_nm": 6809.676759746939,
+        "rms_radius_nm": 3369.6309505593467,
+        "alpha95_mrad": 29.73050350547523,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.9853515625
+      },
+      "D95_drift_proposal_nm": 3177.575230218415,
+      "surviving_count": 32720
+    },
+    "c3-0.69": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9607713251930202,
+        0.69,
+        0.3358239968629872,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 6927.533155712291,
+        "D90_nm": 6898.275107021555,
+        "rms_radius_nm": 3426.383073557348,
+        "alpha95_mrad": 29.99999999448024,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.9822998046875
+      },
+      "D95_drift_proposal_nm": 0.00010202282067474709,
+      "surviving_count": 32710
+    },
+    "c3-0.79": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9171024916793981,
+        0.79,
+        0.33582611973496873,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 6927.571477958696,
+        "D90_nm": 6898.390898340041,
+        "rms_radius_nm": 3426.5336909805255,
+        "alpha95_mrad": 29.999999999588447,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.9822998046875
+      },
+      "D95_drift_proposal_nm": -4.941517439790485e-06,
+      "surviving_count": 32710
+    },
+    "corrector-0.12": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0.12,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 61198.291329772066,
+        "D90_nm": 49121.307793854685,
+        "rms_radius_nm": 14844.837831611045,
+        "alpha95_mrad": 30.48488106932301,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.90509033203125
+      },
+      "D95_drift_proposal_nm": 86377.33011528653,
+      "surviving_count": 32457
+    },
+    "corrector-0.35": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0.35,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 143153.17450161456,
+        "D90_nm": 116554.30752901956,
+        "rms_radius_nm": 34946.09654066306,
+        "alpha95_mrad": 33.57849147567127,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.46868896484375
+      },
+      "D95_drift_proposal_nm": 848575.5912097706,
+      "surviving_count": 31027
+    },
+    "corrector-1.0": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 1.0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 192748.5638243573,
+        "D90_nm": 178971.31689572474,
+        "rms_radius_nm": 51040.17435987639,
+        "alpha95_mrad": 36.27680502160136,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 7.66143798828125
+      },
+      "D95_drift_proposal_nm": 2694254.2670809487,
+      "surviving_count": 25105
+    },
+    "first-fit": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9416138544510252,
+        0.5761927893239965,
+        0.3358182052230726,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 6927.401539033606,
+        "D90_nm": 6898.1791426466825,
+        "rms_radius_nm": 3426.374563502529,
+        "alpha95_mrad": 29.999999988130362,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.9822998046875
+      },
+      "D95_drift_proposal_nm": 0.00027196830286829894,
+      "surviving_count": 32710
+    },
+    "gap-fine-fixed": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "508ce7e26fdfc38f714f9b748ad8b3ffc21fd741ac4916d58e639f98a9afec62",
+      "surface": {
+        "D95_nm": 6932.528486092144,
+        "D90_nm": 6908.175909771332,
+        "rms_radius_nm": 3317.077751772616,
+        "alpha95_mrad": 29.988324091457642,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.98687744140625
+      },
+      "D95_drift_proposal_nm": 21519.52653764212,
+      "surviving_count": 32725
+    },
+    "gap-fixed": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "08c72faf07aa0cb7d8881f0a9b2351426d72b71d8d991fc77170ec1e20263516",
+      "surface": {
+        "D95_nm": 6995.11299405018,
+        "D90_nm": 6971.086117455379,
+        "rms_radius_nm": 3362.3740407172027,
+        "alpha95_mrad": 29.970221245008634,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.98687744140625
+      },
+      "D95_drift_proposal_nm": 19756.551680437213,
+      "surviving_count": 32725
+    },
+    "half-step": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.05,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 6010.139442162746,
+        "D90_nm": 5980.439694399218,
+        "rms_radius_nm": 3213.1979643416153,
+        "alpha95_mrad": 29.999981423011512,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 50.44540281487677,
+      "surviving_count": 32724
+    },
+    "initial": {
+      "objective_ampere_turns": -3000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.938505536010396,
+        0.5761927893239965,
+        0.33195301186618353,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "585bb9f6c2ff0f5eb05380cbcfcbfb1d707f3a7a88a577cdd5dc8eb7f67d2a8a",
+      "surface": {
+        "D95_nm": 137822.15390885435,
+        "D90_nm": 125629.08639782069,
+        "rms_radius_nm": 41023.42514582651,
+        "alpha95_mrad": 29.093509500345462,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.981689453125
+      },
+      "D95_drift_proposal_nm": 2487640.44840613,
+      "surviving_count": 32708
+    },
+    "interface-mesh": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "3246095e79c3c8ebaf75ebac3540645a274995d6e09e5097c9c425ed51693d0e",
+      "surface": {
+        "D95_nm": 6583.0253101288135,
+        "D90_nm": 6559.317950808451,
+        "rms_radius_nm": 3240.979279530427,
+        "alpha95_mrad": 29.998898075551452,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 11631.736685479382,
+      "surviving_count": 32724
+    },
+    "larger-domain": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.3607710889422776,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "7ef5bfcd3922bc11e1185e8dd6eef45b4d7f786cd2fdc360846b526ae5291783",
+      "surface": {
+        "D95_nm": 6018.16721143422,
+        "D90_nm": 5989.302183809558,
+        "rms_radius_nm": 3213.5427170398534,
+        "alpha95_mrad": 29.999459321398973,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 426.0183537801827,
+      "surviving_count": 32724
+    },
+    "local-alternate": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614957569745,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "3246095e79c3c8ebaf75ebac3540645a274995d6e09e5097c9c425ed51693d0e",
+      "surface": {
+        "D95_nm": 6837.714018599271,
+        "D90_nm": 5928.771417160285,
+        "rms_radius_nm": 3174.654661397449,
+        "alpha95_mrad": 30.01125224522762,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": -9902.490825259947,
+      "surviving_count": 32724
+    },
+    "local-coarser": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614957569745,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "08c72faf07aa0cb7d8881f0a9b2351426d72b71d8d991fc77170ec1e20263516",
+      "surface": {
+        "D95_nm": 6524.411261370037,
+        "D90_nm": 6338.365769749981,
+        "rms_radius_nm": 3282.5292575549,
+        "alpha95_mrad": 29.98256614125183,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.98687744140625
+      },
+      "D95_drift_proposal_nm": -1783.7384095348075,
+      "surviving_count": 32725
+    },
+    "local-domain": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614957569745,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "03279da137edda7b4bcc72ab194c7e113b9c7035931ebfc577abec3207a48011",
+      "surface": {
+        "D95_nm": 6309.503278627508,
+        "D90_nm": 6282.992635049949,
+        "rms_radius_nm": 3231.963028908886,
+        "alpha95_mrad": 29.999476054167914,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 377.93571134754717,
+      "surviving_count": 32724
+    },
+    "local-step-check": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614957569745,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.05,
+      "field_digest": "508ce7e26fdfc38f714f9b748ad8b3ffc21fd741ac4916d58e639f98a9afec62",
+      "surface": {
+        "D95_nm": 6300.319828835163,
+        "D90_nm": 6272.152757122002,
+        "rms_radius_nm": 3230.8920396264843,
+        "alpha95_mrad": 29.999999915612786,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 0.03132159358899083,
+      "surviving_count": 32724
+    },
+    "refined-4500": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9931559385494122,
+        0.5761927893239965,
+        0.36077117148380644,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "ab3e39d20ec7317bfbb798fde1fff9f26c157e7b11a0b1a3aefdda4de9db8b85",
+      "surface": {
+        "D95_nm": 6010.270660085048,
+        "D90_nm": 5979.236936589563,
+        "rms_radius_nm": 3213.134462409825,
+        "alpha95_mrad": 29.999999988814256,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 9.422324693522922e-06,
+      "surviving_count": 32724
+    },
+    "retuned-local": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9930847021697335,
+        0.5761927893239965,
+        0.36080614971382574,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.1,
+      "field_digest": "508ce7e26fdfc38f714f9b748ad8b3ffc21fd741ac4916d58e639f98a9afec62",
+      "surface": {
+        "D95_nm": 6300.318951293231,
+        "D90_nm": 6272.151919203993,
+        "rms_radius_nm": 3230.8919663569236,
+        "alpha95_mrad": 29.99999992834141,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 0.0006794352727201478,
+      "surviving_count": 32724
+    },
+    "trial-1500": {
+      "objective_ampere_turns": -1500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9400018216647893,
+        0.5761927893239965,
+        0.3096610439242793,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "2af69c0321e52f3e64ce10e6eb6be48269650a9a6b770da26f592436f1857ba9",
+      "surface": {
+        "D95_nm": 8503.31095326793,
+        "D90_nm": 8466.670237203776,
+        "rms_radius_nm": 3569.445743195054,
+        "alpha95_mrad": 28.267989996633776,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.99176025390625
+      },
+      "D95_drift_proposal_nm": 81807.67412892536,
+      "surviving_count": 32741
+    },
+    "trial-4500": {
+      "objective_ampere_turns": -4500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        0.9924807532712288,
+        0.5761927893239965,
+        0.3607054295916734,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "407a92b5de83eb8e56d1a7f73b56c61b854b3357f9c681abe333f02c5855116c",
+      "surface": {
+        "D95_nm": 6844.444755287807,
+        "D90_nm": 6813.628844136447,
+        "rms_radius_nm": 3400.967330553055,
+        "alpha95_mrad": 29.999999907053496,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625
+      },
+      "D95_drift_proposal_nm": 0.002346520314602558,
+      "surviving_count": 32724
+    },
+    "trial-6000": {
+      "objective_ampere_turns": -6000.0,
+      "hexapole_scale": 0,
+      "controls": [
+        1.009951394039438,
+        0.5761927893239965,
+        0.38452726227219414,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "a5244dddc9a2130bd4eb39c5fb9b8bd61f0a9c7d0b802e9fe471266175be1a6a",
+      "surface": {
+        "D95_nm": 6908.303423412477,
+        "D90_nm": 6884.328161585057,
+        "rms_radius_nm": 3470.4050657342764,
+        "alpha95_mrad": 29.999999801849523,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.990234375
+      },
+      "D95_drift_proposal_nm": 0.004391972113432218,
+      "surviving_count": 32736
+    },
+    "trial-7500": {
+      "objective_ampere_turns": -7500.0,
+      "hexapole_scale": 0,
+      "controls": [
+        1.0207705128677365,
+        0.5761927893239965,
+        0.4073945386496945,
+        3.741058574895399,
+        0.8931301330173161,
+        2.3550076726519635,
+        1.3809549169364583,
+        0.8648348571788197
+      ],
+      "max_step_mm": 0.2,
+      "field_digest": "f660509d5c4170b871184132576c3c8f3f318dcf39e0c0abe7a0ccb4261c848c",
+      "surface": {
+        "D95_nm": 7086.617899722268,
+        "D90_nm": 7056.188705358325,
+        "rms_radius_nm": 3599.881284581074,
+        "alpha95_mrad": 29.99999999450892,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.99267578125
+      },
+      "D95_drift_proposal_nm": 7.847414281642842e-05,
+      "surviving_count": 32744
+    }
+  },
+  "currents": {
+    "before": {
+      "round_lens_groups_A": {
+        "condenser_lens_1": [
+          7.087572257205994,
+          30.28223146831856,
+          -202.47942141838283,
+          365.51194242141986
+        ],
+        "condenser_lens_2": [
+          -403.1565106969858,
+          385.0824297295855,
+          -319.59044622659553,
+          235.3036949085137
+        ],
+        "condenser_lens_3": [
+          -18.578379107107207,
+          18.52070828050511,
+          -12.972288219827304,
+          6.015833574346638
+        ],
+        "adapter_lens": [
+          -805.087518626996,
+          296.0806060717985,
+          2627.4864466682347
+        ],
+        "probe_tl22_lens": [
+          139.17815070460077,
+          -2278.5782917863366,
+          -2596.2867735878413
+        ],
+        "probe_tl21_lens": [
+          15511.920361245184,
+          -2527.672301254943,
+          -14439.172559063878
+        ],
+        "probe_tl12_lens": [
+          -4225.287193950861,
+          1922.8291722144086,
+          7352.114966038533
+        ],
+        "mini_condenser": [
+          943.0175493976545,
+          -1174.7537094687157,
+          1274.1506132640156
+        ],
+        "diffraction_lens": [
+          28.962896061940654
+        ],
+        "intermediate_lens": [
+          0.06188894277520134
+        ],
+        "projector_lens_1": [
+          32.8252695494996
+        ],
+        "projector_lens_2": [
+          7.514137300316783
+        ]
+      },
+      "objective_uniform_series_A": -2.586206896551724,
+      "turns_per_objective_section": [
+        580,
+        580
+      ]
+    },
+    "after": {
+      "round_lens_groups_A": {
+        "condenser_lens_1": [
+          7.087572257205994,
+          30.28223146831856,
+          -202.47942141838283,
+          365.51194242141986
+        ],
+        "condenser_lens_2": [
+          -426.6022394021021,
+          407.4770530011734,
+          -338.17635690932696,
+          248.98787573595163
+        ],
+        "condenser_lens_3": [
+          -18.578379107107207,
+          18.52070828050511,
+          -12.972288219827304,
+          6.015833574346638
+        ],
+        "adapter_lens": [
+          -805.087518626996,
+          296.0806060717985,
+          2627.4864466682347
+        ],
+        "probe_tl22_lens": [
+          139.17815070460077,
+          -2278.5782917863366,
+          -2596.2867735878413
+        ],
+        "probe_tl21_lens": [
+          15511.920361245184,
+          -2527.672301254943,
+          -14439.172559063878
+        ],
+        "probe_tl12_lens": [
+          -4225.287193950861,
+          1922.8291722144086,
+          7352.114966038533
+        ],
+        "mini_condenser": [
+          1024.9840152606826,
+          -1276.8625301223055,
+          1384.898947495091
+        ],
+        "diffraction_lens": [
+          28.962896061940654
+        ],
+        "intermediate_lens": [
+          0.06188894277520134
+        ],
+        "projector_lens_1": [
+          32.8252695494996
+        ],
+        "projector_lens_2": [
+          7.514137300316783
+        ]
+      },
+      "objective_uniform_series_A": -3.8793103448275863,
+      "turns_per_objective_section": [
+        580,
+        580
+      ]
+    }
+  },
+  "source_prefixes": {
+    "before": [
+      {
+        "original": 1024,
+        "surviving": 1021,
+        "D95_nm": 139200.00566682796,
+        "D90_nm": 128098.80046995959,
+        "rms_radius_nm": 41477.56921993545,
+        "alpha95_mrad": 28.48281477204931,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 0.31158447265625,
+        "transmission_fraction": 0.9970703125
+      },
+      {
+        "original": 2048,
+        "surviving": 2043,
+        "D95_nm": 139890.81213756674,
+        "D90_nm": 128546.28842698864,
+        "rms_radius_nm": 41617.8634453505,
+        "alpha95_mrad": 28.71131631250686,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 0.62347412109375,
+        "transmission_fraction": 0.99755859375
+      },
+      {
+        "original": 8192,
+        "surviving": 8177,
+        "D95_nm": 140912.5420430371,
+        "D90_nm": 127955.09261311489,
+        "rms_radius_nm": 41713.392811184596,
+        "alpha95_mrad": 29.026690059192564,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 2.49542236328125,
+        "transmission_fraction": 0.9981689453125
+      },
+      {
+        "original": 16384,
+        "surviving": 16353,
+        "D95_nm": 140969.89863727088,
+        "D90_nm": 127815.02205455437,
+        "rms_radius_nm": 41726.58606141086,
+        "alpha95_mrad": 29.048023434166886,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 4.99053955078125,
+        "transmission_fraction": 0.99810791015625
+      },
+      {
+        "original": 32768,
+        "surviving": 32708,
+        "D95_nm": 141149.2955056127,
+        "D90_nm": 128034.47122360453,
+        "rms_radius_nm": 41736.22705015047,
+        "alpha95_mrad": 29.102731227701433,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.981689453125,
+        "transmission_fraction": 0.9981689453125
+      }
+    ],
+    "after": [
+      {
+        "original": 1024,
+        "surviving": 1023,
+        "D95_nm": 6372.854101696651,
+        "D90_nm": 6279.506919394992,
+        "rms_radius_nm": 3231.2491205245396,
+        "alpha95_mrad": 29.53705886004997,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 0.31219482421875,
+        "transmission_fraction": 0.9990234375
+      },
+      {
+        "original": 2048,
+        "surviving": 2046,
+        "D95_nm": 6317.947205816735,
+        "D90_nm": 6262.625797573583,
+        "rms_radius_nm": 3261.5036226312895,
+        "alpha95_mrad": 29.575905701420126,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 0.6243896484375,
+        "transmission_fraction": 0.9990234375
+      },
+      {
+        "original": 8192,
+        "surviving": 8183,
+        "D95_nm": 6294.878373233915,
+        "D90_nm": 6272.953905482889,
+        "rms_radius_nm": 3247.7993218522392,
+        "alpha95_mrad": 29.88574584952773,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 2.49725341796875,
+        "transmission_fraction": 0.9989013671875
+      },
+      {
+        "original": 16384,
+        "surviving": 16364,
+        "D95_nm": 6299.467431445915,
+        "D90_nm": 6271.352120532188,
+        "rms_radius_nm": 3246.6428471733584,
+        "alpha95_mrad": 29.961758188048584,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 4.993896484375,
+        "transmission_fraction": 0.998779296875
+      },
+      {
+        "original": 32768,
+        "surviving": 32724,
+        "D95_nm": 6300.321447934418,
+        "D90_nm": 6272.154293217485,
+        "rms_radius_nm": 3230.892225015198,
+        "alpha95_mrad": 29.999999897260032,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 9.986572265625,
+        "transmission_fraction": 0.9986572265625
+      }
+    ]
+  }
+}

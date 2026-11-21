@@ -27,7 +27,9 @@ def round_lens_model_description(state):
                 "Pole pieces, iron and saturation are ignored. Calibrated deflector, stigmator, quadrupole and hexapole windings "
                 "use their declared closed current circuits; unconfigured legacy sources retain their native models. "
                 "Electrical resistance, heating and circuit dynamics are not solved. "
-                "This source currently supports classical particles; coherent propagation is unavailable.")
+                "This source supports classical particles and local stationary mixed particle-wave STEM "
+                "when its field and sampling requirements are met. General downstream wave propagation "
+                "requires a different field source.")
     if coupling == "axial_length":
         return ("Gaussian profile widths and internal offsets follow actual/reference current-bearing coil length. "
                 "Optical centres, Gaussian amplitudes and excitation stay fixed; the combined Objective peak may change through overlap. "

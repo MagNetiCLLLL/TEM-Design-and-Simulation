@@ -17,7 +17,7 @@ from temsim.component_representation import (
     belongs_to_material_selection, non_material_role, representation_note, shared_deflector_field_owner,
 )
 from temsim.magnetic_circuits import is_custom_mechanical_part, radial_profile_mm
-from temsim.magnetic_geometry import objective_layer_intervals_mm
+from temsim.magnetic_geometry import annular_material_intervals_mm
 from temsim.mechanical_profiles import MAGNETIC_LENS_MECHANICAL_PROFILES
 
 
@@ -497,24 +497,13 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
         return (emit(_annulus(start, end, hole, outer), exact=False, description=description),), (f"{key}: {description}.",)
     if profile in MAGNETIC_LENS_MECHANICAL_PROFILES and outer is not None and inner is not None:
         parent = by_key.get(part.get("parent_key"), {})
-        intervals = ()
-        explicit_intervals = is_custom_mechanical_part(part) and "material_intervals_mm" in part
-        if explicit_intervals:
-            intervals = part["material_intervals_mm"]
-        elif not is_custom_mechanical_part(part) and profile in {"magnetic_excitation_coil", "magnetic_lens_yoke"}:
-            intervals = objective_layer_intervals_mm(parent, parent.get("local_start_z_mm", 0), profile)
-        if not intervals:
-            intervals = part.get("material_intervals_mm", ())
+        intervals = annular_material_intervals_mm(part, parent)
         if len(intervals) == 2:
             return tuple(emit(_annulus(a, b, inner, outer), region,
                               description="Configured physical material interval")
                          for region, (a, b) in zip(("upper", "lower"), intervals)), ()
-        if part.get("material_intervals_mm") is not None:
-            intervals = part["material_intervals_mm"]
-            pieces = [emit(_annulus(_number(a, "interval start"), _number(b, "interval end"), inner, outer))
-                      for a, b in intervals]
-            if not pieces:
-                raise ValueError(f"{key}: material intervals must not be empty")
+        if intervals:
+            pieces = [emit(_annulus(a, b, inner, outer)) for a, b in intervals]
             return (_join_meshes(pieces),), ()
         return (emit(_annulus(start, end, inner, outer)),), ()
     exact = profile in {"circular_aperture", "vacuum_liner", "electrostatic_bias_tube"}
@@ -552,7 +541,8 @@ def _join_meshes(pieces):
                  "Configured disjoint material intervals")
 
 
-def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
+def unplaced_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
+    """Build the edited material in module coordinates before assembly placement."""
     # Saved channel envelopes (or even an explicit CAD base) do not establish
     # material ownership. Keep their metadata available without making solids.
     from temsim.multipole_winding import multipole_winding_definition
@@ -603,6 +593,13 @@ def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
             # of the housing or any of its physical descendants.
             meshes = apply_model_features(lens_shape_part(part), meshes, angular_segments=count)
         notes += (f"{part['key']}: explicit 3D solid and feature geometry; the optical/magnetic solver does not infer a new field model from this mesh.",)
+    return meshes, notes
+
+
+def _part_meshes(part, by_key, count, aperture_index=0, runtime=None):
+    meshes, notes = unplaced_part_meshes(part, by_key, count, aperture_index, runtime)
+    if not meshes:
+        return meshes, notes
     from temsim.lens_pose import mechanical_part_transform_mm
     rotation, translation = mechanical_part_transform_mm(part, by_key)
     if not (np.array_equal(rotation, np.eye(3)) and np.array_equal(translation, np.zeros(3))):

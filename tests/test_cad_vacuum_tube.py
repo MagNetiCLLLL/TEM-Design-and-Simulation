@@ -39,6 +39,26 @@ def mat(shape):
     return _manifold(shape, 64)
 
 
+def test_terminal_material_repartitions_the_original_wall_without_closing_the_bore():
+    from temsim.part_materials import part_material_updates
+
+    document = read_document(COLUMNS[0])
+    row, assembly = fixture(document)
+    whole, = tube_solids(decorate_physical_tube_row(row, assembly))
+    original = mat(whole.shape)
+    pole = next(part.data for part in assembly.parts if part.key == "objective_upper_pole")
+    for material in ("vacoflux_50", "nonmagnetic_stainless_steel"):
+        pole["material_regions"], = part_material_updates(pole, material, "terminal_tube").values()
+        upstream, terminal = tube_solids(decorate_physical_tube_row(row, assembly))
+        a, b = mat(upstream.shape), mat(terminal.shape)
+        assert terminal.region == "terminal_tube" and terminal.material == material
+        assert (a ^ b).volume() == pytest.approx(0., abs=1e-7)
+        assert ((a + b) - original).volume() == pytest.approx(0., abs=1e-7)
+        assert (original - (a + b)).volume() == pytest.approx(0., abs=1e-7)
+        axial_probe = box((0., 0., row["local_end_z_mm"] - 20.), (1., 1., 41.))
+        assert (b ^ mat(axial_probe)).volume() == pytest.approx(0., abs=1e-7)
+
+
 @pytest.mark.parametrize("path", COLUMNS, ids=lambda p: p.stem)
 def test_all_profiles_cover_original_tube_and_preserve_solver_and_parts(path):
     document = read_document(path)

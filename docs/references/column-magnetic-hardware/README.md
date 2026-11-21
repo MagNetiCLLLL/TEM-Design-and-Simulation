@@ -110,7 +110,26 @@ Each corrector adapter and round transfer lens contains **one shoulder sleeve an
 | Image HPol, QPol and DSt | In the illustrated CETCOR, the HPol and QPol windings share *z* = 1811.9 and one selectable passive sleeve with 68 mm ID and 78 mm OD. DSt is an optical reference at 2226.4. | Auxiliary pole counts and the DSt hardware are unresolved. HP3 in B-COR uses six winding packs with unknown individual turns. |
 | DPH, DP and the scan coils | DPH steering windings are co-located with their HP. DP stations have separate conductor allocations where specified. Probe DP12 is a control reference to the AC scan coils. | An internal axial section or assembly drawing would settle which surrounding magnetic parts these windings share. |
 | Gun, condenser, objective and diffraction stigmators | Their station centres are 433, 1451.5, 1746.9 and 2265.4 respectively in the illustrated column. The diffraction stigmator is at 1839.4 in the default probe configuration. | The presence or number of separately machined iron poles cannot be read from the number of winding channels. |
-| Relay lens and objective returns | The CAD includes the shoulder-to-yoke route for the four probe and five CETCOR round lenses, and the two additional B-COR lenses. The objective has Ø96 pole shoulders inside a Ø140 yoke bore. | Actual relay joint dimensions and material properties need measured values. The objective's shoulder-to-yoke route and the alloy of its vacuum tube remain open questions. |
+| Relay lens and objective returns | The CAD includes the shoulder-to-yoke route for the four probe and five CETCOR round lenses and the two additional B-COR lenses. At each objective shoulder, a nominal Ø90/100 mm sleeve and Ø100/140 mm plate connect the flange to the yoke. | The joint geometry, contact reluctance and alloy of the physical instrument require measurements. |
+
+## Pole materials
+
+In **Model Inspector → Pole materials**, select the installed objective, probe corrector or image corrector. Select a component family and then one component or all listed components. The upper and lower round-lens returns can be assigned independently. Each hexapole stage groups its six pole pins and its six root sleeves separately. Saving updates the selected column variant. The shipped pole grade is recrystallization-annealed ARMCO pure iron.
+
+**Open datasheet (PDF)** opens the manufacturer's document for the selected grade in the default browser. The same link is available beside the nonlinear B–H material selector and in the 3D part editor's **Materials** tab. In an archived column, the pole material link follows the saved assignment.
+
+| Solid grade | Last digitized H (A/m) | Last digitized B (T) | Manufacturer curve |
+| --- | ---: | ---: | --- |
+| ARMCO Pure Iron | 17,000 | 1.996 | [Cleveland-Cliffs, Fig. 7, printed p. 6](https://www.aksteel.nl/files/downloads/clf_productdata__armco_pure_iron_pdb_euro_final_072022_92.pdf) |
+| VACOFLUX 50 | 15,900 | 2.293 | [VAC, Static Initial Curve](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20%20VACOFLUX%2050.pdf) |
+| PERMENORM 5000 H2 | 995 | 1.514 | [VAC, Static Initial Curve](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20PERMENORM%205000%20H2%20Solid.pdf) |
+| MUMETALL | 99 | 0.756 | [VAC, Static Initial Curve](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20MUMETALL%20Solid.pdf) |
+
+The library records each source PDF checksum, figure, digitized pairs and demagnetized origin. Round-lens nonlinear FEM interpolates the initial magnetization curve and rejects final solutions beyond its digitized range. Linear FEM uses the secant permeability at the reference point recorded for each grade. Hexapole material assignments identify the 3D solids. Computing their nonlinear multipole fields would require a 3D magnetic solver.
+
+**Objective → Terminal vacuum tube** assigns the last nominal 40 mm of the installed wall up to the upper pole. The default stainless-steel approximation uses relative permeability 1. Selecting a magnetic grade uses the same wall dimensions and open bore. The actual tube alloy, contact and effective magnetic length are unmeasured.
+
+In **Model Inspector**, select **Refine pole bores and faces** to add radial points across the opening and axial points along the pole nose and into the gap. The field solver limits the refined mesh to 250,000 nodes. Change the mesh and outer boundary independently when checking a working point. The matched 5 nm Si [110] scan records how those choices affected the incident probe. [Objective current study and raw scans](../../development/material_objective_si110_20261120/README.md)
 
 The most discriminating records would be a longitudinal section through the condenser cartridge and through each corrector transfer lens, a transverse section through a principal HP and through an auxiliary station, and a material list keyed to those sections. Each drawing needs one common axial datum to register its faces to the specimen. At the upper objective, the tube's alloy and the mating-face stack would distinguish a vacuum joint from a joint that also conducts appreciable flux. [Probe transfer-lens joints](../probe-lower-transfer-lenses-2026-10-21.md) · [Current winding allocations](../../../src/temsim/multipole_winding.py)
 

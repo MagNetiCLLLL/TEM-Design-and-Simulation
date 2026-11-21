@@ -93,9 +93,12 @@ def test_gui_prefills_material_only_and_retains_explicit_inputs(qtbot, monkeypat
     assert state.to_dict() == before
     # Synthetic test input, not an assigned default or instrument calibration.
     page.ampere_turns.setText("250")
+    assert not page.refine_poles.isChecked()
+    page.refine_poles.setChecked(True)
     page._apply_field()
     key = page.lens.currentData()
     recipe = state.lens_field_map_descriptors[key]
+    assert recipe["refine_pole_mesh"] is True
     assert recipe["linear_material_reference"] == lens_material_defaults()["linear_material_reference"]
     restored = State.from_dict(state.to_dict())
     assert restored.lens_field_map_descriptors == state.lens_field_map_descriptors

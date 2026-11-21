@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import csv
+from functools import lru_cache
 from hashlib import sha256
 from pathlib import Path
 from temsim import input_io
@@ -42,11 +43,49 @@ def validate_bh_material(material: dict) -> dict:
     return row
 
 
-def reference_materials() -> tuple[dict, ...]:
+def reference_directory():
     from temsim.paths import project_root
-    root = project_root() / "configs" / "materials" / "magnetic"
-    return tuple(validate_bh_material(tomllib.loads(input_io.read_text(path)))
-                 for path in sorted(input_io.input_paths(root, "*.toml")))
+    return project_root() / "configs" / "materials" / "magnetic"
+
+
+@lru_cache(maxsize=32)
+def _parse_reference(text):
+    return validate_bh_material(tomllib.loads(text))
+
+
+def reference_materials() -> tuple[dict, ...]:
+    # Preserve the historical first choice for callers and saved GUI indexes.
+    paths = sorted(input_io.input_paths(reference_directory(), "*.toml"),
+                   key=lambda p: (p.stem != "femm_pure_iron", p.stem))
+    return tuple(deepcopy(_parse_reference(input_io.read_text(path))) for path in paths)
+
+
+def datasheet_assignment(material):
+    """Linear mode uses a declared secant of the very same nonlinear curve."""
+    field = material["linear_reference_h_a_per_m"]
+    index = material["h_a_per_m"].index(field)
+    induction = material["b_t"][index]
+    if field <= 0 or induction <= 0:
+        raise ValueError("Linear reference requires a positive tabulated B-H point")
+    permeability = float(induction / (MU0 * field))
+    source = {k: material[k] for k in ("label", "source_url", "source_sha256", "source_block")}
+    source.update(relative_permeability=permeability, reference_h_a_per_m=field,
+                  reference_b_t=induction, source_fields=["B_T", "H_A_per_m"],
+                  scope=f"Constant secant B/(mu0 H) at {field:g} A/m and {induction:g} T.")
+    return dict(schema_version=1, material_key=material["key"], label=material["label"],
+                magnetic_response="bh", relative_permeability=permeability,
+                linear_source=source, bh_material=material, scope=material["scope"])
+
+
+def pinned_datasheet(key, digest):
+    """Resolve a shipped library reference through the current live/archived inputs."""
+    text = input_io.read_text(reference_directory() / (key + ".toml")).replace("\r\n", "\n")
+    if sha256(text.encode("utf-8")).hexdigest() != digest:
+        raise ValueError(f"{key}: magnetic material reference checksum mismatch")
+    curve = deepcopy(_parse_reference(text))
+    if curve.get("key") != key:
+        raise ValueError("Magnetic material reference has the wrong identity")
+    return datasheet_assignment(curve)
 
 
 def lens_material_defaults() -> dict:

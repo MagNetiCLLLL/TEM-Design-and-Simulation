@@ -1,0 +1,91 @@
+{
+  "status": "Fixed-source classical elastic stage-raster comparison",
+  "input_digest": "8cb32f1079adb4c82d7a057d291e4f56cd063d0c1b9b605456e7b8c366510004",
+  "entrance_mm": 1599.1999975,
+  "original_positive": 32768,
+  "surviving": 32724,
+  "effective": 32724.00000000067,
+  "incident_current_a": 9.986572265625e-06,
+  "pixel_pitch_nm": 0.02,
+  "thickness_nm": 5.0,
+  "raster_shape": [
+    64,
+    64
+  ],
+  "annulus_mrad": [
+    50,
+    150
+  ],
+  "bf_mrad": [
+    0,
+    15
+  ],
+  "vacuum_currents_a": [
+    5.80535888672026e-06,
+    0.0,
+    4.1812133789061354e-06,
+    0.0
+  ],
+  "angular_refinement_max_a": 2.1542593000703622e-16,
+  "maximum_current_closure_a": 6.539094352803199e-19,
+  "nested_profiles": [
+    {
+      "source_prefix": 1024,
+      "current_a": 3.1219482421875004e-07,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_y_nm": [
+          -0.1360925592499999,
+          0.0
+        ],
+        "cif_pair_nm": 0.1360925592499999,
+        "df_native_peak_y_nm": [
+          -0.15,
+          -0.01
+        ],
+        "df_native_spacing_nm": 0.13999999999999999,
+        "df_peak_na": [
+          1.277072354751465,
+          1.0794001156810917
+        ],
+        "df_saddle_y_nm": -0.07,
+        "df_saddle_na": 0.8208737163274957
+      }
+    },
+    {
+      "source_prefix": 2048,
+      "current_a": 6.243896484375001e-07,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_y_nm": [
+          -0.1360925592499999,
+          0.0
+        ],
+        "cif_pair_nm": 0.1360925592499999,
+        "df_native_peak_y_nm": [
+          -0.15,
+          -0.01
+        ],
+        "df_native_spacing_nm": 0.13999999999999999,
+        "df_peak_na": [
+          2.5184436513012436,
+          2.3528152855296973
+        ],
+        "df_saddle_y_nm": -0.07,
+        "df_saddle_na": 1.7941565856675483
+      }
+    },
+    {
+      "source_prefix": 32768,
+      "current_a": 9.986572265625e-06,
+      "registered_line": {
+        "x_nm": 0.01,
+        "cif_pair_nm": 0.1360925592499999,
+        "resolved_native_peaks": false
+      }
+    }
+  ],
+  "cif_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "numerical_model_sha256": "bbbac951204d635235cc2cf0909ea45c4765afb0388116a6f891ed1ca4ba83f4",
+  "scope": "Laterally periodic, fixed entrance, ideal exit-angle windows. Long tails illuminate silicon. No dynamic scan-coil or coherent propagation."
+}

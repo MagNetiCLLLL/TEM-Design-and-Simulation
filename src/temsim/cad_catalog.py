@@ -277,8 +277,8 @@ def module_catalog(document, *, source="", runtime_values=None, aperture_indices
             row=asdict(spec); row["color"]=list(spec.color)
             if "step_color_rgba" in spec.parameters:
                 row["color"]=list(spec.parameters["step_color_rgba"])
-            from temsim.part_materials import REGIONS, material_for_region, configured_region_colour
-            if spec.region in REGIONS:
+            from temsim.part_materials import material_region_key, material_for_region, configured_region_colour
+            if material_region_key(part, spec.region) is not None:
                 assignment=material_for_region(part,spec.region)
                 if assignment is not None:
                     row["material"]=assignment["material_key"]

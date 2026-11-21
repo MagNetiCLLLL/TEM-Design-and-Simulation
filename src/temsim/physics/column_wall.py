@@ -110,10 +110,10 @@ def _partition_vacuum_segments_uncached(state, segments):
         return (any(value != 0. for value in registration.origin_global_m)
                 or registration.rotation_local_to_global != ((1., 0., 0.), (0., 1., 0.), (0., 0., 1.)))
 
-    from temsim.component_representation import non_material_role
+    from temsim.component_representation import non_material_role, vacuum_context_only
     bore_parts = [part for part in parts
                   if "vacuum_inner_diameter_mm" in part.data
-                  and not part.data.get("axial_vacuum_context_only", False)
+                  and not vacuum_context_only(part.data)
                   and not non_material_role(part.data)]
     any_placed = (any(is_placed(getattr(segment, "key", "")) for segment in segments)
                   or any(is_placed(part.key) for part in bore_parts))
@@ -143,7 +143,7 @@ def _independent_bore_constraints(assembly, reduced_segments, bore_parts):
         reference = module_parts[0]
         origin = float(reference.center_z_mm)-float(reference.data["local_center_z_mm"])
         lower, upper = origin+module.entrance_z_mm, origin+module.exit_z_mm
-        if module.type == "gun":
+        if getattr(module, "type", None) == "gun":
             lower = min(lower, origin+float(module.geometry["parts_start_z_mm"]))
         filter_entrance = next((part for part in module_parts if part.key == ENERGY_FILTER_ENTRANCE_APERTURE), None)
         if filter_entrance is not None:

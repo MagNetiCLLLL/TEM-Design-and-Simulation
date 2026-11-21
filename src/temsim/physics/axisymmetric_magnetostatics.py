@@ -27,6 +27,33 @@ def _merged_axis(values):
     return axis[np.r_[True, np.diff(axis) > tolerance]]
 
 
+def _refine_pole_axes(r, z, parts, count):
+    """Resolve both sides of each pole face and its open bore on the R-Z grid."""
+    from temsim.magnetic_circuits import radial_profile_mm
+    from temsim.pole_geometry import pole_face_at_end
+
+    radial, axial = [r], [z]
+    for part in parts:
+        data = part["data"]
+        if data.get("mechanical_profile") != "magnetic_pole_piece":
+            continue
+        start, end = part["start_z_mm"], part["end_z_mm"]
+        at_end = pole_face_at_end(data, key=part["key"])
+        profile = radial_profile_mm(data, end - start, key=part["key"])
+        if profile is None:
+            bore_mm = data.get("mechanical_bore_diameter_mm", data.get("mechanical_inner_diameter_mm", 0)) / 2
+            tip_mm = data.get("mechanical_tip_diameter_mm", 2 * bore_mm) / 2
+        else:
+            bore_mm, tip_mm = profile[-1 if at_end else 0, 1:]
+        face, direction = (end, 1) if at_end else (start, -1)
+        nose = min(end - start, data.get("pole_nose_axial_length_mm", end - start))
+        radial.append(np.linspace(0, max(tip_mm, bore_mm) * 1e-3, count + 1))
+        axial.append((face - direction * np.linspace(0, nose, count + 1)) * 1e-3)
+        axial.append((face + direction * np.linspace(0, 2 * bore_mm, count + 1)) * 1e-3)
+    rr, zz = np.concatenate(radial), np.concatenate(axial)
+    return _merged_axis(rr[(rr >= r[0]) & (rr <= r[-1])]), _merged_axis(zz[(zz >= z[0]) & (zz <= z[-1])])
+
+
 @dataclass(frozen=True)
 class MagnetostaticSolution:
     r_m: np.ndarray
@@ -186,6 +213,9 @@ def _solve_bound_geometry(geometry_json, settings_json):
     axial_edges = [value for value in axial_edges if centre-half*padding <= value <= centre+half*padding]
     r = _merged_axis(np.r_[np.linspace(0, radius * padding, nr), radial_edges])
     z = _merged_axis(np.r_[np.linspace(centre - half * padding, centre + half * padding, nz), axial_edges])
+    refine = settings.get("refine_pole_mesh", False)
+    if not isinstance(refine, bool):
+        raise ValueError("Pole mesh refinement must be a boolean")
     if "validation_grid_axes_m" in settings:
         # Validation alone may extend a domain without moving its interior mesh.
         supplied = settings["validation_grid_axes_m"]
@@ -198,8 +228,10 @@ def _solve_bound_geometry(geometry_json, settings_json):
                     or np.any(np.diff(axis) <= 0) or not np.allclose(axis[[0, -1]], bound, rtol=1e-10, atol=1e-14)):
                 raise ValueError("Validation grid must be increasing and match the physical solve domain")
         r, z = _merged_axis(np.r_[axes[0], radial_edges]), _merged_axis(np.r_[axes[1], axial_edges])
-        if r.size*z.size > 250000:
-            raise ValueError("Validation grid exceeds the 250000-node resource limit")
+    elif refine:
+        r, z = _refine_pole_axes(r, z, used, max(8, nr // 2))
+    if (refine or "validation_grid_axes_m" in settings) and r.size*z.size > 250000:
+        raise ValueError("Refined field grid exceeds the 250000-node resource limit")
     def iron_mask(r, z):
         return np.logical_or.reduce([_part_mask(p, r, z) for p in iron]) if iron else np.zeros_like(r, bool)
     def permeability(r, z):

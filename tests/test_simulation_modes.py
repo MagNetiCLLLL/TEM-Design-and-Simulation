@@ -372,23 +372,32 @@ def test_thin_mode_has_a_separate_key_and_does_not_reinterpret_saved_ideal():
     assert is_ideal(restored) and not is_thin(restored)
 
 
-def test_menu_groups_field_sources_and_keeps_numerical_actions_independent(qtbot):
+def test_menu_lists_models_then_lens_configuration_and_cache(qtbot):
     from temsim.gui.simulation_menu import SimulationMenu
     menu = SimulationMenu()
     qtbot.addWidget(menu)
     state = _state()
     menu.set_state(state)
-    top = menu.actions()
-    assert menu.mode_actions["ideal_thin"] in top
-    assert menu.finite_field_menu.menuAction() in top
-    assert menu.mode_actions["coupled_multiphysics"] in top
-    for key in ("unified", "ideal", "analytical", "linear_geometry", "nonlinear_material", "custom"):
-        assert menu.mode_actions[key] in menu.finite_field_menu.actions()
-        assert menu.mode_actions[key] not in top
+    keys = ("ideal_thin", "unified", "ideal", "linear_geometry", "nonlinear_material",
+            "custom", "analytical", "coupled_multiphysics")
+    modes = [menu.mode_actions[key] for key in keys]
+    assert menu.actions()[:len(modes)] == modes
+    separator, configure, cache = menu.actions()[len(modes):]
+    assert separator.isSeparator()
+    assert [configure.text(), cache.text()] == ["Configure lens models...", "Performance and cache..."]
+    assert all(action.menu() is None for action in modes)
+    assert menu.mode_group.checkedAction() is menu.mode_actions[mode_key(state)]
+    assert not menu.mode_actions["linear_geometry"].isEnabled()
+    assert not menu.mode_actions["nonlinear_material"].isEnabled()
     assert not menu.mode_actions["coupled_multiphysics"].isEnabled()
+    for key in ("ideal_thin", "unified", "ideal", "custom", "analytical"):
+        with qtbot.waitSignal(menu.mode_requested) as requested:
+            menu.mode_actions[key].trigger()
+        assert requested.args == [key]
+        switch_mode(state, key)
+        menu.set_state(state)
+        assert [action for action in modes if action.isChecked()] == [menu.mode_actions[key]]
     before = deepcopy(state.to_dict())
-    with qtbot.waitSignal(menu.coherent_settings_requested):
-        menu.coherent_settings_action.trigger()
-    with qtbot.waitSignal(menu.particle_settings_requested):
-        menu.particle_settings_action.trigger()
+    with qtbot.waitSignal(menu.configure_requested):
+        configure.trigger()
     assert state.to_dict() == before

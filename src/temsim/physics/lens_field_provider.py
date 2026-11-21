@@ -321,6 +321,11 @@ def _part_geometry_data(part) -> dict[str, object]:
         ):
             result[name] = value
     data = dict(getattr(part, "data", {}))
+    if data.get("material_regions"):
+        from temsim.part_materials import validated_material_regions
+        result["material_regions"] = validated_material_regions(part)
+        # The tube has its own wall geometry and constitutive response.
+        result["material_regions"].pop("terminal_tube", None)
     if (data.get("mechanical_profile") == "magnetic_pole_piece"
             and part.key in {"condenser_lens_1_lower_pole", "condenser_lens_2_upper_pole"}
             and "magnetic_radial_profile_mm" not in data
@@ -569,6 +574,10 @@ def lens_geometry_binding(
         support = ()
     assembly = getattr(state, "_resolved_assembly", None)
     lens_assembly = _lens_assembly_payload(assembly, key, support)
+    from temsim.cad_vacuum_tube import terminal_field_part
+    tube = terminal_field_part(assembly) if assembly is not None else None
+    if tube is not None and key == "objective_lens":
+        lens_assembly["parts"] = (*lens_assembly["parts"], tube)
     descriptor = getattr(state, "lens_field_map_descriptors", {}).get(key, {})
     if (getattr(state, "round_lens_field_model", "gaussian") != "copper_coil" and assembly is not None
             and descriptor.get("solver") in {"axisymmetric_linear_fem", "axisymmetric_nonlinear_fem"}):
@@ -588,6 +597,9 @@ def lens_geometry_binding(
             if check_placement:
                 from temsim.lens_pose import mechanical_pose_registration
                 origin_z = mechanical_pose_registration(state, key).origin_global_m[2]
+            if (tube is not None and tube["key"] not in own_keys and
+                    tube["start_z_mm"] < centre+half and tube["end_z_mm"] > centre-half):
+                neighbours.append(tube)
             for part in assembly.parts:
                 if part.key in own_keys or not is_magnetostatic_body(part.data):
                     continue
@@ -1710,6 +1722,7 @@ def _validate_shared_linear_recipes(state, lens_key, binding):
             tuple(sorted((key, float(value)) for key, value in recipe.get("material_permeabilities", {}).items())),
             int(recipe.get("radial_nodes", 40)), int(recipe.get("axial_nodes", 80)),
             float(recipe.get("padding_factor", 2)),
+            recipe.get("refine_pole_mesh", False),
         )
 
     expected = operator_settings(selected)

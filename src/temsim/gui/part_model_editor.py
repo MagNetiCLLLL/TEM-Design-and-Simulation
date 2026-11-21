@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 )
 
 from temsim.gui.input_policy import WheelSafeComboBox as QComboBox
+from temsim.gui.material_reference import MaterialReferenceLabel
 from temsim.component_representation import (
     SHARED_DEFLECTOR_HOSTS, belongs_to_material_selection, non_material_role, representation_note,
 )
@@ -184,8 +185,7 @@ class PartModelEditorPage(QWidget):
         self._materials = material_catalog()
         for item in self._materials:
             self.material.addItem(item["label"], item["material_key"])
-        self.material_hint = QLabel()
-        self.material_hint.setWordWrap(True)
+        self.material_hint = MaterialReferenceLabel()
         self.material_current = QLabel()
         self.material_current.setWordWrap(True)
         self.assign_button = QPushButton("Assign to this region")
@@ -1706,7 +1706,7 @@ class PartModelEditorPage(QWidget):
     def _material_changed(self):
         key = self.material.currentData()
         row = next((item for item in self._materials if item["material_key"] == key), {})
-        self.material_hint.setText(row.get("scope", ""))
+        self.material_hint.set_reference(row.get("scope", ""), row.get("bh_material", {}).get("source_url"))
 
     def _aperture_changed(self):
         if not self._loading and self.aperture.currentData() is not None:
@@ -2331,9 +2331,10 @@ class PartModelEditorPage(QWidget):
         if not self._material_editing_enabled():
             return False
         from temsim.cad_catalog import is_reconstruction_region
-        from temsim.part_materials import REGIONS
-        return (self._selected_region in REGIONS
-                and not is_reconstruction_region(self.session.part(self._selected_key), self._selected_region))
+        from temsim.part_materials import REGIONS, material_region_key
+        part = self.session.part(self._selected_key)
+        region = material_region_key(part, self._selected_region)
+        return region is not None and (region not in REGIONS or not is_reconstruction_region(part, self._selected_region))
 
     def _update_buttons(self):
         loaded = self.session is not None

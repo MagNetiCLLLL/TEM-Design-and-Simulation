@@ -8,15 +8,17 @@ from temsim.gui.input_policy import (
 )
 
 from dataclasses import dataclass
+from itertools import product
 import math
 from pathlib import Path
 
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QEvent, QPointF, QRectF, Qt, QTimer, Signal
-from PySide6.QtGui import QColor, QPainter, QPolygonF, QTransform
+from PySide6.QtGui import QColor, QPainter, QPainterPath, QPolygonF, QTransform
 from PySide6.QtWidgets import (
     QGraphicsEllipseItem,
+    QGraphicsPathItem,
     QGraphicsPolygonItem,
     QGraphicsRectItem,
     QFileDialog,
@@ -1399,10 +1401,10 @@ class PhysicalLayoutView(QWidget):
         return float(point[2]), float(point[0])
 
     def _apply_section_lens_poses(self):
-        """Place material X-Z sections independently of optical-axis tilt.
+        """Apply in-plane mechanical placement independently of optical tilt.
 
-        This remains a section schematic: out-of-plane Y placement is visible
-        in the full 3D assembly, not invented as a radial displacement here.
+        Iron requiring a 3D cut is sliced in its installed position and added
+        after this pass.
         """
         transforms = {}
         for item in self.plot.getPlotItem().items:
@@ -1665,6 +1667,61 @@ class PhysicalLayoutView(QWidget):
             polygon.setToolTip(f"{record.name}\nExplicit magnetic radial profile (mm); shared with field geometry")
             self.plot.addItem(polygon)
             _register_selectable_graphics_item(self._selectable_item_keys, polygon, record.key)
+
+    def _installed_annular_intervals(self, part):
+        if part is None:
+            return ()
+        if "material_intervals_mm" not in part.data:
+            if part.data.get("mechanical_profile") == "magnetic_lens_yoke":
+                return ((part.start_z_mm, part.end_z_mm),)
+            return ()
+        from temsim.magnetic_geometry import annular_material_intervals_mm
+
+        parent = self._part_by_key.get(part.parent_key)
+        intervals = annular_material_intervals_mm(part.data, parent.data if parent else {})
+        origin = part.center_z_mm - part.data["local_center_z_mm"]
+        return tuple((origin + start, origin + end) for start, end in intervals)
+
+    def _needs_material_cut(self, part):
+        """Locally edited or displaced iron needs an actual X-Z cut."""
+        from temsim.lens_pose import has_nonrigid_lens_cad
+        if part is None or part.data.get("mechanical_profile") not in {"magnetic_lens_yoke", "magnetic_pole_piece"}:
+            return False
+        if has_nonrigid_lens_cad(part.data):
+            return True
+        rotation, shift = self._lens_pose_global_transform(part.key)
+        return bool(shift[1] or not np.array_equal(rotation, np.eye(3)))
+
+    def _add_placed_material_cuts(self, parts):
+        from temsim.immutable_json import thaw_json
+        from temsim.part_model_3d import part_model_from_document
+        from temsim.part_model_features import _input_solid
+
+        documents = {}
+        for part in parts:
+            if part.module_key not in documents:
+                documents[part.module_key] = {"parts": [thaw_json(p.data) for p in self._part_by_key.values()
+                                                        if p.module_key == part.module_key]}
+            model = part_model_from_document(documents[part.module_key], part.key,
+                                             angular_segments=128, include_children=False)
+            origin = part.center_z_mm - part.data["local_center_z_mm"]
+            colour = pg.mkColor(_component_colour(self._record_by_key[part.key]))
+            for mesh in model.meshes:
+                # Rotating the placed XYZ mesh by -90 degrees about X makes
+                # the slicing coordinates (X, Z). Preserve openings and islands.
+                section = _input_solid(mesh, {}).rotate((-90., 0., 0.)).slice(0.)
+                path = QPainterPath()
+                for contour in section.to_polygons():
+                    path.addPolygon(QPolygonF([QPointF(origin + z, x) for x, z in contour]))
+                    path.closeSubpath()
+                if path.isEmpty():
+                    continue
+                item = QGraphicsPathItem(path)
+                item.setPen(pg.mkPen(colour, width=0.8))
+                item.setBrush(pg.mkBrush(colour.red(), colour.green(), colour.blue(), 105))
+                item.setToolTip(f"{part.name}\n{mesh.region} · X-Z section of the placed 3D material")
+                self.plot.addItem(item)
+                _register_selectable_graphics_item(self._selectable_item_keys, item, part.key)
 
     @staticmethod
     def _is_objective_lens_layer(record) -> bool:
@@ -3661,6 +3718,7 @@ class PhysicalLayoutView(QWidget):
             result.assembly
         )
         spots = []
+        placed_material_cuts = []
         for record in self._records:
             colour = _component_colour(record)
             width = max(record.end_z_mm - record.start_z_mm, 0.25)
@@ -3680,6 +3738,8 @@ class PhysicalLayoutView(QWidget):
                 )
                 self._channel_marker_items[record.key] = line
                 _register_selectable_graphics_item(self._selectable_item_keys, line, record.key)
+            elif self._needs_material_cut(part):
+                placed_material_cuts.append(part)
             elif radial_profile is not None:
                 self._add_magnetic_radial_profile(record, colour, radial_profile)
             elif (
@@ -3726,23 +3786,25 @@ class PhysicalLayoutView(QWidget):
                 )
             else:
                 material_height = outer_half - bore_half
-                for lower in (-outer_half, bore_half):
+                material_intervals = self._installed_annular_intervals(part)
+                spans = material_intervals or ((record.start_z_mm, record.end_z_mm),)
+                for (start_z, end_z), lower in product(spans, (-outer_half, bore_half)):
                     rect = QGraphicsRectItem(
-                        record.start_z_mm,
+                        start_z,
                         lower,
-                        width,
+                        end_z - start_z if material_intervals else width,
                         material_height,
                     )
                     rect.setPen(pg.mkPen(colour, width=0.8))
                     alpha = 105 if record.excitation_enabled is not False else 38
                     rect.setBrush(pg.mkBrush(pg.mkColor(colour).red(), pg.mkColor(colour).green(), pg.mkColor(colour).blue(), alpha))
                     rect.setToolTip(
-                        f"{record.name}\nZ {record.start_z_mm:.6g}–{record.end_z_mm:.6g} mm\n"
+                        f"{record.name}\nZ {start_z:.6g}–{end_z:.6g} mm\n"
                         f"OD {record.outer_diameter_mm:.6g} mm | hardware bore {record.bore_diameter_mm:.6g} mm | "
                         f"vacuum ID {record.vacuum_inner_diameter_mm:.6g} mm"
                         + (
                             f"\nAxial winding length "
-                            f"{record.end_z_mm - record.start_z_mm:.6g} mm; "
+                            f"{end_z - start_z:.6g} mm; "
                             f"radial winding thickness "
                             f"{0.5 * (record.outer_diameter_mm - record.bore_diameter_mm):.6g} mm."
                             "\nProvisional non-OEM geometry: axial length is "
@@ -3824,6 +3886,7 @@ class PhysicalLayoutView(QWidget):
             )
 
         self._apply_section_lens_poses()
+        self._add_placed_material_cuts(placed_material_cuts)
         self._add_objective_lens_labels()
         self._add_sample_stage_and_holder_schematic()
         self._add_eds_detector_array_schematic()
