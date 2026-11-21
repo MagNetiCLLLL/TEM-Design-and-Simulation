@@ -22,6 +22,18 @@ sys.path.insert(0, str(PREVIOUS))
 from fields import axes
 
 
+def electrostatic_grid_digest(path):
+    """Identify the potential values and axes independently of the capture's execution context."""
+    digest = sha256()
+    with np.load(path) as field:
+        for key in sorted(name for name in field.files if name != "digest"):
+            values = field[key]
+            header = json.dumps([key, values.dtype.str, values.shape], separators=(",", ":"))
+            digest.update(header.encode("ascii"))
+            digest.update(np.ascontiguousarray(values).tobytes())
+    return digest.hexdigest()
+
+
 def solve(ampere_turns, level, padding):
     started = perf_counter()
     state = default_state()

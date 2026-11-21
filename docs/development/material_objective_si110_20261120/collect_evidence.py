@@ -10,7 +10,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from solve_fields import CACHE, HERE, ROOT
+from solve_fields import CACHE, HERE, ROOT, electrostatic_grid_digest
 from column import GROUPS, POINT, metrics
 sys.path.insert(0, str(ROOT / "scripts"))
 import scan_joint_probe_si110 as screen
@@ -72,6 +72,7 @@ def collect():
             sections[section] = sections.get(section, 0) + group["turn_count"]
     turns = [sections[key] for key in sorted(sections)]
     study = dict(fields={p.stem: read(p) for p in sorted(CACHE.glob("armco-*.json"))},
+                 electrostatic_grid_sha256=electrostatic_grid_digest(CACHE / "electric.npz"),
                  trials={}, currents={}, source_prefixes={})
     for path in sorted(CACHE.glob("*/metrics.json")):
         m = read(path)

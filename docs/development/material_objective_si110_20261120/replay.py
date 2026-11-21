@@ -8,7 +8,7 @@ import sys
 
 import numpy as np
 
-from solve_fields import CACHE, HERE, solve
+from solve_fields import CACHE, HERE, electrostatic_grid_digest, solve
 
 
 def main():
@@ -23,12 +23,23 @@ def main():
         from column import prepare
         from tune_objective import field_trial, report_surface
         prepare(CACHE, CACHE / "replay-basis.npz")
+        study = json.loads((evidence / "study.json").read_text())
+        if electrostatic_grid_digest(CACHE / "electric.npz") != study["electrostatic_grid_sha256"]:
+            raise ValueError("Electrostatic field values or grid changed")
     for name in ("before", "after"):
         source = evidence / name
         if not args.from_entrance:
             m = json.loads((source / "metrics.json").read_text())
             ni, step, controls = m["objective_ampere_turns"], m["max_step_mm"], m["controls"]
+            for key in ("columns", "mechanical"):
+                if sha256((CACHE / (key + ".npz")).read_bytes()).hexdigest() != m["transport_sha256"][key]:
+                    raise ValueError(f"{name}: changed {key} transport input")
             solve(abs(ni), "gap-fine", 8)
+            field_path = CACHE / f"armco-{abs(ni):g}-gap-fine-p8.npz"
+            with np.load(field_path) as actual, np.load(source / "objective-field.npz") as old:
+                for key in ("r", "z"):
+                    np.testing.assert_array_equal(actual[key], old[key])
+                np.testing.assert_allclose(actual["a_phi"], old["a_phi"], rtol=1e-9, atol=1e-14)
             mesh, tracker, base = field_trial(ni, "gap-fine", step, m["hexapole_scale"])
             report_surface(mesh, tracker, base, controls, ni, "gap-fine", step, "replay-" + name, m["hexapole_scale"])
             new = CACHE / ("replay-" + name)
