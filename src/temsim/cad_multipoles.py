@@ -310,7 +310,8 @@ def _probe_hexapole_solids(part):
         (2*outer, d['coil_window_width_mm'], d['coil_window_height_mm'])))
     params = dict(d, physical_pole_count=6, coil_count=6,
         topology_source="Mueller et al. 2006, p.443; p.444 Fig.3 real hexapole photograph",
-        dimension_status="Engineering reconstruction; published 152 mm OD and pole dimensions are not used",
+        dimension_status=part.get('mechanical_hexapole_geometry_source',
+                                  'Engineering reconstruction from the six-pin topology'),
         geometry_revision="probe_radial_taper_v2",
         pole_face_status="Planar taper reconstruction, not measured OEM pole contour",
         physical_length_source=("explicit mechanical_hexapole_pole_length_mm" if PREFIX+'pole_length_mm' in part
@@ -321,8 +322,9 @@ def _probe_hexapole_solids(part):
         coil_core_clearance_axial_mm=(d['coil_window_height_mm']-d['stem_height_mm'])/2,
         construction="Six joined tapered pole pins, six radial-axis bulk windings, one shared yoke")
     evidence = (CESCOR_SOURCE, "docs/references/cad-probe-corrector.md")
+    half_yoke = d['yoke_length_mm']/2
     result = [_solid(part, 'return_yoke', 'soft_magnetic',
-                     annulus(start, end, yoke_inner, outer), params, evidence)]
+                     annulus(centre-half_yoke, centre+half_yoke, yoke_inner, outer), params, evidence)]
     from temsim.cad_probe_winding import probe_winding_solids
     detailed_windings = probe_winding_solids(part)
     for index in range(6):

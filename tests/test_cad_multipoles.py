@@ -95,7 +95,7 @@ def test_source_backed_cescor_hp_has_six_joined_pins_bulk_coils_and_one_yoke(key
         | {f"pole_pin_{i+1}" for i in range(6)} | {f"coil_{i+1}" for i in range(6)})
     assert all(s.parameters["physical_pole_count"] == 6 for s in solids)
     assert all(s.evidence[0].endswith("Mueller2006a.pdf") for s in solids)
-    assert all("not used" in s.parameters["dimension_status"] for s in solids)
+    assert all(s.parameters["dimension_status"] == "Engineering reconstruction from the six-pin topology" for s in solids)
     assert {s.material for s in solids} == {"soft_magnetic", "copper_winding"}
     for solid in solids:
         if solid.region.startswith("pole_pin_"):

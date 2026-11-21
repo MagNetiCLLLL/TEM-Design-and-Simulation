@@ -404,6 +404,11 @@ def _legacy_part_meshes(part, by_key, count, aperture_index=0, runtime=None):
             from temsim.cad_mesh import annotate_material_faces
             meshes = tuple(annotate_material_faces(mesh, part, runtime)
                            if mesh.material_class != "copper_winding" else mesh for mesh in meshes)
+        if part.get("winding_support_profile"):
+            from temsim.deflector_support_geometry import END_REGIONS, GAP_REGIONS, SUPPORT_PROFILE, annotate_support_mesh
+            laminate = set((*END_REGIONS, *GAP_REGIONS))
+            laminate.update(s.region for s in solids if (s.parameters or {}).get("construction") == SUPPORT_PROFILE)
+            meshes = tuple(annotate_support_mesh(m, part) if m.region in laminate else m for m in meshes)
         if (part.get("gun_stigmator_geometry_profile") or part.get("mechanical_cartridge_structure")
                 or part.get("stigmator_support_profile")
                 or part.get("mechanical_c3_end_structure")

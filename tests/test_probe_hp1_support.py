@@ -59,8 +59,8 @@ def test_hp1_support_is_saved_for_probe_variants_with_its_own_window(filename):
     assert d['stem_height_mm'] == pytest.approx(7.24)
     assert d['core_bedding_axial_thickness_mm'] == pytest.approx(.474)
     assert d['core_bedding_tangential_thickness_mm'] == pytest.approx(.7445)
-    assert d['start_mm'] == pytest.approx(841.8)
-    assert d['end_mm'] == pytest.approx(859.9)
+    assert d['start_mm'] == pytest.approx(835.85)
+    assert d['end_mm'] == pytest.approx(865.85)
     assert p['effective_length_mm'] == 10.
     hp2 = hexapole_support_dimensions(rows['probe_hp2_hexapole'])
     assert d['coil_window_height_mm'] != hp2['coil_window_height_mm']
@@ -122,17 +122,17 @@ def test_hp1_open_bore_dph1_and_neighbor_clearances_are_preserved(host):
     dph = rows['probe_dph1_coils']
     edge = float(dph.get('winding_support_end_cover_thickness_mm', 0.))
     insert = _manifold(annulus(dph['local_start_z_mm']-edge,
-        dph['local_end_z_mm']+edge, 11.06, 11.94), 96)
-    tube = _manifold(annulus(841.8, 859.9, 2.88, 9.6), 96)
-    bore = _manifold(annulus(841.8, 859.9, 0., 12.), 96)
+        dph['local_end_z_mm']+edge, 3.06, 3.94), 96)
+    tube = _manifold(annulus(835.85, 865.85, 2.88, 3.), 96)
+    bore = _manifold(annulus(835.85, 865.85, 0., 4.), 96)
     for region, body in bodies.items():
         assert (body ^ insert).volume() == pytest.approx(0., abs=1e-7), region
         assert (body ^ tube).volume() == pytest.approx(0., abs=1e-7), region
         assert (body ^ bore).volume() == pytest.approx(0., abs=1e-7), region
     assert bodies['pole_pin_1'].min_gap(insert, .1) == pytest.approx(.06, abs=1e-6)
     assert bodies['coil_1_former'].min_gap(insert, 15.) > 10.
-    assert part['local_start_z_mm']-rows['probe_tl21_lens']['local_end_z_mm'] == pytest.approx(29.1)
-    assert rows['probe_dp11_coils']['local_start_z_mm']-part['local_end_z_mm'] == pytest.approx(29.1)
+    assert part['local_start_z_mm']-rows['probe_tl21_lens']['local_end_z_mm'] == pytest.approx(23.15)
+    assert rows['probe_dp11_coils']['local_start_z_mm']-part['local_end_z_mm'] == pytest.approx(23.15)
 
 
 @pytest.mark.parametrize('field,value', [
@@ -167,7 +167,7 @@ def test_hp1_support_copy_move_and_reopen_preserve_template_and_dimensions(tmp_p
     draft.place_component(key, 2600.)
     copied = draft.part(key)
     assert copied['geometry_template_key'] == KEY
-    assert hexapole_support_dimensions(copied)['start_mm'] == pytest.approx(2590.95)
+    assert hexapole_support_dimensions(copied)['start_mm'] == pytest.approx(2585.)
     assert copied['effective_length_mm'] == 10.
     expected = posed_solids(copied, {p['key']: p for p in draft.document['parts']})
     target = tmp_path/'hp1-copy.toml'
@@ -186,7 +186,7 @@ def test_hp1_invalid_former_update_and_replacement_restore_are_atomic():
     assert draft.document == original and not draft.can_undo
     key = draft.copy_component_from(draft.document, KEY, 'hp1_box', 2500., include_children=False)
     draft.set_model_3d(key, {'schema_version': 1, 'base': {
-        'kind': 'box', 'width_mm': 10., 'height_mm': 10., 'length_mm': 18.1}})
+        'kind': 'box', 'width_mm': 10., 'height_mm': 10., 'length_mm': 30.}})
     draft.set_dimension(('parts', key, DIMENSIONS[0]), .73)
     assert hexapole_support_solids(draft.part(key)) == ()
     before, history = deepcopy(draft.document), deepcopy(draft._history)

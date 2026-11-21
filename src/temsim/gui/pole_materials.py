@@ -96,6 +96,8 @@ class PoleMaterialsPage(QWidget):
             label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.save = QPushButton("Save material to installed column")
         self.save.clicked.connect(self._save)
+        self.solve_corrector = QPushButton("Calculate probe corrector field…")
+        self.solve_corrector.clicked.connect(self._solve_corrector)
         form = QFormLayout()
         for label, control in (("Assembly", self.group), ("Component", self.role), ("Applies to", self.target),
                                ("Current material", self.current), ("Material", self.material)):
@@ -105,6 +107,7 @@ class PoleMaterialsPage(QWidget):
         layout.addWidget(self.source)
         layout.addWidget(self.scope)
         layout.addWidget(self.save, 0, Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.solve_corrector, 0, Qt.AlignmentFlag.AlignLeft)
         layout.addStretch()
         self.group.currentIndexChanged.connect(self._roles)
         self.role.currentIndexChanged.connect(self._targets)
@@ -167,6 +170,10 @@ class PoleMaterialsPage(QWidget):
                    else material_for_region(self.parts[target.key], target.region))
             if row is None and target.region == "terminal_tube":
                 row = self.catalog[NONMAGNETIC_STEEL]
+            if (row is None and not self.read_only and target.group == "Probe corrector"
+                    and target.key.startswith(("probe_hp1_hexapole", "probe_hp2_hexapole",
+                                               "probe_tl21_lens", "probe_tl22_lens"))):
+                row = self.catalog["armco_pure_iron"]
             rows.append(row)
         materials = {row["material_key"] if row else None for row in rows}
         self._archived_selection = None
@@ -200,10 +207,20 @@ class PoleMaterialsPage(QWidget):
             message = "Changes only the terminal tube wall in the objective field model. The bore and upstream tube are preserved."
         else:
             message = "Round-lens geometry fields use component assignments. Nonlinear FEM uses the B–H curve."
-        if has_pins:
+        probe = self.group.currentData() == "Probe corrector"
+        if has_pins and probe:
+            message += " The 3D corrector calculation uses the six pins, root sleeves, yokes and both transfer-lens circuits."
+        elif has_pins:
             message += " Hexapole assignments describe the 3D hardware. The current multipole field model does not solve its magnetic core."
+        self.solve_corrector.setVisible(probe and not self.read_only and
+            {"probe_hp1_hexapole","probe_hp2_hexapole","probe_tl21_lens","probe_tl22_lens"} <= self.parts.keys())
         self.scope.setText(message)
         self.save.setEnabled(bool(selected and row and not self.read_only))
+
+    def _solve_corrector(self):
+        from .corrector_field_dialog import CorrectorFieldDialog
+        path = self._assembly.root / self.parts["probe_hp1_hexapole"].source_file
+        CorrectorFieldDialog(path,self).exec()
 
     def _save(self):
         if not self.save.isEnabled():

@@ -117,8 +117,8 @@ def test_supports_are_opt_in_and_do_not_rebuild_or_relabel_copper(document):
     original = _without_support(row)
     assert deflector_support_dimensions(original) is None
     assert deflector_support_solids(original) == ()
-    assert full_material_radial_extent(original) == pytest.approx((11.1, 11.9))
-    assert full_material_radial_extent(row) == pytest.approx((11.06, 11.94))
+    assert full_material_radial_extent(original) == pytest.approx((3.1, 3.9))
+    assert full_material_radial_extent(row) == pytest.approx((3.06, 3.94))
     before_meshes, _ = deflector_coil_meshes(original)
     after_meshes, _ = deflector_coil_meshes(row)
     after_meshes = {mesh.region: mesh for mesh in after_meshes}
@@ -156,7 +156,7 @@ def test_supports_are_closed_single_volumes_and_have_no_material_penetration(doc
         if spec.region in SUPPORT_RADII:
             section = np.asarray(shape["section_zr_mm"])
             low, high = section[:, 1].min(), section[:, 1].max()
-            assert (low, high) == pytest.approx(SUPPORT_RADII[spec.region])
+            assert (low, high) == pytest.approx(np.array(SUPPORT_RADII[spec.region]) - (8. if row["key"].startswith("probe_dph") else 0.))
             solid = _manifold(shape, 180)
             assert len(solid.decompose()) == 1
             assert solid.volume() > 0
@@ -195,7 +195,9 @@ def test_current_supports_clear_actual_tube_and_hp_material(document):
     for key in COILS:
         row = rows[key]
         inner, outer = full_material_radial_extent(row)
-        assert inner - tube_radius == pytest.approx(1.46)
+        profile = np.asarray(document["geometry"]["mechanical_material_tube_outer_profile_z_od_mm"])
+        local_tube = np.interp(row["local_center_z_mm"], profile[:, 0], profile[:, 1])/2
+        assert inner - local_tube == pytest.approx(.06 if key.startswith("probe_dph") else 1.46)
         assert inner >= row["mechanical_clear_bore_diameter_mm"] / 2
         hp_key = row.get("optical_reference_host_key")
         if hp_key:
@@ -221,7 +223,7 @@ def test_support_edits_roundtrip_undo_and_keep_finite_field_owner(draft, tmp_pat
     name = SUPPORT_FIELDS[1]
     path = ("parts", key, name)
     draft.set_dimension(path, .05)
-    assert full_material_radial_extent(draft.part(key)) == pytest.approx((11.06, 11.95))
+    assert full_material_radial_extent(draft.part(key)) == pytest.approx((3.06, 3.95))
     assert draft.part(channel_key) == original_channel
     draft.undo()
     assert draft.part(key)[name] == .04
@@ -299,7 +301,7 @@ def test_support_growth_cannot_use_parent_overlap_to_enter_hp_material(draft):
     key = COILS[0]
     before = deepcopy(draft.document)
     # Positive layer and bond thickness alone permit this value, but it
-    # enlarges the full insert OD to 24.02 mm inside a 24 mm HP bore.
+    # enlarges the full insert OD to 8.02 mm inside an 8 mm HP bore.
     candidate = deepcopy(before)
     _rows(candidate)[key][SUPPORT_FIELDS[1]] = .11
     assert deflector_support_dimensions(_rows(candidate)[key])["bond_thickness_mm"] > 0
@@ -314,8 +316,8 @@ def test_full_support_envelope_is_used_for_adjacent_material_overlap(document):
     from temsim.module_manifest import _validate_column_mechanical_overlaps
     row = _rows(document)[COILS[0]]
     obstacle = dict(key="annular_obstacle", mechanical_profile="magnetic_lens_housing",
-                    mechanical_only=True, mechanical_inner_diameter_mm=23.82,
-                    mechanical_outer_diameter_mm=24., length_mm=row["length_mm"],
+                    mechanical_only=True, mechanical_inner_diameter_mm=7.82,
+                    mechanical_outer_diameter_mm=8., length_mm=row["length_mm"],
                     local_start_z_mm=row["local_start_z_mm"], local_end_z_mm=row["local_end_z_mm"])
     _validate_column_mechanical_overlaps([_without_support(row), obstacle])
     with pytest.raises(ValueError, match="overlap"):
@@ -345,7 +347,8 @@ def test_filled_laminate_uses_only_saved_copper_layer_voids(document, key):
         # copper layer, including winding windows, bands and angular gaps.
         rng = np.random.default_rng(512)
         theta = rng.uniform(-np.pi, np.pi, 20000)
-        radius = rng.uniform(radii[0]+1e-5, radii[1]-1e-5, len(theta))
+        offset = 8. if key.startswith("probe_dph") else 0.
+        radius = rng.uniform(radii[0]-offset+1e-5, radii[1]-offset-1e-5, len(theta))
         z = rng.uniform(row["local_start_z_mm"]+1e-5, row["local_end_z_mm"]-1e-5, len(theta))
         points = np.column_stack((radius*np.cos(theta), radius*np.sin(theta), z))
         occupancy = sum(_contains(item.shape, points).astype(int) for item in (*copper, spec))

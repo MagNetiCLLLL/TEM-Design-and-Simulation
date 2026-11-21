@@ -1,0 +1,1452 @@
+{
+  "aperture_um": 100.0,
+  "minimum_transmitted_uA": 9.0,
+  "emitted_uA": 10.0,
+  "source_count": 32768,
+  "reference_energy_keV": 300.0,
+  "gun_exit_sha256": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+  "electrostatic_grid_sha256": "7491c3598432dab463c5234783300f28a7bbde5d707a696312bc002d934a873f",
+  "sample_upper_surface_global_mm": 1599.1999975,
+  "fields": {
+    "material": {
+      "axis_peak_T": 0.007357317164528402,
+      "circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+      "coordinate_frame": "column module local, xyz in metres",
+      "currents_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "exterior_padding_mm": 195.0,
+      "field_registration": "module local SI, global origin z=0.45 m",
+      "integrated_axis_Bz2_T2m": 1.1267315794908264e-06,
+      "iterations": 17,
+      "material_peaks": {
+        "armco_pure_iron": {
+          "b_t": 1.6352565973321478,
+          "h_a_per_m": 980.1055573143599
+        },
+        "permenorm_5000_h2": {
+          "b_t": 1.259522791445907,
+          "h_a_per_m": 157.8897020655812
+        }
+      },
+      "material_size_mm": 3.8,
+      "mesh_id": "657240926664673e159c9c33e0e9c2e503002e0dd00dae60a792d91d0f195efd",
+      "nodes": 175975,
+      "raw_mesh_to_symmetric_table_max_delta_T": 0.0035176986626053947,
+      "raw_mesh_to_symmetric_table_rms_delta_T": 0.0004800040628326887,
+      "residual": 5.573419618082827e-08,
+      "source_file": "C3_ProbeCorrector.toml",
+      "tetra_volume_field_max_delta_T": 0.034868905559445336,
+      "tetrahedra": 1088545,
+      "turns": {
+        "probe_hp1_hexapole": 2,
+        "probe_hp2_hexapole": 2,
+        "probe_tl21_lens": 19,
+        "probe_tl22_lens": 19
+      },
+      "vacuum_only": false,
+      "validation_points_peak_T": 0.008288473506818625,
+      "volumes_mm3": {
+        "air": 179799491.13563964,
+        "probe_hp1_hexapole/pole_pin_1": 2726.265090820851,
+        "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+        "probe_hp1_hexapole/pole_pin_5": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_6": 2726.007343362724,
+        "probe_hp1_hexapole/pole_root_sleeve_1": 16.87402886123648,
+        "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236603,
+        "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236603,
+        "probe_hp1_hexapole/pole_root_sleeve_4": 16.874028861236432,
+        "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236468,
+        "probe_hp1_hexapole/pole_root_sleeve_6": 16.87402886123648,
+        "probe_hp1_hexapole/return_yoke": 41273.85367504219,
+        "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+        "probe_hp2_hexapole/pole_pin_2": 2738.024554656359,
+        "probe_hp2_hexapole/pole_pin_3": 2738.024554656357,
+        "probe_hp2_hexapole/pole_pin_4": 2738.024554656357,
+        "probe_hp2_hexapole/pole_pin_5": 2738.024554656358,
+        "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_root_sleeve_1": 16.92448687217401,
+        "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217395,
+        "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174064,
+        "probe_hp2_hexapole/pole_root_sleeve_4": 16.92448687217394,
+        "probe_hp2_hexapole/pole_root_sleeve_5": 16.924486872173826,
+        "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174047,
+        "probe_hp2_hexapole/return_yoke": 41274.539702727285,
+        "probe_tl21_lens_lower_pole/body": 18138.17828188952,
+        "probe_tl21_lens_pole_sleeves/lower": 857.1295934122727,
+        "probe_tl21_lens_pole_sleeves/upper": 857.1295807053847,
+        "probe_tl21_lens_return_plates/lower": 1669.8901899535958,
+        "probe_tl21_lens_return_plates/upper": 1669.8901899540592,
+        "probe_tl21_lens_upper_pole/body": 18138.132398703216,
+        "probe_tl21_lens_yoke/body": 373221.6839480204,
+        "probe_tl22_lens_lower_pole/body": 18138.17858699887,
+        "probe_tl22_lens_pole_sleeves/lower": 857.129610354809,
+        "probe_tl22_lens_pole_sleeves/upper": 857.1295934122809,
+        "probe_tl22_lens_return_plates/lower": 1682.2700718260535,
+        "probe_tl22_lens_return_plates/upper": 1682.270071825119,
+        "probe_tl22_lens_upper_pole/body": 18138.13244035433,
+        "probe_tl22_lens_yoke/body": 372426.04969726934
+      },
+      "zero_measure_edge_splits": 0,
+      "sha256": "7d367c58c00779518913936aab42734fede297b281fe0473269a134277572450",
+      "sextupole": {
+        "HP1": {
+          "1.2_mm": {
+            "peak_T_m2": 136.70101404265841,
+            "integral_real_T_m": 0.5248090449390586,
+            "integral_imag_T_m": 3.9661384514849263
+          },
+          "1.8_mm": {
+            "peak_T_m2": 136.95064693402537,
+            "integral_real_T_m": 0.5261388616614846,
+            "integral_imag_T_m": 3.9780192145325977
+          },
+          "2.4_mm": {
+            "peak_T_m2": 137.1287352801871,
+            "integral_real_T_m": 0.5272601112328117,
+            "integral_imag_T_m": 3.9894253272477567
+          }
+        },
+        "HP2": {
+          "1.2_mm": {
+            "peak_T_m2": 137.9312524716298,
+            "integral_real_T_m": 0.027259161070679216,
+            "integral_imag_T_m": -4.0777773005639855
+          },
+          "1.8_mm": {
+            "peak_T_m2": 138.15394675409698,
+            "integral_real_T_m": 0.027319095972167882,
+            "integral_imag_T_m": -4.089811056058605
+          },
+          "2.4_mm": {
+            "peak_T_m2": 138.285085614722,
+            "integral_real_T_m": 0.027405073272460553,
+            "integral_imag_T_m": -4.101213130281234
+          }
+        }
+      }
+    },
+    "vacuum_same_current": {
+      "axis_peak_T": 0.0012147167502215576,
+      "circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+      "coordinate_frame": "column module local, xyz in metres",
+      "currents_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "exterior_padding_mm": 160.0,
+      "field_registration": "module local SI, global origin z=0.45 m",
+      "integrated_axis_Bz2_T2m": 1.333885495190043e-07,
+      "iterations": 0,
+      "material_peaks": {},
+      "material_size_mm": 6.0,
+      "mesh_id": "dd7e9b1fead9874ca58f99fd682be9bac3061d9485649d4d12debff1d054e483",
+      "nodes": 124171,
+      "raw_mesh_to_symmetric_table_max_delta_T": 1.3399637008179318e-07,
+      "raw_mesh_to_symmetric_table_rms_delta_T": 4.523362013192914e-08,
+      "residual": 0.0,
+      "source_file": "C3_ProbeCorrector.toml",
+      "tetra_volume_field_max_delta_T": 0.0,
+      "tetrahedra": 767368,
+      "turns": {
+        "probe_hp1_hexapole": 2,
+        "probe_hp2_hexapole": 2,
+        "probe_tl21_lens": 19,
+        "probe_tl22_lens": 19
+      },
+      "vacuum_only": true,
+      "validation_points_peak_T": 0.0012171340853004405,
+      "volumes_mm3": {
+        "air": 120631151.7534005,
+        "probe_hp1_hexapole/pole_pin_1": 2726.2650908208525,
+        "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+        "probe_hp1_hexapole/pole_pin_5": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_6": 2726.0073433627244,
+        "probe_hp1_hexapole/pole_root_sleeve_1": 16.874028861236493,
+        "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236575,
+        "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236642,
+        "probe_hp1_hexapole/pole_root_sleeve_4": 16.87402886123642,
+        "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236443,
+        "probe_hp1_hexapole/pole_root_sleeve_6": 16.874028861236507,
+        "probe_hp1_hexapole/return_yoke": 41250.37972052477,
+        "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+        "probe_hp2_hexapole/pole_pin_2": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_pin_3": 2738.024554801461,
+        "probe_hp2_hexapole/pole_pin_4": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_5": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_root_sleeve_1": 16.924486872174025,
+        "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217397,
+        "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174082,
+        "probe_hp2_hexapole/pole_root_sleeve_4": 16.924486872173933,
+        "probe_hp2_hexapole/pole_root_sleeve_5": 16.92448687217384,
+        "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174107,
+        "probe_hp2_hexapole/return_yoke": 41239.86286510979,
+        "probe_tl21_lens_lower_pole/body": 18137.844546235956,
+        "probe_tl21_lens_pole_sleeves/lower": 857.1295722341288,
+        "probe_tl21_lens_pole_sleeves/upper": 857.1290540685986,
+        "probe_tl21_lens_return_plates/lower": 1668.8049796683792,
+        "probe_tl21_lens_return_plates/upper": 1668.8049796688426,
+        "probe_tl21_lens_upper_pole/body": 18137.730924272724,
+        "probe_tl21_lens_yoke/body": 373060.60860634636,
+        "probe_tl22_lens_lower_pole/body": 18137.84571068418,
+        "probe_tl22_lens_pole_sleeves/lower": 857.1295764697607,
+        "probe_tl22_lens_pole_sleeves/upper": 857.1296061191043,
+        "probe_tl22_lens_return_plates/lower": 1681.1806916428081,
+        "probe_tl22_lens_return_plates/upper": 1681.180691641874,
+        "probe_tl22_lens_upper_pole/body": 18137.730744061013,
+        "probe_tl22_lens_yoke/body": 372265.4256949403
+      },
+      "zero_measure_edge_splits": 0,
+      "sha256": "c931f962ba05ae96d4d1284a6097047a4916fd69c1c9bd1a7a3e556f1b377082",
+      "sextupole": {
+        "HP1": {
+          "1.2_mm": {
+            "peak_T_m2": 0.06781812010903202,
+            "integral_real_T_m": 0.00017056080973375007,
+            "integral_imag_T_m": 0.0013460904237128086
+          },
+          "1.8_mm": {
+            "peak_T_m2": 0.06803844552423131,
+            "integral_real_T_m": 0.00017087982635371682,
+            "integral_imag_T_m": 0.0013486081430545
+          },
+          "2.4_mm": {
+            "peak_T_m2": 0.0682563086262103,
+            "integral_real_T_m": 0.00017109580232927614,
+            "integral_imag_T_m": 0.0013503126485371441
+          }
+        },
+        "HP2": {
+          "1.2_mm": {
+            "peak_T_m2": 0.06814693571171147,
+            "integral_real_T_m": -7.26405344978119e-10,
+            "integral_imag_T_m": -0.0013640229830873837
+          },
+          "1.8_mm": {
+            "peak_T_m2": 0.0683680774491397,
+            "integral_real_T_m": -7.270539846609202e-10,
+            "integral_imag_T_m": -0.0013665746919509752
+          },
+          "2.4_mm": {
+            "peak_T_m2": 0.06858663891742567,
+            "integral_real_T_m": -7.269795917810426e-10,
+            "integral_imag_T_m": -0.0013683025457119672
+          }
+        }
+      }
+    },
+    "vacuum_equal_integral": {
+      "axis_peak_T": 0.0035305389935097833,
+      "circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+      "coordinate_frame": "column module local, xyz in metres",
+      "currents_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 14.531851884249068,
+        "probe_tl22_lens": -14.531851884249068
+      },
+      "exterior_padding_mm": 160.0,
+      "field_registration": "module local SI, global origin z=0.45 m",
+      "integrated_axis_Bz2_T2m": 1.1267315794958472e-06,
+      "iterations": 0,
+      "material_peaks": {},
+      "material_size_mm": 6.0,
+      "mesh_id": "dd7e9b1fead9874ca58f99fd682be9bac3061d9485649d4d12debff1d054e483",
+      "nodes": 124171,
+      "raw_mesh_to_symmetric_table_max_delta_T": 1.6445187282194874e-07,
+      "raw_mesh_to_symmetric_table_rms_delta_T": 4.8612025928626893e-08,
+      "residual": 0.0,
+      "source_file": "C3_ProbeCorrector.toml",
+      "tetra_volume_field_max_delta_T": 0.0,
+      "tetrahedra": 767368,
+      "transfer_current_scale": 2.9063703768498135,
+      "turns": {
+        "probe_hp1_hexapole": 2,
+        "probe_hp2_hexapole": 2,
+        "probe_tl21_lens": 19,
+        "probe_tl22_lens": 19
+      },
+      "vacuum_only": true,
+      "validation_points_peak_T": 0.003537442532045723,
+      "volumes_mm3": {
+        "air": 120631151.7534005,
+        "probe_hp1_hexapole/pole_pin_1": 2726.2650908208525,
+        "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+        "probe_hp1_hexapole/pole_pin_5": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_6": 2726.0073433627244,
+        "probe_hp1_hexapole/pole_root_sleeve_1": 16.874028861236493,
+        "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236575,
+        "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236642,
+        "probe_hp1_hexapole/pole_root_sleeve_4": 16.87402886123642,
+        "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236443,
+        "probe_hp1_hexapole/pole_root_sleeve_6": 16.874028861236507,
+        "probe_hp1_hexapole/return_yoke": 41250.37972052477,
+        "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+        "probe_hp2_hexapole/pole_pin_2": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_pin_3": 2738.024554801461,
+        "probe_hp2_hexapole/pole_pin_4": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_5": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_root_sleeve_1": 16.924486872174025,
+        "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217397,
+        "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174082,
+        "probe_hp2_hexapole/pole_root_sleeve_4": 16.924486872173933,
+        "probe_hp2_hexapole/pole_root_sleeve_5": 16.92448687217384,
+        "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174107,
+        "probe_hp2_hexapole/return_yoke": 41239.86286510979,
+        "probe_tl21_lens_lower_pole/body": 18137.844546235956,
+        "probe_tl21_lens_pole_sleeves/lower": 857.1295722341288,
+        "probe_tl21_lens_pole_sleeves/upper": 857.1290540685986,
+        "probe_tl21_lens_return_plates/lower": 1668.8049796683792,
+        "probe_tl21_lens_return_plates/upper": 1668.8049796688426,
+        "probe_tl21_lens_upper_pole/body": 18137.730924272724,
+        "probe_tl21_lens_yoke/body": 373060.60860634636,
+        "probe_tl22_lens_lower_pole/body": 18137.84571068418,
+        "probe_tl22_lens_pole_sleeves/lower": 857.1295764697607,
+        "probe_tl22_lens_pole_sleeves/upper": 857.1296061191043,
+        "probe_tl22_lens_return_plates/lower": 1681.1806916428081,
+        "probe_tl22_lens_return_plates/upper": 1681.180691641874,
+        "probe_tl22_lens_upper_pole/body": 18137.730744061013,
+        "probe_tl22_lens_yoke/body": 372265.4256949403
+      },
+      "zero_measure_edge_splits": 0,
+      "sha256": "f8c7d3af95de7f477fee17c70f2f55e3d92152a018910ba1bfe5670439922a99",
+      "sextupole": {
+        "HP1": {
+          "1.2_mm": {
+            "peak_T_m2": 0.06782928330184847,
+            "integral_real_T_m": 0.00017058002696306178,
+            "integral_imag_T_m": 0.001346242087849051
+          },
+          "1.8_mm": {
+            "peak_T_m2": 0.06804969520081591,
+            "integral_real_T_m": 0.000170899061249109,
+            "integral_imag_T_m": 0.0013487599466332238
+          },
+          "2.4_mm": {
+            "peak_T_m2": 0.06826766530396851,
+            "integral_real_T_m": 0.00017111503531115477,
+            "integral_imag_T_m": 0.0013504644370133457
+          }
+        },
+        "HP2": {
+          "1.2_mm": {
+            "peak_T_m2": 0.06815720580832821,
+            "integral_real_T_m": -7.263639083851174e-10,
+            "integral_imag_T_m": -0.0013641767724022935
+          },
+          "1.8_mm": {
+            "peak_T_m2": 0.06837842689565841,
+            "integral_real_T_m": -7.270135959569979e-10,
+            "integral_imag_T_m": -0.00136672862430494
+          },
+          "2.4_mm": {
+            "peak_T_m2": 0.068597086496149,
+            "integral_real_T_m": -7.269388523846984e-10,
+            "integral_imag_T_m": -0.0013684564650766748
+          }
+        }
+      }
+    },
+    "coarser_mesh": {
+      "axis_peak_T": 0.007351990922168116,
+      "circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+      "coordinate_frame": "column module local, xyz in metres",
+      "currents_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "exterior_padding_mm": 160.0,
+      "field_registration": "module local SI, global origin z=0.45 m",
+      "integrated_axis_Bz2_T2m": 1.124672547132839e-06,
+      "iterations": 12,
+      "material_peaks": {
+        "armco_pure_iron": {
+          "b_t": 1.6324176588699382,
+          "h_a_per_m": 934.6825419190121
+        },
+        "permenorm_5000_h2": {
+          "b_t": 1.2743819585075054,
+          "h_a_per_m": 179.11708358215063
+        }
+      },
+      "material_size_mm": 6.0,
+      "mesh_id": "dd7e9b1fead9874ca58f99fd682be9bac3061d9485649d4d12debff1d054e483",
+      "nodes": 124171,
+      "raw_mesh_to_symmetric_table_max_delta_T": 0.0022288958585096456,
+      "raw_mesh_to_symmetric_table_rms_delta_T": 0.0005418439141288186,
+      "residual": 8.379525286761412e-09,
+      "source_file": "C3_ProbeCorrector.toml",
+      "tetra_volume_field_max_delta_T": 0.03938323578635336,
+      "tetrahedra": 767368,
+      "turns": {
+        "probe_hp1_hexapole": 2,
+        "probe_hp2_hexapole": 2,
+        "probe_tl21_lens": 19,
+        "probe_tl22_lens": 19
+      },
+      "vacuum_only": false,
+      "validation_points_peak_T": 0.008581264344420697,
+      "volumes_mm3": {
+        "air": 120631151.7534005,
+        "probe_hp1_hexapole/pole_pin_1": 2726.2650908208525,
+        "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+        "probe_hp1_hexapole/pole_pin_5": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_6": 2726.0073433627244,
+        "probe_hp1_hexapole/pole_root_sleeve_1": 16.874028861236493,
+        "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236575,
+        "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236642,
+        "probe_hp1_hexapole/pole_root_sleeve_4": 16.87402886123642,
+        "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236443,
+        "probe_hp1_hexapole/pole_root_sleeve_6": 16.874028861236507,
+        "probe_hp1_hexapole/return_yoke": 41250.37972052477,
+        "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+        "probe_hp2_hexapole/pole_pin_2": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_pin_3": 2738.024554801461,
+        "probe_hp2_hexapole/pole_pin_4": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_5": 2738.0245546563565,
+        "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_root_sleeve_1": 16.924486872174025,
+        "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217397,
+        "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174082,
+        "probe_hp2_hexapole/pole_root_sleeve_4": 16.924486872173933,
+        "probe_hp2_hexapole/pole_root_sleeve_5": 16.92448687217384,
+        "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174107,
+        "probe_hp2_hexapole/return_yoke": 41239.86286510979,
+        "probe_tl21_lens_lower_pole/body": 18137.844546235956,
+        "probe_tl21_lens_pole_sleeves/lower": 857.1295722341288,
+        "probe_tl21_lens_pole_sleeves/upper": 857.1290540685986,
+        "probe_tl21_lens_return_plates/lower": 1668.8049796683792,
+        "probe_tl21_lens_return_plates/upper": 1668.8049796688426,
+        "probe_tl21_lens_upper_pole/body": 18137.730924272724,
+        "probe_tl21_lens_yoke/body": 373060.60860634636,
+        "probe_tl22_lens_lower_pole/body": 18137.84571068418,
+        "probe_tl22_lens_pole_sleeves/lower": 857.1295764697607,
+        "probe_tl22_lens_pole_sleeves/upper": 857.1296061191043,
+        "probe_tl22_lens_return_plates/lower": 1681.1806916428081,
+        "probe_tl22_lens_return_plates/upper": 1681.180691641874,
+        "probe_tl22_lens_upper_pole/body": 18137.730744061013,
+        "probe_tl22_lens_yoke/body": 372265.4256949403
+      },
+      "zero_measure_edge_splits": 0,
+      "sha256": "8375a4eb1fca72f607b23c27ce3246ba821bfd4794c66003d352d196d3599777",
+      "sextupole": {
+        "HP1": {
+          "1.2_mm": {
+            "peak_T_m2": 137.6023400456721,
+            "integral_real_T_m": 0.5272305331438562,
+            "integral_imag_T_m": 4.026144352919203
+          },
+          "1.8_mm": {
+            "peak_T_m2": 137.82718971164846,
+            "integral_real_T_m": 0.52834887691611,
+            "integral_imag_T_m": 4.037399897770774
+          },
+          "2.4_mm": {
+            "peak_T_m2": 137.98502516990402,
+            "integral_real_T_m": 0.5291571590703628,
+            "integral_imag_T_m": 4.047705112898926
+          }
+        },
+        "HP2": {
+          "1.2_mm": {
+            "peak_T_m2": 136.3851247569902,
+            "integral_real_T_m": 0.019217797173097313,
+            "integral_imag_T_m": -4.032021136487294
+          },
+          "1.8_mm": {
+            "peak_T_m2": 136.64997263894335,
+            "integral_real_T_m": 0.019941495168053804,
+            "integral_imag_T_m": -4.0433125138499655
+          },
+          "2.4_mm": {
+            "peak_T_m2": 136.89847572570275,
+            "integral_real_T_m": 0.021114667197216084,
+            "integral_imag_T_m": -4.053584733692479
+          }
+        }
+      }
+    },
+    "half_transport_step": {
+      "axis_peak_T": 0.007357317164528402,
+      "circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+      "coordinate_frame": "column module local, xyz in metres",
+      "currents_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "exterior_padding_mm": 195.0,
+      "field_registration": "module local SI, global origin z=0.45 m",
+      "integrated_axis_Bz2_T2m": 1.1267315794908264e-06,
+      "iterations": 17,
+      "material_peaks": {
+        "armco_pure_iron": {
+          "b_t": 1.6352565973321478,
+          "h_a_per_m": 980.1055573143599
+        },
+        "permenorm_5000_h2": {
+          "b_t": 1.259522791445907,
+          "h_a_per_m": 157.8897020655812
+        }
+      },
+      "material_size_mm": 3.8,
+      "mesh_id": "657240926664673e159c9c33e0e9c2e503002e0dd00dae60a792d91d0f195efd",
+      "nodes": 175975,
+      "raw_mesh_to_symmetric_table_max_delta_T": 0.0035176986626053947,
+      "raw_mesh_to_symmetric_table_rms_delta_T": 0.0004800040628326887,
+      "residual": 5.573419618082827e-08,
+      "source_file": "C3_ProbeCorrector.toml",
+      "tetra_volume_field_max_delta_T": 0.034868905559445336,
+      "tetrahedra": 1088545,
+      "turns": {
+        "probe_hp1_hexapole": 2,
+        "probe_hp2_hexapole": 2,
+        "probe_tl21_lens": 19,
+        "probe_tl22_lens": 19
+      },
+      "vacuum_only": false,
+      "validation_points_peak_T": 0.008288473506818625,
+      "volumes_mm3": {
+        "air": 179799491.13563964,
+        "probe_hp1_hexapole/pole_pin_1": 2726.265090820851,
+        "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+        "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+        "probe_hp1_hexapole/pole_pin_5": 2726.007343362719,
+        "probe_hp1_hexapole/pole_pin_6": 2726.007343362724,
+        "probe_hp1_hexapole/pole_root_sleeve_1": 16.87402886123648,
+        "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236603,
+        "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236603,
+        "probe_hp1_hexapole/pole_root_sleeve_4": 16.874028861236432,
+        "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236468,
+        "probe_hp1_hexapole/pole_root_sleeve_6": 16.87402886123648,
+        "probe_hp1_hexapole/return_yoke": 41273.85367504219,
+        "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+        "probe_hp2_hexapole/pole_pin_2": 2738.024554656359,
+        "probe_hp2_hexapole/pole_pin_3": 2738.024554656357,
+        "probe_hp2_hexapole/pole_pin_4": 2738.024554656357,
+        "probe_hp2_hexapole/pole_pin_5": 2738.024554656358,
+        "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+        "probe_hp2_hexapole/pole_root_sleeve_1": 16.92448687217401,
+        "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217395,
+        "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174064,
+        "probe_hp2_hexapole/pole_root_sleeve_4": 16.92448687217394,
+        "probe_hp2_hexapole/pole_root_sleeve_5": 16.924486872173826,
+        "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174047,
+        "probe_hp2_hexapole/return_yoke": 41274.539702727285,
+        "probe_tl21_lens_lower_pole/body": 18138.17828188952,
+        "probe_tl21_lens_pole_sleeves/lower": 857.1295934122727,
+        "probe_tl21_lens_pole_sleeves/upper": 857.1295807053847,
+        "probe_tl21_lens_return_plates/lower": 1669.8901899535958,
+        "probe_tl21_lens_return_plates/upper": 1669.8901899540592,
+        "probe_tl21_lens_upper_pole/body": 18138.132398703216,
+        "probe_tl21_lens_yoke/body": 373221.6839480204,
+        "probe_tl22_lens_lower_pole/body": 18138.17858699887,
+        "probe_tl22_lens_pole_sleeves/lower": 857.129610354809,
+        "probe_tl22_lens_pole_sleeves/upper": 857.1295934122809,
+        "probe_tl22_lens_return_plates/lower": 1682.2700718260535,
+        "probe_tl22_lens_return_plates/upper": 1682.270071825119,
+        "probe_tl22_lens_upper_pole/body": 18138.13244035433,
+        "probe_tl22_lens_yoke/body": 372426.04969726934
+      },
+      "zero_measure_edge_splits": 0,
+      "sha256": "7d367c58c00779518913936aab42734fede297b281fe0473269a134277572450",
+      "sextupole": {
+        "HP1": {
+          "1.2_mm": {
+            "peak_T_m2": 136.70101404265841,
+            "integral_real_T_m": 0.5248090449390586,
+            "integral_imag_T_m": 3.9661384514849263
+          },
+          "1.8_mm": {
+            "peak_T_m2": 136.95064693402537,
+            "integral_real_T_m": 0.5261388616614846,
+            "integral_imag_T_m": 3.9780192145325977
+          },
+          "2.4_mm": {
+            "peak_T_m2": 137.1287352801871,
+            "integral_real_T_m": 0.5272601112328117,
+            "integral_imag_T_m": 3.9894253272477567
+          }
+        },
+        "HP2": {
+          "1.2_mm": {
+            "peak_T_m2": 137.9312524716298,
+            "integral_real_T_m": 0.027259161070679216,
+            "integral_imag_T_m": -4.0777773005639855
+          },
+          "1.8_mm": {
+            "peak_T_m2": 138.15394675409698,
+            "integral_real_T_m": 0.027319095972167882,
+            "integral_imag_T_m": -4.089811056058605
+          },
+          "2.4_mm": {
+            "peak_T_m2": 138.285085614722,
+            "integral_real_T_m": 0.027405073272460553,
+            "integral_imag_T_m": -4.101213130281234
+          }
+        }
+      }
+    }
+  },
+  "probes": {
+    "material": {
+      "controls": [
+        1.988208443823037,
+        1.2357475627484287,
+        2.423004226114047,
+        2.6349587429171883,
+        1.0,
+        1.0,
+        1.594298485007869,
+        2.987730751176518
+      ],
+      "surface": {
+        "D95_nm": 112579.74216536961,
+        "D90_nm": 111547.39562659785,
+        "rms_radius_nm": 60161.40832838576,
+        "alpha95_mrad": 30.000000132918572,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 10.0,
+        "D95_drift_nm": 0.0001630887184611411,
+        "RMS_drift_nm": 396735.78755459085,
+        "survivors": 32768,
+        "source_count": 32768,
+        "peak_mm": 2.089280948260925,
+        "clearance_mm": 0.04610506773898453
+      },
+      "table_sha256": "7d367c58c00779518913936aab42734fede297b281fe0473269a134277572450",
+      "current_floor_uA": 9.0,
+      "C2_aperture_um": 100.0,
+      "objective_A": -31.03448275862069,
+      "physical_corrector_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "max_step_mm": 0.1,
+      "specimen_z_m": 1.5991999975000002,
+      "D95_min_nm": 112579.73062469681,
+      "D95_waist_bracket_nm": [
+        -1.0,
+        -0.5,
+        0.0
+      ],
+      "RMS_waist_offset_nm": 300000.0,
+      "first_max_core_offset_nm": null,
+      "peak_core_nA": 0.0,
+      "losses_near_focus": false,
+      "xy_waists_mm": {
+        "C2_to_C3": [
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ],
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_sample": [
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ],
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ]
+        ]
+      },
+      "source_id_sha256": "7c2e81a844e02bccdb0717307eb3597e460c028a5bba84ffc3ba464e9a249a4f",
+      "surface_array_sha256": "e37298017728b20104f2a1a455c650c3b8094ba21b8c2d2d3a5bf66fcc30eacd",
+      "source_prefix_shape_at_fixed_controls": {
+        "8192": {
+          "D95_nm": 112562.8369554728,
+          "alpha95_mrad": 30.001027352536422,
+          "core_count": 0
+        },
+        "16384": {
+          "D95_nm": 112644.03437904069,
+          "alpha95_mrad": 30.00862752635461,
+          "core_count": 0
+        },
+        "32768": {
+          "D95_nm": 112579.74216536961,
+          "alpha95_mrad": 30.000000132918572,
+          "core_count": 0
+        }
+      },
+      "effective_survivor_count": 32768.0,
+      "background_signed_groups_A": {
+        "condenser_lens_2": [
+          -854.0803948343472,
+          815.7907534684721,
+          -677.0470704456781,
+          498.4869828990379
+        ],
+        "condenser_lens_3": [
+          -39.844626879762174,
+          39.72094157037321,
+          -27.82137133255188,
+          12.902021363580124
+        ],
+        "mini_condenser": [
+          6883.310064411554,
+          -8574.807580999754,
+          9300.329294463676
+        ],
+        "adapter_lens": [
+          -567.0513715704177,
+          208.53995358758021,
+          1850.6308430999263
+        ],
+        "probe_tl12_lens": [
+          -4878.051332032708,
+          2219.8868323602355,
+          8487.942371038498
+        ],
+        "condenser_lens_1": [
+          24.485319258658716,
+          104.61552679234029,
+          -699.5023255949163,
+          1262.7280933808804
+        ]
+      }
+    },
+    "vacuum_same_current": {
+      "controls": [
+        1.9866748949184814,
+        1.2357475627484287,
+        2.422942016911524,
+        2.6349587429171883,
+        1.0,
+        1.0,
+        1.594298485007869,
+        2.987730751176518
+      ],
+      "surface": {
+        "D95_nm": 112208.90273427745,
+        "D90_nm": 111859.43686450754,
+        "rms_radius_nm": 59984.56565244526,
+        "alpha95_mrad": 30.000000132524352,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 10.0,
+        "D95_drift_nm": 0.00019045431943615047,
+        "RMS_drift_nm": 408039.9650207353,
+        "survivors": 32768,
+        "source_count": 32768,
+        "peak_mm": 2.0301516710337513,
+        "clearance_mm": 0.04606921652189361
+      },
+      "table_sha256": "c931f962ba05ae96d4d1284a6097047a4916fd69c1c9bd1a7a3e556f1b377082",
+      "current_floor_uA": 9.0,
+      "C2_aperture_um": 100.0,
+      "objective_A": -31.03448275862069,
+      "physical_corrector_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "max_step_mm": 0.1,
+      "specimen_z_m": 1.5991999975000002,
+      "D95_min_nm": 112208.89116190665,
+      "D95_waist_bracket_nm": [
+        -1.0,
+        -0.5,
+        0.0
+      ],
+      "RMS_waist_offset_nm": 300000.0,
+      "first_max_core_offset_nm": null,
+      "peak_core_nA": 0.0,
+      "losses_near_focus": false,
+      "xy_waists_mm": {
+        "C2_to_C3": [
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ],
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_sample": [
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ],
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ]
+        ]
+      },
+      "source_id_sha256": "7c2e81a844e02bccdb0717307eb3597e460c028a5bba84ffc3ba464e9a249a4f",
+      "surface_array_sha256": "5bfddfada92650eb7ffb0d498748ab279eeeb095e640ecc3c0a482b79394759e",
+      "source_prefix_shape_at_fixed_controls": {
+        "8192": {
+          "D95_nm": 112324.70240103842,
+          "alpha95_mrad": 29.871136863172634,
+          "core_count": 0
+        },
+        "16384": {
+          "D95_nm": 112138.46175150172,
+          "alpha95_mrad": 29.919537877556177,
+          "core_count": 0
+        },
+        "32768": {
+          "D95_nm": 112208.90273427745,
+          "alpha95_mrad": 30.000000132524352,
+          "core_count": 0
+        }
+      },
+      "effective_survivor_count": 32768.0,
+      "background_signed_groups_A": {
+        "condenser_lens_2": [
+          -853.4216238398019,
+          815.1615161165158,
+          -676.5248491481877,
+          498.1024889246083
+        ],
+        "condenser_lens_3": [
+          -39.844626879762174,
+          39.72094157037321,
+          -27.82137133255188,
+          12.902021363580124
+        ],
+        "mini_condenser": [
+          6883.133339490809,
+          -8574.587427879236,
+          9300.090514001646
+        ],
+        "adapter_lens": [
+          -567.0513715704177,
+          208.53995358758021,
+          1850.6308430999263
+        ],
+        "probe_tl12_lens": [
+          -4878.051332032708,
+          2219.8868323602355,
+          8487.942371038498
+        ],
+        "condenser_lens_1": [
+          24.485319258658716,
+          104.61552679234029,
+          -699.5023255949163,
+          1262.7280933808804
+        ]
+      }
+    },
+    "vacuum_equal_integral": {
+      "controls": [
+        1.9858261837987945,
+        1.2357475627484287,
+        2.4228934677461362,
+        2.6349587429171883,
+        1.0,
+        1.0,
+        1.594298485007869,
+        2.987730751176518
+      ],
+      "surface": {
+        "D95_nm": 112208.42717245295,
+        "D90_nm": 111859.02213178814,
+        "rms_radius_nm": 59982.760705471184,
+        "alpha95_mrad": 30.000000114437434,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 10.0,
+        "D95_drift_nm": 0.005720304401481703,
+        "RMS_drift_nm": 408109.8922524961,
+        "survivors": 32768,
+        "source_count": 32768,
+        "peak_mm": 2.0302152598982843,
+        "clearance_mm": 0.046049325765666844
+      },
+      "table_sha256": "f8c7d3af95de7f477fee17c70f2f55e3d92152a018910ba1bfe5670439922a99",
+      "current_floor_uA": 9.0,
+      "C2_aperture_um": 100.0,
+      "objective_A": -31.03448275862069,
+      "physical_corrector_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 14.531851884249068,
+        "probe_tl22_lens": -14.531851884249068
+      },
+      "max_step_mm": 0.1,
+      "specimen_z_m": 1.5991999975000002,
+      "D95_min_nm": 112208.41608971324,
+      "D95_waist_bracket_nm": [
+        -1.0,
+        -0.5,
+        0.0
+      ],
+      "RMS_waist_offset_nm": 300000.0,
+      "first_max_core_offset_nm": -281500.0,
+      "peak_core_nA": 0.30517578125,
+      "losses_near_focus": false,
+      "xy_waists_mm": {
+        "C2_to_C3": [
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ],
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_sample": [
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ],
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ]
+        ]
+      },
+      "source_id_sha256": "7c2e81a844e02bccdb0717307eb3597e460c028a5bba84ffc3ba464e9a249a4f",
+      "surface_array_sha256": "929dac7d5f3ebd3cec44b65359b5a051ad90b77edbe4bce8bacfcd9838e4b599",
+      "source_prefix_shape_at_fixed_controls": {
+        "8192": {
+          "D95_nm": 112324.2100860217,
+          "alpha95_mrad": 29.87114286156763,
+          "core_count": 0
+        },
+        "16384": {
+          "D95_nm": 112137.97684038892,
+          "alpha95_mrad": 29.919551002071085,
+          "core_count": 0
+        },
+        "32768": {
+          "D95_nm": 112208.42717245295,
+          "alpha95_mrad": 30.000000114437434,
+          "core_count": 0
+        }
+      },
+      "effective_survivor_count": 32768.0,
+      "background_signed_groups_A": {
+        "condenser_lens_2": [
+          -853.0570405736688,
+          814.8132776378204,
+          -676.2358365051604,
+          497.8896986375939
+        ],
+        "condenser_lens_3": [
+          -39.844626879762174,
+          39.72094157037321,
+          -27.82137133255188,
+          12.902021363580124
+        ],
+        "mini_condenser": [
+          6882.995420227139,
+          -8574.415616477947,
+          9299.904165492546
+        ],
+        "adapter_lens": [
+          -567.0513715704177,
+          208.53995358758021,
+          1850.6308430999263
+        ],
+        "probe_tl12_lens": [
+          -4878.051332032708,
+          2219.8868323602355,
+          8487.942371038498
+        ],
+        "condenser_lens_1": [
+          24.485319258658716,
+          104.61552679234029,
+          -699.5023255949163,
+          1262.7280933808804
+        ]
+      }
+    },
+    "coarser_mesh": {
+      "controls": [
+        1.9882245037117092,
+        1.2357475627484287,
+        2.4230220160625437,
+        2.6349587429171883,
+        1.0,
+        1.0,
+        1.594298485007869,
+        2.987730751176518
+      ],
+      "surface": {
+        "D95_nm": 112572.64333396088,
+        "D90_nm": 111512.66759475894,
+        "rms_radius_nm": 60144.299343223116,
+        "alpha95_mrad": 30.00000013207309,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 10.0,
+        "D95_drift_nm": -8.244860955215723e-06,
+        "RMS_drift_nm": 396650.57012480346,
+        "survivors": 32768,
+        "source_count": 32768,
+        "peak_mm": 2.0901879245851323,
+        "clearance_mm": 0.0461054951081072
+      },
+      "table_sha256": "8375a4eb1fca72f607b23c27ce3246ba821bfd4794c66003d352d196d3599777",
+      "current_floor_uA": 9.0,
+      "C2_aperture_um": 100.0,
+      "objective_A": -31.03448275862069,
+      "physical_corrector_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "max_step_mm": 0.1,
+      "specimen_z_m": 1.5991999975000002,
+      "D95_min_nm": 112572.63182563163,
+      "D95_waist_bracket_nm": [
+        -1.0,
+        -0.5,
+        0.0
+      ],
+      "RMS_waist_offset_nm": 300000.0,
+      "first_max_core_offset_nm": null,
+      "peak_core_nA": 0.0,
+      "losses_near_focus": false,
+      "xy_waists_mm": {
+        "C2_to_C3": [
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ],
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_sample": [
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ],
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ]
+        ]
+      },
+      "source_id_sha256": "7c2e81a844e02bccdb0717307eb3597e460c028a5bba84ffc3ba464e9a249a4f",
+      "surface_array_sha256": "9b069ec624fc2b5d24af7c18c4e9eef81104016e5400b041428b553b913d7647",
+      "source_prefix_shape_at_fixed_controls": {
+        "8192": {
+          "D95_nm": 112538.00148165642,
+          "alpha95_mrad": 29.996684491740265,
+          "core_count": 0
+        },
+        "16384": {
+          "D95_nm": 112680.1434883793,
+          "alpha95_mrad": 30.011152273963276,
+          "core_count": 0
+        },
+        "32768": {
+          "D95_nm": 112572.64333396088,
+          "alpha95_mrad": 30.00000013207309,
+          "core_count": 0
+        }
+      },
+      "effective_survivor_count": 32768.0,
+      "background_signed_groups_A": {
+        "condenser_lens_2": [
+          -854.0872937267147,
+          815.7973430736622,
+          -677.0525393393502,
+          498.4910094614815
+        ],
+        "condenser_lens_3": [
+          -39.844626879762174,
+          39.72094157037321,
+          -27.82137133255188,
+          12.902021363580124
+        ],
+        "mini_condenser": [
+          6883.360602388422,
+          -8574.87053812694,
+          9300.397578446578
+        ],
+        "adapter_lens": [
+          -567.0513715704177,
+          208.53995358758021,
+          1850.6308430999263
+        ],
+        "probe_tl12_lens": [
+          -4878.051332032708,
+          2219.8868323602355,
+          8487.942371038498
+        ],
+        "condenser_lens_1": [
+          24.485319258658716,
+          104.61552679234029,
+          -699.5023255949163,
+          1262.7280933808804
+        ]
+      }
+    },
+    "half_transport_step": {
+      "controls": [
+        1.9882084420603945,
+        1.2357475627484287,
+        2.4230042180299116,
+        2.6349587429171883,
+        1.0,
+        1.0,
+        1.594298485007869,
+        2.987730751176518
+      ],
+      "surface": {
+        "D95_nm": 112579.73130471459,
+        "D90_nm": 111547.41074327244,
+        "rms_radius_nm": 60161.41206420961,
+        "alpha95_mrad": 30.00000000001426,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 10.0,
+        "D95_drift_nm": -1.7203317072927397e-05,
+        "RMS_drift_nm": 396735.8745587597,
+        "survivors": 32768,
+        "source_count": 32768,
+        "peak_mm": 2.089272853812667,
+        "clearance_mm": 0.04610506770556831
+      },
+      "table_sha256": "7d367c58c00779518913936aab42734fede297b281fe0473269a134277572450",
+      "current_floor_uA": 9.0,
+      "C2_aperture_um": 100.0,
+      "objective_A": -31.03448275862069,
+      "physical_corrector_A": {
+        "probe_hp1_hexapole": 1.0,
+        "probe_hp2_hexapole": -1.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "max_step_mm": 0.05,
+      "specimen_z_m": 1.5991999975000002,
+      "D95_min_nm": 112579.73130471459,
+      "D95_waist_bracket_nm": [
+        -0.5,
+        0.0,
+        0.5
+      ],
+      "RMS_waist_offset_nm": 300000.0,
+      "first_max_core_offset_nm": null,
+      "peak_core_nA": 0.0,
+      "losses_near_focus": false,
+      "xy_waists_mm": {
+        "C2_to_C3": [
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ],
+          [
+            [
+              726.0000000000031,
+              726.7500000000031
+            ],
+            [
+              778.5000000000051,
+              779.2500000000051
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_sample": [
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ],
+          [
+            [
+              1536.0000000000339,
+              1536.7500000000339
+            ]
+          ]
+        ]
+      },
+      "source_id_sha256": "7c2e81a844e02bccdb0717307eb3597e460c028a5bba84ffc3ba464e9a249a4f",
+      "surface_array_sha256": "672bf0a7e726cb85e179ab42b8a3698dec2e13c51a05b4cc2ce6adccc7e18848",
+      "source_prefix_shape_at_fixed_controls": {
+        "8192": {
+          "D95_nm": 112562.85150487776,
+          "alpha95_mrad": 30.001026811107074,
+          "core_count": 0
+        },
+        "16384": {
+          "D95_nm": 112644.04880637197,
+          "alpha95_mrad": 30.00862763539244,
+          "core_count": 0
+        },
+        "32768": {
+          "D95_nm": 112579.73130471459,
+          "alpha95_mrad": 30.00000000001426,
+          "core_count": 0
+        }
+      },
+      "effective_survivor_count": 32768.0,
+      "background_signed_groups_A": {
+        "condenser_lens_2": [
+          -854.0803940771638,
+          815.7907527452343,
+          -677.0470698454433,
+          498.4869824571052
+        ],
+        "condenser_lens_3": [
+          -39.844626879762174,
+          39.72094157037321,
+          -27.82137133255188,
+          12.902021363580124
+        ],
+        "mini_condenser": [
+          6883.31004144601,
+          -8574.80755239068,
+          9300.329263433963
+        ],
+        "adapter_lens": [
+          -567.0513715704177,
+          208.53995358758021,
+          1850.6308430999263
+        ],
+        "probe_tl12_lens": [
+          -4878.051332032708,
+          2219.8868323602355,
+          8487.942371038498
+        ],
+        "condenser_lens_1": [
+          24.485319258658716,
+          104.61552679234029,
+          -699.5023255949163,
+          1262.7280933808804
+        ]
+      }
+    }
+  },
+  "archive_baseline": {
+    "case": "armco",
+    "ni": -4500.0,
+    "controls": [
+      0.9930847021697335,
+      0.5761927893239965,
+      0.36080614957569745,
+      3.741058574895399,
+      0.8931301330173161,
+      2.3550076726519635,
+      1.3809549169364583,
+      0.8648348571788197
+    ],
+    "level": "gap-fine",
+    "padding": 8,
+    "step_mm": 0.1,
+    "hex_scale": 0,
+    "source_count": 32768,
+    "surface": {
+      "D95_nm": 6300.321447934436,
+      "D90_nm": 6272.154293217488,
+      "rms_radius_nm": 3230.8922250151986,
+      "alpha95_mrad": 29.99999989725998,
+      "core_count": 0,
+      "core_50pm_nA": 0.0,
+      "transmitted_uA": 9.986572265625
+    },
+    "D95_min_nm": 6300.321447934436,
+    "D95_waist_offset_nm": 0.0,
+    "D95_waist_bracket_nm": [
+      -0.5,
+      0.0,
+      0.5
+    ],
+    "rms_waist_offset_nm": 35500.0,
+    "maximum_core_nA": 1.220703125,
+    "max_surviving_radius_mm": 2.8736800437993955,
+    "focus_counts_stable": true,
+    "min_clearance_mm": 0.006319956200604229,
+    "losses": {
+      "objective_lens": 43,
+      "objective_lens_excitation_coil": 1
+    },
+    "D95_surface_minus_min_nm": 0.0,
+    "x_y_waist_brackets_mm": {
+      "C2_to_C3": [
+        [
+          [
+            753.1999993404108,
+            753.9999993386705
+          ]
+        ],
+        [
+          [
+            753.1999993404108,
+            753.9999993386705
+          ]
+        ]
+      ],
+      "C3_to_ADL": [
+        [],
+        []
+      ],
+      "Mini_to_sample": [
+        [
+          [
+            1599.2344975,
+            1599.2349975000002
+          ]
+        ],
+        [
+          [
+            1599.2359975000002,
+            1599.2364975000003
+          ]
+        ]
+      ]
+    }
+  },
+  "objective_field": {
+    "ampere_turns": 36000,
+    "level": "gap-fine",
+    "padding": 8,
+    "shape": [
+      218,
+      804
+    ],
+    "iterations": 8,
+    "residual": 1.0082601146335692e-10,
+    "peak_material_T": 1.9177971145193735,
+    "peak_axis_T": 0.21848149575279768,
+    "sample_Bz_T": 0.07025705942415474,
+    "field_squared_integral_T2m": 0.00606885396318472,
+    "max_potential_fit_error_T": 0.0051393077523342046,
+    "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+    "field_digest": "a65006296399f1c849261c5f5de44cb5fee2e00981b3eb80560dca46ded48a47",
+    "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+    "parts": [
+      "objective_lens",
+      "objective_lens_excitation_coil",
+      "objective_lens_housing",
+      "objective_lens_yoke",
+      "objective_lower_pole",
+      "objective_pole_sleeves",
+      "objective_return_plates",
+      "objective_terminal_vacuum_tube",
+      "objective_upper_pole"
+    ],
+    "elapsed_s": 18.01290230000086
+  }
+}

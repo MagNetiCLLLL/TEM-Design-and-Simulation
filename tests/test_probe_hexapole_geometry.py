@@ -43,7 +43,15 @@ def _cylindrical_interface_area(body, radius):
     vertices = np.asarray(mesh.vert_properties)[:, :3]
     faces = np.asarray(mesh.tri_verts)
     radial = np.linalg.norm(vertices[:, :2], axis=1)
-    interface = np.all(np.abs(radial[faces] - radius) < 1e-7, axis=1)
+    # Boundary clipping inserts vertices on polygon chords as well as circle vertices.
+    # All three vertices must lie in the 96-sided chord band, and the face normal
+    # must point radially outward (exclude horizontal end faces and tangential sides).
+    triangles = vertices[faces]
+    normals = np.cross(triangles[:, 1]-triangles[:, 0], triangles[:, 2]-triangles[:, 0])
+    centres = triangles.mean(axis=1)[:, :2]
+    aligned = np.sum(normals[:, :2]*centres, axis=1) > .99*np.linalg.norm(normals, axis=1)*np.linalg.norm(centres, axis=1)
+    interface = aligned & np.all((radial[faces] >= radius*math.cos(math.pi/96)-1e-7)
+                                 & (radial[faces] <= radius+1e-7), axis=1)
     triangles = vertices[faces[interface]]
     return np.linalg.norm(np.cross(triangles[:, 1] - triangles[:, 0],
                                    triangles[:, 2] - triangles[:, 0]), axis=1).sum() / 2
@@ -97,8 +105,8 @@ def test_saved_hosts_preserve_material_identity_and_open_envelope(host):
         assert vertices[:, 2].min() >= d["start_mm"] - 1e-7
         assert vertices[:, 2].max() <= d["end_mm"] + 1e-7
     yoke_box = bodies["return_yoke"].bounding_box()
-    assert yoke_box[2] == pytest.approx(row["local_start_z_mm"])
-    assert yoke_box[5] == pytest.approx(row["local_end_z_mm"])
+    assert yoke_box[2] == pytest.approx(row["local_center_z_mm"] - d["yoke_length_mm"]/2)
+    assert yoke_box[5] == pytest.approx(row["local_center_z_mm"] + d["yoke_length_mm"]/2)
     assert yoke_box[3] - yoke_box[0] == pytest.approx(row["mechanical_outer_diameter_mm"])
 
 

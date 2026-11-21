@@ -73,16 +73,16 @@ The following registration points cover the seven column variants with the same 
 
 ![Native transverse sections through a probe hexapole and an image hexapole, showing separate pins, windings and outer yokes.](hexapole-sections.png)
 
-The probe-side sequence toward the specimen is **ADL → HP2 → TL22 → TL21 → HP1 → TL12 → Mini → upper objective** when listing the main lenses and hexapoles. The two central transfer lenses have their own opposed round poles. At each HP station six radial pins point toward the axis, with a winding around each pin and a common return yoke around the outside. The CEOS paper identifies six ferromagnetic pins and a nickel–iron alloy for its photographed CESCOR. Its Ø152 yoke, Ø8 pole bore and 30 mm axial pole length belong to that published device. The simulator's two probe hexapoles use the dimensions below. [Müller et al., p. 443 and Fig. 3 on p. 444](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)
+The probe-side sequence toward the specimen is **ADL → HP2 → TL22 → TL21 → HP1 → TL12 → Mini → upper objective** when listing the main lenses and hexapoles. The two central transfer lenses have their own opposed round poles. At each HP station six radial pins point toward the axis, with a winding around each pin and a common return yoke around the outside. The CEOS paper identifies six ferromagnetic pins and a nickel–iron alloy for its photographed CESCOR. The two probe hexapoles use the published Ø152 yoke, Ø8 pole bore and 30 mm axial pole length. The 16 mm yoke axial length is nominal. [Müller et al., p. 443 and Fig. 3 on p. 444](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)
 
 | Station | Centre *z* | Axial limits of the six pole noses | Axial limits of the outer return ring | Radial section in the model |
 | --- | ---: | ---: | ---: | --- |
-| Probe HP2 | 1144.50 | 1137.22–1151.78 | 1135.4–1153.6 | Flat tapered noses begin at *r* = 12. Return ring *r* = 31.89–37.5. |
-| Probe HP1 | 1300.85 | 1293.61–1308.09 | 1291.8–1309.9 | Same radial section as probe HP2. |
+| Probe HP2 | 1144.50 | 1129.50–1159.50 | 1136.50–1152.50 | Flat tapered noses begin at *r* = 4. Return ring *r* = 70.39–76. |
+| Probe HP1 | 1300.85 | 1285.85–1315.85 | 1292.85–1308.85 | Same radial section as probe HP2. |
 | Image HP1 | 1976.40 | 1961.4–1991.4 | 1954.4–1998.4 | Sector shoes span *r* = 4–21.2. Return ring *r* = 71.08–90. |
 | Image HP2 | 2120.40 | 2105.4–2135.4 | 2098.4–2142.4 | Same radial section as image HP1. |
 
-**Probe pole shape.** Each nose widens tangentially from 2.448 to 4.896 over a radial run of 8.925, then joins a straight radial core. The six pin axes are 60° apart. The main winding packs lie along those cores, between radial coordinates 22.71 and 29.595 on a pin centreline. At the HP stations the DPH1/DPH2 steering windings occupy a separate layer in the material bore. [Probe HP geometry](../cad-probe-corrector.md) · [Installed pin and winding shapes](../../../src/temsim/cad_multipoles.py)
+**Probe pole shape.** Each nose widens tangentially from 2.448 to 4.896 over a nominal radial run of 5, then joins a straight radial core. The six pin axes are 60° apart. The main winding packs lie along those cores, between radial coordinates 22.71 and 29.595 on a pin centreline. At the HP stations the DPH1/DPH2 steering windings occupy a separate layer in the material bore. [Probe HP geometry](../cad-probe-corrector.md) · [Installed pin and winding shapes](../../../src/temsim/cad_multipoles.py)
 
 **Image corrector.** The main sequence toward the detector is **TL11 → TL12 → HP1 → TL21 → TL22 → HP2 → ADL**. The native image HP has a 39° sector shoe joined to a radial stem. The main winding packs lie along the stems and separate DPH steering conductors are allocated at *r* = 26–27 between the pins. CEOS documents the station sequence and the pin/coil/yoke construction family. The sector profile, radial dimensions, installed angles and joints are engineering choices. [CEOS image-corrector layout, slide 26](https://www.ceos-gmbh.de/de/grundlagen/Workshop-Beitraege/01_How-do-aberration-correctors-work-pdf.pdf#page=26) · [Müller et al., Fig. 5 and accompanying author text](https://www.researchgate.net/figure/Boundary-representation-of-a-single-hexapole-element-with-yoke-pole-pins-and-coils_fig5_243652744) · [Image winding positions](../cad-image-corrector-channels.md)
 
@@ -114,7 +114,7 @@ Each corrector adapter and round transfer lens contains **one shoulder sleeve an
 
 ## Pole materials
 
-In **Model Inspector → Pole materials**, select the installed objective, probe corrector or image corrector. Select a component family and then one component or all listed components. The upper and lower round-lens returns can be assigned independently. Each hexapole stage groups its six pole pins and its six root sleeves separately. Saving updates the selected column variant. The shipped pole grade is recrystallization-annealed ARMCO pure iron.
+In **Model Inspector → Pole materials**, select the installed objective, probe corrector or image corrector. Select a component family and then one component or all listed components. The upper and lower round-lens returns can be assigned independently. Each hexapole stage groups its six pole pins and its six root sleeves separately. Saving updates the selected column variant. Round poles use the ARMCO pure-iron default. Probe HP1/HP2 pins use solid PERMENORM 5000 H2 as a sourced Ni–Fe proxy.
 
 **Open datasheet (PDF)** opens the manufacturer's document for the selected grade in the default browser. The same link is available beside the nonlinear B–H material selector and in the 3D part editor's **Materials** tab. In an archived column, the pole material link follows the saved assignment.
 
@@ -125,7 +125,7 @@ In **Model Inspector → Pole materials**, select the installed objective, probe
 | PERMENORM 5000 H2 | 995 | 1.514 | [VAC, Static Initial Curve](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20PERMENORM%205000%20H2%20Solid.pdf) |
 | MUMETALL | 99 | 0.756 | [VAC, Static Initial Curve](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20MUMETALL%20Solid.pdf) |
 
-The library records each source PDF checksum, figure, digitized pairs and demagnetized origin. Round-lens nonlinear FEM interpolates the initial magnetization curve and rejects final solutions beyond its digitized range. Linear FEM uses the secant permeability at the reference point recorded for each grade. Hexapole material assignments identify the 3D solids. Computing their nonlinear multipole fields would require a 3D magnetic solver.
+The library records each source PDF checksum, figure, digitized pairs and demagnetized origin. Round-lens nonlinear FEM interpolates the initial magnetization curve and rejects final solutions beyond its digitized range. Linear FEM uses the secant permeability at the reference point recorded for each grade. The 3D solver reads the individual probe HP assignments and both TL magnetic circuits for each signed-current operating point. [CESCOR field and probe comparison](../../development/probe_corrector_cescor_20261121/README.md)
 
 **Objective → Terminal vacuum tube** assigns the last nominal 40 mm of the installed wall up to the upper pole. The default stainless-steel approximation uses relative permeability 1. Selecting a magnetic grade uses the same wall dimensions and open bore. The actual tube alloy, contact and effective magnetic length are unmeasured.
 
@@ -133,7 +133,11 @@ In **Model Inspector**, select **Refine pole bores and faces** to add radial poi
 
 The most discriminating records would be a longitudinal section through the condenser cartridge and through each corrector transfer lens, a transverse section through a principal HP and through an auxiliary station, and a material list keyed to those sections. Each drawing needs one common axial datum to register its faces to the specimen. At the upper objective, the tube's alloy and the mating-face stack would distinguish a vacuum joint from a joint that also conducts appreciable flux. [Probe transfer-lens joints](../probe-lower-transfer-lenses-2026-10-21.md) · [Current winding allocations](../../../src/temsim/multipole_winding.py)
 
-## What the 3D files verify
+## Archived 3D exports
+
+The linked STEP and illustrations predate the November cartridge resize. Use the installed model for current HP and DPH dimensions.
+
+### What the exported files verify
 
 The default probe STEP contains **90** separately selectable pole, sleeve and yoke solids. The probe + CETCOR STEP contains **152**. Reimport preserved each solid's name, colour, material layer, bounds and volume. A coaxial Ø5.75 mm cylinder cleared every exported solid in both assemblies. For all 48 new mating interfaces in the probe STEP and 102 in the combined STEP, solid intersections had zero volume and the mating faces had positive contact area. Each check covered both sides of each hexapole root sleeve and the pole–sleeve–plate–yoke path at each end of each round lens. The auxiliary sleeves surround copper with clearance. These are fits in the nominal CAD.
 

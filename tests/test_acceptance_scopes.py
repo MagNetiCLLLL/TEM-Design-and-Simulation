@@ -187,7 +187,7 @@ def test_new_lanes_explicitly_cover_reviewed_feature_and_runtime_boundaries():
             "test_lens_pose_clipping.py", "test_lens_pose_transport.py", "test_rigid_lens_field_registration.py",
             "test_material_interval_validation.py", "test_nonlinear_magnetostatics.py",
             "test_pole_material_library.py", "test_part_materials.py", "test_lens_material_defaults.py",
-            "test_corrector_magnetic_returns.py", "test_model_inspector.py",
+            "test_corrector_magnetic_returns.py", "test_probe_corrector_fem.py", "test_model_inspector.py",
             "test_recessed_objective_pole.py", "test_round_lens_models.py", "test_projector_iron.py",
             "test_axisymmetric_potential.py", "test_electric_potential_snapshot.py",
             "test_analytic_potential.py", "test_potential_snapshot.py", "test_potential_capture.py",

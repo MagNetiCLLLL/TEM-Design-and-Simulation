@@ -14,6 +14,7 @@ from temsim.deflector_support_geometry import (
     validate_support_installations,
 )
 from temsim.module_manifest import read_document, validate_document
+from temsim.immutable_json import thaw_json
 from temsim.part_model_3d import part_dimension_specs, part_model_from_document
 from temsim.part_model_document import PartModelDocument
 from temsim.paths import INSTRUMENT_CONFIG_ROOT
@@ -39,13 +40,15 @@ def without_ends(part):
     return {key: value for key, value in part.items() if key not in END_FIELDS}
 
 
-def test_end_covers_are_explicit_family_inference_and_leave_all_old_eleven_regions_unchanged(document):
+def test_end_covers_preserve_individual_turns_and_all_laminate_regions(document):
     by_key = rows(document)
     row = by_key[KEY]
     before = deepcopy(row)
     old = {spec.region: spec for spec in part_solids(without_ends(row), by_key)}
     new = {spec.region: spec for spec in part_solids(row, by_key)}
-    assert len(old) == 11 and len(new) == 13
+    turn_count = 4 * row["transverse_winding_turn_count_per_coil"]
+    assert sum(name.startswith("winding_turn_") for name in new) == turn_count
+    assert len(old) == 11 + turn_count and len(new) == 13 + turn_count
     assert set(new)-set(old) == set(END_REGIONS)
     for region, spec in old.items():
         assert new[region].shape == spec.shape and new[region].material == spec.material
@@ -66,7 +69,7 @@ def test_end_covers_are_explicit_family_inference_and_leave_all_old_eleven_regio
     for key, count in (("probe_dph1_coils", 13), ("probe_dp22_coils", 13),
                        ("probe_dp21_coils", 13), ("probe_dp11_coils", 13)):
         assert all(field in by_key[key] for field in END_FIELDS)
-        assert len(part_solids(by_key[key], by_key)) == count
+        assert len(part_solids(by_key[key], by_key)) == count + 4 * by_key[key]["transverse_winding_turn_count_per_coil"]
 
 
 def test_caps_touch_copper_ends_without_overlap_and_preserve_open_bore(document):
@@ -88,7 +91,7 @@ def test_caps_touch_copper_ends_without_overlap_and_preserve_open_bore(document)
                 continue
             material = _manifold(other.shape, 144)
             assert (cap ^ material).volume() < 1.e-9
-            if "winding" in other_region:
+            if other_region.startswith("winding_insulation_"):
                 assert cap.min_gap(material, 1.) == pytest.approx(0., abs=1.e-9)
     old_meshes, _ = deflector_coil_meshes(without_ends(part))
     new_meshes, notes = deflector_coil_meshes(part)
@@ -120,7 +123,7 @@ def test_bad_end_metadata_and_nonfinite_dimensions_fail_before_geometry(document
 
 def test_axial_caps_must_fit_real_hp_host_even_when_copper_allocation_still_fits(document):
     by_key = rows(document)
-    by_key[KEY][END_COVER_FIELD] = 1.86
+    by_key[KEY][END_COVER_FIELD] = (by_key[HOST]["length_mm"] - by_key[KEY]["length_mm"])/2 + .01
     assert by_key[HOST]["local_start_z_mm"] < by_key[KEY]["local_start_z_mm"]
     assert by_key[KEY]["local_end_z_mm"] < by_key[HOST]["local_end_z_mm"]
     with pytest.raises(ValueError, match="full axial winding support"):
@@ -136,8 +139,8 @@ def test_full_material_extent_rejects_a_neighbour_outside_the_copper_allocation(
     row.pop("parent_key", None)
     obstacle = {"key": "edge_obstacle", "local_start_z_mm": 701.76,
                 "local_end_z_mm": 701.78, "length_mm": .02,
-                "mechanical_inner_diameter_mm": 22.2,
-                "mechanical_outer_diameter_mm": 23.8}
+                "mechanical_inner_diameter_mm": 6.6,
+                "mechanical_outer_diameter_mm": 7.4}
     _validate_column_mechanical_overlaps([without_ends(row), obstacle])
     with pytest.raises(ValueError, match="Undeclared mechanical overlap"):
         _validate_column_mechanical_overlaps([row, obstacle])
@@ -150,7 +153,8 @@ def test_independent_copy_replacement_owns_geometry_and_restore_revalidates_atom
     copy_catalog_inputs(INSTRUMENT_CONFIG_ROOT, root, (MODULE,))
     draft = PartModelDocument(root/MODULE)
     key = draft.copy_component_from(draft.document, KEY, "copied_dph2", 2500., include_children=False)
-    assert len(part_model_from_document(draft.document, key, include_children=False).meshes) == 13
+    regions = 13 + 4 * draft.part(key)["transverse_winding_turn_count_per_coil"]
+    assert len(part_model_from_document(draft.document, key, include_children=False).meshes) == regions
     draft.update_model_3d(key, {"base": {"kind": "box", "width_mm": 10.,
                                       "height_mm": 10., "length_mm": 1.}})
     validate_document(draft.document)
@@ -165,7 +169,7 @@ def test_independent_copy_replacement_owns_geometry_and_restore_revalidates_atom
         draft.set_model_3d(key, native_configuration)
     assert draft.document == before and draft._history_index == history_index
     draft.undo()
-    assert len(part_model_from_document(draft.document, key, include_children=False).meshes) == 13
+    assert len(part_model_from_document(draft.document, key, include_children=False).meshes) == regions
     draft.redo()
     assert draft.document == before
     target = tmp_path/"replacement-dph2.toml"
@@ -185,13 +189,13 @@ def test_end_cover_edit_is_atomic_undoable_persisted_and_has_native_face_provena
     assert specs[END_COVER_FIELD].editable and specs[END_COVER_FIELD].unit == "mm"
     assert specs[END_COVER_FIELD].meaning.category == "physical"
     assert specs[END_COVER_FIELD].meaning.source_kind == "estimated"
-    for invalid in (1.86, False, 10**1000):
+    for invalid in (7.76, False, 10**1000):
         with pytest.raises(ValueError):
             draft.set_dimension(("parts", KEY, END_COVER_FIELD), invalid)
         assert draft.document == before and not draft.dirty and not draft.can_undo
     draft.set_dimension(("parts", KEY, END_COVER_FIELD), .05)
     model = part_model_from_document(draft.document, KEY, include_children=False)
-    assert len(model.meshes) == 13
+    assert len(model.meshes) == 13 + 4 * draft.part(KEY)["transverse_winding_turn_count_per_coil"]
     for mesh in model.meshes:
         if mesh.region in END_REGIONS:
             paths = {tuple(path) for metadata in mesh.surfaces.values() for path in metadata["parameter_paths"]}
@@ -226,17 +230,22 @@ def test_resolved_material_clears_true_tube_hp2_and_tl22_and_is_not_a_duplicate_
                 for spec in posed_solids(part.data, by_key)]
 
     part = assembly.part(KEY)
-    before = deepcopy(dict(part.data))
+    before = thaw_json(part.data)
     insert = material(part)
+    dims = deflector_support_dimensions(part.data)
+    offset = part.center_z_mm - part.data["local_center_z_mm"]
+    shell = _manifold(annulus(offset + dims["material_start_mm"], offset + dims["material_end_mm"],
+                              dims["material_inner_radius_mm"], dims["material_outer_radius_mm"]), 144)
+    assert max((body - shell).volume() for body in insert) < 1.e-8
     tube_row = next(p for p in physical_liner_rows(assembly) if p["key"] == CONTINUOUS_TUBE_KEY)
     tube, = tube_solids(tube_row)
     tube_body = _manifold(tube.shape, 144)
     hp = material(assembly.part(HOST))
     tl = [solid for p in assembly.parts if p.data.get("parent_key") == "probe_tl22_lens"
           for solid in material(p)]
-    for neighbours, expected in (([tube_body], 1.46), (hp, .06), (tl, 1.81)):
-        assert min(a.min_gap(b, 10.) for a in insert for b in neighbours) == pytest.approx(expected, abs=.004)
-        assert max((a ^ b).volume() for a in insert for b in neighbours) < 1.e-8
-    assert len(insert) == 13
+    for neighbours, expected in (([tube_body], .06), (hp, .06), (tl, 6.323)):
+        assert min(shell.min_gap(b, 10.) for b in neighbours) == pytest.approx(expected, abs=.004)
+        assert max((shell ^ b).volume() for b in neighbours) < 1.e-8
+    assert len(insert) == 13 + 4 * part.data["transverse_winding_turn_count_per_coil"]
     assert not part_solids(by_key[CHANNEL], by_key)
-    assert dict(part.data) == before
+    assert thaw_json(part.data) == before

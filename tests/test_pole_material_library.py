@@ -110,9 +110,14 @@ def test_inspector_saved_group_and_component_assignments(qtbot, tmp_path, monkey
             assert material_for_region(part)["material_key"] == "armco_pure_iron"
     for t in targets:
         if t.role == "Pole pieces":
-            assert material_for_region(assembly.part(t.key), t.region)["material_key"] == "armco_pure_iron"
+            grade = ("permenorm_5000_h2" if t.key in {"probe_hp1_hexapole", "probe_hp2_hexapole"}
+                     else "armco_pure_iron")
+            assert material_for_region(assembly.part(t.key), t.region)["material_key"] == grade
+    choose(panel.group, "Probe corrector")
+    assert not panel.solve_corrector.isHidden()
 
     choose(panel.group, "Image corrector")
+    assert panel.solve_corrector.isHidden()
     choose(panel.role, "Sleeves")
     choose(panel.target, "*")
     choose(panel.material, "permenorm_5000_h2")

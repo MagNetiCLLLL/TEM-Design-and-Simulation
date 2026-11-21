@@ -50,17 +50,22 @@ def test_condenser_material_details_preserve_resolved_particle_and_wave_passage(
     "probe_dp21_coils", "probe_dp22_coils",
     "probe_dph1_coils", "probe_dph2_coils",
 ))
-def test_corrector_local_twenty_mm_bore_is_inside_narrower_continuous_tube(state, key):
+def test_corrector_material_bores_admit_the_installed_liner(state, key):
     assembly = state._resolved_assembly
     part = next(part for part in assembly.parts if part.key == key)
-    assert part.data["vacuum_inner_diameter_mm"] == 20.
-    assert part.data["mechanical_clear_bore_diameter_mm"] == 20.
+    local = 8. if key.endswith("_hexapole") else 6.12 if key.startswith("probe_dph") else 20.
+    assert part.data["vacuum_inner_diameter_mm"] == local
+    assert part.data["mechanical_clear_bore_diameter_mm"] == local
     assert _diameters_at(assembly.vacuum_bore_segments, part.center_z_mm) == [5.76]
     liner, = [segment for segment in assembly.vacuum_liner_segments
                if segment.key == "@vacuum_liner:c1_c2_to_upper_objective"]
     assert liner.start_z_mm <= part.start_z_mm < part.end_z_mm <= liner.end_z_mm
     assert liner.inner_diameter_mm == 5.76
-    assert liner.outer_diameter_mm == 19.2 < part.data["mechanical_clear_bore_diameter_mm"]
+    module = next(m for m in assembly.modules if m.key == part.module_key)
+    profile = np.asarray(module.geometry["mechanical_material_tube_outer_profile_z_od_mm"])
+    actual_od = np.interp(part.data["local_center_z_mm"], profile[:, 0], profile[:, 1])
+    assert actual_od == (19.2 if local == 20. else 6.)
+    assert liner.inner_diameter_mm < actual_od < local
 
 
 def test_particle_and_wave_masks_share_the_actual_two_point_eight_eight_mm_radius(state):
@@ -113,6 +118,6 @@ def test_resolver_reacts_to_each_independent_bore_without_rewriting_material_met
     parts = tuple(tighter if candidate.key == part.key else candidate for candidate in assembly.parts)
     changed = _module_vacuum_segments(module, origin, parts)
     assert _diameters_at(changed, part.center_z_mm) == [4.]
-    assert part.data["vacuum_inner_diameter_mm"] == 20.
-    assert part.data["mechanical_clear_bore_diameter_mm"] == 20.
+    assert part.data["vacuum_inner_diameter_mm"] == 8.
+    assert part.data["mechanical_clear_bore_diameter_mm"] == 8.
     assert module.geometry["c1_c2_objective_vacuum_tube_inner_diameter_mm"] == 5.76

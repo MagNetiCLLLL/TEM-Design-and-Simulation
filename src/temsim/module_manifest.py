@@ -3055,6 +3055,20 @@ def _validate_column_mechanical_overlaps(parts):
 
     def radial_annulus(part, overlap_start, overlap_end):
         from temsim.mechanical_profiles import DEFLECTOR_COIL_PROFILES
+        if ("mechanical_hexapole_yoke_length_mm" in part
+                and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
+            from temsim.probe_hexapole_geometry import probe_hexapole_dimensions
+            d = probe_hexapole_dimensions(part)
+            centre = (d["start_mm"] + d["end_mm"]) / 2
+            full_height = max(d["yoke_length_mm"], d["coil_height_mm"] +
+                              2 * part.get("hexapole_support_outer_insulation_thickness_mm", 0),
+                              d["stem_height_mm"] + 2 * part.get("pole_root_sleeve_wall_mm", 0))
+            if overlap_end <= centre-full_height/2 or overlap_start >= centre+full_height/2:
+                radius = math.hypot(d["inner_radius_mm"] + d["taper_length_mm"], d["root_width_mm"]/2)
+                return 2*d["inner_radius_mm"], 2*radius
+        if (part.get("mechanical_profile") == MAGNETIC_LENS_ASSEMBLY
+                and "bore_diameter_mm" in part and "mechanical_outer_diameter_mm" in part):
+            return float(part["bore_diameter_mm"]), float(part["mechanical_outer_diameter_mm"])
         if (part.get("mechanical_profile") in DEFLECTOR_COIL_PROFILES
                 and part.get("model_3d", {}).get("base", {}).get("kind", "existing") == "existing"):
             from temsim.deflector_support_geometry import full_material_radial_extent

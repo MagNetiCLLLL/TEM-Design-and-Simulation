@@ -107,7 +107,7 @@ def test_editor_keeps_split_regions_and_rejects_intersecting_sleeves_atomically(
     draft = PartModelDocument(COLUMN / "C3_ProbeCorrector_ImageCorrector.toml")
     root = "probe_hp2_hexapole"
     with pytest.raises(ValueError, match="clear the winding"):
-        draft.set_dimension(("parts", root, "pole_root_sleeve_depth_mm"), 6.)
+        draft.set_dimension(("parts", root, "pole_root_sleeve_depth_mm"), 45.)
     assert not draft.can_undo
     sleeve = draft.part("image_polarizer_return_sleeve")
     rows = {p["key"]: p for p in draft.document["parts"]}

@@ -125,6 +125,18 @@ def validate_material_tube_geometry(parts, geometry):
             samples = [diameter_at(a), diameter_at(b)] + [d for z, d in points if a < z < b]
             if max(samples) >= float(pole["mechanical_bore_diameter_mm"]):
                 raise ValueError("Material tube must retain positive radial clearance inside C3 poles")
+    from temsim.deflector_support_geometry import full_material_axial_extent, full_material_radial_extent
+    for insert in parts:
+        host = by_key.get(insert.get("parent_key"), {})
+        if "mechanical_hexapole_yoke_length_mm" not in host or insert.get("mechanical_profile") != "deflector_coil_insert":
+            continue
+        a, b = full_material_axial_extent(insert)
+        limit = 2 * full_material_radial_extent(insert)[0]
+        for low, high, bore in ((a, b, limit), (host["local_start_z_mm"], host["local_end_z_mm"],
+                                               host["mechanical_inner_diameter_mm"])):
+            diameters = [diameter_at(low), diameter_at(high), *(d for z, d in points if low < z < high)]
+            if max(diameters) >= bore:
+                raise ValueError(f"Material tube must clear the {host['key']} pole tips and steering insert")
     if geometry[STATUS] != "engineering_reconstruction_not_oem" or not str(geometry[SOURCE]).strip():
         raise ValueError("Material tube details require explicit engineering, non-OEM provenance")
 

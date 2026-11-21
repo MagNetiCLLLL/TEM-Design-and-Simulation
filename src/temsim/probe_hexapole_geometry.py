@@ -50,10 +50,14 @@ def probe_hexapole_dimensions(part):
         coil_width_mm=.80*available, coil_height_mm=.70*length,
         coil_window_width_mm=.45*available, coil_window_height_mm=.48*length)
     d = {k: _number(part, PREFIX+k, default) for k, default in defaults.items()}
+    d['yoke_length_mm'] = _number(part, PREFIX+'yoke_length_mm', length)
     if any(v <= 0 for v in d.values()):
         raise ValueError(f"{part['key']}: mechanical hexapole dimensions must be positive")
     if not d['stem_height_mm'] <= d['pole_length_mm'] <= length+1e-9:
         raise ValueError(f"{part['key']}: mechanical hexapole pole length must enclose the stem and fit the envelope")
+    sleeve_height = d['stem_height_mm'] + 2*float(part.get('pole_root_sleeve_wall_mm', 0))
+    if not sleeve_height <= d['yoke_length_mm'] <= length+1e-9:
+        raise ValueError(f"{part['key']}: hexapole yoke must seat the complete pin root and fit the envelope")
     if not d['stem_height_mm'] < d['coil_window_height_mm'] < d['coil_height_mm'] <= length+1e-9:
         raise ValueError(f"{part['key']}: hexapole coil window must clear the stem and fit the axial envelope")
     if not d['tip_width_mm'] < d['root_width_mm'] < d['coil_window_width_mm'] < d['coil_width_mm']:

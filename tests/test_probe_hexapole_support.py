@@ -75,7 +75,7 @@ def test_all_six_catalog_hosts_explicitly_install_bounded_outer_insulation(filen
     d=hexapole_support_dimensions(part)
     assert d['start_mm']<=d['outer_insulation_start_mm']<d['outer_insulation_end_mm']<=d['end_mm']
     assert d['coil_start_radius_mm']>d['inner_radius_mm']
-    assert part['mechanical_clear_bore_diameter_mm']==20.
+    assert part['mechanical_clear_bore_diameter_mm']==8.0
     assert all(s.parameters['original_copper_envelope_unchanged'] for s in current[25:])
 
 
@@ -112,7 +112,7 @@ def test_legacy_support_preserves_all_original_thirteen_material_shapes_and_opti
     assert len(hexapole_support_solids(p)) == 12
     assert (p['local_start_z_mm'], p['local_center_z_mm'], p['local_end_z_mm'],
             p['effective_length_mm'], p['mechanical_inner_diameter_mm'],
-            p['mechanical_outer_diameter_mm']) == (685.4, 694.5, 703.6, 6., 24., 75.)
+            p['mechanical_outer_diameter_mm']) == (679.5, 694.5, 709.5, 6., 8., 152.)
     assert all(s.parameters['passive_geometry_only'] and s.parameters['optical_field_unchanged']
                for s in specs[13:])
     assert len(hexapole_support_solids(_part(document, 'probe_hp1_hexapole'))) == 12
@@ -186,7 +186,7 @@ def test_outer_wall_edits_change_only_jackets_and_preserve_radial_end_planes(hos
     assert _body(thin[25]).bounding_box()[3]==pytest.approx(d['coil_end_radius_mm'])
 
 
-@pytest.mark.parametrize('value',[1e-100,3.,20.,1e308])
+@pytest.mark.parametrize('value',[1e-100,10.,20.,1e308])
 def test_outer_jacket_must_have_representable_wall_and_fit_existing_axial_radial_cell(value,host):
     _,part,_,_=host
     with pytest.raises(ValueError):
@@ -206,7 +206,7 @@ def test_supports_are_connected_closed_sixfold_and_materials_never_interpenetrat
         np.testing.assert_allclose([mesh.vertices.min(0), mesh.vertices.max(0)],
                                    np.asarray(body.bounding_box()).reshape(2, 3), atol=1e-9)
         radius = np.linalg.norm(mesh.vertices[:, :2], axis=1)
-        assert radius.min() >= 12.-1e-8 and radius.max() <= 37.5+1e-8
+        assert radius.min() >= 4.-1e-8 and radius.max() <= 76.+1e-8
     for (ka, a), (kb, b) in combinations(bodies.items(), 2):
         assert (a ^ b).volume() == pytest.approx(0., abs=1e-7), (ka, kb)
     for family in ('former', 'core_bedding'):
@@ -234,25 +234,25 @@ def test_former_contacts_copper_and_bedding_joins_core_without_blocking_axial_bo
     expected = (2*(d['coil_window_width_mm']+d['coil_window_height_mm'])*d['coil_radial_length_mm']
         +2*(d['coil_width_mm']*d['coil_height_mm']-d['coil_window_width_mm']*d['coil_window_height_mm']))
     assert (a.surface_area()+b.surface_area()-(a+b).surface_area())/2 == pytest.approx(expected)
-    bore = _manifold(annulus(d['start_mm'], d['end_mm'], 0., 12.), 96)
+    bore = _manifold(annulus(d['start_mm'], d['end_mm'], 0., 4.), 96)
     for body in bodies.values():
         assert (body ^ bore).volume() == pytest.approx(0., abs=1e-7)
 
 
-def test_added_supports_preserve_dph2_tube_clearance_and_existing_tl22_contact(host):
+def test_added_supports_preserve_dph2_tube_clearance_and_tl22_yoke_clearance(host):
     _, p, _, bodies = host
     # Conservative filled envelopes include every possible DPH2 winding angle
     # and the new end seals, rather than relying on an empty copper window.
-    dph = _manifold(annulus(687.21, 701.79, 11.06, 11.94), 96)
-    tube = _manifold(annulus(685.4, 703.6, 2.88, 9.6), 96)
+    dph = _manifold(annulus(687.21, 701.79, 3.06, 3.94), 96)
+    tube = _manifold(annulus(679.5, 709.5, 2.88, 3.0), 96)
     support = _body(hexapole_support_solids(p)[0])
     for region, body in bodies.items():
         assert (body ^ dph).volume() == pytest.approx(0., abs=1e-7), region
         assert (body ^ tube).volume() == pytest.approx(0., abs=1e-7), region
     assert bodies['pole_pin_1'].min_gap(dph, .1) == pytest.approx(.06, abs=1e-6)
     assert support.min_gap(dph, 15.) > 10.
-    # HP2's unchanged yoke reaches the TL22 start plane; do not claim a gap.
-    assert bodies['return_yoke'].bounding_box()[5] == pytest.approx(703.6)
+    # The 30 mm noses enter the TL bore; the 16 mm yoke clears its entrance.
+    assert 703.6 - bodies['return_yoke'].bounding_box()[5] == pytest.approx(1.1)
     assert support.bounding_box()[5] < 703.6
 
 
@@ -276,7 +276,7 @@ def test_invalid_support_dimensions_are_rejected(field, value, host):
 
 @pytest.mark.parametrize('changes', [
     {PREFIX+'former_wall_thickness_mm': .73},
-    {PREFIX+'flange_thickness_mm': 2.},
+    {PREFIX+'flange_thickness_mm': 16.},
     {PREFIX+'unknown_width_mm': .1}, {PREFIX+'profile': 'invented'},
     {PREFIX+'geometry_status': 'OEM'}, {PREFIX+'source_note': ''},
     {'geometry_template_key': 'probe_hpc_hexapole'},
@@ -303,7 +303,7 @@ def test_parameters_edit_copy_move_transform_save_and_reopen(tmp_path, host):
     draft.place_component(key, 2600.)
     copied = draft.part(key)
     assert copied['geometry_template_key'] == KEY
-    assert hexapole_support_dimensions(copied)['start_mm'] == pytest.approx(2590.9)
+    assert hexapole_support_dimensions(copied)['start_mm'] == pytest.approx(2585.)
     assert [s.shape for s in hexapole_support_solids({**copied, 'effective_length_mm': 4.})] == [
         s.shape for s in hexapole_support_solids(copied)]
     draft.update_model_3d(key, {'transform': {'scale_xy': [1.1, .9], 'rotation_deg': [5., 10., 25.]}})
@@ -335,7 +335,7 @@ def test_invalid_editor_edit_is_atomic_and_replacement_keeps_inactive_recipe(hos
     with pytest.raises(ValueError, match='pole length'):
         draft.set_model_3d(key, {'schema_version': 1, 'base': {'kind': 'existing'}})
     assert draft.document == before
-    draft.set_dimension(('parts', key, 'length_mm'), 18.2)
+    draft.set_dimension(('parts', key, 'length_mm'), 30.)
     draft.set_dimension(('parts', key, DIMENSIONS[0]), .73)
     assert hexapole_support_solids(draft.part(key)) == ()
     before = deepcopy(draft.document)

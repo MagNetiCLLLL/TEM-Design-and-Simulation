@@ -101,10 +101,10 @@ def test_native_and_cad_share_the_four_passive_layers_at_saved_tl22_contacts(doc
 
 
 @pytest.mark.parametrize("neighbor,pole,z,side,expected_gap", [
-    ("probe_hp2_hexapole", "probe_tl22_lens_upper_pole", 703.6, -1, 0.),
+    ("probe_hp2_hexapole", "probe_tl22_lens_upper_pole", 703.6, -1, 10. - np.hypot(9., 4.896/2)),
     ("probe_dp22_coils", "probe_tl22_lens_lower_pole", 729.1, 1, .10),
 ])
-def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearance(rows, neighbor, pole, z, side, expected_gap):
+def test_neighbouring_pole_noses_and_insulated_steering_coils_clear_tl22(rows, neighbor, pole, z, side, expected_gap):
     pole_spec, = posed_solids(rows[pole], rows)
     other_specs = posed_solids(rows[neighbor], rows)
     contact_areas = []
@@ -113,7 +113,9 @@ def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearanc
         opposite = [_manifold(s.shape, count) for s in other_specs]
         combined = reduce(lambda a, b: a + b, opposite)
         assert (lens ^ combined).volume() < 1e-9
-        assert lens.min_gap(combined, .5) == pytest.approx(expected_gap, abs=1e-10)
+        # An inscribed TL22 polygon approaches its true 10 mm bore from inside.
+        tolerance = 10*(1-np.cos(np.pi/count)) + 1e-8 if neighbor == "probe_hp2_hexapole" else 1e-10
+        assert lens.min_gap(combined, 2.) == pytest.approx(expected_gap, abs=tolerance)
         # Sample opposite sides of the original interface plane, then intersect
         # XY sections to distinguish actual face contact from saved clearance.
         section = lens.slice(z - side * 1e-7)
@@ -122,9 +124,9 @@ def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearanc
         positive = {name: area for name, area in contact if area > 1e-7}
         contact_areas.append(sum(positive.values()))
         if neighbor == "probe_hp2_hexapole":
-            assert set(positive) == {"return_yoke"}
-            expected = count * .5 * np.sin(2 * np.pi/count) * (33.165**2 - 31.89**2)
-            assert positive["return_yoke"] == pytest.approx(expected, abs=2e-6)
+            assert positive == {}
+            yoke, = [solid for spec, solid in zip(other_specs, opposite) if spec.region == "return_yoke"]
+            assert z - yoke.bounding_box()[5] == pytest.approx(1.1)
         else:
             # The winding allocation stops 0.14 mm from TL22. The metal
             # turns sit inside it and the outer seal is the closest body.
@@ -141,13 +143,10 @@ def test_existing_neighbor_materials_retain_saved_contacts_or_insulated_clearanc
             np.testing.assert_allclose([copper.bounding_box()[2], copper.bounding_box()[5]],
                                        [first, last], atol=1e-7, rtol=0.)
             assert positive == {}
-    if expected_gap == 0.:
-        assert all(area > 60. for area in contact_areas)
-    else:
-        assert all(area == 0. for area in contact_areas)
+    assert all(area == 0. for area in contact_areas)
 
 
-def test_constant_tube_retains_04_mm_nominal_clearance_through_both_poles(document, rows):
+def test_profiled_liner_clears_both_transfer_poles(document, rows):
     g = document["geometry"]
     tube, = tube_solids({**g, "key": CONTINUOUS_TUBE_KEY,
         "mechanical_inner_diameter_mm": g["c1_c2_objective_vacuum_tube_inner_diameter_mm"]})
@@ -157,10 +156,14 @@ def test_constant_tube_retains_04_mm_nominal_clearance_through_both_poles(docume
         for count in (32, 64, 128):
             a, b = _manifold(tube.shape, count), _manifold(pole.shape, count)
             assert (a ^ b).volume() < 1e-9
-            gap = a.min_gap(b, .5)
-            assert gap == pytest.approx(.4 * np.cos(np.pi/count), abs=2e-8)
+            gap = a.min_gap(b, 10.)
+            if key.endswith("_lower_pole"):
+                assert gap == pytest.approx(.4 * np.cos(np.pi/count), abs=2e-8)
+            else:
+                # The reduced HP liner expands back to full OD downstream of the nose.
+                assert 4.64 < gap < 4.67
             gaps.append(gap)
-        assert 0 < gaps[0] < gaps[1] < gaps[2] < .4
+        assert 0 < gaps[0] < gaps[1] < gaps[2]
 
 
 @pytest.mark.parametrize("field,value,match", [

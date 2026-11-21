@@ -1,16 +1,16 @@
 # Probe Corrector Internal 3D Structure
 
-Review date: 2026-10-18. The scope is the main hexapoles HP1/HP2 in the current C3 + Probe Corrector, together with their transfer lenses and deflection windings; this round does not rebuild the image corrector. Following the main hexapole improvements, this round adds carriers, radial insulation coverage and interlayer bonding to DPH1/DPH2 and DP11/DP21/DP22. Improvement here means mechanical representation, parameter independence and geometric validation, not optical operating-point optimization or field recalibration.
+Updated 2026-11-21. HP1 and HP2 now use published CESCOR pole dimensions. The installed hexapoles and the TL21/TL22 doublet share a nonlinear three-dimensional magnetic solve. The current dimensions below describe these four components and their steering inserts. Dated sections retain the construction assumptions and checks for earlier configurations.
 
 ## Structural evidence and accuracy
 
 [Müller et al., 2006, Advancing the Hexapole Cs-Corrector for the Scanning Transmission Electron Microscope](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3), p.443 and Figure 3 on p.444, support six radial ferromagnetic pole pins, pole tips narrowing toward the beam axis, windings around radial cores and a common return yoke. Figure 3 is an interior photograph; its caption explicitly says that the vacuum liner is not shown.
 
-The photograph cannot establish this project's exact pole-face curvature, turn count, manufacturing dimensions or material curves. The hardware outer diameter, bore and pole length in the paper were not transferred to this project. Current values are all labelled `engineering_reconstruction_not_oem`; flat tapered pole noses and rectangular bulk windings are engineering approximations at the same level, not manufacturer drawings. Detail follows the [common CAD policy](CAD_DETAIL_POLICY.md): retain material volumes without adding unsupported cooling, fasteners, individual turns or insulating supports.
+The three probe-corrector column variants use the published 152 mm yoke OD, 8 mm tip-circle ID and 30 mm axial pole length. Installed centres and azimuths follow each column. Six PERMENORM 5000 H2 pins model the reported nickel–iron family using the manufacturer's solid-material initial magnetization curve. The grade, tip taper, yoke axial length, joints and windings are engineering inputs. The TL21/TL22 shoulder sleeves and return plates retain their nominal dimensions. [VAC material datasheet](https://vacuumschmelze.com/03_Documents/Brochures/Datasheet%20PERMENORM%205000%20H2%20Solid.pdf) · [Finite-element model and probe comparison](../development/probe_corrector_cescor_20261121/README.md)
 
 ## Actual improvements to the main hexapoles in the previous stage
 
-The main hexapole comparison baseline is the existing 13-solid HP model before modification, not the earlier version showing only an annular envelope. It already had six pole pins, six copper windings and one yoke; these existing solids are not described as added hardware. This round of auxiliary-component changes retains that main hexapole geometry.
+The main hexapole comparison baseline is the existing 13-solid HP model before modification, not the earlier version showing only an annular envelope. It already had six pole pins, six copper windings and one yoke; these existing solids are not described as added hardware. This auxiliary-component baseline predates the November cartridge update.
 
 | Part | Before modification | Improvement in this round |
 | --- | --- | --- |
@@ -28,14 +28,15 @@ The table below is read from `configs/instruments/column/C3_ProbeCorrector.toml`
 
 | Item / field suffix | HP1 | HP2 |
 | --- | ---: | ---: |
-| Installation-envelope length `length_mm` | 18.1 | 18.2 |
-| Mechanical pole length `pole_length_mm` | 14.48 | 14.56 |
+| Installation-envelope length `length_mm` | 30 | 30 |
+| Mechanical pole length `pole_length_mm` | 30 | 30 |
 | Pole-tip width `tip_width_mm` | 2.448 | 2.448 |
 | Pole-root width `root_width_mm` | 4.896 | 4.896 |
-| Radial taper length `taper_length_mm` | 8.925 | 8.925 |
+| Radial taper length `taper_length_mm` | 5 | 5 |
 | Core height `stem_height_mm` | 7.24 | 7.28 |
+| Nominal axial yoke length | 16 | 16 |
 | Radial yoke thickness `yoke_thickness_mm` | 5.61 | 5.61 |
-| Winding radial start offset `coil_radial_inset_mm` | 10.71 | 10.71 |
+| Winding radial start offset `coil_radial_inset_mm` | 18.71 | 18.71 |
 | Winding radial length `coil_radial_length_mm` | 6.885 | 6.885 |
 | Winding width `coil_width_mm` | 12.24 | 12.24 |
 | Winding height `coil_height_mm` | 12.67 | 12.74 |
@@ -43,7 +44,7 @@ The table below is read from `configs/instruments/column/C3_ProbeCorrector.toml`
 | Window height `coil_window_height_mm` | 8.688 | 8.736 |
 | Optical effective-field width `effective_length_mm`, Gaussian FWHM | 10.0 | 6.0 |
 
-Except for the explicitly listed `length_mm` and `effective_length_mm`, these fields have the `mechanical_hexapole_` prefix. Both main hexapoles retain a 75 mm outer diameter, 24 mm material bore and configured 20 mm beam-clearance bore; the latter cannot be treated as a measured inner diameter of the separate vacuum-tube material model. The one-sided tangential winding/core clearance is 0.9945 mm; one-sided axial clearances are 0.724 mm for HP1 and 0.728 mm for HP2. These are clearances in the reconstructed geometry, not assembly tolerances or measurements.
+Except for the explicitly listed `length_mm` and `effective_length_mm`, these fields have the `mechanical_hexapole_` prefix. Both yokes have a 152 mm OD. A local 6 mm OD tube preserves the continuous 5.76 mm electron passage through the 8 mm pole bore. The one-sided tangential winding/core clearance is 0.9945 mm; one-sided axial clearances are 0.724 mm for HP1 and 0.728 mm for HP2. These are clearances in the reconstructed geometry, not assembly tolerances or measurements.
 
 Mechanical pole length, copper-winding height, installation-envelope length and effective-field width are independent. Changing explicit mechanical dimensions does not rewrite `effective_length_mm`; shrinking the installation envelope until saved internal dimensions no longer fit is rejected, without automatically compressing the interior.
 
@@ -70,7 +71,7 @@ The table describes current material-model coverage; “modelled” does not mea
 
 The 20 original copper windings in the five DPH/DP groups remain unchanged. The main hexapole stage's 66-solid assembly and checks are historical baselines. Adding 5 passive regions per group increases the recipe from 66 to 91 solids; old checks cannot validate the additions.
 
-Four windings represent two pairs for two-axis deflection, not a quadrupole lens. Copper-winding inner/outer diameters remain 22.2/23.8 mm, each layer is 0.32 mm thick, and angular span is 120°. These dimensions describe bulk conductor occupancy, not wire diameter, turn count or individual printed traces.
+Four windings represent two pairs for two-axis deflection, not a quadrupole lens. Copper-winding inner/outer diameters are 6.2/7.8 mm at DPH1/DPH2 and 22.2/23.8 mm at DP11/DP21/DP22, each layer is 0.32 mm thick, and angular span is 120°. These dimensions describe bulk conductor occupancy, not wire diameter, turn count or individual printed traces.
 
 ## Evidence and differences for this round of deflector supports
 
@@ -83,7 +84,7 @@ The [CEOS multipole-coils patent](https://patents.google.com/patent/US2009007953
 | Interlayer attachment | No visible material structure | Adds a bonding region representing bonded relative positioning; adhesive type, thermal conductivity and joint strength are unspecified |
 | Host mounting | Only HP nesting or position between lenses recorded | Retains the relationships; no unsupported rigid formers, screws, clamps, shoulders or connectors |
 
-The following radial material ranges are engineering allocations in mm, relative to the local beam axis. Carriers and covers are each 0.04 mm thick. Bonding thickness is the retained copper-layer spacing minus adjacent insulating layers, currently 0.08 mm.
+The table gives radii in mm at DP11/DP21/DP22. Subtract 8 mm from each listed radius at DPH1/DPH2. Carriers and covers are each 0.04 mm thick. Bonding thickness is the retained copper-layer spacing minus adjacent insulating layers, currently 0.08 mm.
 
 | Material region | Inner radius | Outer radius | Addition status |
 | --- | ---: | ---: | --- |
@@ -95,11 +96,11 @@ The following radial material ranges are engineering allocations in mm, relative
 | Y copper winding | 11.58 | 11.90 | Two existing windings |
 | Y radial cover | 11.90 | 11.94 | Added |
 
-The support stack's total inner/outer diameters are 22.12/23.88 mm, extending 0.04 mm radially on each side of the original copper windings and retaining 0.06 mm outer radial clearance in the 24 mm HP material bore. Axial positions and original copper geometry are unchanged.
+The DPH support stack has a 6.12 mm ID, 7.88 mm OD and 0.06 mm nominal clearance on each side. The 16-turn steering windings retain a calibration from the previous geometry.
 
 These cylindrical substrates, covers and bonding regions are bulk equivalent stack volumes representing radial coverage only. They do not complete conformal conductor-sidewall insulation, inter-turn gaps, vias, winding seams or the manufacturing stack. Interlayer bonding does not reconstruct the insert's actual attachment to its host. The improvement is the readability of carriers, insulation and interlayer connections, without claims of purer fields, better cooling or improved spherical-aberration performance.
 
-The separate vacuum tube currently has actual CAD material inner/outer diameters of 5.76/19.2 mm, distinct from the configured 20 mm beam-clearance bore; the previous 20/20.5 mm description does not apply to the current material recipe. This round retains that tube, with 1.46 mm radial clearance to the deflector carrier. The discrepancy between the beam-clearance declaration and actual tube bore still needs separate review and must not be obscured by this support modelling.
+The tube wall tapers from 19.2 mm to 6 mm OD and returns to 19.2 mm beyond each station. The validator checks both cartridges and steering inserts along the profile.
 
 All added materials are passive mechanical structures. They add no optical channels and do not directly derive deflection fields from CAD. Dimensions remain labelled `engineering_reconstruction_not_oem`; material colours do not imply validated properties.
 

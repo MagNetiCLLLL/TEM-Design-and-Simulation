@@ -79,11 +79,14 @@ def _split_intermediate_coil():
     document = read_document(INSTRUMENT_CONFIG_ROOT / "project_and_recording_system/NoEnergyFilter.toml")
     coil = next(p for p in document["parts"] if p["key"] == "intermediate_lens_excitation_coil")
     start, end = coil["local_start_z_mm"], coil["local_end_z_mm"]
-    coil["material_intervals_mm"] = [[start + 1., start + 61.], [end - 61., end - 1.]]
+    turns = coil["winding_turn_count"]
+    split = dict(material_intervals_mm=[[start + 1., start + 61.], [end - 61., end - 1.]],
+                 winding_interval_turn_counts=[turns // 2, turns - turns // 2])
+    coil.update(split)
     validate_document(document)
     assembly = state._resolved_assembly
     state._resolved_assembly = replace(assembly, parts=tuple(
-        replace(p, data={**p.data, "material_intervals_mm": coil["material_intervals_mm"]})
+        replace(p, data={**p.data, **split})
         if p.key == coil["key"] else p for p in assembly.parts))
     state.lens_field_map_descriptors["intermediate_lens"] = dict(
         solver="axisymmetric_linear_fem", relative_permeability=50., ampere_turns=100.,
@@ -116,9 +119,9 @@ def test_assembled_split_coil_intervals_follow_module_translation(translation_mm
     np.testing.assert_array_equal(_part_mask(part, np.full(3, radius), centres * 1e-3), [True, True, False])
     # Building the FEM payload must not rewrite the saved/CAD local coordinates.
     assert state._resolved_assembly.part(local["key"]).data["material_intervals_mm"] == local["material_intervals_mm"]
-    mesh = part_model_from_document(document, local["key"], include_children=False).meshes[0]
-    assert mesh.vertices[:, 2].min() == pytest.approx(local["material_intervals_mm"][0][0])
-    assert mesh.vertices[:, 2].max() == pytest.approx(local["material_intervals_mm"][-1][1])
+    meshes = part_model_from_document(document, local["key"], include_children=False).meshes
+    rendered = sorted((m.vertices[:, 2].min(), m.vertices[:, 2].max()) for m in meshes)
+    np.testing.assert_allclose(rendered, local["material_intervals_mm"], rtol=0, atol=1e-12)
 
 
 def test_split_coil_produces_fem_field_used_by_transport():
@@ -146,10 +149,13 @@ def test_split_coil_produces_fem_field_used_by_transport():
     for actual, expected in zip(provider.field_map.components_t, reference_map.components_t):
         np.testing.assert_allclose(actual, expected, rtol=1e-12, atol=1e-14)
     assert max(np.abs(component).max() for component in provider.field_map.components_t) > 1e-3
-    actual_bz = fields(np.array([lens.z_mm]), state)[0][0]
-    expected_bz = provider.field_at_global_positions_t([0., 0., lens.z_mm * 1e-3])[2]
-    assert abs(actual_bz) > 1e-5
-    assert actual_bz == pytest.approx(expected_bz, rel=1e-12, abs=1e-14)
+    probe_z_mm = np.r_[lens.z_mm, np.mean(local["material_intervals_mm"], axis=1) + offset]
+    points_m = np.zeros((len(probe_z_mm), 3))
+    points_m[:, 2] = probe_z_mm * 1e-3
+    actual_bz = fields(probe_z_mm, state)[0]
+    expected_bz = provider.field_at_global_positions_t(points_m)[:, 2]
+    assert np.max(np.abs(actual_bz)) > 1e-5
+    np.testing.assert_allclose(actual_bz, expected_bz, rtol=1e-12, atol=1e-14)
 
 
 @pytest.mark.parametrize("profile", ["magnetic_lens_yoke", "magnetic_excitation_coil"])

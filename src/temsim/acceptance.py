@@ -245,6 +245,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py",
                 "tests/test_pole_material_library.py", "tests/test_part_materials.py",
                 "tests/test_lens_material_defaults.py", "tests/test_corrector_magnetic_returns.py",
+                "tests/test_probe_corrector_fem.py",
                 "tests/test_model_inspector.py", "tests/test_recessed_objective_pole.py",
                 "tests/test_round_lens_models.py", "tests/test_projector_iron.py")),
             "lens-geometry/LG-04": ("Retained native potentials, immutable source coverage and explicit validity domains", (
