@@ -136,6 +136,8 @@ def test_retirement_preserves_particle_source_energy_weights_and_identity():
     from temsim.optics.electron_gun.tip_coherence import TipCoherence, tip_particle_samples
 
     gun = FieldEmissionGun()
+    # Reconstruct the prescribed historical source with its own sampling rule.
+    gun.emitter.sampling = None
     gun.emitter.coherence = TipCoherence()
     gun.emitter.emission_energy_ev = 4.
     gun.emitter.minimum_kinetic_energy_ev = 3.

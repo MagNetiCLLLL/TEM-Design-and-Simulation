@@ -149,7 +149,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_coherent_beam_gui.py", "tests/test_shared_tip_workflow.py",
                 "tests/test_electron_beam_observation.py", "tests/test_wave_beam_analysis.py",
                 "tests/test_wavefront_comparison_gui.py",
-                "tests/test_coherent_state_list.py", "tests/test_coherent_state_controller.py",
+                "tests/test_coherent_state_list.py", "tests/test_mixed_stem_gui.py",
                 "tests/test_coherent_state_set.py",
                 "tests/test_tip_source_gui.py", "tests/test_beam_comparison.py",
                 "tests/test_particle_energy_handoff.py")),
@@ -243,7 +243,10 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_rigid_lens_field_registration.py")),
             "lens-geometry/LG-03": ("Assembled material sections and linear/nonlinear FEM coordinates", (
                 "tests/test_material_interval_validation.py", "tests/test_nonlinear_magnetostatics.py",
-                "tests/test_pole_material_library.py")),
+                "tests/test_pole_material_library.py", "tests/test_part_materials.py",
+                "tests/test_lens_material_defaults.py", "tests/test_corrector_magnetic_returns.py",
+                "tests/test_model_inspector.py", "tests/test_recessed_objective_pole.py",
+                "tests/test_round_lens_models.py", "tests/test_projector_iron.py")),
             "lens-geometry/LG-04": ("Retained native potentials, immutable source coverage and explicit validity domains", (
                 "tests/test_axisymmetric_potential.py", "tests/test_electric_potential_snapshot.py",
                 "tests/test_analytic_potential.py", "tests/test_potential_snapshot.py",
@@ -308,7 +311,6 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_immutable_wave_checks.py",
                 "tests/test_potential_segment_resampling.py",
                 "tests/test_preview_segment_resampling.py",
-                "tests/test_preview_segment_resampling_gui.py",
                 "tests/test_preview_segment_carrier.py",
                 "tests/test_potential_kinetic_expansion.py", "tests/test_potential_wave_device.py",
                 "tests/test_potential_wave_chebyshev.py", "tests/test_potential_wave_carrier_chebyshev.py",
@@ -503,7 +505,7 @@ ACCEPTANCE_SCOPES = {
                 "tests/test_electron_detection.py", "tests/test_electron_beam_observation.py",
                 "tests/test_wave_beam_analysis.py", "tests/test_wave_plane_observables.py",
                 "tests/test_wavefront_comparison.py", "tests/test_wavefront_comparison_gui.py",
-                "tests/test_coherent_state_list.py", "tests/test_coherent_state_controller.py",
+                "tests/test_coherent_state_list.py", "tests/test_retired_tip_wave.py",
                 "tests/test_coherent_state_set.py")),
             "coherent-development/CW-04": ("Vacuum electrostatic boundaries do not depend on prescribed source phase", (
                 "tests/test_planar_gun_field.py",)),
