@@ -222,10 +222,12 @@ def test_no_new_hard_constraint_on_internal_directional_split():
 
 def test_existing_condenser_gate_rejects_old_branch_for_joint_alignment_callers(monkeypatch):
     from temsim.optics import condenser_topology
-    lens=lambda key,z:SimpleNamespace(key=key,z_mm=z,enabled=True,installed=True)
+    lens=lambda key,z:SimpleNamespace(key=key,z_mm=z,enabled=True,installed=True,
+        mechanical_center_from_tip_mm=z,mechanical_length_mm=.2)
     state=SimpleNamespace(simulation_mode='unified',probe_mode='nano_probe',nanoprobe_range='normal',
         lenses=[lens('condenser_lens_1',.2),lens('condenser_lens_2',1.),lens('condenser_lens_3',2.),lens('adapter_lens',3.),
-                lens('probe_tl22_lens',3.5),lens('probe_tl21_lens',4.5),lens('mini_condenser',7.)],
+                lens('probe_tl22_lens',3.5),lens('probe_tl21_lens',4.5),lens('probe_tl12_lens',4.8),lens('mini_condenser',7.)],
+        ac_deflector=SimpleNamespace(lower_z_mm=6.,mechanical_coil_length_mm=.2),
         mini_condenser=SimpleNamespace(enabled=True,installed=True,mechanical_center_from_tip_mm=7.,mechanical_length_mm=1.),
         electron_gun=SimpleNamespace(exit_plane_z_mm=0.),sample=SimpleNamespace(upper_surface_z_mm=10.))
     monkeypatch.setattr('temsim.physics.instrument_magnetic.column_dipole_fields',lambda state:[

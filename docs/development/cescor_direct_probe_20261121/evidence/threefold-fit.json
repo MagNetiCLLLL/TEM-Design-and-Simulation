@@ -1,0 +1,539 @@
+{
+  "trajectory_file": "d95.npz",
+  "trajectory_sha256": "0f9b853701834141e9339df06673a9d0f2ef985b4eca02d7b65cc0422413f42c",
+  "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+  "corrector_circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+  "corrector_table_sha256": "7d367c58c00779518913936aab42734fede297b281fe0473269a134277572450",
+  "winding_currents_file": "d95-currents.json",
+  "winding_currents_sha256": "64774bbb198097f9b3a3fb9ce259db750792df9698146dd38824bbd6eaaf332a",
+  "energy_keV": 300,
+  "C2_diameter_um": 100,
+  "specimen_z_m": 1.5991999975000002,
+  "source_A": 1.5e-05,
+  "emitted": 32768,
+  "survived": 32575,
+  "effective": 32575,
+  "surface": {
+    "D95_nm": 44686.041294883245,
+    "D90_nm": 36405.488561541315,
+    "rms_radius_nm": 11924.85793521042,
+    "alpha95_mrad": 29.979848963942064,
+    "core_count": 0,
+    "core_50pm_nA": 0.0,
+    "transmitted_uA": 14.911651611328125
+  },
+  "chief_direction": [
+    -1.2206044393847217e-05,
+    -8.024230878494298e-06,
+    0.9999999998933122
+  ],
+  "max_angle_mrad": 40.252860957818235,
+  "angle_groups": [
+    {
+      "lower_mrad": 0,
+      "upper_mrad_exclusive": 10,
+      "count": 10663,
+      "current_uA": 4.881134033203125,
+      "arrival_direction_H3": 0.010633192610082028,
+      "minimum_landing_radius_um": 0.029867960997879684,
+      "maximum_landing_radius_um": 7.154348635783724,
+      "ring": {
+        "count": 6465,
+        "current_nA": 2959.442138671875,
+        "H3": 0.9332143824457139,
+        "orientation_deg_mod120": 52.57063066644667
+      }
+    },
+    {
+      "lower_mrad": 10,
+      "upper_mrad_exclusive": 20,
+      "count": 13883,
+      "current_uA": 6.355133056640625,
+      "arrival_direction_H3": 0.023048800707071382,
+      "minimum_landing_radius_um": 0.025515152706235316,
+      "maximum_landing_radius_um": 15.266496784846828,
+      "ring": {
+        "count": 4142,
+        "current_nA": 1896.05712890625,
+        "H3": 0.41321675078547304,
+        "orientation_deg_mod120": 52.56111904662032
+      }
+    },
+    {
+      "lower_mrad": 20,
+      "upper_mrad_exclusive": 30,
+      "count": 6403,
+      "current_uA": 2.931060791015625,
+      "arrival_direction_H3": 0.07182164299174115,
+      "minimum_landing_radius_um": 7.135368708740882,
+      "maximum_landing_radius_um": 31.971324819155683,
+      "ring": {
+        "count": 0,
+        "current_nA": 0.0,
+        "H3": null,
+        "orientation_deg_mod120": null
+      }
+    },
+    {
+      "lower_mrad": 30,
+      "upper_mrad_exclusive": null,
+      "count": 1626,
+      "current_uA": 0.74432373046875,
+      "arrival_direction_H3": 0.16282812195770835,
+      "minimum_landing_radius_um": 13.27357141357334,
+      "maximum_landing_radius_um": 80.15159466355001,
+      "ring": {
+        "count": 0,
+        "current_nA": 0.0,
+        "H3": null,
+        "orientation_deg_mod120": null
+      }
+    }
+  ],
+  "angle_reference": "Actual incident mechanical direction relative to the current-weighted chief at the specimen",
+  "convention": "W=C_nm alpha^(n+1) cos(m(phi-theta))/(n+1); r=offset-grad(W); theta from +x toward +y",
+  "full_fit": {
+    "particles": 32575,
+    "condition_number_scaled_design": 20.99779843136378,
+    "coefficients": {
+      "A2": {
+        "cos_sin_mm": [
+          24.389391545892245,
+          -9.618462690766247
+        ],
+        "magnitude_mm": 26.217498822589892,
+        "azimuth_deg_mod120": 112.82572467775563,
+        "rms_displacement_at_30mrad_um": 23.595748940330903
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1572.8933040150741,
+          -1636.286450274189
+        ],
+        "magnitude_mm": 2269.6754598766674,
+        "azimuth_deg_mod120": 104.6227813453533,
+        "rms_displacement_at_30mrad_um": 1.5160140884249014
+      }
+    },
+    "in_sample_vector_rms_um": 0.4375002218570793
+  },
+  "baseline_columns": [
+    "offset_x",
+    "offset_y",
+    "C1",
+    "A1_x",
+    "A1_y",
+    "B2_x",
+    "B2_y",
+    "A2_x",
+    "A2_y",
+    "C3",
+    "S3_x",
+    "S3_y",
+    "A3_x",
+    "A3_y",
+    "C5",
+    "A5_x",
+    "A5_y",
+    "D4_x",
+    "D4_y",
+    "C41_x",
+    "C41_y",
+    "C45_x",
+    "C45_y",
+    "C52_x",
+    "C52_y",
+    "C54_x",
+    "C54_y"
+  ],
+  "fold_seed": 20261121,
+  "held_out_models": {
+    "background": {
+      "rms_um": 11.01246373425919,
+      "rms_on_observed_2_to_6um_ring_um": 3.707156333514037,
+      "rms_by_angle_group_um": [
+        1.6743489597814603,
+        6.286769737801323,
+        16.478069705465504,
+        31.693961514070168
+      ],
+      "predicted_ring": {
+        "count": 27071,
+        "current_nA": 12392.120361328125,
+        "H3": 0.029155328204410864,
+        "orientation_deg_mod120": 46.20044570610113
+      }
+    },
+    "A2": {
+      "rms_um": 0.5398686666056756,
+      "rms_on_observed_2_to_6um_ring_um": 0.46027021513304445,
+      "rms_by_angle_group_um": [
+        0.41835463470824397,
+        0.5443770563993708,
+        0.48172167551162826,
+        1.116788897622404
+      ],
+      "predicted_ring": {
+        "count": 10526,
+        "current_nA": 4818.42041015625,
+        "H3": 0.6592070011909045,
+        "orientation_deg_mod120": 52.364826844210825
+      }
+    },
+    "D4": {
+      "rms_um": 5.0010202840794316,
+      "rms_on_observed_2_to_6um_ring_um": 2.8208700911246756,
+      "rms_by_angle_group_um": [
+        1.5768587138024388,
+        4.50069482745222,
+        6.795695241103113,
+        11.398961693025488
+      ],
+      "predicted_ring": {
+        "count": 19599,
+        "current_nA": 8971.710205078125,
+        "H3": 0.13599470702180202,
+        "orientation_deg_mod120": 51.727603010095464
+      }
+    },
+    "both": {
+      "rms_um": 0.43794942615718513,
+      "rms_on_observed_2_to_6um_ring_um": 0.4362752624542046,
+      "rms_by_angle_group_um": [
+        0.446625709277849,
+        0.44615470683843156,
+        0.3866728175689374,
+        0.4960243396476616
+      ],
+      "predicted_ring": {
+        "count": 10845,
+        "current_nA": 4964.447021484375,
+        "H3": 0.6561628659376947,
+        "orientation_deg_mod120": 52.74769511729763
+      }
+    }
+  },
+  "training_fold_estimates": [
+    {
+      "A2": {
+        "cos_sin_mm": [
+          24.394035844630977,
+          -9.621236392056915
+        ],
+        "magnitude_mm": 26.222836888883347,
+        "azimuth_deg_mod120": 112.82508635509033,
+        "rms_displacement_at_30mrad_um": 23.600553199995012
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1565.5530169612118,
+          -1638.2705096428272
+        ],
+        "magnitude_mm": 2266.028797628512,
+        "azimuth_deg_mod120": 104.56659179661881,
+        "rms_displacement_at_30mrad_um": 1.513578325496826
+      }
+    },
+    {
+      "A2": {
+        "cos_sin_mm": [
+          24.38111204470314,
+          -9.607870512994742
+        ],
+        "magnitude_mm": 26.20591155313706,
+        "azimuth_deg_mod120": 112.8306921689124,
+        "rms_displacement_at_30mrad_um": 23.585320397823352
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1594.2038698303575,
+          -1648.3435215612644
+        ],
+        "magnitude_mm": 2293.146821216443,
+        "azimuth_deg_mod120": 104.68114726186175,
+        "rms_displacement_at_30mrad_um": 1.5316916225458128
+      }
+    },
+    {
+      "A2": {
+        "cos_sin_mm": [
+          24.388671616233037,
+          -9.61724554557048
+        ],
+        "magnitude_mm": 26.21638257060356,
+        "azimuth_deg_mod120": 112.82635712622788,
+        "rms_displacement_at_30mrad_um": 23.594744313543202
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1568.1383751062144,
+          -1636.2149655887374
+        ],
+        "magnitude_mm": 2266.331259347872,
+        "azimuth_deg_mod120": 104.59431079843941,
+        "rms_displacement_at_30mrad_um": 1.5137803527187197
+      }
+    },
+    {
+      "A2": {
+        "cos_sin_mm": [
+          24.393206599590247,
+          -9.62653353493463
+        ],
+        "magnitude_mm": 26.2240095353383,
+        "azimuth_deg_mod120": 112.82127598285032,
+        "rms_displacement_at_30mrad_um": 23.60160858180447
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1566.0528698057822,
+          -1619.2549320889734
+        ],
+        "magnitude_mm": 2252.6668919574845,
+        "azimuth_deg_mod120": 104.68103865075547,
+        "rms_displacement_at_30mrad_um": 1.5046533326493536
+      }
+    },
+    {
+      "A2": {
+        "cos_sin_mm": [
+          24.387796811257132,
+          -9.617530175044758
+        ],
+        "magnitude_mm": 26.215673174173116,
+        "azimuth_deg_mod120": 112.82593043277714,
+        "rms_displacement_at_30mrad_um": 23.594105856755803
+      },
+      "D4": {
+        "cos_sin_mm": [
+          1574.5031710544804,
+          -1643.1839162545211
+        ],
+        "magnitude_mm": 2275.766600136789,
+        "azimuth_deg_mod120": 104.59240708423123,
+        "rms_displacement_at_30mrad_um": 1.5200826236019167
+      }
+    }
+  ],
+  "ring_um": [
+    2.0,
+    6.0
+  ],
+  "observed_ring": {
+    "count": 10607,
+    "current_nA": 4855.499267578125,
+    "H3": 0.7301569339977861,
+    "orientation_deg_mod120": 52.56852866167943
+  },
+  "ring_after_subtracting_held_out_term": {
+    "A2": {
+      "count": 25846,
+      "current_nA": 11831.35986328125,
+      "H3": 0.11843542706879345,
+      "orientation_deg_mod120": 47.293615494162644
+    },
+    "D4": {
+      "count": 10704,
+      "current_nA": 4899.90234375,
+      "H3": 0.7307900422829064,
+      "orientation_deg_mod120": 52.605083436722005
+    }
+  },
+  "cone_limit_sensitivity": {
+    "20": {
+      "particles": 24546,
+      "condition_number_scaled_design": 241.30068747442897,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            23.83727949508271,
+            -9.53920650783358
+          ],
+          "magnitude_mm": 25.675131051774304,
+          "azimuth_deg_mod120": 112.72989735161734,
+          "rms_displacement_at_30mrad_um": 23.10761794659687
+        },
+        "D4": {
+          "cos_sin_mm": [
+            3086.787561751615,
+            -1904.1624146066983
+          ],
+          "magnitude_mm": 3626.857035035334,
+          "azimuth_deg_mod120": 109.44353239558042,
+          "rms_displacement_at_30mrad_um": 2.422534172403358
+        }
+      },
+      "in_sample_vector_rms_um": 0.44040690263873833
+    },
+    "25": {
+      "particles": 28557,
+      "condition_number_scaled_design": 94.09048931755841,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            23.99467332430983,
+            -9.5719717876968
+          ],
+          "magnitude_mm": 25.833447153734813,
+          "azimuth_deg_mod120": 112.7506401017166,
+          "rms_displacement_at_30mrad_um": 23.25010243836133
+        },
+        "D4": {
+          "cos_sin_mm": [
+            2818.1189401680153,
+            -1773.2394737658694
+          ],
+          "magnitude_mm": 3329.5904541332343,
+          "azimuth_deg_mod120": 109.27358202103936,
+          "rms_displacement_at_30mrad_um": 2.2239770074552148
+        }
+      },
+      "in_sample_vector_rms_um": 0.43154252003081306
+    },
+    "30": {
+      "particles": 30949,
+      "condition_number_scaled_design": 47.88144091293715,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            24.197208448856365,
+            -9.560699448803527
+          ],
+          "magnitude_mm": 26.017530064703642,
+          "azimuth_deg_mod120": 112.81341359563243,
+          "rms_displacement_at_30mrad_um": 23.415777058233278
+        },
+        "D4": {
+          "cos_sin_mm": [
+            1960.7583540745159,
+            -1728.0611283844137
+          ],
+          "magnitude_mm": 2613.5739106645174,
+          "azimuth_deg_mod120": 106.20317862328174,
+          "rms_displacement_at_30mrad_um": 1.7457186896326038
+        }
+      },
+      "in_sample_vector_rms_um": 0.4302303000828667
+    },
+    "35": {
+      "particles": 32086,
+      "condition_number_scaled_design": 29.771320677995693,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            24.21824344828811,
+            -9.539645563112844
+          ],
+          "magnitude_mm": 26.029370971853478,
+          "azimuth_deg_mod120": 112.83345227771402,
+          "rms_displacement_at_30mrad_um": 23.426433874668128
+        },
+        "D4": {
+          "cos_sin_mm": [
+            1937.9862835915535,
+            -1799.4217823523622
+          ],
+          "magnitude_mm": 2644.562267407057,
+          "azimuth_deg_mod120": 105.70775667317693,
+          "rms_displacement_at_30mrad_um": 1.7664171490508414
+        }
+      },
+      "in_sample_vector_rms_um": 0.43041385023297996
+    }
+  },
+  "including_sixth_order_three_lobe_C63": {
+    "particles": 32575,
+    "condition_number_scaled_design": 29.80989557861655,
+    "coefficients": {
+      "A2": {
+        "cos_sin_mm": [
+          23.99188173167972,
+          -9.486737164565083
+        ],
+        "magnitude_mm": 25.799390904756788,
+        "azimuth_deg_mod120": 112.80848026242185,
+        "rms_displacement_at_30mrad_um": 23.219451814281108
+      },
+      "D4": {
+        "cos_sin_mm": [
+          3021.8400476837933,
+          -2114.5903187293266
+        ],
+        "magnitude_mm": 3688.2257916035164,
+        "azimuth_deg_mod120": 108.33895310954097,
+        "rms_displacement_at_30mrad_um": 2.4635250106051942
+      }
+    },
+    "in_sample_vector_rms_um": 0.4342843641713467
+  },
+  "native_controls": {
+    "half-step": {
+      "particles": 32575,
+      "condition_number_scaled_design": 20.99777337339484,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            24.389412156284365,
+            -9.618317182250799
+          ],
+          "magnitude_mm": 26.21746461325909,
+          "azimuth_deg_mod120": 112.82582879321714,
+          "rms_displacement_at_30mrad_um": 23.59571815193318
+        },
+        "D4": {
+          "cos_sin_mm": [
+            1572.8564782418462,
+            -1636.41498508314
+          ],
+          "magnitude_mm": 2269.742607555314,
+          "azimuth_deg_mod120": 104.6218084347858,
+          "rms_displacement_at_30mrad_um": 1.5160589392542967
+        }
+      },
+      "in_sample_vector_rms_um": 0.4374891208641877,
+      "max_step_mm": 0.0375,
+      "original_particles": 32768,
+      "sha256": "77271bb1ec97d929cd5476690e1c87852db76a7db262fa7148f53ac5dca5c630",
+      "ring": {
+        "count": 10609,
+        "current_nA": 4856.414794921875,
+        "H3": 0.7302449137447173,
+        "orientation_deg_mod120": 52.54470611515143
+      }
+    },
+    "prefix": {
+      "particles": 16288,
+      "condition_number_scaled_design": 21.11751619207918,
+      "coefficients": {
+        "A2": {
+          "cos_sin_mm": [
+            24.39419604540039,
+            -9.619198804010049
+          ],
+          "magnitude_mm": 26.222238392869826,
+          "azimuth_deg_mod120": 112.82650971481355,
+          "rms_displacement_at_30mrad_um": 23.60001455358284
+        },
+        "D4": {
+          "cos_sin_mm": [
+            1555.0215186039518,
+            -1644.0297978535802
+          ],
+          "magnitude_mm": 2262.9462873766633,
+          "azimuth_deg_mod120": 104.46875048604657,
+          "rms_displacement_at_30mrad_um": 1.5115193840084375
+        }
+      },
+      "in_sample_vector_rms_um": 0.4370251691194676,
+      "max_step_mm": 0.075,
+      "original_particles": 16384,
+      "sha256": "215862f46bc1d09c7f3b54f057394ed58d032d31b5f2dc145a6a03164b3921c1",
+      "ring": {
+        "count": 5291,
+        "current_nA": 4844.05517578125,
+        "H3": 0.728462716484423,
+        "orientation_deg_mod120": 52.61099856992385
+      }
+    }
+  }
+}

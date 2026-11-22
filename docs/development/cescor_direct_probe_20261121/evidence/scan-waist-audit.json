@@ -1,0 +1,695 @@
+{
+  "source": "Archived 300 keV gun exit at 450 mm; identical input for the matched control.",
+  "static_scan": {
+    "scan_enabled": false,
+    "wobble_enabled": false,
+    "kick_x_mrad": 0.0,
+    "kick_y_mrad": 0.0,
+    "DP12_offsets": {
+      "upper_x_mrad": 0.0,
+      "upper_y_mrad": 0.0,
+      "lower_x_mrad": 0.0,
+      "lower_y_mrad": 0.0
+    }
+  },
+  "scan_centers_mm": [
+    1387.5,
+    1412.5
+  ],
+  "objective_At": -14551.5,
+  "specimen_upper_mm": 1599.1999975,
+  "working_point": "illuminated-normal.json / final",
+  "corrector_sha256": "69d1b2db6dd5c52426e005f7c84bc34e0754ddc4eaa5e5dade99b3d25df56d51",
+  "focal_definition": "Point tilt to the specimen upper surface. A canonical front-focal plane requires both singular values of the canonical D block to vanish and a full-rank position-from-tilt B block. Mechanical slopes are reported in the immersion field.",
+  "focal_domain_mm": [
+    1340.0,
+    1599.1999975
+  ],
+  "locate_step_mm": 0.075,
+  "verify_step_mm": 0.0375,
+  "signed_root_candidates_mm": {
+    "installed": [
+      1358.1000495190951,
+      1389.0317706840704,
+      1496.1613865001825
+    ],
+    "mini_and_objective": [
+      1490.3703749645058
+    ]
+  },
+  "direct_plane_checks": {
+    "installed": [
+      {
+        "z_mm": 1358.1000495190951,
+        "root_candidate": true,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.1158660608070198e-08,
+            "canonical_D_singular": [
+              4.526887197542878e-07,
+              4.381180896710742e-07
+            ],
+            "mechanical_D_singular": [
+              0.0010566516305626648,
+              0.001056637061948609
+            ],
+            "B_singular_mm": [
+              8.792618520742474,
+              8.792618473227936
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.1138713556054186e-08,
+            "canonical_D_singular": [
+              4.526878767802392e-07,
+              4.3811790782231694e-07
+            ],
+            "mechanical_D_singular": [
+              0.0010566516302419613,
+              0.0010566370622889154
+            ],
+            "B_singular_mm": [
+              8.792618520715203,
+              8.792618473203287
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1375.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": 1.2106174856643097,
+            "canonical_D_singular": [
+              1.210617486807647,
+              1.2106174845210202
+            ],
+            "mechanical_D_singular": [
+              1.2106174919586514,
+              1.2106174896714914
+            ],
+            "B_singular_mm": [
+              0.9415216548335981,
+              0.9415216448749758
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": 1.2106174856455263,
+            "canonical_D_singular": [
+              1.210617486788821,
+              1.2106174845022792
+            ],
+            "mechanical_D_singular": [
+              1.2106174919398258,
+              1.2106174896527504
+            ],
+            "B_singular_mm": [
+              0.9415216562756231,
+              0.9415216463168106
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1387.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": 0.19392062358039078,
+            "canonical_D_singular": [
+              0.19392062713736152,
+              0.19392062002433363
+            ],
+            "mechanical_D_singular": [
+              0.19392283169075208,
+              0.19392282457849822
+            ],
+            "B_singular_mm": [
+              7.695005172746505,
+              7.695005166300333
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": 0.1939206235795112,
+            "canonical_D_singular": [
+              0.19392062713639407,
+              0.19392062002354196
+            ],
+            "mechanical_D_singular": [
+              0.1939228316897847,
+              0.19392282457770654
+            ],
+            "B_singular_mm": [
+              7.695005172771808,
+              7.69500516632629
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1389.0317706840704,
+        "root_candidate": true,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": 3.9281855148495427e-10,
+            "canonical_D_singular": [
+              4.0189207254370834e-07,
+              3.946149871925347e-07
+            ],
+            "mechanical_D_singular": [
+              0.0009453719877493315,
+              0.0009453647115619207
+            ],
+            "B_singular_mm": [
+              7.866660360798871,
+              7.8666603533234145
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": 3.922123876448759e-10,
+            "canonical_D_singular": [
+              4.018920071908901e-07,
+              3.946150445253945e-07
+            ],
+            "mechanical_D_singular": [
+              0.0009453719876919021,
+              0.0009453647116271076
+            ],
+            "B_singular_mm": [
+              7.86666036080247,
+              7.866660353327575
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1400.0,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.177057965816886,
+            "canonical_D_singular": [
+              1.1770579680664761,
+              1.1770579635672966
+            ],
+            "mechanical_D_singular": [
+              1.1770580877179133,
+              1.177058083219122
+            ],
+            "B_singular_mm": [
+              4.41501188440945,
+              4.415011879855719
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.1770579658014122,
+            "canonical_D_singular": [
+              1.1770579680508566,
+              1.1770579635519685
+            ],
+            "mechanical_D_singular": [
+              1.1770580877022938,
+              1.1770580832037938
+            ],
+            "B_singular_mm": [
+              4.415011883354843,
+              4.415011878802153
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1408.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.5887077066083959,
+            "canonical_D_singular": [
+              1.5887077071974833,
+              1.5887077060193655
+            ],
+            "mechanical_D_singular": [
+              1.5887077107185201,
+              1.5887077095406146
+            ],
+            "B_singular_mm": [
+              0.900852787555456,
+              0.9008527854134571
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.5887077065609354,
+            "canonical_D_singular": [
+              1.5887077071500435,
+              1.5887077059718844
+            ],
+            "mechanical_D_singular": [
+              1.5887077106710805,
+              1.5887077094931334
+            ],
+            "B_singular_mm": [
+              0.900852790706746,
+              0.9008527885663379
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1412.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.6540341786461081,
+            "canonical_D_singular": [
+              1.6540341787658515,
+              1.6540341785264814
+            ],
+            "mechanical_D_singular": [
+              1.6540342301216833,
+              1.654034229882798
+            ],
+            "B_singular_mm": [
+              3.438854468739748,
+              3.4388544646668526
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.6540341785887587,
+            "canonical_D_singular": [
+              1.6540341787085169,
+              1.6540341784691168
+            ],
+            "mechanical_D_singular": [
+              1.6540342300643487,
+              1.6540342298254338
+            ],
+            "B_singular_mm": [
+              3.4388544725379813,
+              3.438854468464867
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1496.1613865001825,
+        "root_candidate": true,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.1001098673289066e-08,
+            "canonical_D_singular": [
+              2.2276932763865744e-06,
+              2.2276932722498807e-06
+            ],
+            "mechanical_D_singular": [
+              0.0052596399432533365,
+              0.005259639943249208
+            ],
+            "B_singular_mm": [
+              43.766956028743984,
+              43.76695602874377
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.0997457072911371e-08,
+            "canonical_D_singular": [
+              2.227692168046854e-06,
+              2.2276921643723165e-06
+            ],
+            "mechanical_D_singular": [
+              0.005259639944372066,
+              0.005259639944368377
+            ],
+            "B_singular_mm": [
+              43.7669560289837,
+              43.76695602898341
+            ]
+          }
+        ]
+      }
+    ],
+    "mini_and_objective": [
+      {
+        "z_mm": 1375.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.7270747025972062,
+            "canonical_D_singular": [
+              1.7270747025973239,
+              1.7270747025973239
+            ],
+            "mechanical_D_singular": [
+              1.7271029990916718,
+              1.7271029990916718
+            ],
+            "B_singular_mm": [
+              18.128544502387566,
+              18.128544502387566
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.7270747025597852,
+            "canonical_D_singular": [
+              1.727074702559903,
+              1.727074702559903
+            ],
+            "mechanical_D_singular": [
+              1.7271029990542435,
+              1.7271029990542432
+            ],
+            "B_singular_mm": [
+              18.128544499923066,
+              18.128544499923066
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1387.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.6285192257390053,
+            "canonical_D_singular": [
+              1.6285192257390249,
+              1.6285192257390246
+            ],
+            "mechanical_D_singular": [
+              1.6285286856664705,
+              1.6285286856664702
+            ],
+            "B_singular_mm": [
+              10.178577419925398,
+              10.178577419925398
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.6285192257011047,
+            "canonical_D_singular": [
+              1.6285192257011243,
+              1.628519225701124
+            ],
+            "mechanical_D_singular": [
+              1.6285286856285657,
+              1.6285286856285655
+            ],
+            "B_singular_mm": [
+              10.178577417383988,
+              10.178577417383986
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1400.0,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.4974704839964985,
+            "canonical_D_singular": [
+              1.497470483996507,
+              1.497470483996507
+            ],
+            "mechanical_D_singular": [
+              1.4974707689870146,
+              1.4974707689870146
+            ],
+            "B_singular_mm": [
+              1.6930700216621026,
+              1.6930700216621026
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.49747048395885,
+            "canonical_D_singular": [
+              1.4974704839588582,
+              1.4974704839588582
+            ],
+            "mechanical_D_singular": [
+              1.4974707689493651,
+              1.4974707689493651
+            ],
+            "B_singular_mm": [
+              1.6930700191535497,
+              1.6930700191535495
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1408.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.4008572052547847,
+            "canonical_D_singular": [
+              1.400857205254852,
+              1.400857205254852
+            ],
+            "mechanical_D_singular": [
+              1.400858980260919,
+              1.4008589802609188
+            ],
+            "B_singular_mm": [
+              4.087505398233674,
+              4.087505398233674
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.4008572052179078,
+            "canonical_D_singular": [
+              1.4008572052179749,
+              1.4008572052179746
+            ],
+            "mechanical_D_singular": [
+              1.4008589802240448,
+              1.4008589802240448
+            ],
+            "B_singular_mm": [
+              4.087505400685869,
+              4.087505400685869
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1412.5,
+        "root_candidate": false,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": -1.3525437433966938,
+            "canonical_D_singular": [
+              1.3525437433968113,
+              1.352543743396811
+            ],
+            "mechanical_D_singular": [
+              1.3525488312928633,
+              1.3525488312928633
+            ],
+            "B_singular_mm": [
+              6.80127423180998,
+              6.8012742318099795
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": -1.3525437433604157,
+            "canonical_D_singular": [
+              1.3525437433605332,
+              1.3525437433605332
+            ],
+            "mechanical_D_singular": [
+              1.3525488312565885,
+              1.3525488312565885
+            ],
+            "B_singular_mm": [
+              6.801274234220793,
+              6.801274234220793
+            ]
+          }
+        ]
+      },
+      {
+        "z_mm": 1490.3703749645058,
+        "root_candidate": true,
+        "checks": [
+          {
+            "symmetric_tilt_urad": 1.0,
+            "signed_larmor_D": 8.660321270867197e-10,
+            "canonical_D_singular": [
+              2.4898491024065507e-06,
+              2.4898491024065507e-06
+            ],
+            "mechanical_D_singular": [
+              0.02670216291498016,
+              0.02670216291498016
+            ],
+            "B_singular_mm": [
+              48.961126506186616,
+              48.961126506186616
+            ]
+          },
+          {
+            "symmetric_tilt_urad": 0.5,
+            "signed_larmor_D": 8.711827619015647e-10,
+            "canonical_D_singular": [
+              2.4898475843665146e-06,
+              2.4898475843665142e-06
+            ],
+            "mechanical_D_singular": [
+              0.02670216291364355,
+              0.02670216291364355
+            ],
+            "B_singular_mm": [
+              48.96112650652261,
+              48.96112650652261
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "static_original_particles": [
+    {
+      "TL12_gain": 1.0,
+      "emitted": 32768,
+      "local_survivors": 30396,
+      "measured": 30396,
+      "effective_measured": 30396.0,
+      "local_current_A": 1.39141845703125e-05,
+      "measured_current_A": 1.39141845703125e-05,
+      "surviving_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+      "measured_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "region_mm": [
+        1340.0,
+        1422.0
+      ],
+      "observation_spacing_mm": 0.2500000000000835,
+      "x_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.25
+        ],
+        [
+          1408.25,
+          1408.5
+        ]
+      ],
+      "y_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.25
+        ],
+        [
+          1408.25,
+          1408.5
+        ]
+      ]
+    },
+    {
+      "TL12_gain": 0.0,
+      "emitted": 32768,
+      "local_survivors": 30412,
+      "measured": 30412,
+      "effective_measured": 30412.0,
+      "local_current_A": 1.3921508789062501e-05,
+      "measured_current_A": 1.3921508789062501e-05,
+      "surviving_ID_sha256": "5832315a59858670de8bb7d3798a290c05def8aa7e6d48f60f28113527514610",
+      "measured_ID_sha256": "5832315a59858670de8bb7d3798a290c05def8aa7e6d48f60f28113527514610",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "region_mm": [
+        1340.0,
+        1422.0
+      ],
+      "observation_spacing_mm": 0.2500000000000835,
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": []
+    }
+  ],
+  "common_particle_control": [
+    {
+      "TL12_gain": 1.0,
+      "emitted": 32768,
+      "local_survivors": 30396,
+      "measured": 30396,
+      "effective_measured": 30396.0,
+      "local_current_A": 1.39141845703125e-05,
+      "measured_current_A": 1.39141845703125e-05,
+      "surviving_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+      "measured_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "region_mm": [
+        1340.0,
+        1422.0
+      ],
+      "observation_spacing_mm": 0.2500000000000835,
+      "x_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.25
+        ],
+        [
+          1408.25,
+          1408.5
+        ]
+      ],
+      "y_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.25
+        ],
+        [
+          1408.25,
+          1408.5
+        ]
+      ]
+    },
+    {
+      "TL12_gain": 0.0,
+      "emitted": 32768,
+      "local_survivors": 30412,
+      "measured": 30396,
+      "effective_measured": 30396.0,
+      "local_current_A": 1.3921508789062501e-05,
+      "measured_current_A": 1.39141845703125e-05,
+      "surviving_ID_sha256": "5832315a59858670de8bb7d3798a290c05def8aa7e6d48f60f28113527514610",
+      "measured_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "region_mm": [
+        1340.0,
+        1422.0
+      ],
+      "observation_spacing_mm": 0.2500000000000835,
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": []
+    }
+  ],
+  "driven_pivot": "Not measured; raster and wobble were off."
+}

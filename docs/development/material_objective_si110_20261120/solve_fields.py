@@ -74,7 +74,7 @@ def solve(ampere_turns, level, padding):
         raise ValueError("Insufficient radial resolution in the physical bore")
     bz = 2 * coefficients[0]
     surface = state.sample.upper_surface_z_mm * 1e-3
-    tag = f"armco-{ampere_turns:g}-{level}-p{padding:g}"
+    tag = f"armco-{ampere_turns:.12g}-{level}-p{padding:g}"
     metadata = dict(ampere_turns=ampere_turns, level=level, padding=padding, shape=[len(r), len(z)],
                     iterations=solution.iterations, residual=solution.relative_residual,
                     peak_material_T=solution.peak_material_t, peak_axis_T=float(abs(bz).max()),

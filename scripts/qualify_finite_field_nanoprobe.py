@@ -73,7 +73,9 @@ def corrector_planes(state, sigma_margin=8.):
 
 
 def corrector_crossover_regions(state):
-    """Use live transfer-lens and physical AC-coil centres, not target waists."""
+    """Use the downstream output interval for the unified Nanoprobe branch."""
+    from temsim.optics.crossover_acceptance import downstream_scan_bounds_mm
+    from temsim.optics.direct_focus_topology import required_for_state
     from temsim.physics.instrument_magnetic import column_dipole_fields
     lenses = {lens.key: lens for lens in state.lenses
               if lens.enabled and getattr(lens, "installed", True)}
@@ -87,6 +89,8 @@ def corrector_crossover_regions(state):
             or not state.electron_gun.exit_plane_z_mm <= central[0] < central[1] < ac[0] < ac[1]
             <= state.sample.upper_surface_z_mm):
         raise ValueError("Corrector crossover intervals must be ordered inside the incident column")
+    if required_for_state(state):
+        ac = downstream_scan_bounds_mm(state, coils[-1])
     return {name: dict(bounds_mm=list(bounds), maximum_spacing_mm=spacing,
                        geometric_midplane_mm=sum(bounds)/2)
             for name, bounds, spacing in (("central", central, 1.), ("ac", ac, .1))}
@@ -145,7 +149,8 @@ def evaluate_corrector_crossovers(checkpoints, masks, weights, regions, *, sourc
         report['waist_detector']=waist_detector
         if waist_detector==FINITE:
             report.update(schema='executed-corrector-finite-region-observation-v3',
-                scope='Executed finite source-image regions with explicit sides; no exact common stationary plane is asserted')
+                driven_pivot_match='UNMEASURED_IN_STATIC_CAPTURE',
+                scope='Static finite-source waist brackets. Driven scan response and the two-lens front focal plane are measured independently.')
         requested_corrector_crossover_planes(regions)
         tolerance = float(angle_relative_tolerance)
         current = float(source_current_a)
@@ -391,7 +396,7 @@ def observe(state, *, spacing_mm=1., target_mrad=30., corrector_angle_tolerance=
     chain_regions=regions_for_state(state)
     chain_spacing=min(float(spacing_mm),.5)
     chain_bounds=sorted({p for row in chain_regions.values() for p in row['bounds_mm']})
-    chain_planes=np.unique(np.r_[*[np.linspace(a,b,int(np.ceil((b-a)/chain_spacing))+1)
+    chain_planes=np.unique(np.r_[*[np.linspace(a,b,max(2, int(np.ceil((b-a)/chain_spacing)))+1)
         for a,b in zip(chain_bounds[:-1],chain_bounds[1:])]])
     planes = np.unique(np.r_[state.electron_gun.exit_plane_z_mm, topology_planes,
                              crossover_planes, component_planes, focus_planes, mechanical_ports, optical_ports,

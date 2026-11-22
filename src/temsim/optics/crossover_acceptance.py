@@ -20,6 +20,24 @@ from temsim.physics.corrector_crossovers import measured_corrector_crossovers
 _COORDINATES = ("x_m", "y_m", "tx_rad", "ty_rad")
 
 
+def downstream_scan_bounds_mm(state, lower_coil):
+    """Survey downstream of the physical winding, up to the separate terminal focus window."""
+    from temsim.optics.direct_focus_topology import SURFACE_FOCUS_TOLERANCE_NM
+    from temsim.physics.lens_field_provider import _posed_axial_support
+    ac = state.ac_deflector
+    half = .5 * float(ac.mechanical_coil_length_mm)
+    center = float(ac.lower_z_mm)
+    span = (center - half, center + half)
+    registration = getattr(lower_coil, "registration", None)
+    if registration is not None:
+        span = _posed_axial_support(span, registration, .0005 * ac.mechanical_outer_diameter_mm)
+    start = float(span[1])
+    stop = float(state.sample.upper_surface_z_mm) - 1.e-6 * SURFACE_FOCUS_TOLERANCE_NM
+    if not np.isfinite([half, start, stop]).all() or half <= 0 or not lower_coil.arrival_z_mm < start < stop:
+        raise ValueError("Invalid lower winding exit or downstream observation interval")
+    return [start, stop]
+
+
 def regions_for_state(state):
     """Physical interval labels; no historical waist coordinate is imposed."""
     from temsim.component_keys import MINI_CONDENSER
@@ -52,8 +70,32 @@ def regions_for_state(state):
     from temsim.optics.direct_focus_topology import (required_for_state, bounds_for_state,
         REQUIREMENT, SURFACE_FOCUS_TOLERANCE_NM)
     if required_for_state(state):
-        for key in ('corrector_internal','ac_pair'):
-            regions[key]['requirement']='exactly_one_2d_waist'
+        from temsim.optics.condenser_topology import inter_lens_gaps_mm
+        (c2_exit, c3_entrance), (c3_exit, adl_entrance) = inter_lens_gaps_mm(state)
+        regions['c2_to_c3']['bounds_mm'] = [c2_exit, c3_entrance]
+        if not large_angle:
+            regions['c2_to_c3']['requirement'] = 'exactly_one_2d_waist'
+        regions['c3_to_adl']['bounds_mm'] = [c3_exit, adl_entrance]
+        for key, left, right in (('c2_exit_section', c2, c2_exit),
+                                 ('c3_body', c3_entrance, c3_exit),
+                                 ('adl_entry_section', adl_entrance, adl)):
+            regions[key] = dict(bounds_mm=[left, right], requirement='record_all_waists')
+        regions['corrector_internal']['requirement'] = 'exactly_one_2d_waist'
+        output_bounds = downstream_scan_bounds_mm(state, coils[-1])
+        regions['ac_pair']['downstream_output_bounds_mm'] = output_bounds
+        regions['ac_pair']['requirement'] = 'forbidden_2d_waist'
+        tl12 = lenses['probe_tl12_lens']
+        tl12_start = float(tl12.mechanical_center_from_tip_mm - .5 * tl12.mechanical_length_mm)
+        if not tl21 < tl12_start < ac0:
+            raise ValueError("TL12 entrance must follow TL21 and precede the upper scan station")
+        regions['tl21_to_tl12'] = regions.pop('tl21_to_ac')
+        regions['tl21_to_tl12']['bounds_mm'][1] = tl12_start
+        regions['tl12_to_ac_upper'] = dict(bounds_mm=[tl12_start, ac0], requirement='forbidden_2d_waist')
+        # Keep the coil centres as inventory references. The source-image and
+        # driven-pivot searches have no mechanical Mini Condenser upper bound.
+        if output_bounds[0] < mini:
+            regions['ac_to_mini']['bounds_mm'][0] = output_bounds[0]
+            regions['ac_lower_exit'] = dict(bounds_mm=[ac1, output_bounds[0]], requirement='forbidden_2d_waist')
         direct_start, direct_end = bounds_for_state(state)
         regions["mini_to_specimen"].update(requirement=REQUIREMENT,
             direct_focus_bounds_mm=[direct_start, direct_end],
@@ -200,6 +242,8 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
             status = "PASS_AT_BOUNDED_SAMPLING" if rows else "FAIL_MISSING_EXECUTED_2D_WAIST"
         elif covered and requirement == 'exactly_one_2d_waist':
             status = 'PASS_AT_BOUNDED_SAMPLING' if len(rows)==1 else 'FAIL_MISSING_OR_AMBIGUOUS_2D_WAIST'
+        elif covered and requirement == 'forbidden_2d_waist':
+            status = 'FAIL_FORBIDDEN_WAIST' if rows else 'PASS_AT_BOUNDED_SAMPLING'
         elif covered and requirement == "forbidden_converging_to_diverging_waist":
             status = "FAIL_FORBIDDEN_WAIST" if roots else "PASS_AT_BOUNDED_SAMPLING"
         if requirement == "direct_focus_without_extra_pre_specimen_waist":
@@ -267,6 +311,13 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
     required_ok=bool((complete and gap_ok if finite_mode else resolved) and all(
         row['status']=='PASS_AT_BOUNDED_SAMPLING' for row in intervals.values()
         if row['requirement']!='record_all_waists'))
+    output_bounds = regions.get('ac_pair', {}).get('downstream_output_bounds_mm')
+    output_waist = None
+    if output_bounds is not None:
+        output_waist = finite_interval(cp, live, weight, *output_bounds,
+            maximum_spacing_mm=spacing, source_ids=identities, known_interceptions=known_interceptions)
+        required_ok = bool(required_ok and output_waist['status'] == 'RESOLVED_AT_BOUNDED_SAMPLING'
+                           and len(output_waist['regions']) == 1)
     loss_evidence=[]
     if finite_mode:
         for i in changes:
@@ -275,7 +326,7 @@ def evaluate_crossover_chain(checkpoints, masks, weights, source_ids, *, source_
                 if row['bracket_mm']==bracket and row.get('status')=='CAPTURED_LOSS_SUPPORTED_BY_OPENING_GEOMETRY'),
                 dict(bracket_mm=bracket,status='UNATTRIBUTED_CAPTURED_LOSS')))
     return dict(schema="incident-finite-region-chain-v2" if finite_mode else "incident-crossover-chain-v1", source_population_identity=source_identity,
-                waist_detector=waist_detector,
+                waist_detector=waist_detector, downstream_output_waist=output_waist,
                 status="OBSERVED_AT_BOUNDED_SAMPLING" if resolved else "UNRESOLVED",
                 coverage=dict(start_mm=float(z[0]), end_mm=float(z[-1]), checkpoint_count=len(z),
                               maximum_gap_mm=float(np.max(np.diff(z))), requested_maximum_gap_mm=spacing,

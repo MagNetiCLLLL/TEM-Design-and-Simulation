@@ -155,7 +155,7 @@ class Mesh:
         if case == "parked":
             return self.group[0] + self.group[4]
         sign = np.sign(ni)
-        with np.load(self.cache / f"{case}-{abs(ni):g}-{level}-p{padding:g}.npz") as f:
+        with np.load(self.cache / f"{case}-{abs(ni):.12g}-{level}-p{padding:g}.npz") as f:
             z, radial, potential = f["z"], f["r"], f["a_phi"]
         # Use the complete beam bore. A_phi is continuous up to its material boundary.
         radius = 0.00288

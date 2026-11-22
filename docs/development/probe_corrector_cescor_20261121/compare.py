@@ -51,7 +51,7 @@ def shared_inputs(ni=NI):
     pilot_field = target / "armco-4500-gap-fine-p8.npz"
     if not pilot_field.is_file():
         copyfile(ARCHIVE / "after/objective-field.npz", pilot_field)
-    if not (target / f"armco-{abs(ni):g}-gap-fine-p8.npz").is_file():
+    if not (target / f"armco-{abs(ni):.12g}-gap-fine-p8.npz").is_file():
         objective.CACHE = target
         objective.solve(abs(ni), "gap-fine", 8)
     state = desktop_state(32768)[1]

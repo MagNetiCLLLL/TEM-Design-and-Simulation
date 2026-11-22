@@ -1,0 +1,2513 @@
+{
+  "energy_keV": 300,
+  "gun": {
+    "source_A": 1.5e-05,
+    "gun_exit_A": 1.5e-05,
+    "gun_exit_z_mm": 450.0,
+    "gun_aperture_fixed_diameter_um": 4000.0,
+    "C1_diameter_um": 1000.0,
+    "C1_z_mm": 445.0,
+    "maximum_executed_gun_radius_um": 1.2132161112896465,
+    "gun_aperture_loss_A": 0.0,
+    "C1_loss_A": 0.0,
+    "gun_input_count": 32768,
+    "electrostatic_request_unchanged": true,
+    "original_gun_sha256": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+    "reference": "Prescribed gun-exit phase space; fixed-field, independent-electron transport.",
+    "exit_fixed_axis_r95_um": 0.6846472321934882,
+    "exit_fixed_axis_alpha95_urad": 0.6194655383086313
+  },
+  "C2_aperture_diameter_um": 100,
+  "specimen_upper_surface_z_m": 1.5991999975000002,
+  "owner_per_group": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser"
+  ],
+  "objective_turns": 1160,
+  "cases": {
+    "baseline": {
+      "surface": {
+        "D95_nm": 10135.219746521738,
+        "D90_nm": 9883.861065268005,
+        "rms_radius_nm": 4858.629848888126,
+        "alpha95_mrad": 29.99991531970007,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.918975830078125
+      },
+      "through_focus": {
+        "D95": {
+          "offset_um": 0.0,
+          "min_um": 10.135219746521738
+        },
+        "RMS_radius": {
+          "offset_um": 66.0,
+          "min_um": 4.729422255421771
+        },
+        "max_50pm_core_nA": 0.0
+      },
+      "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "survived": 32591,
+      "effective": 32591,
+      "ring": {
+        "count": 26178,
+        "current_nA": 11983.33740234375,
+        "H3": 0.011100146743369925,
+        "orientation_deg_mod120": 22.18177719344636
+      },
+      "current_ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.4999542236328126e-05,
+        "specimen_A": 1.4918975830078125e-05,
+        "intercepted_A": {
+          "condenser_aperture_2": 4.57763671875e-10,
+          "objective_lens": 8.056640625e-08
+        }
+      },
+      "common_waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.2659975000001,
+              1599.2669975000003
+            ]
+          ],
+          [
+            [
+              1599.2649975000002,
+              1599.2659975000001
+            ]
+          ]
+        ]
+      },
+      "waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.2659975000001,
+              1599.2669975000003
+            ]
+          ],
+          [
+            [
+              1599.2649975000002,
+              1599.2659975000001
+            ]
+          ]
+        ]
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.01197255359022234,
+            0.0019520041022006286
+          ],
+          "magnitude_mm": 0.012130637225049389,
+          "azimuth_deg_mod120": 56.91332580785568,
+          "rms_displacement_at_30mrad_um": 0.01091757350254445
+        },
+        "D4": {
+          "cos_sin_mm": [
+            38.40715040574864,
+            189.7176272987719
+          ],
+          "magnitude_mm": 193.56623494340514,
+          "azimuth_deg_mod120": 26.185166327157763,
+          "rms_displacement_at_30mrad_um": 0.12929123322041491
+        },
+        "C1": {
+          "signed_mm": 0.47183953683519547,
+          "radial_intercept_at_30mrad_um": -14.155186105055863
+        },
+        "C3": {
+          "signed_mm": -622.1491645772275,
+          "radial_intercept_at_30mrad_um": 16.798027443585138
+        },
+        "C5": {
+          "signed_mm": -94038.0994253302,
+          "radial_intercept_at_30mrad_um": 2.2851258160355234
+        },
+        "condition": 20.848280725633778,
+        "rms_error_um": 0.0924667719838553
+      },
+      "fit_inside_30mrad": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.029279115690998798,
+            -0.05226128090506402
+          ],
+          "magnitude_mm": 0.059904157597656785,
+          "azimuth_deg_mod120": 80.24683107368762,
+          "rms_displacement_at_30mrad_um": 0.053913741837891105
+        },
+        "D4": {
+          "cos_sin_mm": [
+            70.24800403214472,
+            296.33835285495655
+          ],
+          "magnitude_mm": 304.55081914729595,
+          "azimuth_deg_mod120": 25.554669283259628,
+          "rms_displacement_at_30mrad_um": 0.20342262170545458
+        },
+        "C1": {
+          "signed_mm": 0.46159865049058807,
+          "radial_intercept_at_30mrad_um": -13.847959514717642
+        },
+        "C3": {
+          "signed_mm": -561.0651757081102,
+          "radial_intercept_at_30mrad_um": 15.148759744118975
+        },
+        "C5": {
+          "signed_mm": -159180.97132021686,
+          "radial_intercept_at_30mrad_um": 3.8680976030812695
+        },
+        "condition": 47.771387192462655,
+        "rms_error_um": 0.05623102278730731
+      },
+      "held_out_vector_RMS_um": {
+        "full": 0.09278757815206018,
+        "omit_C3": 1.0955112653842873,
+        "omit_C5": 0.26009637075872216
+      },
+      "angular_RMS_mrad": 16.81944413624483,
+      "enclosed_fixed_axis_nA": {
+        "5e-05": 0.0,
+        "0.1": 26.092529296875,
+        "0.25": 135.040283203125,
+        "0.5": 309.906005859375,
+        "1.0": 804.74853515625
+      },
+      "H3_within_D95_radius": 0.0026775855494319254,
+      "trajectory_file": "refocused.npz",
+      "trajectory_sha256": "d73ad20b282ed19fdb829eca11b74708d181aca08b5702541deaf7680874dd28",
+      "objective_At": -24000.8,
+      "tl12_gain": 1.0,
+      "mini_gain": 1.0,
+      "currents_A": [
+        -680.9985774617396,
+        -730.6982943109692,
+        -1081.6489023141926,
+        -696.1171422974166,
+        770.2224576469805,
+        -665.2645377022294,
+        295.11315623916374,
+        -44.49627088714043,
+        58.29271147958151,
+        58.29271147958151,
+        -28.144248781602016,
+        -28.144248781602016,
+        493.36481358802354,
+        493.36481358802354,
+        493.36481358802354,
+        141.83756771591402,
+        1442.4432416756836,
+        614.6285357738719,
+        908.3475746169393,
+        -1057.6970607764135,
+        1592.5498326610755
+      ]
+    },
+    "zero-native": {
+      "surface": {
+        "D95_nm": 3343.982607485704,
+        "D90_nm": 3168.9699910803974,
+        "rms_radius_nm": 2342.888548103643,
+        "alpha95_mrad": 29.999999598951195,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.993133544921875
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 3.3439826074857044,
+          "offset_um": 0.0
+        },
+        "RMS_radius": {
+          "min_um": 2.3422737228588626,
+          "offset_um": 3.2
+        }
+      },
+      "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "survived": 32753,
+      "effective": 32753,
+      "ring": {
+        "count": 877,
+        "current_nA": 401.458740234375,
+        "H3": 0.18450304677751017,
+        "orientation_deg_mod120": 83.20400881712669
+      },
+      "current_ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.4999542236328126e-05,
+        "specimen_A": 1.4993133544921876e-05,
+        "intercepted_A": {
+          "condenser_aperture_2": 4.57763671875e-10,
+          "objective_lens": 6.40869140625e-09
+        }
+      },
+      "common_waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.2028975,
+              1599.2029975000003
+            ]
+          ],
+          [
+            [
+              1599.2033975000002,
+              1599.2034975000001
+            ]
+          ]
+        ]
+      },
+      "waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.2028975,
+              1599.2029975000003
+            ]
+          ],
+          [
+            [
+              1599.2033975000002,
+              1599.2034975000001
+            ]
+          ]
+        ]
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.07776807639688178,
+            0.06471516560447454
+          ],
+          "magnitude_mm": 0.10117275505631844,
+          "azimuth_deg_mod120": 46.744754905081294,
+          "rms_displacement_at_30mrad_um": 0.09105547955068659
+        },
+        "D4": {
+          "cos_sin_mm": [
+            95.85584361380664,
+            150.66268488547013
+          ],
+          "magnitude_mm": 178.57095892617318,
+          "azimuth_deg_mod120": 19.178110900295096,
+          "rms_displacement_at_30mrad_um": 0.11927524190191205
+        },
+        "C1": {
+          "signed_mm": 0.11083901099487127,
+          "radial_intercept_at_30mrad_um": -3.325170329846138
+        },
+        "C3": {
+          "signed_mm": 2.812400192191149,
+          "radial_intercept_at_30mrad_um": -0.07593480518916101
+        },
+        "C5": {
+          "signed_mm": -213615.78919876632,
+          "radial_intercept_at_30mrad_um": 5.19086367753002
+        },
+        "condition": 17.451244908361787,
+        "rms_error_um": 0.11398828260683719
+      },
+      "fit_inside_30mrad": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.1299199481664924,
+            0.00979155795824894
+          ],
+          "magnitude_mm": 0.13028840139795186,
+          "azimuth_deg_mod120": 58.56332979890693,
+          "rms_displacement_at_30mrad_um": 0.11725956125815669
+        },
+        "D4": {
+          "cos_sin_mm": [
+            196.50409637782906,
+            263.62295764799745
+          ],
+          "magnitude_mm": 328.8022562154113,
+          "azimuth_deg_mod120": 17.766405883244225,
+          "rms_displacement_at_30mrad_um": 0.21962120203544172
+        },
+        "C1": {
+          "signed_mm": 0.12432920238568501,
+          "radial_intercept_at_30mrad_um": -3.7298760715705503
+        },
+        "C3": {
+          "signed_mm": -71.64959752205725,
+          "radial_intercept_at_30mrad_um": 1.9345391330955453
+        },
+        "C5": {
+          "signed_mm": -140213.00316725302,
+          "radial_intercept_at_30mrad_um": 3.407175976964248
+        },
+        "condition": 48.40659571815233,
+        "rms_error_um": 0.05485822853642488
+      },
+      "held_out_vector_RMS_um": {
+        "full": 0.11590708758956908,
+        "omit_C3": 0.1161430999981197,
+        "omit_C5": 0.7511795680179988
+      },
+      "angular_RMS_mrad": 16.83057975176399,
+      "enclosed_fixed_axis_nA": {
+        "5e-05": 0.0,
+        "0.1": 102.081298828125,
+        "0.25": 538.330078125,
+        "0.5": 1592.10205078125,
+        "1.0": 5066.070556640625
+      },
+      "H3_within_D95_radius": 0.04033248026455384,
+      "tl12_gain": 0.8908920985214188,
+      "mini_gain": 1.0627721221562312,
+      "objective_At": -23113.6,
+      "currents_A": [
+        -680.9985774617396,
+        -730.6982943109692,
+        -1081.6489023141926,
+        -696.1171422974166,
+        770.2224576469805,
+        -665.2645377022294,
+        295.11315623916374,
+        -44.49627088714043,
+        58.29271147958151,
+        58.29271147958151,
+        -28.144248781602016,
+        -28.144248781602016,
+        493.36481358802354,
+        493.36481358802354,
+        493.36481358802354,
+        126.36196835160449,
+        1285.061286574488,
+        547.5677060467317,
+        965.36647953111,
+        -1124.0909498797573,
+        1692.517565296762
+      ],
+      "corrector_sha256": "e193f8a70510556f0e74b7e389b8f7f40b7d0d830112681b4d39fba34b27bb1e",
+      "trajectory_sha256": "4de06511265bca6d39737243f83f22ce4c13eeee19d5325e5303bded1df2e792",
+      "corrector_field": {
+        "auxiliary_host_status": "unverified",
+        "axis_peak_T": 0.0073573173977130955,
+        "base_circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+        "circuit_sha256": "5f5fec56275ab65ebfe18e68ee070b4b1dbc95985f3d05d6e9423838f2723027",
+        "coordinate_frame": "column module local, xyz in metres",
+        "currents_A": {
+          "probe_hp1_hexapole": 0.01752,
+          "probe_hp2_hexapole": -1.0,
+          "probe_hpol_hexapole_x": -0.07115,
+          "probe_hpol_hexapole_y": -1.14652,
+          "probe_tl21_lens": 5.0,
+          "probe_tl22_lens": -5.0
+        },
+        "exterior_padding_mm": 195.0,
+        "field_registration": "module local SI, global origin z=0.45 m",
+        "integrated_axis_Bz2_T2m": 1.126719333847491e-06,
+        "iterations": 11,
+        "material_peaks": {
+          "armco_pure_iron": {
+            "b_t": 1.6352563290229967,
+            "h_a_per_m": 980.1012643679463
+          },
+          "permenorm_5000_h2": {
+            "b_t": 1.331324832897689,
+            "h_a_per_m": 302.39878926860274
+          }
+        },
+        "material_size_mm": 3.8,
+        "mesh_id": "657240926664673e159c9c33e0e9c2e503002e0dd00dae60a792d91d0f195efd",
+        "nodes": 175975,
+        "raw_mesh_to_symmetric_table_max_delta_T": 0.0035176975839964924,
+        "raw_mesh_to_symmetric_table_rms_delta_T": 0.00042468990950636254,
+        "residual": 1.1725866524208556e-10,
+        "source_file": "C3_ProbeCorrector.toml",
+        "tetra_volume_field_max_delta_T": 0.14282844830057295,
+        "tetrahedra": 1088545,
+        "turns": {
+          "probe_hp1_hexapole": 2,
+          "probe_hp2_hexapole": 2,
+          "probe_hpol_hexapole_x": 384,
+          "probe_hpol_hexapole_y": 384,
+          "probe_tl21_lens": 19,
+          "probe_tl22_lens": 19
+        },
+        "vacuum_only": false,
+        "validation_points_peak_T": 0.008288473399403109,
+        "volumes_mm3": {
+          "air": 179799491.13563964,
+          "probe_hp1_hexapole/pole_pin_1": 2726.265090820851,
+          "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+          "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+          "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+          "probe_hp1_hexapole/pole_pin_5": 2726.007343362719,
+          "probe_hp1_hexapole/pole_pin_6": 2726.007343362724,
+          "probe_hp1_hexapole/pole_root_sleeve_1": 16.87402886123648,
+          "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236603,
+          "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236603,
+          "probe_hp1_hexapole/pole_root_sleeve_4": 16.874028861236432,
+          "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236468,
+          "probe_hp1_hexapole/pole_root_sleeve_6": 16.87402886123648,
+          "probe_hp1_hexapole/return_yoke": 41273.85367504219,
+          "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+          "probe_hp2_hexapole/pole_pin_2": 2738.024554656359,
+          "probe_hp2_hexapole/pole_pin_3": 2738.024554656357,
+          "probe_hp2_hexapole/pole_pin_4": 2738.024554656357,
+          "probe_hp2_hexapole/pole_pin_5": 2738.024554656358,
+          "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+          "probe_hp2_hexapole/pole_root_sleeve_1": 16.92448687217401,
+          "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217395,
+          "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174064,
+          "probe_hp2_hexapole/pole_root_sleeve_4": 16.92448687217394,
+          "probe_hp2_hexapole/pole_root_sleeve_5": 16.924486872173826,
+          "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174047,
+          "probe_hp2_hexapole/return_yoke": 41274.539702727285,
+          "probe_tl21_lens_lower_pole/body": 18138.17828188952,
+          "probe_tl21_lens_pole_sleeves/lower": 857.1295934122727,
+          "probe_tl21_lens_pole_sleeves/upper": 857.1295807053847,
+          "probe_tl21_lens_return_plates/lower": 1669.8901899535958,
+          "probe_tl21_lens_return_plates/upper": 1669.8901899540592,
+          "probe_tl21_lens_upper_pole/body": 18138.132398703216,
+          "probe_tl21_lens_yoke/body": 373221.6839480204,
+          "probe_tl22_lens_lower_pole/body": 18138.17858699887,
+          "probe_tl22_lens_pole_sleeves/lower": 857.129610354809,
+          "probe_tl22_lens_pole_sleeves/upper": 857.1295934122809,
+          "probe_tl22_lens_return_plates/lower": 1682.2700718260535,
+          "probe_tl22_lens_return_plates/upper": 1682.270071825119,
+          "probe_tl22_lens_upper_pole/body": 18138.13244035433,
+          "probe_tl22_lens_yoke/body": 372426.04969726934
+        },
+        "zero_measure_edge_splits": 0
+      },
+      "objective_solution": {
+        "ampere_turns": 23113.6,
+        "level": "gap-fine",
+        "padding": 8,
+        "shape": [
+          218,
+          804
+        ],
+        "iterations": 8,
+        "residual": 7.746573007058919e-09,
+        "peak_material_T": 1.6754087016525114,
+        "peak_axis_T": 0.144371671754264,
+        "sample_Bz_T": 0.015765934840024937,
+        "field_squared_integral_T2m": 0.002549367889955521,
+        "max_potential_fit_error_T": 0.0033079518712128483,
+        "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+        "field_digest": "735ae862da3e6b22f669ab02082abfa86afd5202e4210c3e0202d94697033150",
+        "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+        "parts": [
+          "objective_lens",
+          "objective_lens_excitation_coil",
+          "objective_lens_housing",
+          "objective_lens_yoke",
+          "objective_lower_pole",
+          "objective_pole_sleeves",
+          "objective_return_plates",
+          "objective_terminal_vacuum_tube",
+          "objective_upper_pole"
+        ],
+        "elapsed_s": 14.400779800002056
+      },
+      "C2_foil": {
+        "entrance": {
+          "z_m": 0.7649,
+          "current_A": 1.5e-05,
+          "D95_diameter_um": 56.64297274924793
+        },
+        "exit": {
+          "z_m": 0.7651,
+          "current_A": 1.4999542236328126e-05,
+          "D95_diameter_um": 56.73132646771376
+        }
+      },
+      "trajectory_file": "cs-zero-native.npz"
+    },
+    "balanced-native": {
+      "surface": {
+        "D95_nm": 745.4124696519741,
+        "D90_nm": 635.1174381530557,
+        "rms_radius_nm": 1482.4173472243324,
+        "alpha95_mrad": 30.00000386840755,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 0.7454124696519742,
+          "offset_um": 0.0
+        },
+        "RMS_radius": {
+          "min_um": 1.402941353410908,
+          "offset_um": -28.0
+        }
+      },
+      "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "survived": 32764,
+      "effective": 32764,
+      "ring": {
+        "count": 414,
+        "current_nA": 189.51416015625,
+        "H3": 0.21301661540825506,
+        "orientation_deg_mod120": 78.76802517582729
+      },
+      "current_ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.4999542236328126e-05,
+        "specimen_A": 1.49981689453125e-05,
+        "intercepted_A": {
+          "condenser_aperture_2": 4.57763671875e-10,
+          "objective_lens": 9.1552734375e-10,
+          "objective_lens_excitation_coil": 4.57763671875e-10
+        }
+      },
+      "common_waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.1709975,
+              1599.1719975000003
+            ]
+          ],
+          [
+            [
+              1599.1719975000003,
+              1599.1729975000003
+            ]
+          ]
+        ]
+      },
+      "waists_mm": {
+        "C2_centre_window": [
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ],
+          [
+            [
+              649.675,
+              649.7
+            ]
+          ]
+        ],
+        "C2_to_C3": [
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ],
+          [
+            [
+              907.50000000001,
+              908.25000000001
+            ]
+          ]
+        ],
+        "C3_to_ADL": [
+          [],
+          []
+        ],
+        "Mini_to_pre_sample": [
+          [],
+          []
+        ],
+        "surface_window": [
+          [
+            [
+              1599.1709975,
+              1599.1719975000003
+            ]
+          ],
+          [
+            [
+              1599.1719975000003,
+              1599.1729975000003
+            ]
+          ]
+        ]
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            0.0005214254809758479,
+            -0.000468677571359909
+          ],
+          "magnitude_mm": 0.0007011014178467456,
+          "azimuth_deg_mod120": 106.0165198372171,
+          "rms_displacement_at_30mrad_um": 0.000630991276062071
+        },
+        "D4": {
+          "cos_sin_mm": [
+            69.13769823065951,
+            185.23104018511145
+          ],
+          "magnitude_mm": 197.71332672506452,
+          "azimuth_deg_mod120": 23.177284493949518,
+          "rms_displacement_at_30mrad_um": 0.13206125460811075
+        },
+        "C1": {
+          "signed_mm": -0.07314162993163535,
+          "radial_intercept_at_30mrad_um": 2.1942488979490604
+        },
+        "C3": {
+          "signed_mm": 319.94745904330426,
+          "radial_intercept_at_30mrad_um": -8.638581394169213
+        },
+        "C5": {
+          "signed_mm": -280256.1553076823,
+          "radial_intercept_at_30mrad_um": 6.8102245739766785
+        },
+        "condition": 16.684301879614505,
+        "rms_error_um": 0.22225666680449957
+      },
+      "fit_inside_30mrad": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.062145435866555104,
+            -0.03284686794965959
+          ],
+          "magnitude_mm": 0.07029204743885675,
+          "azimuth_deg_mod120": 69.28620580052689,
+          "rms_displacement_at_30mrad_um": 0.06326284269497108
+        },
+        "D4": {
+          "cos_sin_mm": [
+            190.2537512462032,
+            264.4736587382043
+          ],
+          "magnitude_mm": 325.79565072238813,
+          "azimuth_deg_mod120": 18.089995783449883,
+          "rms_displacement_at_30mrad_um": 0.21761296060782967
+        },
+        "C1": {
+          "signed_mm": -0.04272825668972396,
+          "radial_intercept_at_30mrad_um": 1.2818477006917186
+        },
+        "C3": {
+          "signed_mm": 155.30218799228584,
+          "radial_intercept_at_30mrad_um": -4.1931590757917165
+        },
+        "C5": {
+          "signed_mm": -120416.38238109495,
+          "radial_intercept_at_30mrad_um": 2.926118091860607
+        },
+        "condition": 48.266192777285134,
+        "rms_error_um": 0.05901030879807322
+      },
+      "held_out_vector_RMS_um": {
+        "full": 0.2314010579027241,
+        "omit_C3": 0.7652869446218351,
+        "omit_C5": 1.1121607417604311
+      },
+      "angular_RMS_mrad": 16.886512751939357,
+      "enclosed_fixed_axis_nA": {
+        "5e-05": 0.0,
+        "0.1": 2072.75390625,
+        "0.25": 9616.241455078125,
+        "0.5": 14381.561279296875,
+        "1.0": 14528.045654296875
+      },
+      "H3_within_D95_radius": 0.03485406713102528,
+      "tl12_gain": 0.7989662723415103,
+      "mini_gain": 1.1046425788406402,
+      "objective_At": -21253.2,
+      "currents_A": [
+        -680.9985774617396,
+        -730.6982943109692,
+        -1081.6489023141926,
+        -696.1171422974166,
+        770.2224576469805,
+        -665.2645377022294,
+        295.11315623916374,
+        -44.49627088714043,
+        58.29271147958151,
+        58.29271147958151,
+        -28.144248781602016,
+        -28.144248781602016,
+        493.36481358802354,
+        493.36481358802354,
+        493.36481358802354,
+        113.32343275597037,
+        1152.463499865825,
+        491.0674701019711,
+        1003.3994073084966,
+        -1168.3772088482228,
+        1759.1983540829603
+      ],
+      "corrector_sha256": "dd75ef575af1058311c5ebce7fa2e61727b5a8e2371a50e8d9bcb660a3c32cc2",
+      "trajectory_sha256": "51bec34bcdd4acf5e40553a057a6d764fee5ba2177d428b30a0546975b77f191",
+      "corrector_field": {
+        "auxiliary_host_status": "unverified",
+        "axis_peak_T": 0.007357317368769933,
+        "base_circuit_sha256": "e2cf98a103877a9d5813592dab4285b39809ecb56ab9d34a56922101a31ec313",
+        "circuit_sha256": "5f5fec56275ab65ebfe18e68ee070b4b1dbc95985f3d05d6e9423838f2723027",
+        "coordinate_frame": "column module local, xyz in metres",
+        "currents_A": {
+          "probe_hp1_hexapole": 0.01752,
+          "probe_hp2_hexapole": -1.0,
+          "probe_hpol_hexapole_x": -0.25891,
+          "probe_hpol_hexapole_y": -1.0162,
+          "probe_tl21_lens": 5.0,
+          "probe_tl22_lens": -5.0
+        },
+        "exterior_padding_mm": 195.0,
+        "field_registration": "module local SI, global origin z=0.45 m",
+        "integrated_axis_Bz2_T2m": 1.126718707030071e-06,
+        "iterations": 11,
+        "material_peaks": {
+          "armco_pure_iron": {
+            "b_t": 1.6352562991472277,
+            "h_a_per_m": 980.1007863556362
+          },
+          "permenorm_5000_h2": {
+            "b_t": 1.3240878356943262,
+            "h_a_per_m": 284.8899250669188
+          }
+        },
+        "material_size_mm": 3.8,
+        "mesh_id": "657240926664673e159c9c33e0e9c2e503002e0dd00dae60a792d91d0f195efd",
+        "nodes": 175975,
+        "raw_mesh_to_symmetric_table_max_delta_T": 0.0035176976110782823,
+        "raw_mesh_to_symmetric_table_rms_delta_T": 0.0004246436967404559,
+        "residual": 1.1004644700425524e-10,
+        "source_file": "C3_ProbeCorrector.toml",
+        "tetra_volume_field_max_delta_T": 0.14087310439772782,
+        "tetrahedra": 1088545,
+        "turns": {
+          "probe_hp1_hexapole": 2,
+          "probe_hp2_hexapole": 2,
+          "probe_hpol_hexapole_x": 384,
+          "probe_hpol_hexapole_y": 384,
+          "probe_tl21_lens": 19,
+          "probe_tl22_lens": 19
+        },
+        "vacuum_only": false,
+        "validation_points_peak_T": 0.008288473485063957,
+        "volumes_mm3": {
+          "air": 179799491.13563964,
+          "probe_hp1_hexapole/pole_pin_1": 2726.265090820851,
+          "probe_hp1_hexapole/pole_pin_2": 2726.007343362719,
+          "probe_hp1_hexapole/pole_pin_3": 2726.00734336272,
+          "probe_hp1_hexapole/pole_pin_4": 2726.007343362723,
+          "probe_hp1_hexapole/pole_pin_5": 2726.007343362719,
+          "probe_hp1_hexapole/pole_pin_6": 2726.007343362724,
+          "probe_hp1_hexapole/pole_root_sleeve_1": 16.87402886123648,
+          "probe_hp1_hexapole/pole_root_sleeve_2": 16.874028861236603,
+          "probe_hp1_hexapole/pole_root_sleeve_3": 16.874028861236603,
+          "probe_hp1_hexapole/pole_root_sleeve_4": 16.874028861236432,
+          "probe_hp1_hexapole/pole_root_sleeve_5": 16.874028861236468,
+          "probe_hp1_hexapole/pole_root_sleeve_6": 16.87402886123648,
+          "probe_hp1_hexapole/return_yoke": 41273.85367504219,
+          "probe_hp2_hexapole/pole_pin_1": 2738.2842349690113,
+          "probe_hp2_hexapole/pole_pin_2": 2738.024554656359,
+          "probe_hp2_hexapole/pole_pin_3": 2738.024554656357,
+          "probe_hp2_hexapole/pole_pin_4": 2738.024554656357,
+          "probe_hp2_hexapole/pole_pin_5": 2738.024554656358,
+          "probe_hp2_hexapole/pole_pin_6": 2738.0245546563588,
+          "probe_hp2_hexapole/pole_root_sleeve_1": 16.92448687217401,
+          "probe_hp2_hexapole/pole_root_sleeve_2": 16.92448687217395,
+          "probe_hp2_hexapole/pole_root_sleeve_3": 16.924486872174064,
+          "probe_hp2_hexapole/pole_root_sleeve_4": 16.92448687217394,
+          "probe_hp2_hexapole/pole_root_sleeve_5": 16.924486872173826,
+          "probe_hp2_hexapole/pole_root_sleeve_6": 16.924486872174047,
+          "probe_hp2_hexapole/return_yoke": 41274.539702727285,
+          "probe_tl21_lens_lower_pole/body": 18138.17828188952,
+          "probe_tl21_lens_pole_sleeves/lower": 857.1295934122727,
+          "probe_tl21_lens_pole_sleeves/upper": 857.1295807053847,
+          "probe_tl21_lens_return_plates/lower": 1669.8901899535958,
+          "probe_tl21_lens_return_plates/upper": 1669.8901899540592,
+          "probe_tl21_lens_upper_pole/body": 18138.132398703216,
+          "probe_tl21_lens_yoke/body": 373221.6839480204,
+          "probe_tl22_lens_lower_pole/body": 18138.17858699887,
+          "probe_tl22_lens_pole_sleeves/lower": 857.129610354809,
+          "probe_tl22_lens_pole_sleeves/upper": 857.1295934122809,
+          "probe_tl22_lens_return_plates/lower": 1682.2700718260535,
+          "probe_tl22_lens_return_plates/upper": 1682.270071825119,
+          "probe_tl22_lens_upper_pole/body": 18138.13244035433,
+          "probe_tl22_lens_yoke/body": 372426.04969726934
+        },
+        "zero_measure_edge_splits": 0
+      },
+      "objective_solution": {
+        "ampere_turns": 21253.2,
+        "level": "gap-fine",
+        "padding": 8,
+        "shape": [
+          218,
+          804
+        ],
+        "iterations": 13,
+        "residual": 9.69707197956391e-13,
+        "peak_material_T": 1.5958326404481393,
+        "peak_axis_T": 0.13318427564857577,
+        "sample_Bz_T": 0.011429152723109091,
+        "field_squared_integral_T2m": 0.002160559752258682,
+        "max_potential_fit_error_T": 0.003042514418891685,
+        "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+        "field_digest": "438b26bf98afba7bda4a4b3d149ae478abcb6f7d1f83ce0b271c4694e3d9c1f5",
+        "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+        "parts": [
+          "objective_lens",
+          "objective_lens_excitation_coil",
+          "objective_lens_housing",
+          "objective_lens_yoke",
+          "objective_lower_pole",
+          "objective_pole_sleeves",
+          "objective_return_plates",
+          "objective_terminal_vacuum_tube",
+          "objective_upper_pole"
+        ],
+        "elapsed_s": 29.219364499997027
+      },
+      "C2_foil": {
+        "entrance": {
+          "z_m": 0.7649,
+          "current_A": 1.5e-05,
+          "D95_diameter_um": 56.64295726053661
+        },
+        "exit": {
+          "z_m": 0.7651,
+          "current_A": 1.4999542236328126e-05,
+          "D95_diameter_um": 56.73131079586338
+        }
+      },
+      "trajectory_file": "cs-balanced-native.npz"
+    }
+  },
+  "controls": {
+    "balanced-halfstep": {
+      "emitted": 32768,
+      "survived": 32764,
+      "surface": {
+        "D95_nm": 745.6613840577974,
+        "D90_nm": 635.1752381803517,
+        "rms_radius_nm": 1482.4146296737213,
+        "alpha95_mrad": 30.000005726915873,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 0.7454415258020592,
+          "offset_um": 0.006
+        },
+        "RMS_radius": {
+          "min_um": 1.4029386917231146,
+          "offset_um": -28.0
+        }
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            0.000497111790587524,
+            -0.0004627130374302915
+          ],
+          "magnitude_mm": 0.0006791343661964845,
+          "azimuth_deg_mod120": 105.6841735272718,
+          "rms_displacement_at_30mrad_um": 0.0006112209295768361
+        },
+        "D4": {
+          "cos_sin_mm": [
+            69.15793447956882,
+            185.25121236523503
+          ],
+          "magnitude_mm": 197.73930207288015,
+          "azimuth_deg_mod120": 23.176134679267207,
+          "rms_displacement_at_30mrad_um": 0.13207860466274912
+        },
+        "C1": {
+          "signed_mm": -0.07314134365494908,
+          "radial_intercept_at_30mrad_um": 2.1942403096484724
+        },
+        "C3": {
+          "signed_mm": 319.9461885154499,
+          "radial_intercept_at_30mrad_um": -8.638547089917145
+        },
+        "C5": {
+          "signed_mm": -280255.07503436593,
+          "radial_intercept_at_30mrad_um": 6.81019832333509
+        },
+        "condition": 16.68429784456882,
+        "rms_error_um": 0.22224965867716565
+      },
+      "ring": {
+        "count": 414,
+        "current_nA": 189.51416015625,
+        "H3": 0.2130226876174742,
+        "orientation_deg_mod120": 78.79367832041487
+      },
+      "corrector_sha256": "dd75ef575af1058311c5ebce7fa2e61727b5a8e2371a50e8d9bcb660a3c32cc2",
+      "max_step_mm": 0.0375
+    },
+    "balanced-prefix": {
+      "emitted": 16384,
+      "survived": 16382,
+      "surface": {
+        "D95_nm": 742.1292607870131,
+        "D90_nm": 631.6080365116629,
+        "rms_radius_nm": 1375.9242729206787,
+        "alpha95_mrad": 29.98026638885783,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 0.7415516936600614,
+          "offset_um": -0.275
+        },
+        "RMS_radius": {
+          "min_um": 1.29441357758457,
+          "offset_um": -28.0
+        }
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.018105705835503142,
+            0.0373333684893554
+          ],
+          "magnitude_mm": 0.041492131622318074,
+          "azimuth_deg_mod120": 38.624056747737576,
+          "rms_displacement_at_30mrad_um": 0.03734291846008627
+        },
+        "D4": {
+          "cos_sin_mm": [
+            103.24565935407252,
+            122.12710805346813
+          ],
+          "magnitude_mm": 159.92090762924235,
+          "azimuth_deg_mod120": 16.59632841232062,
+          "rms_displacement_at_30mrad_um": 0.10681806861180183
+        },
+        "C1": {
+          "signed_mm": -0.07051352954834705,
+          "radial_intercept_at_30mrad_um": 2.1154058864504117
+        },
+        "C3": {
+          "signed_mm": 308.57599018548945,
+          "radial_intercept_at_30mrad_um": -8.331551735008214
+        },
+        "C5": {
+          "signed_mm": -271959.3653898716,
+          "radial_intercept_at_30mrad_um": 6.6086125789738785
+        },
+        "condition": 17.270827517484296,
+        "rms_error_um": 0.20420042055107995
+      },
+      "ring": {
+        "count": 203,
+        "current_nA": 185.85205078125,
+        "H3": 0.2353531698950824,
+        "orientation_deg_mod120": 79.54566125844741
+      },
+      "corrector_sha256": "dd75ef575af1058311c5ebce7fa2e61727b5a8e2371a50e8d9bcb660a3c32cc2",
+      "max_step_mm": 0.075
+    },
+    "balanced-fine-xy": {
+      "emitted": 32768,
+      "survived": 32765,
+      "surface": {
+        "D95_nm": 786.3186437757415,
+        "D90_nm": 593.8702716897765,
+        "rms_radius_nm": 1507.5398329981797,
+        "alpha95_mrad": 29.98279272828164,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.998626708984375
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 0.681407845620324,
+          "offset_um": 2.9
+        },
+        "RMS_radius": {
+          "min_um": 1.4284224983814229,
+          "offset_um": -29.0
+        }
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            0.09852276229128148,
+            0.13153879382604886
+          ],
+          "magnitude_mm": 0.16434472602038722,
+          "azimuth_deg_mod120": 17.722243951677164,
+          "rms_displacement_at_30mrad_um": 0.1479102534183485
+        },
+        "D4": {
+          "cos_sin_mm": [
+            18.82756757732017,
+            112.31791387271137
+          ],
+          "magnitude_mm": 113.88499057205198,
+          "azimuth_deg_mod120": 26.828041364206964,
+          "rms_displacement_at_30mrad_um": 0.07606869493876875
+        },
+        "C1": {
+          "signed_mm": -0.07359943849314474,
+          "radial_intercept_at_30mrad_um": 2.207983154794342
+        },
+        "C3": {
+          "signed_mm": 322.22305839308154,
+          "radial_intercept_at_30mrad_um": -8.7000225766132
+        },
+        "C5": {
+          "signed_mm": -281955.477103351,
+          "radial_intercept_at_30mrad_um": 6.8515180936114275
+        },
+        "condition": 16.675471820009022,
+        "rms_error_um": 0.21906039768672922
+      },
+      "ring": {
+        "count": 422,
+        "current_nA": 193.17626953125,
+        "H3": 0.2454993673867161,
+        "orientation_deg_mod120": 78.57036713652067
+      },
+      "corrector_sha256": "cd73f9c035c616de91f694dd0535aa826c1cf8570f772dd2f4496a82f841feef",
+      "max_step_mm": 0.075
+    },
+    "balanced-mesh5": {
+      "emitted": 32768,
+      "survived": 32764,
+      "surface": {
+        "D95_nm": 1219.7634827308812,
+        "D90_nm": 893.3707482229794,
+        "rms_radius_nm": 1518.3138507788562,
+        "alpha95_mrad": 30.006170857296123,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "through_focus": {
+        "D95": {
+          "min_um": 1.1859648016687778,
+          "offset_um": 2.3000000000000003
+        },
+        "RMS_radius": {
+          "min_um": 1.4252179664601679,
+          "offset_um": -31.0
+        }
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.42714215612038076,
+            0.29749843796551
+          ],
+          "magnitude_mm": 0.520534093145767,
+          "azimuth_deg_mod120": 48.381112405245204,
+          "rms_displacement_at_30mrad_um": 0.46848068383119035
+        },
+        "D4": {
+          "cos_sin_mm": [
+            23.22954721060265,
+            214.21976358794947
+          ],
+          "magnitude_mm": 215.47556468260288,
+          "azimuth_deg_mod120": 27.937048869271845,
+          "rms_displacement_at_30mrad_um": 0.14392541909400908
+        },
+        "C1": {
+          "signed_mm": -0.07594603193151148,
+          "radial_intercept_at_30mrad_um": 2.2783809579453442
+        },
+        "C3": {
+          "signed_mm": 320.2557239401217,
+          "radial_intercept_at_30mrad_um": -8.646904546383285
+        },
+        "C5": {
+          "signed_mm": -280244.7963238613,
+          "radial_intercept_at_30mrad_um": 6.809948550669828
+        },
+        "condition": 16.67727031907688,
+        "rms_error_um": 0.22228245138478595
+      },
+      "ring": {
+        "count": 480,
+        "current_nA": 219.7265625,
+        "H3": 0.4866440441105532,
+        "orientation_deg_mod120": 99.82982840536363
+      },
+      "corrector_sha256": "622b7fb15bafde8e9bdf0ea61b972ac7491c9d87f991e3906901b41a0ae25974",
+      "max_step_mm": 0.075
+    }
+  },
+  "common_survivors": {
+    "count": 32591,
+    "current_uA": 14.918975830078125,
+    "baseline_D95_um": 10.135219746521736,
+    "balanced_D95_um": 0.7294828361804464
+  },
+  "fixed_focus_corrector_trials": {
+    "cs-base": {
+      "corrector_currents_A": {
+        "probe_hp1_hexapole": 0.01752,
+        "probe_hp2_hexapole": -1.0,
+        "probe_hpol_hexapole_x": -0.07115,
+        "probe_hpol_hexapole_y": -1.14652,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "surface": {
+        "D95_nm": 10120.480285324922,
+        "D90_nm": 9884.682730119535,
+        "rms_radius_nm": 4799.4360500791,
+        "alpha95_mrad": 29.894419682986687,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.915771484375
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.012719018517415345,
+            0.004522424944567814
+          ],
+          "magnitude_mm": 0.013499102171092849,
+          "azimuth_deg_mod120": 53.47548175429285,
+          "rms_displacement_at_30mrad_um": 0.012149191953983564
+        },
+        "D4": {
+          "cos_sin_mm": [
+            39.26674078903909,
+            182.4424656620158
+          ],
+          "magnitude_mm": 186.62028348769968,
+          "azimuth_deg_mod120": 25.951210005122643,
+          "rms_displacement_at_30mrad_um": 0.12465173279380454
+        },
+        "C1": {
+          "signed_mm": 0.471535123876856,
+          "radial_intercept_at_30mrad_um": -14.146053716305678
+        },
+        "C3": {
+          "signed_mm": -620.545605252538,
+          "radial_intercept_at_30mrad_um": 16.754731341818523
+        },
+        "C5": {
+          "signed_mm": -95546.1405026474,
+          "radial_intercept_at_30mrad_um": 2.321771214214331
+        },
+        "condition": 21.473273838713475,
+        "rms_error_um": 0.09103974383478672
+      },
+      "ring": {
+        "count": 6525,
+        "current_nA": 11947.6318359375,
+        "H3": 0.013566998375063793,
+        "orientation_deg_mod120": 24.37088112211337
+      },
+      "drift_D95_um": 2.7416010292831077,
+      "drift_RMS_um": 68.92330445091689,
+      "emitted": 8192,
+      "survived": 8146,
+      "effective": 8146,
+      "objective_At": -24000.8,
+      "tl12_gain": 1.0,
+      "mini_gain": 1.0,
+      "approximate_objective": false,
+      "ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.5e-05,
+        "specimen_A": 1.4915771484375001e-05,
+        "intercepted_A": {
+          "objective_lens": 8.4228515625e-08
+        }
+      }
+    },
+    "cs-hex3": {
+      "corrector_currents_A": {
+        "probe_hp1_hexapole": 0.05256,
+        "probe_hp2_hexapole": -3.0,
+        "probe_hpol_hexapole_x": -0.21345,
+        "probe_hpol_hexapole_y": -3.43956,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "surface": {
+        "D95_nm": 10766.122762458255,
+        "D90_nm": 10176.986299601575,
+        "rms_radius_nm": 4853.215439614206,
+        "alpha95_mrad": 29.952740574428116,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.912109375
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.8319769195189156,
+            0.38754629504970106
+          ],
+          "magnitude_mm": 0.9178113779088458,
+          "azimuth_deg_mod120": 51.6744161817544,
+          "rms_displacement_at_30mrad_um": 0.8260302401179612
+        },
+        "D4": {
+          "cos_sin_mm": [
+            76.43875622198523,
+            582.998129075381
+          ],
+          "magnitude_mm": 587.987841675454,
+          "azimuth_deg_mod120": 27.510124861069134,
+          "rms_displacement_at_30mrad_um": 0.39274242840470974
+        },
+        "C1": {
+          "signed_mm": 0.47172701555901586,
+          "radial_intercept_at_30mrad_um": -14.151810466770476
+        },
+        "C3": {
+          "signed_mm": -623.0262759550701,
+          "radial_intercept_at_30mrad_um": 16.82170945078689
+        },
+        "C5": {
+          "signed_mm": -93975.3585472583,
+          "radial_intercept_at_30mrad_um": 2.2836012126983762
+        },
+        "condition": 21.577318780998482,
+        "rms_error_um": 0.18344826274275397
+      },
+      "ring": {
+        "count": 6523,
+        "current_nA": 11943.9697265625,
+        "H3": 0.0899080093055845,
+        "orientation_deg_mod120": 119.44578930690346
+      },
+      "drift_D95_um": 4.427921361400523,
+      "drift_RMS_um": 66.60434080972045,
+      "emitted": 8192,
+      "survived": 8144,
+      "effective": 8144,
+      "objective_At": -24000.8,
+      "tl12_gain": 1.0,
+      "mini_gain": 1.0,
+      "approximate_objective": false,
+      "ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.5e-05,
+        "specimen_A": 1.4912109375e-05,
+        "intercepted_A": {
+          "objective_lens": 8.7890625e-08
+        }
+      }
+    },
+    "cs-hex0": {
+      "corrector_currents_A": {
+        "probe_hp1_hexapole": 0.0,
+        "probe_hp2_hexapole": 0.0,
+        "probe_hpol_hexapole_x": 0.0,
+        "probe_hpol_hexapole_y": 0.0,
+        "probe_tl21_lens": 5.0,
+        "probe_tl22_lens": -5.0
+      },
+      "surface": {
+        "D95_nm": 10054.789041811666,
+        "D90_nm": 9834.615827483034,
+        "rms_radius_nm": 4786.321120375066,
+        "alpha95_mrad": 29.96689369778383,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.915771484375
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            0.002085154976845211,
+            -0.022594506794369487
+          ],
+          "magnitude_mm": 0.02269051803195051,
+          "azimuth_deg_mod120": 91.75755312027648,
+          "rms_displacement_at_30mrad_um": 0.020421466228755458
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -0.1623102196198624,
+            12.266472362327752
+          ],
+          "magnitude_mm": 12.267546161443356,
+          "azimuth_deg_mod120": 30.2526982381643,
+          "rms_displacement_at_30mrad_um": 0.00819402295170497
+        },
+        "C1": {
+          "signed_mm": 0.4707368927722407,
+          "radial_intercept_at_30mrad_um": -14.122106783167219
+        },
+        "C3": {
+          "signed_mm": -620.155521348162,
+          "radial_intercept_at_30mrad_um": 16.74419907640037
+        },
+        "C5": {
+          "signed_mm": -95768.24401549339,
+          "radial_intercept_at_30mrad_um": 2.327168329576489
+        },
+        "condition": 21.352728827695763,
+        "rms_error_um": 0.07117958386125181
+      },
+      "ring": {
+        "count": 6524,
+        "current_nA": 11945.80078125,
+        "H3": 0.0065979672168080435,
+        "orientation_deg_mod120": 25.728401463462642
+      },
+      "drift_D95_um": -1.576866193607193,
+      "drift_RMS_um": 68.62617203412397,
+      "emitted": 8192,
+      "survived": 8146,
+      "effective": 8146,
+      "objective_At": -24000.8,
+      "tl12_gain": 1.0,
+      "mini_gain": 1.0,
+      "approximate_objective": false,
+      "ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.5e-05,
+        "specimen_A": 1.4915771484375001e-05,
+        "intercepted_A": {
+          "objective_lens": 8.4228515625e-08
+        }
+      }
+    },
+    "cs-transfer6": {
+      "corrector_currents_A": {
+        "probe_hp1_hexapole": 0.01752,
+        "probe_hp2_hexapole": -1.0,
+        "probe_hpol_hexapole_x": -0.07115,
+        "probe_hpol_hexapole_y": -1.14652,
+        "probe_tl21_lens": 6.0,
+        "probe_tl22_lens": -6.0
+      },
+      "surface": {
+        "D95_nm": 10760.66110866825,
+        "D90_nm": 9448.750846854658,
+        "rms_radius_nm": 4743.85170018044,
+        "alpha95_mrad": 29.882580020287616,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.915771484375
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.0430459205331257,
+            0.012754178384569654
+          ],
+          "magnitude_mm": 0.04489566060110483,
+          "azimuth_deg_mod120": 54.49861490811168,
+          "rms_displacement_at_30mrad_um": 0.04040609454099434
+        },
+        "D4": {
+          "cos_sin_mm": [
+            37.897054464910404,
+            185.65537694876903
+          ],
+          "magnitude_mm": 189.48378750464616,
+          "azimuth_deg_mod120": 26.15431644002258,
+          "rms_displacement_at_30mrad_um": 0.12656439057624716
+        },
+        "C1": {
+          "signed_mm": 0.457349266372275,
+          "radial_intercept_at_30mrad_um": -13.72047799116825
+        },
+        "C3": {
+          "signed_mm": -621.2282540423613,
+          "radial_intercept_at_30mrad_um": 16.773162859143753
+        },
+        "C5": {
+          "signed_mm": -95264.41516192464,
+          "radial_intercept_at_30mrad_um": 2.3149252884347686
+        },
+        "condition": 21.499107955807037,
+        "rms_error_um": 0.09108387964331893
+      },
+      "ring": {
+        "count": 6436,
+        "current_nA": 11784.66796875,
+        "H3": 0.017040574675220133,
+        "orientation_deg_mod120": 21.17635832871507
+      },
+      "drift_D95_um": -11.852066022618713,
+      "drift_RMS_um": 54.801130637408846,
+      "emitted": 8192,
+      "survived": 8146,
+      "effective": 8146,
+      "objective_At": -24000.8,
+      "tl12_gain": 1.0,
+      "mini_gain": 1.0,
+      "approximate_objective": false,
+      "ledger": {
+        "gun_exit_A": 1.5e-05,
+        "C2_entrance_A": 1.5e-05,
+        "C2_exit_A": 1.5e-05,
+        "specimen_A": 1.4915771484375001e-05,
+        "intercepted_A": {
+          "objective_lens": 8.4228515625e-08
+        }
+      }
+    }
+  },
+  "exploratory_sweep": [
+    {
+      "target_Cs_mm": 0.0,
+      "objective_At": -23113.56797332651,
+      "tl12_gain": 0.8913383530977026,
+      "mini_gain": 1.0626629103678054,
+      "surface": {
+        "D95_nm": 3380.6141254550357,
+        "D90_nm": 3206.293732173196,
+        "rms_radius_nm": 2443.873452173504,
+        "alpha95_mrad": 29.91000000000003,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.039227515627864126,
+            0.07172087497790125
+          ],
+          "magnitude_mm": 0.0817476720765189,
+          "azimuth_deg_mod120": 39.55877362345844,
+          "rms_displacement_at_30mrad_um": 0.073572904868867
+        },
+        "D4": {
+          "cos_sin_mm": [
+            26.31881153167787,
+            138.36875765747413
+          ],
+          "magnitude_mm": 140.8495400635472,
+          "azimuth_deg_mod120": 26.4101814328056,
+          "rms_displacement_at_30mrad_um": 0.09407948002227078
+        },
+        "C1": {
+          "signed_mm": 0.11283055814577192,
+          "radial_intercept_at_30mrad_um": -3.3849167443731574
+        },
+        "C3": {
+          "signed_mm": 5.021513824103465e-11,
+          "radial_intercept_at_30mrad_um": -1.3558087325079353e-12
+        },
+        "C5": {
+          "signed_mm": -214561.24017766127,
+          "radial_intercept_at_30mrad_um": 5.213838136317167
+        },
+        "condition": 17.394686340542908,
+        "rms_error_um": 0.11603049080494862
+      },
+      "drift_D95_um": 1.054346982047961e-10,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 100.0,
+      "objective_At": -22756.973223399542,
+      "tl12_gain": 0.8679549330303646,
+      "mini_gain": 1.0760846686854921,
+      "surface": {
+        "D95_nm": 2293.0240574775844,
+        "D90_nm": 2128.349168475613,
+        "rms_radius_nm": 2009.272503965321,
+        "alpha95_mrad": 29.909999999995122,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.04277056888283396,
+            0.08130902203927022
+          ],
+          "magnitude_mm": 0.091872077518383,
+          "azimuth_deg_mod120": 39.248495640650496,
+          "rms_displacement_at_30mrad_um": 0.0826848697665447
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -1.2683479974840055,
+            138.54736070094094
+          ],
+          "magnitude_mm": 138.55316619925853,
+          "azimuth_deg_mod120": 30.174835418087213,
+          "rms_displacement_at_30mrad_um": 0.09254563291853483
+        },
+        "C1": {
+          "signed_mm": 0.053691393987618574,
+          "radial_intercept_at_30mrad_um": -1.6107418196285572
+        },
+        "C3": {
+          "signed_mm": 100.00000000226991,
+          "radial_intercept_at_30mrad_um": -2.700000000061287
+        },
+        "C5": {
+          "signed_mm": -232141.55903056165,
+          "radial_intercept_at_30mrad_um": 5.641039884442647
+        },
+        "condition": 17.420026339776154,
+        "rms_error_um": 0.1462658929988553
+      },
+      "drift_D95_um": 5.605267290335265e-07,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 200.0,
+      "objective_At": -22230.898239298505,
+      "tl12_gain": 0.8397164763795544,
+      "mini_gain": 1.0901943236121858,
+      "surface": {
+        "D95_nm": 1329.2880196554486,
+        "D90_nm": 1157.2244320433144,
+        "rms_radius_nm": 1633.2903070572438,
+        "alpha95_mrad": 29.91000000000051,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.05422311554211279,
+            0.09058537092122358
+          ],
+          "magnitude_mm": 0.10557393468100434,
+          "azimuth_deg_mod120": 40.30137987478073,
+          "rms_displacement_at_30mrad_um": 0.09501654121290391
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -32.2491056402485,
+            137.54623435281343
+          ],
+          "magnitude_mm": 141.2762237576974,
+          "azimuth_deg_mod120": 34.39841110178607,
+          "rms_displacement_at_30mrad_um": 0.09436448045650381
+        },
+        "C1": {
+          "signed_mm": -0.005732159023840777,
+          "radial_intercept_at_30mrad_um": 0.17196477071522331
+        },
+        "C3": {
+          "signed_mm": 199.99999999979136,
+          "radial_intercept_at_30mrad_um": -5.399999999994366
+        },
+        "C5": {
+          "signed_mm": -249730.40450206446,
+          "radial_intercept_at_30mrad_um": 6.0684488294001655
+        },
+        "condition": 17.417011506183883,
+        "rms_error_um": 0.17589605466584035
+      },
+      "drift_D95_um": -1.1070769644700555e-09,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 220.0,
+      "objective_At": -22090.00112030873,
+      "tl12_gain": 0.8330932379628022,
+      "mini_gain": 1.0930873863632002,
+      "surface": {
+        "D95_nm": 1171.3392811225294,
+        "D90_nm": 981.1025373094736,
+        "rms_radius_nm": 1572.1664135377166,
+        "alpha95_mrad": 29.90999999999986,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.05819172888035036,
+            0.09224491917116404
+          ],
+          "magnitude_mm": 0.10906604615084747,
+          "azimuth_deg_mod120": 40.74844786005288,
+          "rms_displacement_at_30mrad_um": 0.09815944153576273
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -39.10568550068218,
+            136.7368130371279
+          ],
+          "magnitude_mm": 142.2188829868549,
+          "azimuth_deg_mod120": 35.32004182862376,
+          "rms_displacement_at_30mrad_um": 0.09499412319497011
+        },
+        "C1": {
+          "signed_mm": -0.017945346725737298,
+          "radial_intercept_at_30mrad_um": 0.538360401772119
+        },
+        "C3": {
+          "signed_mm": 220.00000000001174,
+          "radial_intercept_at_30mrad_um": -5.940000000000316
+        },
+        "C5": {
+          "signed_mm": -253419.36315720915,
+          "radial_intercept_at_30mrad_um": 6.158090524720181
+        },
+        "condition": 17.410446557624226,
+        "rms_error_um": 0.18157627214243763
+      },
+      "drift_D95_um": -1.1309858143031809e-10,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 250.0,
+      "objective_At": -21841.68257399603,
+      "tl12_gain": 0.8221901941854124,
+      "mini_gain": 1.0974255992370676,
+      "surface": {
+        "D95_nm": 991.8001934299976,
+        "D90_nm": 741.5396068996164,
+        "rms_radius_nm": 1494.9071870678288,
+        "alpha95_mrad": 29.910000000001148,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.06587514523109728,
+            0.09438552364216798
+          ],
+          "magnitude_mm": 0.11510065956554902,
+          "azimuth_deg_mod120": 41.637537334395915,
+          "rms_displacement_at_30mrad_um": 0.10359059360899411
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -50.000563042148535,
+            134.71069551780286
+          ],
+          "magnitude_mm": 143.69073662356269,
+          "azimuth_deg_mod120": 36.78780432546906,
+          "rms_displacement_at_30mrad_um": 0.09597723769252463
+        },
+        "C1": {
+          "signed_mm": -0.03670047814692097,
+          "radial_intercept_at_30mrad_um": 1.101014344407629
+        },
+        "C3": {
+          "signed_mm": 249.99999999947102,
+          "radial_intercept_at_30mrad_um": -6.749999999985716
+        },
+        "C5": {
+          "signed_mm": -259170.61023077797,
+          "radial_intercept_at_30mrad_um": 6.297845828607904
+        },
+        "condition": 17.394524399626107,
+        "rms_error_um": 0.18981136413863947
+      },
+      "drift_D95_um": 1.4650816361121203e-07,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 275.0,
+      "objective_At": -21584.56297692875,
+      "tl12_gain": 0.8118067198493106,
+      "mini_gain": 1.1010271741904702,
+      "surface": {
+        "D95_nm": 856.5310005063462,
+        "D90_nm": 564.9729197782216,
+        "rms_radius_nm": 1448.2026040428987,
+        "alpha95_mrad": 29.90999999999983,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.0745996882281882,
+            0.09554871382639789
+          ],
+          "magnitude_mm": 0.12122157480259757,
+          "azimuth_deg_mod120": 42.66031647779753,
+          "rms_displacement_at_30mrad_um": 0.10909941732233781
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -59.85689889792931,
+            131.84091433552248
+          ],
+          "magnitude_mm": 144.79252411123824,
+          "azimuth_deg_mod120": 38.13948451501772,
+          "rms_displacement_at_30mrad_um": 0.09671316905508918
+        },
+        "C1": {
+          "signed_mm": -0.05282277009052748,
+          "radial_intercept_at_30mrad_um": 1.5846831027158241
+        },
+        "C3": {
+          "signed_mm": 275.0000000003901,
+          "radial_intercept_at_30mrad_um": -7.425000000010533
+        },
+        "C5": {
+          "signed_mm": -264280.13500595285,
+          "radial_intercept_at_30mrad_um": 6.422007280644654
+        },
+        "condition": 17.373181743168622,
+        "rms_error_um": 0.19630402666172123
+      },
+      "drift_D95_um": -4.65087010956525e-10,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 300.0,
+      "objective_At": -21253.235884327787,
+      "tl12_gain": 0.7995906098685333,
+      "mini_gain": 1.1044146142608267,
+      "surface": {
+        "D95_nm": 748.0273096026349,
+        "D90_nm": 643.6734201587499,
+        "rms_radius_nm": 1414.3569490074312,
+        "alpha95_mrad": 29.90999999502911,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.0866586310662145,
+            0.09551437177380796
+          ],
+          "magnitude_mm": 0.12896787799144205,
+          "azimuth_deg_mod120": 44.07231505422673,
+          "rms_displacement_at_30mrad_um": 0.11607109019229783
+        },
+        "D4": {
+          "cos_sin_mm": [
+            -70.70740979557841,
+            127.14540163971569
+          ],
+          "magnitude_mm": 145.48364498501016,
+          "azimuth_deg_mod120": 39.69302440514057,
+          "rms_displacement_at_30mrad_um": 0.09717479848183537
+        },
+        "C1": {
+          "signed_mm": -0.06813536594953051,
+          "radial_intercept_at_30mrad_um": 2.0440609784859154
+        },
+        "C3": {
+          "signed_mm": 300.0000018338531,
+          "radial_intercept_at_30mrad_um": -8.100000049514033
+        },
+        "C5": {
+          "signed_mm": -269777.18917844136,
+          "radial_intercept_at_30mrad_um": 6.555585697036123
+        },
+        "condition": 17.34019133904253,
+        "rms_error_um": 0.2022380112440674
+      },
+      "drift_D95_um": -0.0029563578964204593,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 325.0,
+      "objective_At": -21070.741371395354,
+      "tl12_gain": 0.7928113620890198,
+      "mini_gain": 1.1059066758418201,
+      "surface": {
+        "D95_nm": 854.1716863588523,
+        "D90_nm": 754.4995503935511,
+        "rms_radius_nm": 1477.2597179453705,
+        "alpha95_mrad": 29.909999999992046,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 15.0
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.14691674699759907,
+            0.07139834548890359
+          ],
+          "magnitude_mm": 0.16334703635790082,
+          "azimuth_deg_mod120": 51.36041852948116,
+          "rms_displacement_at_30mrad_um": 0.14701233272211076
+        },
+        "D4": {
+          "cos_sin_mm": [
+            12.186769318893047,
+            165.2751840725022
+          ],
+          "magnitude_mm": 165.72387823313633,
+          "azimuth_deg_mod120": 28.594285657442814,
+          "rms_displacement_at_30mrad_um": 0.1106941228520397
+        },
+        "C1": {
+          "signed_mm": -0.07725170378071483,
+          "radial_intercept_at_30mrad_um": 2.3175511134214446
+        },
+        "C3": {
+          "signed_mm": 325.0000000050207,
+          "radial_intercept_at_30mrad_um": -8.775000000135558
+        },
+        "C5": {
+          "signed_mm": -279326.7384696658,
+          "radial_intercept_at_30mrad_um": 6.787639744812878
+        },
+        "condition": 17.321191731159047,
+        "rms_error_um": 0.21495891323900582
+      },
+      "drift_D95_um": 1.2444612329225566e-06,
+      "approximate_objective": true
+    },
+    {
+      "target_Cs_mm": 375.0,
+      "objective_At": -20609.31777167342,
+      "tl12_gain": 0.7773528148739466,
+      "mini_gain": 1.1083380462688739,
+      "surface": {
+        "D95_nm": 1299.21906299951,
+        "D90_nm": 1191.3401221238078,
+        "rms_radius_nm": 1479.4319924906818,
+        "alpha95_mrad": 29.836864977924918,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 15.0
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.16549362753104466,
+            0.0658098480599928
+          ],
+          "magnitude_mm": 0.17809850323644913,
+          "azimuth_deg_mod120": 52.77145569998831,
+          "rms_displacement_at_30mrad_um": 0.1602886529128042
+        },
+        "D4": {
+          "cos_sin_mm": [
+            0.6360105108958682,
+            163.95606029053488
+          ],
+          "magnitude_mm": 163.9572938766784,
+          "azimuth_deg_mod120": 29.92591402201929,
+          "rms_displacement_at_30mrad_um": 0.10951414500052487
+        },
+        "C1": {
+          "signed_mm": -0.10112177270134176,
+          "radial_intercept_at_30mrad_um": 3.0336531810402523
+        },
+        "C3": {
+          "signed_mm": 357.46978469887927,
+          "radial_intercept_at_30mrad_um": -9.651684186869739
+        },
+        "C5": {
+          "signed_mm": -288053.36854380026,
+          "radial_intercept_at_30mrad_um": 6.999696855614345
+        },
+        "condition": 17.401690469912623,
+        "rms_error_um": 0.2161160820643725
+      },
+      "drift_D95_um": -9.9448276664881,
+      "approximate_objective": true
+    }
+  ],
+  "exact_brackets_before_trim": [
+    {
+      "objective_At": -21530.0,
+      "tl12_gain": 0.8090740422121047,
+      "mini_gain": 1.1018663293494204,
+      "surface": {
+        "D95_nm": 808.5802371579869,
+        "D90_nm": 556.8703742803615,
+        "rms_radius_nm": 1519.8002630752792,
+        "alpha95_mrad": 29.999985859486287,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.1430501775456135,
+            0.060909197436124496
+          ],
+          "magnitude_mm": 0.15547759847690065,
+          "azimuth_deg_mod120": 52.31207561329765,
+          "rms_displacement_at_30mrad_um": 0.13992983862921057
+        },
+        "D4": {
+          "cos_sin_mm": [
+            57.203046094224256,
+            189.15783872315964
+          ],
+          "magnitude_mm": 197.61800634778913,
+          "azimuth_deg_mod120": 24.39140242332432,
+          "rms_displacement_at_30mrad_um": 0.13199758601873837
+        },
+        "C1": {
+          "signed_mm": -0.06360534108663526,
+          "radial_intercept_at_30mrad_um": 1.9081602325990579
+        },
+        "C3": {
+          "signed_mm": 299.50525708071046,
+          "radial_intercept_at_30mrad_um": -8.086641941179181
+        },
+        "C5": {
+          "signed_mm": -275401.56745837757,
+          "radial_intercept_at_30mrad_um": 6.692258089238575
+        },
+        "condition": 16.71566636879651,
+        "rms_error_um": 0.21726807113666174
+      },
+      "drift_D95_um": -1.6508900936809692e-08,
+      "approximate_objective": false
+    },
+    {
+      "objective_At": -21253.2,
+      "tl12_gain": 0.7989855289395517,
+      "mini_gain": 1.1046424055195658,
+      "surface": {
+        "D95_nm": 785.2846910614714,
+        "D90_nm": 680.9853634276425,
+        "rms_radius_nm": 1489.645507198658,
+        "alpha95_mrad": 30.00003036232594,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.9981689453125
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.15351073305342278,
+            0.057971457491188885
+          ],
+          "magnitude_mm": 0.1640921541276485,
+          "azimuth_deg_mod120": 53.10385580928223,
+          "rms_displacement_at_30mrad_um": 0.14768293871488364
+        },
+        "D4": {
+          "cos_sin_mm": [
+            48.78579375546564,
+            189.86805742585156
+          ],
+          "magnitude_mm": 196.03553989778817,
+          "azimuth_deg_mod120": 25.196606468258224,
+          "rms_displacement_at_30mrad_um": 0.13094058845451764
+        },
+        "C1": {
+          "signed_mm": -0.0738752167118678,
+          "radial_intercept_at_30mrad_um": 2.2162565013560336
+        },
+        "C3": {
+          "signed_mm": 319.6401745334991,
+          "radial_intercept_at_30mrad_um": -8.630284712404475
+        },
+        "C5": {
+          "signed_mm": -280143.4479378358,
+          "radial_intercept_at_30mrad_um": 6.807485784889409
+        },
+        "condition": 16.681396949924974,
+        "rms_error_um": 0.22218823377637714
+      },
+      "drift_D95_um": -6.353075379211331e-08,
+      "approximate_objective": false
+    },
+    {
+      "objective_At": -21040.0,
+      "tl12_gain": 0.7917120737424792,
+      "mini_gain": 1.1062437189068777,
+      "surface": {
+        "D95_nm": 856.3927703549297,
+        "D90_nm": 752.2908785296626,
+        "rms_radius_nm": 1494.9196775847274,
+        "alpha95_mrad": 30.00005584951413,
+        "core_count": 0,
+        "core_50pm_nA": 0.0,
+        "transmitted_uA": 14.998626708984375
+      },
+      "fit": {
+        "A2": {
+          "cos_sin_mm": [
+            -0.175981581653452,
+            0.0478802862555976
+          ],
+          "magnitude_mm": 0.18237883345708888,
+          "azimuth_deg_mod120": 54.92654755617065,
+          "rms_displacement_at_30mrad_um": 0.16414095011138
+        },
+        "D4": {
+          "cos_sin_mm": [
+            66.24473970667695,
+            201.71874865005748
+          ],
+          "magnitude_mm": 212.317731468077,
+          "azimuth_deg_mod120": 23.939914074490986,
+          "rms_displacement_at_30mrad_um": 0.14181616615157408
+        },
+        "C1": {
+          "signed_mm": -0.07936407782309672,
+          "radial_intercept_at_30mrad_um": 2.3809223346929014
+        },
+        "C3": {
+          "signed_mm": 334.45585282505897,
+          "radial_intercept_at_30mrad_um": -9.030308026276591
+        },
+        "C5": {
+          "signed_mm": -284986.05530058936,
+          "radial_intercept_at_30mrad_um": 6.925161143804321
+        },
+        "condition": 16.647422598599675,
+        "rms_error_um": 0.22792669813521096
+      },
+      "drift_D95_um": -0.00027498607455913546,
+      "approximate_objective": false
+    }
+  ],
+  "fine_trim": {
+    "trials": [
+      {
+        "currents_A": {
+          "probe_hp1_hexapole": 0.01752,
+          "probe_hp2_hexapole": -1.0,
+          "probe_hpol_hexapole_x": -0.07115,
+          "probe_hpol_hexapole_y": -1.14652,
+          "probe_tl21_lens": 5.0,
+          "probe_tl22_lens": -5.0
+        },
+        "fit": {
+          "A2": {
+            "cos_sin_mm": [
+              -0.15351073305342278,
+              0.057971457491188885
+            ],
+            "magnitude_mm": 0.1640921541276485,
+            "azimuth_deg_mod120": 53.10385580928223,
+            "rms_displacement_at_30mrad_um": 0.14768293871488364
+          },
+          "D4": {
+            "cos_sin_mm": [
+              48.78579375546564,
+              189.86805742585156
+            ],
+            "magnitude_mm": 196.03553989778817,
+            "azimuth_deg_mod120": 25.196606468258224,
+            "rms_displacement_at_30mrad_um": 0.13094058845451764
+          },
+          "C1": {
+            "signed_mm": -0.0738752167118678,
+            "radial_intercept_at_30mrad_um": 2.2162565013560336
+          },
+          "C3": {
+            "signed_mm": 319.6401745334991,
+            "radial_intercept_at_30mrad_um": -8.630284712404475
+          },
+          "C5": {
+            "signed_mm": -280143.4479378358,
+            "radial_intercept_at_30mrad_um": 6.807485784889409
+          },
+          "condition": 16.681396949924974,
+          "rms_error_um": 0.22218823377637714
+        },
+        "surface": {
+          "D95_nm": 785.2846910614714,
+          "D90_nm": 680.9853634276425,
+          "rms_radius_nm": 1489.645507198658,
+          "alpha95_mrad": 30.00003036232594,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.9981689453125
+        }
+      },
+      {
+        "currents_A": {
+          "probe_hp1_hexapole": 0.01752,
+          "probe_hp2_hexapole": -1.0,
+          "probe_hpol_hexapole_x": -0.2394,
+          "probe_hpol_hexapole_y": -0.97646,
+          "probe_tl21_lens": 5.0,
+          "probe_tl22_lens": -5.0
+        },
+        "fit": {
+          "A2": {
+            "cos_sin_mm": [
+              0.0028138564171332737,
+              -0.03095047462499921
+            ],
+            "magnitude_mm": 0.03107812200646883,
+            "azimuth_deg_mod120": 91.73158457089323,
+            "rms_displacement_at_30mrad_um": 0.027970309805821943
+          },
+          "D4": {
+            "cos_sin_mm": [
+              69.83538255300326,
+              181.53603161227164
+            ],
+            "magnitude_mm": 194.5052992333525,
+            "azimuth_deg_mod120": 22.986228686710007,
+            "rms_displacement_at_30mrad_um": 0.1299184747440001
+          },
+          "C1": {
+            "signed_mm": -0.07388443291167017,
+            "radial_intercept_at_30mrad_um": 2.216532987350105
+          },
+          "C3": {
+            "signed_mm": 319.6881669505768,
+            "radial_intercept_at_30mrad_um": -8.631580507665571
+          },
+          "C5": {
+            "signed_mm": -280181.3057612866,
+            "radial_intercept_at_30mrad_um": 6.808405729999262
+          },
+          "condition": 16.681180834460058,
+          "rms_error_um": 0.22228711083035244
+        },
+        "surface": {
+          "D95_nm": 754.002102639481,
+          "D90_nm": 642.3804440974886,
+          "rms_radius_nm": 1487.28286827922,
+          "alpha95_mrad": 30.00139526873096,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.9981689453125
+        }
+      },
+      {
+        "currents_A": {
+          "probe_hp1_hexapole": 0.01752,
+          "probe_hp2_hexapole": -1.0,
+          "probe_hpol_hexapole_x": -0.07115,
+          "probe_hpol_hexapole_y": -0.94652,
+          "probe_tl21_lens": 5.0,
+          "probe_tl22_lens": -5.0
+        },
+        "fit": {
+          "A2": {
+            "cos_sin_mm": [
+              -0.0830768113573789,
+              -0.08083040264836701
+            ],
+            "magnitude_mm": 0.1159107871494567,
+            "azimuth_deg_mod120": 74.73826313674957,
+            "rms_displacement_at_30mrad_um": 0.10431970843451102
+          },
+          "D4": {
+            "cos_sin_mm": [
+              59.79429368109806,
+              174.12456918747972
+            ],
+            "magnitude_mm": 184.10519588416514,
+            "azimuth_deg_mod120": 23.682517663980487,
+            "rms_displacement_at_30mrad_um": 0.12297179735458169
+          },
+          "C1": {
+            "signed_mm": -0.07388512996331036,
+            "radial_intercept_at_30mrad_um": 2.2165538988993103
+          },
+          "C3": {
+            "signed_mm": 319.7096009905454,
+            "radial_intercept_at_30mrad_um": -8.632159226744726
+          },
+          "C5": {
+            "signed_mm": -280195.3996870617,
+            "radial_intercept_at_30mrad_um": 6.8087482123955985
+          },
+          "condition": 16.681391369855813,
+          "rms_error_um": 0.22225217946388634
+        },
+        "surface": {
+          "D95_nm": 777.6326800027755,
+          "D90_nm": 644.5774863054395,
+          "rms_radius_nm": 1485.4231417127705,
+          "alpha95_mrad": 30.000622012190906,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.9981689453125
+        }
+      }
+    ],
+    "A2_response_mm_per_A": [
+      [
+        -0.5731627093753934,
+        0.35216960848021944
+      ],
+      [
+        -0.172964573910706,
+        -0.6940093006977796
+      ]
+    ]
+  },
+  "balanced_angle_groups": [
+    {
+      "lower_mrad": 0,
+      "upper_mrad_exclusive": 10,
+      "count": 10644,
+      "current_uA": 4.8724365234375,
+      "arrival_direction_H3": 0.00972818982209091,
+      "minimum_landing_radius_um": 0.0025591525572532235,
+      "maximum_landing_radius_um": 0.3600410941830867,
+      "ring": {
+        "count": 0,
+        "current_nA": 0.0,
+        "H3": null,
+        "orientation_deg_mod120": null
+      }
+    },
+    {
+      "lower_mrad": 10,
+      "upper_mrad_exclusive": 20,
+      "count": 14012,
+      "current_uA": 6.4141845703125,
+      "arrival_direction_H3": 0.011720859939721329,
+      "minimum_landing_radius_um": 0.00323392103934911,
+      "maximum_landing_radius_um": 0.3762213241586977,
+      "ring": {
+        "count": 0,
+        "current_nA": 0.0,
+        "H3": null,
+        "orientation_deg_mod120": null
+      }
+    },
+    {
+      "lower_mrad": 20,
+      "upper_mrad_exclusive": 30,
+      "count": 6469,
+      "current_uA": 2.961273193359375,
+      "arrival_direction_H3": 0.01880651179375176,
+      "minimum_landing_radius_um": 0.0020759671681996636,
+      "maximum_landing_radius_um": 0.40359806711775836,
+      "ring": {
+        "count": 0,
+        "current_nA": 0.0,
+        "H3": null,
+        "orientation_deg_mod120": null
+      }
+    },
+    {
+      "lower_mrad": 30,
+      "upper_mrad_exclusive": null,
+      "count": 1639,
+      "current_uA": 0.750274658203125,
+      "arrival_direction_H3": 0.07165217107102066,
+      "minimum_landing_radius_um": 0.029836593998081837,
+      "maximum_landing_radius_um": 48.3172927087873,
+      "ring": {
+        "count": 414,
+        "current_nA": 189.51416015625,
+        "H3": 0.21301661540825506,
+        "orientation_deg_mod120": 78.76802517582729
+      }
+    }
+  ]
+}

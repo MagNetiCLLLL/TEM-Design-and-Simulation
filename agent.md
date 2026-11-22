@@ -24,6 +24,9 @@ branch only at the user's explicit request.
   final focus tolerance from an extra upstream waist.
 - Maintenance fixes must not silently retune lenses or refocus deliberate
   perturbations. Keep physical interception and absolute particle weights.
+- When tuning a corrector from a sampled field, check transverse interpolation
+  and grid-pitch sensitivity before attributing a bright patch to aberration
+  or alignment. Use the [corrector sampling comparison](docs/OPTICAL_CONTROL_ROLES.md#transverse-field-sampling-during-corrector-adjustment).
 
 ## Scanning model policy
 

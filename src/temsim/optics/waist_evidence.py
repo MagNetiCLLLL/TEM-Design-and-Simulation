@@ -21,8 +21,12 @@ def validate_detector(value):
 def corrector_regions_for_state(state):
     from temsim.optics.crossover_acceptance import regions_for_state
     chain = regions_for_state(state)
-    return {key: dict(bounds_mm=chain[key]['bounds_mm'],maximum_spacing_mm=spacing)
-            for key,spacing in (('corrector_internal',1.),('ac_pair',.1))}
+    regions = dict(corrector_internal=dict(bounds_mm=chain['corrector_internal']['bounds_mm'], maximum_spacing_mm=1.))
+    if 'downstream_output_bounds_mm' in chain['ac_pair']:
+        regions['downstream_output'] = dict(bounds_mm=chain['ac_pair']['downstream_output_bounds_mm'], maximum_spacing_mm=.1)
+    else:
+        regions['ac_pair'] = dict(bounds_mm=chain['ac_pair']['bounds_mm'], maximum_spacing_mm=.1)
+    return regions
 
 
 def requested_corrector_planes(state):
@@ -41,9 +45,10 @@ def corrector_evidence_for_state(state, checkpoints, masks, weights, source_ids=
         for key,row in corrector_regions_for_state(state).items()}
     passed=all(row['status']=='RESOLVED_AT_BOUNDED_SAMPLING' and len(row['regions'])==1
                for row in regions.values())
-    return dict(schema='required-corrector-finite-regions-v1',passed=passed,
+    return dict(schema='required-corrector-finite-regions-v2',passed=passed,
         status='PASS' if passed else 'UNRESOLVED',intervals=regions,
-        scope='Exactly one actual-source finite region in the central TL pair and physical AC pair; independent specimen angle, focus and size remain required')
+        driven_pivot_match='UNMEASURED_IN_STATIC_CAPTURE',
+        scope='Static source images between TL22 and TL21 and downstream of the lower AC winding. The driven two-axis pivot and the isolated Mini/objective front focus require independent measurements.')
 
 
 def explicit_bracket_indices(checkpoints, row):

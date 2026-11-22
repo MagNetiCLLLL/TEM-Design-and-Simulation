@@ -1,0 +1,160 @@
+{
+  "reference": "illuminated-normal.json / final",
+  "focal_plane_mm": 1490.3703749645058,
+  "zero_command": {
+    "scan_enabled": false,
+    "wobble_enabled": false,
+    "kick_x_mrad": 0.0,
+    "kick_y_mrad": 0.0,
+    "DP12_offsets": {
+      "upper_x_mrad": 0.0,
+      "upper_y_mrad": 0.0,
+      "lower_x_mrad": 0.0,
+      "lower_y_mrad": 0.0
+    }
+  },
+  "frozen_gun_exit_mm": 450.0,
+  "corrector_sha256": "69d1b2db6dd5c52426e005f7c84bc34e0754ddc4eaa5e5dade99b3d25df56d51",
+  "objective_At": -14551.5,
+  "specimen_surface_mm": 1599.1999975,
+  "runs": [
+    {
+      "emitted": 4096,
+      "max_step_mm": 0.15,
+      "TL12_gain": 0.3004525596031009,
+      "TL12_winding_A": [
+        -1569.7475380395335,
+        995.6578811656076,
+        2236.8473467616514
+      ]
+    },
+    {
+      "emitted": 32768,
+      "max_step_mm": 0.075,
+      "TL12_gain": 0.300463161261821,
+      "TL12_winding_A": [
+        -1569.8029275748963,
+        995.69301358409,
+        2236.926275335968
+      ],
+      "reference": {
+        "radial_and_principal_waist_brackets_mm": [
+          [
+            [
+              1375.0,
+              1375.5
+            ],
+            [
+              1408.0,
+              1408.5
+            ]
+          ],
+          [
+            [
+              1375.0,
+              1375.5
+            ],
+            [
+              1408.0,
+              1408.5
+            ]
+          ],
+          [
+            [
+              1375.0,
+              1375.5
+            ],
+            [
+              1408.0,
+              1408.5
+            ]
+          ]
+        ],
+        "rms_radius_at_focal_plane_um": 640.2005347270328,
+        "emitted": 32768,
+        "surviving": 30396,
+        "effective": 30396.0,
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "specimen": {
+          "D95_nm": 8115.31356531737,
+          "D90_nm": 8083.380639515795,
+          "rms_radius_nm": 3334.740592881529,
+          "alpha95_mrad": 26.704247395713335,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 13.9141845703125,
+          "axis_50nm_uA": 0.04302978515625
+        },
+        "specimen_edge_mrad": [
+          29.959766589372524,
+          29.97991851554115,
+          29.99997541441816
+        ],
+        "rim_survived": 64,
+        "specimen_survived": 30396,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.39141845703125e-05,
+          "specimen_A": 1.39141845703125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 1.0858154296875e-06
+          }
+        }
+      },
+      "matched": {
+        "radial_and_principal_waist_brackets_mm": [
+          [
+            [
+              1490.345374964506,
+              1490.3703749645058
+            ]
+          ],
+          [
+            [
+              1490.3703749645058,
+              1490.395374964506
+            ]
+          ],
+          [
+            [
+              1490.345374964506,
+              1490.3703749645058
+            ]
+          ]
+        ],
+        "rms_radius_at_focal_plane_um": 1.479593615905691,
+        "emitted": 32768,
+        "surviving": 30409,
+        "effective": 30409.0,
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "specimen": {
+          "D95_nm": 269243.53724784305,
+          "D90_nm": 244439.41827572606,
+          "rms_radius_nm": 79106.07534357329,
+          "alpha95_mrad": 0.15378107354469736,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 13.920135498046875,
+          "axis_50nm_uA": 0.0
+        },
+        "specimen_edge_mrad": [
+          0.20898746953374558,
+          0.2168584462350801,
+          0.22445834833034248
+        ],
+        "rim_survived": 64,
+        "specimen_survived": 30409,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.3920135498046875e-05,
+          "specimen_A": 1.3920135498046875e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 1.079864501953125e-06
+          }
+        }
+      }
+    }
+  ]
+}

@@ -14,21 +14,23 @@ qualification=module_from_spec(spec);spec.loader.exec_module(qualification)
 
 
 def column(monkeypatch,step=.1,*,defocus_nm=0.,clipping=None,source_harmonic=5):
-    lens=lambda key,z:SimpleNamespace(key=key,z_mm=z,enabled=True,installed=True)
+    lens=lambda key,z:SimpleNamespace(key=key,z_mm=z,enabled=True,installed=True,
+        mechanical_center_from_tip_mm=z,mechanical_length_mm=2.)
     state=SimpleNamespace(simulation_mode='unified',probe_mode='nano_probe',nanoprobe_range='normal',
+        ac_deflector=SimpleNamespace(lower_z_mm=42.,mechanical_coil_length_mm=1.),
         lenses=[lens(k,z) for k,z in [('condenser_lens_1',5.),('condenser_lens_2',10.),
             ('condenser_lens_3',20.),('adapter_lens',25.),('probe_tl22_lens',28.),
-            ('probe_tl21_lens',34.),('mini_condenser',45.)]],
+            ('probe_tl21_lens',34.),('probe_tl12_lens',36.5),('mini_condenser',45.)]],
         mini_condenser=SimpleNamespace(enabled=True,installed=True,mechanical_center_from_tip_mm=45.,mechanical_length_mm=2.),
         electron_gun=SimpleNamespace(exit_plane_z_mm=0.),sample=SimpleNamespace(upper_surface_z_mm=50.),apertures=[])
     monkeypatch.setattr('temsim.physics.instrument_magnetic.column_dipole_fields',lambda state:[
         SimpleNamespace(key=f'ac_deflector:{i}',arrival_z_mm=z,dynamic=False) for i,z in enumerate((38.,42.))])
     monkeypatch.setattr('temsim.physics.aperture_clipping.posed_aperture_registration',lambda state,aperture:None)
     z=np.unique(np.r_[np.arange(0.,50.,step),condenser_topology.requested_capture_planes(state,maximum_spacing_mm=.5),
-        5.,10.,20.,25.,28.,34.,38.,42.,45.,50.])
+        5.,10.,20.,25.,28.,34.,35.5,38.,42.,42.25,42.5,45.,50.])
     phi=np.arange(32)*2*np.pi/32
-    root=np.select([z<25,z<36,z<43],[15.,31.,40.],default=50.+defocus_nm*1e-6)
-    split=np.select([z<25,z<36,z<43],[.4,.4,.04],default=0.)
+    root=np.select([z<25,z<36,z<44],[15.,31.,43.],default=50.+defocus_nm*1e-6)
+    split=np.select([z<25,z<36,z<44],[.4,.4,.04],default=0.)
     tx=np.broadcast_to(.002*np.cos(phi),(len(z),32)).copy()
     ty=np.broadcast_to(.002*np.sin(phi),(len(z),32)).copy()
     # The default finite source spread is orthogonal to first-harmonic directions
@@ -134,7 +136,10 @@ def test_finite_region_cannot_hide_sample_defocus_or_missing_diameter_angle_gate
     before=deepcopy(data[1:])
     topo=topology(data);corr=corrector(data);inventory=chain(data)
     assert not topo['passed'] and not inventory['required_topology_satisfied_at_sampling']
-    assert corr['waist_evidence_passed']
+    assert 'missing_or_ambiguous_executed_ac_2d_waist' in corr['failures']
+    first, extra = corr['intervals']['ac']['executed_waists']
+    assert first['z_mm'] == pytest.approx(43.)
+    assert 49.9999 < extra['z_mm'] < 50.
     measurement=SimpleNamespace(accepts=lambda target:False,statistics=SimpleNamespace(radius_95_m=2.5e-9))
     failures=qualification.qualification_failures(topo,measurement,corr,30.,crossover_chain=inventory)
     assert any('Surface focus' in row for row in failures)
@@ -155,10 +160,23 @@ def test_new_qualification_requires_explicit_chain_evidence(monkeypatch):
 def test_missing_required_interval_planes_fail_closed(monkeypatch):
     data=column(monkeypatch)
     state,cp,masks,w,ids=data
-    keep=(cp.z_mm<38.)|(cp.z_mm>42.)
+    keep=(cp.z_mm<42.5)|(cp.z_mm>44.)
     cp=SimpleNamespace(**{key:value[keep] for key,value in vars(cp).items()})
     report=topology((state,cp,masks[keep],w,ids))
     assert not report['passed'] and report['status']=='UNRESOLVED'
+
+
+def test_static_waist_inside_scan_pair_cannot_supply_downstream_pivot_evidence(monkeypatch):
+    data=column(monkeypatch,.05)
+    state,cp,masks,w,ids=data
+    section=(cp.z_mm>=36.) & (cp.z_mm<44.)
+    for pos,slope in (('x_m','tx_rad'),('y_m','ty_rad')):
+        getattr(cp,pos)[section] += .003 * getattr(cp,slope)[section]
+    report=chain(data)
+    assert report['intervals']['ac_pair']['status']=='FAIL_FORBIDDEN_WAIST'
+    assert not report['downstream_output_waist']['regions']
+    assert not report['required_topology_satisfied_at_sampling']
+    assert corrector(data)['driven_pivot_match']=='UNMEASURED_IN_STATIC_CAPTURE'
 
 
 def test_custom_mode_retains_the_historical_counter_by_default(monkeypatch):
@@ -212,6 +230,42 @@ def test_known_interception_cannot_hide_a_forbidden_c3_adl_waist(monkeypatch):
     assert report['failures']==['forbidden_c3_adl_waist']
     assert report['forbidden_adjacent_cohort_candidates']
     assert not chain(data)['required_topology_satisfied_at_sampling']
+
+
+def test_waist_inside_c2_body_does_not_qualify_the_open_gap(monkeypatch):
+    data=column(monkeypatch,.1)
+    state=data[0]
+    # The fixture waist at 15 mm is after the C2 optical reference at 10 mm,
+    # but before the exit face of this installed 12 mm lens at 16 mm.
+    state.lenses[1].mechanical_length_mm=12.
+    gate=topology(data)
+    assert not gate['passed']
+    assert gate['intervals']['c2_c3']['bounds_mm']==[16.,19.]
+    assert not gate['intervals']['c2_c3']['waists']
+    inventory=chain(data)
+    assert not inventory['required_topology_satisfied_at_sampling']
+    assert inventory['intervals']['c2_exit_section']['waist_z_mm']
+    assert not inventory['intervals']['c2_to_c3']['waist_z_mm']
+
+
+def test_installed_condenser_components_supply_the_finite_gap_faces():
+    from temsim.assembly_catalog import AssemblyCatalog, AssemblySelection
+    from temsim.optics.column import default_state
+
+    state = default_state()
+    AssemblyCatalog().apply(state, AssemblySelection('FEG', 'C3 + Probe Corrector', 'No Energy Filter'))
+    state.simulation_mode = 'unified'
+    state.probe_mode = 'nano_probe'
+    for deflector in (state.ac_deflector, state.descan_deflector):
+        deflector.scan_enabled = False
+        deflector.wobble_enabled = False
+    gaps = condenser_topology.inter_lens_gaps_mm(state)
+    np.testing.assert_allclose(gaps, [[750., 830.], [1000., 1070.]], rtol=0, atol=1e-9)
+    capture = condenser_topology.requested_capture_planes(state)
+    assert all(face in capture for gap in gaps for face in gap)
+    assert regions_for_state(state)['c2_to_c3']['requirement'] == 'exactly_one_2d_waist'
+    state.nanoprobe_range = 'large_angle'
+    assert regions_for_state(state)['c2_to_c3']['requirement'] == 'required_2d_waist'
 
 
 def test_real_source_ids_reach_direct_focus_subreports_from_both_consumers(monkeypatch):

@@ -1,0 +1,578 @@
+{
+  "source": "Frozen 300 keV gun-exit checkpoint",
+  "source_plane_mm": 450.0,
+  "specimen_upper_mm": 1599.1999975,
+  "corrector_sha256": "69d1b2db6dd5c52426e005f7c84bc34e0754ddc4eaa5e5dade99b3d25df56d51",
+  "objective_turns": 1160,
+  "max_step_mm": 0.075,
+  "TL12_gain": 0.300463161261821,
+  "station_command_matrix": [
+    [
+      0.5,
+      0.0
+    ],
+    [
+      0.0,
+      0.5
+    ],
+    [
+      -0.5471968124468146,
+      0.21009014599972234
+    ],
+    [
+      -0.27650944604518324,
+      -0.5512407183154509
+    ]
+  ],
+  "focus_definition": "Canonical tilt-transfer zero from the isolated Mini and incident-side objective field to the specimen upper surface.",
+  "pivot_definition": "Minimum Frobenius norm of the two-axis fixed-drive centroid position response in the complete field, with independent X and Y minima and residuals.",
+  "scale_definition": "Singular stretches and polar rotation of each specimen scan-position matrix relative to the nominal matrix; quasistatic near the scan center.",
+  "runs": [
+    {
+      "objective_At": -14551.5,
+      "objective_current_A": -12.544396551724137,
+      "objective_field_sha256": "9084ddab2b941f60f953c7a0f5fdc00775e60295b16373ea15c18a364ae53f7d",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "surviving": 30409,
+      "effective": 30409.0,
+      "surviving_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+      "specimen_current_A": 1.3920135498046875e-05,
+      "focus_mm": 1490.370374964096,
+      "two_lens_focal_checks": [
+        {
+          "symmetric_tilt_urad": 1.0,
+          "signed_larmor_D": -1.767833980213733e-09,
+          "canonical_D_singular": [
+            2.5458148737724817e-05,
+            2.5458148737724817e-05
+          ],
+          "mechanical_D_singular": [
+            0.026674214819635982,
+            0.02667421481963598
+          ],
+          "B_singular_mm": [
+            48.96112632700141,
+            48.9611263270014
+          ]
+        },
+        {
+          "symmetric_tilt_urad": 0.5,
+          "signed_larmor_D": -1.7626770256962655e-09,
+          "canonical_D_singular": [
+            2.54581503136204e-05,
+            2.54581503136204e-05
+          ],
+          "mechanical_D_singular": [
+            0.026674214818243034,
+            0.026674214818243034
+          ],
+          "B_singular_mm": [
+            48.96112632733753,
+            48.96112632733753
+          ]
+        }
+      ],
+      "radial_waist_mm": 1490.3703749519705,
+      "radial_waist_bracket_mm": [
+        1490.1203749645058,
+        1490.3703749645058
+      ],
+      "closest_common_X_Y_pivots_mm": [
+        1490.3703751292417,
+        1490.3703752728973,
+        1490.3703749346676
+      ],
+      "common_plane_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            -8.159755030002198e-08,
+            1.2751519615499702e-06
+          ],
+          [
+            -1.4743840528347592e-06,
+            -1.3684384750152464e-07
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.20269757176216172,
+            -0.014012086823393602
+          ],
+          [
+            0.015242959107205953,
+            -0.17409615508745815
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          1.482474812029668e-06,
+          1.275724770791009e-06
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.20327781076524265,
+          0.17464992082590086
+        ]
+      },
+      "common_plane_even_nm": 8.857306338743485e-08,
+      "fixed_drives_at_new_focus": {
+        "position_nm_per_urad": [
+          [
+            -4.81186461101836e-08,
+            1.2774559038327052e-06
+          ],
+          [
+            -1.4769293061911487e-06,
+            -1.0797229770608206e-07
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.202697571823419,
+            -0.014012086256909457
+          ],
+          [
+            0.015242958452430743,
+            -0.1740961551381393
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          1.4835320941383904e-06,
+          1.275272405629508e-06
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.2032778107771608,
+          0.1746499208310487
+        ]
+      },
+      "specimen": {
+        "position_nm_per_urad": [
+          [
+            -6.255573758112015,
+            6.11408520988906
+          ],
+          [
+            -7.1447442455444525,
+            -5.448933332648593
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            0.0015214041542631034,
+            -0.007170079374602004
+          ],
+          [
+            0.008217106896948234,
+            0.0009297322275220937
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.497358088847495,
+          8.188569785197924
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.008391916290737012,
+          0.007189276568524283
+        ]
+      },
+      "specimen_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            -6.255573758054938,
+            6.114085210018215
+          ],
+          [
+            -7.14474424549419,
+            -5.448933332768232
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            0.001521404155109852,
+            -0.007170079375102558
+          ],
+          [
+            0.008217106900173568,
+            0.0009297322256015574
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.497358088772664,
+          8.188569785373302
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.008391916294359123,
+          0.0071892765684127445
+        ]
+      },
+      "relative_scale_principal_percent": [
+        -1.1102230246251565e-14,
+        0.0
+      ],
+      "relative_scan_rotation_deg": -1.6323708874110886e-15
+    },
+    {
+      "objective_At": -14435.5,
+      "objective_current_A": -12.444396551724138,
+      "objective_field_sha256": "eaac792c3abaff4eedae299279af566062b26cd4ea2a75d681f64f4d109369e9",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "surviving": 30409,
+      "effective": 30409.0,
+      "surviving_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+      "specimen_current_A": 1.3920135498046875e-05,
+      "focus_mm": 1490.5281979869308,
+      "two_lens_focal_checks": [
+        {
+          "symmetric_tilt_urad": 1.0,
+          "signed_larmor_D": -1.7635903120456717e-09,
+          "canonical_D_singular": [
+            2.5155561428062296e-05,
+            2.5155561428062296e-05
+          ],
+          "mechanical_D_singular": [
+            0.025900634613293335,
+            0.025900634613293335
+          ],
+          "B_singular_mm": [
+            48.779031235742515,
+            48.779031235742515
+          ]
+        },
+        {
+          "symmetric_tilt_urad": 0.5,
+          "signed_larmor_D": -1.7585077250757965e-09,
+          "canonical_D_singular": [
+            2.515556297692566e-05,
+            2.515556297692566e-05
+          ],
+          "mechanical_D_singular": [
+            0.02590063461192035,
+            0.025900634611920346
+          ],
+          "B_singular_mm": [
+            48.77903123607409,
+            48.77903123607408
+          ]
+        }
+      ],
+      "radial_waist_mm": 1489.4795463404123,
+      "radial_waist_bracket_mm": [
+        1489.370374964506,
+        1489.6203749645058
+      ],
+      "closest_common_X_Y_pivots_mm": [
+        1490.2855765513943,
+        1490.2795286746523,
+        1490.2937684227159
+      ],
+      "common_plane_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            0.005407276539606298,
+            -0.08199021900426721
+          ],
+          [
+            0.09594900621069906,
+            0.007540542822730352
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.20160276627837853,
+            -0.012884978277512997
+          ],
+          [
+            0.013959360988291423,
+            -0.17315826900705325
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          0.0962652678131451,
+          0.08214441212699208
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.20209301148538558,
+          0.17362823108525516
+        ]
+      },
+      "common_plane_even_nm": 8.856470891042362e-08,
+      "fixed_drives_at_new_focus": {
+        "position_nm_per_urad": [
+          [
+            -0.04349588365773702,
+            -0.08521546698392304
+          ],
+          [
+            0.09945058398132431,
+            -0.034462864931782564
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.20151976897572804,
+            -0.013700899938140594
+          ],
+          [
+            0.014904259511780694,
+            -0.17308765662816583
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          0.10865326613443324,
+          0.0917940258421441
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.20207777739692248,
+          0.17362021097236904
+        ]
+      },
+      "specimen": {
+        "position_nm_per_urad": [
+          [
+            -6.1045068317563995,
+            6.1492012597847445
+          ],
+          [
+            -7.184429233208424,
+            -5.319881048730729
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            0.003774219989354108,
+            -0.006603327499860133
+          ],
+          [
+            0.007612792793829546,
+            0.002826170931935691
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.428757410410416,
+          8.129782977887764
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.008529250303579828,
+          0.00714439753342673
+        ]
+      },
+      "specimen_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            -6.104506831701187,
+            6.1492012598509564
+          ],
+          [
+            -7.184429233220498,
+            -5.319881048732931
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            0.0037742199880660423,
+            -0.006603327501397651
+          ],
+          [
+            0.007612792793577208,
+            0.002826170930692826
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.42875741038398,
+          8.129782977939158
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.008529250302961939,
+          0.0071443975341444746
+        ]
+      },
+      "relative_scale_principal_percent": [
+        -0.7259690025170129,
+        -0.71425698155686
+      ],
+      "relative_scan_rotation_deg": 0.8465928024287382
+    },
+    {
+      "objective_At": -14667.5,
+      "objective_current_A": -12.644396551724139,
+      "objective_field_sha256": "3cc04efa045c3aa038377c77f4e392cc710566e1c0343fdcfa98f38a62f17a01",
+      "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "emitted": 32768,
+      "surviving": 30409,
+      "effective": 30409.0,
+      "surviving_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+      "specimen_current_A": 1.3920135498046875e-05,
+      "focus_mm": 1490.2126163116566,
+      "two_lens_focal_checks": [
+        {
+          "symmetric_tilt_urad": 1.0,
+          "signed_larmor_D": -1.7757813784106818e-09,
+          "canonical_D_singular": [
+            2.5762377400588796e-05,
+            2.5762377400588792e-05
+          ],
+          "mechanical_D_singular": [
+            0.02745423520907684,
+            0.02745423520907684
+          ],
+          "B_singular_mm": [
+            49.142221118133165,
+            49.142221118133165
+          ]
+        },
+        {
+          "symmetric_tilt_urad": 0.5,
+          "signed_larmor_D": -1.7705482839961795e-09,
+          "canonical_D_singular": [
+            2.576237901149114e-05,
+            2.5762379011491135e-05
+          ],
+          "mechanical_D_singular": [
+            0.02745423520765613,
+            0.027454235207656125
+          ],
+          "B_singular_mm": [
+            49.14222111847391,
+            49.142221118473906
+          ]
+        }
+      ],
+      "radial_waist_mm": 1491.25888388028,
+      "radial_waist_bracket_mm": [
+        1491.1203749645058,
+        1491.3703749645058
+      ],
+      "closest_common_X_Y_pivots_mm": [
+        1490.4474359131993,
+        1490.4534353946303,
+        1490.439310143894
+      ],
+      "common_plane_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            -0.006557132643620497,
+            0.08176477857317882
+          ],
+          [
+            -0.09577472455201369,
+            -0.008500361775925417
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.2038226443302159,
+            -0.015159479981721243
+          ],
+          [
+            0.01654968684008611,
+            -0.17505856113372167
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          0.09616047901687495,
+          0.08201640867660481
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.20450172205211348,
+          0.17570406316733805
+        ]
+      },
+      "common_plane_even_nm": 8.862370441563793e-08,
+      "fixed_drives_at_new_focus": {
+        "position_nm_per_urad": [
+          [
+            0.041315770261647254,
+            0.08522839789784913
+          ],
+          [
+            -0.09954954624374347,
+            0.0326165253733711
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.2039186688126337,
+            -0.01434002643378928
+          ],
+          [
+            0.015600267434576471,
+            -0.17514066108054133
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          0.10788801872925571,
+          0.09113176164208645
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.20452275432521566,
+          0.17571716569369422
+        ]
+      },
+      "specimen": {
+        "position_nm_per_urad": [
+          [
+            -6.4063212772241105,
+            6.076892065238103
+          ],
+          [
+            -7.1026071605948875,
+            -5.5776955697520405
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.0006790324843547169,
+            -0.007795394847040707
+          ],
+          [
+            0.008892309165695373,
+            -0.000920435740607645
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.565982063170782,
+          8.247379765309
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.00894367230665119,
+          0.007820508670042903
+        ]
+      },
+      "specimen_half_drive_check": {
+        "position_nm_per_urad": [
+          [
+            -6.406321277311137,
+            6.076892065305265
+          ],
+          [
+            -7.102607160627862,
+            -5.577695569801711
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            -0.0006790324828269772,
+            -0.0077953948458372585
+          ],
+          [
+            0.00889230916970748,
+            -0.000920435741433486
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          9.565982063252248,
+          8.247379765393587
+        ],
+        "tilt_singular_urad_per_urad": [
+          0.008943672310815387,
+          0.007820508668607585
+        ]
+      },
+      "relative_scale_principal_percent": [
+        0.7144843729661732,
+        0.7262704829926303
+      ],
+      "relative_scan_rotation_deg": -0.842651603985016
+    }
+  ]
+}

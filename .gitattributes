@@ -111,3 +111,6 @@ docs/development/ideal_current_fit_20261116/** -text whitespace=blank-at-eol,spa
 docs/development/**/validation/**/*.xml -whitespace
 docs/development/**/validation/**/*.log -whitespace
 docs/development/**/validation/**/*.txt -whitespace
+
+# Keep the recorded checksums of the CESCOR acquisition receipts portable.
+docs/development/cescor_direct_probe_20261121/evidence/*.json -text whitespace=blank-at-eol,space-before-tab,cr-at-eol

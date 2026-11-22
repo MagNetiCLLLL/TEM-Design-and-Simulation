@@ -1,0 +1,628 @@
+{
+  "reference": "illuminated-normal.json / final",
+  "TL12_gain": 0.300463161261821,
+  "focal_plane_mm": 1490.3703749645058,
+  "lower_coil_exit_mm": 1420.0,
+  "angle_convention": "Mechanical paraxial slopes in the laboratory frame. P and T differentiate the original-current centroid with respect to two common scan commands.",
+  "input_command_units": "Nominal station urad converted to amperes with the four-channel saved winding matrix.",
+  "runs": [
+    {
+      "emitted": 4096,
+      "step_mm": 0.15,
+      "refined_winding_z": false,
+      "source_digest": "5fc0e2aae995bb2429d6c8daa99a9b1dba2be98c84cd5dd455ce55962b688803",
+      "lower_to_upper": [
+        [
+          -1.0943785420703669,
+          0.4201641592286968
+        ],
+        [
+          -0.5529976627479465,
+          -1.1024672052742839
+        ]
+      ],
+      "winding_field_checks": {
+        "winding_sha256": "6bb9a9ac3763f126eb9782f11517d609b19cc335fb31b09561a524898994b615",
+        "command_matrix_A_per_mrad": [
+          [
+            -3.890179224192253e-18,
+            -0.028238652907859495,
+            -1.808864308228727e-19,
+            -0.0005681923788035702
+          ],
+          [
+            0.040268932387262105,
+            -2.0363678178094798e-18,
+            0.00031695012003532855,
+            7.712048339689222e-20
+          ],
+          [
+            -3.3630916635693344e-19,
+            -0.0005681923788035705,
+            -3.8573343446702444e-18,
+            -0.028238652907859492
+          ],
+          [
+            0.0003169501200353296,
+            -1.1249993514286162e-19,
+            0.04026893238726211,
+            -2.023220778414501e-18
+          ]
+        ],
+        "field_check_count_per_circuit": 192,
+        "maximum_relative_field_check_per_circuit": [
+          0.00044001895790041077,
+          0.0003376091118800655,
+          0.0006004840931432421,
+          0.00041453454782558935
+        ]
+      },
+      "observations": {
+        "matched": {
+          "command_amplitude_urad": 1.0,
+          "original_counts_at_target_and_sample": [
+            3816,
+            3816
+          ],
+          "target_ID_sha256": "fd784bba2b7175e6ac54f1e7d08806a53d0d434a0f5bca7f700650df1e5f03bb",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5471892710351834,
+              0.2100820796143484
+            ],
+            [
+              -0.27649883137397324,
+              -0.5512336026371419
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              1.5710452873478325e-07,
+              -1.3806119721970887e-05
+            ],
+            [
+              1.9961034488494408e-05,
+              6.658554035103812e-08
+            ],
+            [
+              7.807954528598403e-06,
+              1.5281998186617406e-05
+            ],
+            [
+              -2.187625269833338e-05,
+              8.459781059765614e-06
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              1.780121629535555e-10,
+              -2.1024325552168421e-10
+            ],
+            [
+              -9.022751704878886e-11,
+              2.2472853221598313e-10
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              -0.2026937335205331,
+              -0.014007708264645811
+            ],
+            [
+              0.015237923426864801,
+              -0.17409319557156103
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            3.6216167777662935e-10,
+            5.808092480768458e-11
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.20327360468325834,
+            0.17464662090368516
+          ],
+          "target_even_position_norm_nm": 3.5418848720454325e-07,
+          "neighboring_max_position_response_nm_per_urad": [
+            0.0050818640812810975,
+            0.005081816071778655
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            9.497155901220296,
+            8.188410158899822
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.00840646335285695,
+            0.0072032381244929704
+          ]
+        }
+      }
+    },
+    {
+      "emitted": 32768,
+      "step_mm": 0.075,
+      "refined_winding_z": true,
+      "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+      "lower_to_upper": [
+        [
+          -1.0943936248936292,
+          0.4201802919994447
+        ],
+        [
+          -0.5530188920903665,
+          -1.1024814366309017
+        ]
+      ],
+      "winding_field_checks": {
+        "winding_sha256": "6bb9a9ac3763f126eb9782f11517d609b19cc335fb31b09561a524898994b615",
+        "command_matrix_A_per_mrad": [
+          [
+            -3.890179224192253e-18,
+            -0.028238652907859495,
+            -1.808864308228727e-19,
+            -0.0005681923788035702
+          ],
+          [
+            0.040268932387262105,
+            -2.0363678178094798e-18,
+            0.00031695012003532855,
+            7.712048339689222e-20
+          ],
+          [
+            -3.3630916635693344e-19,
+            -0.0005681923788035705,
+            -3.8573343446702444e-18,
+            -0.028238652907859492
+          ],
+          [
+            0.0003169501200353296,
+            -1.1249993514286162e-19,
+            0.04026893238726211,
+            -2.023220778414501e-18
+          ]
+        ],
+        "field_check_count_per_circuit": 192,
+        "maximum_relative_field_check_per_circuit": [
+          0.00044001895790041077,
+          0.0003376091118800655,
+          0.0006004840931432421,
+          0.00041453454782558935
+        ]
+      },
+      "observations": {
+        "matched": {
+          "command_amplitude_urad": 1.0,
+          "original_counts_at_target_and_sample": [
+            30409,
+            30409
+          ],
+          "target_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5471968124468146,
+              0.21009014599972234
+            ],
+            [
+              -0.27650944604518324,
+              -0.5512407183154509
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              1.571105599100683e-07,
+              -1.3806115678896703e-05
+            ],
+            [
+              1.9961032098243084e-05,
+              6.658809699285064e-08
+            ],
+            [
+              7.808254272614432e-06,
+              1.5282199123787375e-05
+            ],
+            [
+              -2.1876556382928457e-05,
+              8.460105884492846e-06
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              -8.873905723528797e-11,
+              -4.291381998652137e-11
+            ],
+            [
+              -3.0147528002684216e-11,
+              -6.54246097789629e-11
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              -0.2026975571057197,
+              -0.014012097872962348
+            ],
+            [
+              0.015242972578094802,
+              -0.17409614187133196
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            1.1569122351635705e-10,
+            3.900012866047735e-11
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.2032777971523905,
+            0.1746499085479264
+          ],
+          "target_even_position_norm_nm": 3.5429336644577074e-07,
+          "neighboring_max_position_response_nm_per_urad": [
+            0.005081968626552709,
+            0.005081921149966803
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            9.497358100955028,
+            8.188569794170922
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.00839190172461882,
+            0.007189261256403129
+          ]
+        },
+        "reference": {
+          "command_amplitude_urad": 1.0,
+          "original_counts_at_target_and_sample": [
+            30396,
+            30396
+          ],
+          "target_ID_sha256": "a1b24d9be507f58b7e253b5665a12e01097c876f60881d88cfdb036099b11f9b",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5,
+              0.0
+            ],
+            [
+              0.0,
+              -0.5
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              -1.85464639668469e-21,
+              -1.3835230264527962e-05
+            ],
+            [
+              1.9975991133613388e-05,
+              -1.056744150603186e-21
+            ],
+            [
+              1.7605125891566553e-21,
+              1.383523026452796e-05
+            ],
+            [
+              -1.997599113361339e-05,
+              9.553604216358197e-22
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              -24.51466847777994,
+              14.202497109426082
+            ],
+            [
+              -13.590109419587911,
+              -22.443192933801217
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              -0.34286230936942974,
+              0.07905489325880835
+            ],
+            [
+              -0.06358972927743804,
+              -0.3145073263249013
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            28.363147631359794,
+            26.203048186434337
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.3524831531359836,
+            0.32018491231041896
+          ],
+          "target_even_position_norm_nm": 2.3217114126814542e-08,
+          "neighboring_max_position_response_nm_per_urad": [
+            28.354773066929933,
+            28.37152158703823
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            2.8502131618115287,
+            2.4612299415614713
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.6976202781711246,
+            0.6433656976749198
+          ]
+        },
+        "original_drive_after_TL12": {
+          "command_amplitude_urad": 1.0,
+          "original_counts_at_target_and_sample": [
+            30409,
+            30409
+          ],
+          "target_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5,
+              0.0
+            ],
+            [
+              0.0,
+              -0.5
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              -1.85464639668469e-21,
+              -1.3835230264527962e-05
+            ],
+            [
+              1.9975991133613388e-05,
+              -1.056744150603186e-21
+            ],
+            [
+              1.7605125891566553e-21,
+              1.383523026452796e-05
+            ],
+            [
+              -1.997599113361339e-05,
+              9.553604216358197e-22
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              14.562998942804404,
+              -15.231669208457886
+            ],
+            [
+              17.76773748372344,
+              12.937039088078183
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              0.1155030504900662,
+              -0.04347369845377998
+            ],
+            [
+              0.05383968688888827,
+              0.10301860247005595
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            22.984240098423044,
+            19.97170167609716
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.1277186862577838,
+            0.11149169767082978
+          ],
+          "target_even_position_norm_nm": 3.8932386482078703e-07,
+          "neighboring_max_position_response_nm_per_urad": [
+            22.981363342758304,
+            22.98711629523821
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            8.165201614879104,
+            7.0197075062782295
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.4813418492161983,
+            0.41832377712369195
+          ]
+        },
+        "coarse_calibration_replayed": {
+          "command_amplitude_urad": 1.0,
+          "original_counts_at_target_and_sample": [
+            30409,
+            30409
+          ],
+          "target_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5471892710351834,
+              0.2100820796143484
+            ],
+            [
+              -0.27649883137397324,
+              -0.5512336026371419
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              1.5710452873478325e-07,
+              -1.3806119721970887e-05
+            ],
+            [
+              1.9961034488494408e-05,
+              6.658554035103812e-08
+            ],
+            [
+              7.807954528598403e-06,
+              1.5281998186617406e-05
+            ],
+            [
+              -2.187625269833338e-05,
+              8.459781059765614e-06
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              0.0010285024486641826,
+              -0.0003856719698374994
+            ],
+            [
+              0.00042955664998797327,
+              0.0008662593464176165
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              -0.2026830267448692,
+              -0.014007659596827452
+            ],
+            [
+              0.015237386026344488,
+              -0.1740836994051077
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            0.0011153853592395673,
+            0.0009473118950088952
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.20326289558302701,
+            0.17463714229375477
+          ],
+          "target_even_position_norm_nm": 3.5430241900554894e-07,
+          "neighboring_max_position_response_nm_per_urad": [
+            0.00609591061387166,
+            0.004119836731289718
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            9.497225165866421,
+            8.18845899880978
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.008368239080824773,
+            0.007169141165550895
+          ]
+        },
+        "matched_half": {
+          "command_amplitude_urad": 0.5,
+          "original_counts_at_target_and_sample": [
+            30409,
+            30409
+          ],
+          "target_ID_sha256": "911bd7b2e3e26c53fe555d154e690456533e47899c1753ff44a77b94d1d1185a",
+          "station_command_matrix": [
+            [
+              0.5,
+              0.0
+            ],
+            [
+              0.0,
+              0.5
+            ],
+            [
+              -0.5471968124468146,
+              0.21009014599972234
+            ],
+            [
+              -0.27650944604518324,
+              -0.5512407183154509
+            ]
+          ],
+          "physical_coil_A_per_common_command_urad": [
+            [
+              1.571105599100683e-07,
+              -1.3806115678896703e-05
+            ],
+            [
+              1.9961032098243084e-05,
+              6.658809699285064e-08
+            ],
+            [
+              7.808254272614432e-06,
+              1.5282199123787375e-05
+            ],
+            [
+              -2.1876556382928457e-05,
+              8.460105884492846e-06
+            ]
+          ],
+          "target_position_nm_per_urad": [
+            [
+              -8.682273824994403e-11,
+              -3.6746154544172856e-11
+            ],
+            [
+              -2.7929339792546703e-11,
+              -1.7949839971916014e-10
+            ]
+          ],
+          "target_tilt_urad_per_urad": [
+            [
+              -0.20269755710550538,
+              -0.014012097874198824
+            ],
+            [
+              0.015242972577697437,
+              -0.1740961418725956
+            ]
+          ],
+          "target_position_singular_nm_per_urad": [
+            1.8973948952304085e-10,
+            7.672755300102651e-11
+          ],
+          "target_tilt_singular_urad_per_urad": [
+            0.20327779715217262,
+            0.1746499085492554
+          ],
+          "target_even_position_norm_nm": 8.858151544039583e-08,
+          "neighboring_max_position_response_nm_per_urad": [
+            0.005081968628570301,
+            0.005081921147972622
+          ],
+          "specimen_shift_singular_nm_per_urad": [
+            9.497358100828768,
+            8.188569794308329
+          ],
+          "specimen_mechanical_tilt_singular_urad_per_urad": [
+            0.008391901728340574,
+            0.007189261256222291
+          ]
+        }
+      }
+    }
+  ]
+}

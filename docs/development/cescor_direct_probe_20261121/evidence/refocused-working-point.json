@@ -1,0 +1,2282 @@
+{
+  "operating_point": "D95 surface focus after A2 correction, using Objective and Mini Condenser only",
+  "energy_keV": 300,
+  "gun": {
+    "source_A": 1.5e-05,
+    "gun_exit_A": 1.5e-05,
+    "gun_exit_z_mm": 450.0,
+    "gun_aperture_fixed_diameter_um": 4000.0,
+    "C1_diameter_um": 1000.0,
+    "C1_z_mm": 445.0,
+    "maximum_executed_gun_radius_um": 1.2132161112896465,
+    "gun_aperture_loss_A": 0.0,
+    "C1_loss_A": 0.0,
+    "gun_input_count": 32768,
+    "electrostatic_request_unchanged": true,
+    "original_gun_sha256": "45018646e7543ebc7dfa0f0cbac4cde782f3444e83c8d185abcbb5922146ad02",
+    "reference": "Prescribed gun-exit phase space; fixed-field, independent-electron transport.",
+    "exit_fixed_axis_r95_um": 0.6846472321934882,
+    "exit_fixed_axis_alpha95_urad": 0.6194655383086313
+  },
+  "C2_aperture_diameter_um": 100,
+  "specimen_upper_surface_z_m": 1.5991999975000002,
+  "fixed_corrector_windings_A": {
+    "probe_hp1_hexapole": 0.01752,
+    "probe_hp2_hexapole": -1.0,
+    "probe_hpol_hexapole_x": -0.07115,
+    "probe_hpol_hexapole_y": -1.14652,
+    "probe_tl21_lens": 5.0,
+    "probe_tl22_lens": -5.0
+  },
+  "owner_per_group": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser"
+  ],
+  "currents_A": [
+    -680.9985774617396,
+    -730.6982943109692,
+    -1081.6489023141926,
+    -696.1171422974166,
+    770.2224576469805,
+    -665.2645377022294,
+    295.11315623916374,
+    -44.49627088714043,
+    58.29271147958151,
+    58.29271147958151,
+    -28.144248781602016,
+    -28.144248781602016,
+    493.36481358802354,
+    493.36481358802354,
+    493.36481358802354,
+    141.83756771591402,
+    1442.4432416756836,
+    614.6285357738719,
+    908.3475746169393,
+    -1057.6970607764135,
+    1592.5498326610755
+  ],
+  "objective_At": -24000.8,
+  "objective_turns": 1160,
+  "objective_A": -20.690344827586205,
+  "mini_gain": 1.0000080968723972,
+  "objective_solution": {
+    "ampere_turns": 24000.8,
+    "level": "gap-fine",
+    "padding": 8,
+    "shape": [
+      218,
+      804
+    ],
+    "iterations": 8,
+    "residual": 8.275896260412874e-09,
+    "peak_material_T": 1.7013325488054325,
+    "peak_axis_T": 0.14959045448453817,
+    "sample_Bz_T": 0.018667262515986775,
+    "field_squared_integral_T2m": 0.0027446150131427557,
+    "max_potential_fit_error_T": 0.003434298636808778,
+    "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+    "field_digest": "264bcd6f3bab0c08940d2a1c4d020c6a2018338b27d8253437483ef638548aca",
+    "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+    "parts": [
+      "objective_lens",
+      "objective_lens_excitation_coil",
+      "objective_lens_housing",
+      "objective_lens_yoke",
+      "objective_lower_pole",
+      "objective_pole_sleeves",
+      "objective_return_plates",
+      "objective_terminal_vacuum_tube",
+      "objective_upper_pole"
+    ],
+    "elapsed_s": 13.697576999999
+  },
+  "C2_foil": {
+    "entrance": {
+      "z_m": 0.7649,
+      "current_A": 1.5e-05,
+      "D95_diameter_um": 56.642988401995915
+    },
+    "exit": {
+      "z_m": 0.7651,
+      "current_A": 1.4999542236328126e-05,
+      "D95_diameter_um": 56.73134235176702
+    }
+  },
+  "trajectory_file": "refocused.npz",
+  "trajectory_sha256": "d73ad20b282ed19fdb829eca11b74708d181aca08b5702541deaf7680874dd28",
+  "paired_controls": {
+    "refocused": {
+      "before": {
+        "trajectory_sha256": "afe9fb2f6168b1ebb9fd7f09c42e36d03ae0f723d45dec28cfb1c9d9f0633d0e",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10306.002915613517,
+          "D90_nm": 10084.14460848088,
+          "rms_radius_nm": 4886.961204444554,
+          "alpha95_mrad": 30.000125634490644,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 6.3,
+            "min_um": 10.142545081968978
+          },
+          "RMS_radius": {
+            "offset_um": 72.0,
+            "min_um": 4.732398447900337
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          6200.0,
+          6300.0,
+          6400.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          71000.0,
+          72000.0,
+          73000.0
+        ],
+        "ring": {
+          "count": 26336,
+          "current_nA": 12055.6640625,
+          "H3": 0.010957089887846471,
+          "orientation_deg_mod120": 22.130281058889896
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.847534545351543,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.011975676482831777,
+                0.0019560413653522337
+              ],
+              "magnitude_mm": 0.012134369577543743,
+              "azimuth_deg_mod120": 56.907845195451614,
+              "rms_displacement_at_30mrad_um": 0.010920932619789367
+            },
+            "D4": {
+              "cos_sin_mm": [
+                38.363040199450325,
+                189.69976877769298
+              ],
+              "magnitude_mm": 193.53998327904966,
+              "azimuth_deg_mod120": 26.189082922166836,
+              "rms_displacement_at_30mrad_um": 0.12927369860204718
+            }
+          },
+          "in_sample_vector_rms_um": 0.09242245544243534
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.819527485773303,
+        "fixed_axis_core_1um_radius_nA": 788.726806640625
+      },
+      "after": {
+        "trajectory_sha256": "d73ad20b282ed19fdb829eca11b74708d181aca08b5702541deaf7680874dd28",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10135.219746521738,
+          "D90_nm": 9883.861065268005,
+          "rms_radius_nm": 4858.629848888126,
+          "alpha95_mrad": 29.99991531970007,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 0.0,
+            "min_um": 10.135219746521738
+          },
+          "RMS_radius": {
+            "offset_um": 66.0,
+            "min_um": 4.729422255421771
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          -0.5,
+          0.0,
+          0.5
+        ],
+        "RMS_minimum_bracket_nm": [
+          65000.0,
+          66000.0,
+          67000.0
+        ],
+        "ring": {
+          "count": 26178,
+          "current_nA": 11983.33740234375,
+          "H3": 0.011100146743369925,
+          "orientation_deg_mod120": 22.18177719344636
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.848280725633778,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.01197255359022234,
+                0.0019520041022006286
+              ],
+              "magnitude_mm": 0.012130637225049389,
+              "azimuth_deg_mod120": 56.91332580785568,
+              "rms_displacement_at_30mrad_um": 0.01091757350254445
+            },
+            "D4": {
+              "cos_sin_mm": [
+                38.40715040574864,
+                189.7176272987719
+              ],
+              "magnitude_mm": 193.56623494340514,
+              "azimuth_deg_mod120": 26.185166327157763,
+              "rms_displacement_at_30mrad_um": 0.12929123322041491
+            }
+          },
+          "in_sample_vector_rms_um": 0.0924667719838553
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.81944413624483,
+        "fixed_axis_core_1um_radius_nA": 804.74853515625
+      },
+      "corrector_field_sha256": "e193f8a70510556f0e74b7e389b8f7f40b7d0d830112681b4d39fba34b27bb1e",
+      "identical_intercepted_particle_ids_and_components": true
+    },
+    "half-step": {
+      "before": {
+        "trajectory_sha256": "1f0e168d6d4d83de555e757da29105c7865a1fef35dbc750b44f6423f2509c76",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.0375,
+        "surface": {
+          "D95_nm": 10306.019184101988,
+          "D90_nm": 10084.109271869012,
+          "rms_radius_nm": 4886.959757091375,
+          "alpha95_mrad": 30.000126496703007,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 6.3,
+            "min_um": 10.142597984591951
+          },
+          "RMS_radius": {
+            "offset_um": 72.0,
+            "min_um": 4.732396960332522
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          6200.0,
+          6300.0,
+          6400.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          71000.0,
+          72000.0,
+          73000.0
+        ],
+        "ring": {
+          "count": 26336,
+          "current_nA": 12055.6640625,
+          "H3": 0.010960704151705676,
+          "orientation_deg_mod120": 22.10186497610187
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.84750990291188,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.012002852024471287,
+                0.001954202471123648
+              ],
+              "magnitude_mm": 0.012160894869190354,
+              "azimuth_deg_mod120": 56.917575181538915,
+              "rms_displacement_at_30mrad_um": 0.010944805382271319
+            },
+            "D4": {
+              "cos_sin_mm": [
+                38.3460122853801,
+                189.73749482879222
+              ],
+              "magnitude_mm": 193.57358704662286,
+              "azimuth_deg_mod120": 26.191467416405175,
+              "rms_displacement_at_30mrad_um": 0.12929614400711312
+            }
+          },
+          "in_sample_vector_rms_um": 0.0924821667797164
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.819530995717514,
+        "fixed_axis_core_1um_radius_nA": 788.726806640625
+      },
+      "after": {
+        "trajectory_sha256": "536bdbee79a618d68ada2f88e51d055d45869a80d9a50b87f714b431be958b8d",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.0375,
+        "surface": {
+          "D95_nm": 10135.27277860713,
+          "D90_nm": 9883.90860616317,
+          "rms_radius_nm": 4858.628395364348,
+          "alpha95_mrad": 29.999916173722802,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": -0.0005,
+            "min_um": 10.135253418616148
+          },
+          "RMS_radius": {
+            "offset_um": 66.0,
+            "min_um": 4.729420771093359
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          -2.0,
+          -0.5,
+          0.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          65000.0,
+          66000.0,
+          67000.0
+        ],
+        "ring": {
+          "count": 26178,
+          "current_nA": 11983.33740234375,
+          "H3": 0.01110434915517212,
+          "orientation_deg_mod120": 22.15309066501359
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.848256094044913,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.011999609435525232,
+                0.0019501643586763563
+              ],
+              "magnitude_mm": 0.012157046007603893,
+              "azimuth_deg_mod120": 56.92301797471828,
+              "rms_displacement_at_30mrad_um": 0.010941341406843502
+            },
+            "D4": {
+              "cos_sin_mm": [
+                38.39012611264199,
+                189.75533388811505
+              ],
+              "magnitude_mm": 193.5998153974703,
+              "azimuth_deg_mod120": 26.18755044703833,
+              "rms_displacement_at_30mrad_um": 0.12931366305338376
+            }
+          },
+          "in_sample_vector_rms_um": 0.09252497181688515
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.81944764371982,
+        "fixed_axis_core_1um_radius_nA": 804.74853515625
+      },
+      "corrector_field_sha256": "e193f8a70510556f0e74b7e389b8f7f40b7d0d830112681b4d39fba34b27bb1e",
+      "identical_intercepted_particle_ids_and_components": true
+    },
+    "prefix": {
+      "before": {
+        "trajectory_sha256": "db2199b2dd9e2a57ed1d07b16f1fc0f1e7e025cb52dc134c337ac9ab69b2d753",
+        "source_digest": "bf29499d09abf9476b0240cf6e7131de33e66ebe67e200be594d6ae4a7984bdb",
+        "emitted": 16384,
+        "survived": 16295,
+        "effective": 16295,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10299.659469617687,
+          "D90_nm": 10084.193052716597,
+          "rms_radius_nm": 4893.746643429026,
+          "alpha95_mrad": 29.929975047769254,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.91851806640625
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 8.5,
+            "min_um": 10.070801832104356
+          },
+          "RMS_radius": {
+            "offset_um": 72.0,
+            "min_um": 4.739993224847931
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          8400.0,
+          8500.0,
+          8600.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          71000.0,
+          72000.0,
+          73000.0
+        ],
+        "ring": {
+          "count": 13153,
+          "current_nA": 12041.93115234375,
+          "H3": 0.012067031413849402,
+          "orientation_deg_mod120": 23.997176234491203
+        },
+        "fit": {
+          "particles": 16295,
+          "condition_number_scaled_design": 20.79293816391178,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.010020903907519535,
+                0.004720468607532722
+              ],
+              "magnitude_mm": 0.011077063645138193,
+              "azimuth_deg_mod120": 51.59221658790164,
+              "rms_displacement_at_30mrad_um": 0.009969357280624373
+            },
+            "D4": {
+              "cos_sin_mm": [
+                33.62962844247565,
+                182.80913805324494
+              ],
+              "magnitude_mm": 185.8766603555953,
+              "azimuth_deg_mod120": 26.525463420078847,
+              "rms_displacement_at_30mrad_um": 0.12415503484527486
+            }
+          },
+          "in_sample_vector_rms_um": 0.0925627685198396
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999084472656251e-05,
+          "specimen_A": 1.491851806640625e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 9.1552734375e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2729975000002,
+                1599.2739975000002
+              ]
+            ],
+            [
+              [
+                1599.2709975,
+                1599.2719975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2729975000002,
+                1599.2739975000002
+              ]
+            ],
+            [
+              [
+                1599.2709975,
+                1599.2719975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.81651988829453,
+        "fixed_axis_core_1um_radius_nA": 794.677734375
+      },
+      "after": {
+        "trajectory_sha256": "63558a20556077e63931e0b21b9676174d10e8e426d23abcf401f6d3bc83b88c",
+        "source_digest": "bf29499d09abf9476b0240cf6e7131de33e66ebe67e200be594d6ae4a7984bdb",
+        "emitted": 16384,
+        "survived": 16295,
+        "effective": 16295,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10121.17912376161,
+          "D90_nm": 9883.97395304284,
+          "rms_radius_nm": 4865.500276632082,
+          "alpha95_mrad": 29.929765984328615,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.91851806640625
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 2.2,
+            "min_um": 10.063671673057721
+          },
+          "RMS_radius": {
+            "offset_um": 66.0,
+            "min_um": 4.7370144195374
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          2100.0,
+          2200.0,
+          2300.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          65000.0,
+          66000.0,
+          67000.0
+        ],
+        "ring": {
+          "count": 13083,
+          "current_nA": 11977.84423828125,
+          "H3": 0.011717869400233881,
+          "orientation_deg_mod120": 23.412178552412286
+        },
+        "fit": {
+          "particles": 16295,
+          "condition_number_scaled_design": 20.79368698932336,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.010012057583179999,
+                0.004716436831827698
+              ],
+              "magnitude_mm": 0.01106734265474477,
+              "azimuth_deg_mod120": 51.59200522137246,
+              "rms_displacement_at_30mrad_um": 0.009960608389270292
+            },
+            "D4": {
+              "cos_sin_mm": [
+                33.65774479950281,
+                182.82539225869925
+              ],
+              "magnitude_mm": 185.8977348961942,
+              "azimuth_deg_mod120": 26.522924625167477,
+              "rms_displacement_at_30mrad_um": 0.12416911143949277
+            }
+          },
+          "in_sample_vector_rms_um": 0.09260731155503088
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999084472656251e-05,
+          "specimen_A": 1.491851806640625e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 9.1552734375e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.81643653168786,
+        "fixed_axis_core_1um_radius_nA": 817.56591796875
+      },
+      "corrector_field_sha256": "e193f8a70510556f0e74b7e389b8f7f40b7d0d830112681b4d39fba34b27bb1e",
+      "identical_intercepted_particle_ids_and_components": true
+    },
+    "fine-xy": {
+      "before": {
+        "trajectory_sha256": "ce3ce5f26b1ceb3b9e07ded08c199f21c6cc12d45ab2e590e7b17c780ae97a5c",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32592,
+        "effective": 32592,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10206.171060659144,
+          "D90_nm": 10063.630556589662,
+          "rms_radius_nm": 4888.309209336568,
+          "alpha95_mrad": 30.00346880192934,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.91943359375
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": 4.7,
+            "min_um": 10.075731869733335
+          },
+          "RMS_radius": {
+            "offset_um": 72.0,
+            "min_um": 4.733718281425829
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          4600.0,
+          4700.0,
+          4800.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          71000.0,
+          72000.0,
+          73000.0
+        ],
+        "ring": {
+          "count": 26337,
+          "current_nA": 12056.121826171875,
+          "H3": 0.010998657179316116,
+          "orientation_deg_mod120": 89.85840100167374
+        },
+        "fit": {
+          "particles": 32592,
+          "condition_number_scaled_design": 20.836991790052945,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                0.03427740492377984,
+                0.18049739263571304
+              ],
+              "magnitude_mm": 0.18372329530192824,
+              "azimuth_deg_mod120": 26.415757292122105,
+              "rms_displacement_at_30mrad_um": 0.16535096577173541
+            },
+            "D4": {
+              "cos_sin_mm": [
+                2.7694952052538846,
+                69.21237080788788
+              ],
+              "magnitude_mm": 69.26775856443237,
+              "azimuth_deg_mod120": 29.23618771543546,
+              "rms_displacement_at_30mrad_um": 0.046266922171771786
+            }
+          },
+          "in_sample_vector_rms_um": 0.07552777528942974
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4919433593750001e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.0108642578125e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ],
+            [
+              [
+                1599.2719975000002,
+                1599.2729975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.81985323614729,
+        "fixed_axis_core_1um_radius_nA": 787.811279296875
+      },
+      "after": {
+        "trajectory_sha256": "085ee45af844003707a30cc88ae828c85ee775543dd3a2d923fd5e41306bde38",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32592,
+        "effective": 32592,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10161.060437378757,
+          "D90_nm": 9863.2939914393,
+          "rms_radius_nm": 4859.977677166588,
+          "alpha95_mrad": 30.00325839928516,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.91943359375
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": -1.6,
+            "min_um": 10.070240470487105
+          },
+          "RMS_radius": {
+            "offset_um": 66.0,
+            "min_um": 4.730741116905076
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          -1700.0,
+          -1600.0,
+          -1500.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          65000.0,
+          66000.0,
+          67000.0
+        ],
+        "ring": {
+          "count": 26180,
+          "current_nA": 11984.2529296875,
+          "H3": 0.011151889485775135,
+          "orientation_deg_mod120": 89.60390606931954
+        },
+        "fit": {
+          "particles": 32592,
+          "condition_number_scaled_design": 20.837737842186495,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                0.0343402629148591,
+                0.18048133986994647
+              ],
+              "magnitude_mm": 0.1837192632750109,
+              "azimuth_deg_mod120": 26.409026260685934,
+              "rms_displacement_at_30mrad_um": 0.1653473369475098
+            },
+            "D4": {
+              "cos_sin_mm": [
+                2.776241834105613,
+                69.23758714206048
+              ],
+              "magnitude_mm": 69.29322471913005,
+              "azimuth_deg_mod120": 29.23460758005071,
+              "rms_displacement_at_30mrad_um": 0.04628393211437468
+            }
+          },
+          "in_sample_vector_rms_um": 0.07558165448317992
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4919433593750001e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.0108642578125e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2659975000001,
+                1599.2669975000003
+              ]
+            ],
+            [
+              [
+                1599.2649975000002,
+                1599.2659975000001
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.819769880275242,
+        "fixed_axis_core_1um_radius_nA": 802.91748046875
+      },
+      "corrector_field_sha256": "7a52111efd9ec988bb963102943f392d33665adace663d693313f8f9554ba669",
+      "identical_intercepted_particle_ids_and_components": true
+    },
+    "mesh5": {
+      "before": {
+        "trajectory_sha256": "8a97cfa9ea64e85dfb342d6a66129429f43f058391b99bfef2ff2dc3076493ed",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10552.406192577593,
+          "D90_nm": 9810.74228615934,
+          "rms_radius_nm": 4848.286036769644,
+          "alpha95_mrad": 30.010611735391784,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": -4.5,
+            "min_um": 10.284392754659823
+          },
+          "RMS_radius": {
+            "offset_um": 62.0,
+            "min_um": 4.736539550507382
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          -4600.0,
+          -4500.0,
+          -4400.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          61000.0,
+          62000.0,
+          63000.0
+        ],
+        "ring": {
+          "count": 26064,
+          "current_nA": 11931.15234375,
+          "H3": 0.050770342572016826,
+          "orientation_deg_mod120": 115.62686924015466
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.832241271709854,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.4288617376327775,
+                0.2106479179286181
+              ],
+              "magnitude_mm": 0.47780219268340235,
+              "azimuth_deg_mod120": 51.28023147478613,
+              "rms_displacement_at_30mrad_um": 0.4300219734150621
+            },
+            "D4": {
+              "cos_sin_mm": [
+                17.314106555225496,
+                220.70440004600505
+              ],
+              "magnitude_mm": 221.3824981462463,
+              "azimuth_deg_mod120": 28.50479096048863,
+              "rms_displacement_at_30mrad_um": 0.14787091461025287
+            }
+          },
+          "in_sample_vector_rms_um": 0.09331447857117318
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2609975000003,
+                1599.2619975000002
+              ]
+            ],
+            [
+              [
+                1599.2609975000003,
+                1599.2619975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2609975000003,
+                1599.2619975000002
+              ]
+            ],
+            [
+              [
+                1599.2609975000003,
+                1599.2619975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.823269880486407,
+        "fixed_axis_core_1um_radius_nA": 802.001953125
+      },
+      "after": {
+        "trajectory_sha256": "bff6c333d237783cbad1fba8eec64a039ddc8311d813d48353dcb7c799687438",
+        "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+        "emitted": 32768,
+        "survived": 32591,
+        "effective": 32591,
+        "max_step_mm": 0.075,
+        "surface": {
+          "D95_nm": 10920.712014590765,
+          "D90_nm": 9616.18276613843,
+          "rms_radius_nm": 4823.787324675988,
+          "alpha95_mrad": 30.010400692014176,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "through_focus": {
+          "D95": {
+            "offset_um": -10.8,
+            "min_um": 10.278053680561706
+          },
+          "RMS_radius": {
+            "offset_um": 55.0,
+            "min_um": 4.7335656774759824
+          },
+          "max_50pm_core_nA": 0.0
+        },
+        "D95_minimum_bracket_nm": [
+          -10900.0,
+          -10800.0,
+          -10700.0
+        ],
+        "RMS_minimum_bracket_nm": [
+          54000.0,
+          55000.0,
+          56000.0
+        ],
+        "ring": {
+          "count": 25879,
+          "current_nA": 11846.466064453125,
+          "H3": 0.05122207832954569,
+          "orientation_deg_mod120": 115.60261507765307
+        },
+        "fit": {
+          "particles": 32591,
+          "condition_number_scaled_design": 20.83298633604979,
+          "coefficients": {
+            "A2": {
+              "cos_sin_mm": [
+                -0.4287905683355499,
+                0.2107830471712016
+              ],
+              "magnitude_mm": 0.4777979117454375,
+              "azimuth_deg_mod120": 51.274129152268756,
+              "rms_displacement_at_30mrad_um": 0.4300181205708937
+            },
+            "D4": {
+              "cos_sin_mm": [
+                17.35164745452463,
+                220.74448859108352
+              ],
+              "magnitude_mm": 221.42540259131317,
+              "azimuth_deg_mod120": 28.501833293034014,
+              "rms_displacement_at_30mrad_um": 0.14789957233878157
+            }
+          },
+          "in_sample_vector_rms_um": 0.09335921394668334
+        },
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2549975000002,
+                1599.2559975000001
+              ]
+            ],
+            [
+              [
+                1599.2539975000002,
+                1599.2549975000002
+              ]
+            ]
+          ]
+        },
+        "common_waists_mm": {
+          "C2_centre_window": [
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ],
+            [
+              [
+                649.675,
+                649.7
+              ]
+            ]
+          ],
+          "C2_to_C3": [
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ],
+            [
+              [
+                907.50000000001,
+                908.25000000001
+              ]
+            ]
+          ],
+          "C3_to_ADL": [
+            [],
+            []
+          ],
+          "Mini_to_pre_sample": [
+            [],
+            []
+          ],
+          "surface_window": [
+            [
+              [
+                1599.2549975000002,
+                1599.2559975000001
+              ]
+            ],
+            [
+              [
+                1599.2539975000002,
+                1599.2549975000002
+              ]
+            ]
+          ]
+        },
+        "angular_RMS_mrad": 16.82318665171107,
+        "fixed_axis_core_1um_radius_nA": 827.178955078125
+      },
+      "corrector_field_sha256": "2f125e182b53152dbce12fa03a55fcd1dcd1bc614817bcec53a267a1b1b55522",
+      "identical_intercepted_particle_ids_and_components": true
+    }
+  },
+  "refocused_angle_groups": [
+    {
+      "lower_mrad": 0,
+      "upper_mrad_exclusive": 10,
+      "count": 10677,
+      "current_uA": 4.887542724609375,
+      "arrival_direction_H3": 0.009794511483978419,
+      "minimum_landing_radius_um": 0.03011707382684397,
+      "maximum_landing_radius_um": 4.114278042472176,
+      "ring": {
+        "count": 7933,
+        "current_nA": 3631.439208984375,
+        "H3": 0.02454023360011066,
+        "orientation_deg_mod120": 24.00861656364412
+      }
+    },
+    {
+      "lower_mrad": 10,
+      "upper_mrad_exclusive": 20,
+      "count": 13848,
+      "current_uA": 6.339111328125,
+      "arrival_direction_H3": 0.01185960065086355,
+      "minimum_landing_radius_um": 3.949053566317016,
+      "maximum_landing_radius_um": 5.051627339667372,
+      "ring": {
+        "count": 13848,
+        "current_nA": 6339.111328125,
+        "H3": 0.015109074210093788,
+        "orientation_deg_mod120": 29.257036870284598
+      }
+    },
+    {
+      "lower_mrad": 20,
+      "upper_mrad_exclusive": 30,
+      "count": 6437,
+      "current_uA": 2.946624755859375,
+      "arrival_direction_H3": 0.019429229912116337,
+      "minimum_landing_radius_um": 0.0020112054981844306,
+      "maximum_landing_radius_um": 5.259583200287203,
+      "ring": {
+        "count": 4228,
+        "current_nA": 1935.4248046875,
+        "H3": 0.03248428966772888,
+        "orientation_deg_mod120": 96.12799311896022
+      }
+    },
+    {
+      "lower_mrad": 30,
+      "upper_mrad_exclusive": null,
+      "count": 1629,
+      "current_uA": 0.745697021484375,
+      "arrival_direction_H3": 0.07015436126076725,
+      "minimum_landing_radius_um": 4.900498613527326,
+      "maximum_landing_radius_um": 29.915454616159803,
+      "ring": {
+        "count": 169,
+        "current_nA": 77.362060546875,
+        "H3": 0.02905043471797863,
+        "orientation_deg_mod120": 10.916841040514187
+      }
+    }
+  ],
+  "current_search": {
+    "source_digest": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+    "step_mm": 0.075,
+    "trials": [
+      {
+        "objective_At": -24000.0,
+        "mini_gain": 1.0,
+        "surface": {
+          "D95_nm": 10306.00291561352,
+          "D90_nm": 10084.144608480889,
+          "rms_radius_nm": 4886.961204444554,
+          "alpha95_mrad": 30.00012563449068,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": 6.2802488242030705,
+        "drift_RMS_um": 72.48318344270167,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24040.0,
+        "mini_gain": 1.0,
+        "surface": {
+          "D95_nm": 25982.999101493602,
+          "D90_nm": 14251.641868035387,
+          "rms_radius_nm": 5738.794655164959,
+          "alpha95_mrad": 29.979384394238142,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.919891357421875
+        },
+        "drift_D95_um": -269.29443354771576,
+        "drift_RMS_um": -204.94126190259198,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4919891357421876e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 7.965087890625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32593
+      },
+      {
+        "objective_At": -24000.0,
+        "mini_gain": 1.0001,
+        "surface": {
+          "D95_nm": 10358.641071404638,
+          "D90_nm": 9779.554337108519,
+          "rms_radius_nm": 4848.475205287843,
+          "alpha95_mrad": 30.005766924444675,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": -3.6028749095765256,
+        "drift_RMS_um": 62.59334210171031,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24000.8,
+        "mini_gain": 1.000005435285513,
+        "surface": {
+          "D95_nm": 10141.793274914873,
+          "D90_nm": 9891.95954412576,
+          "rms_radius_nm": 4859.636384506254,
+          "alpha95_mrad": 29.99976521675939,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": 0.26295222283941816,
+        "drift_RMS_um": 66.42606761319315,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24000.8,
+        "mini_gain": 0.9999998254866534,
+        "surface": {
+          "D95_nm": 10154.724890723368,
+          "D90_nm": 9909.028288739515,
+          "rms_radius_nm": 4861.770288869447,
+          "alpha95_mrad": 29.999448850344294,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": 0.8171692042923016,
+        "drift_RMS_um": 66.98066026682093,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24000.8,
+        "mini_gain": 1.0000110450843727,
+        "surface": {
+          "D95_nm": 10152.746736464438,
+          "D90_nm": 9874.890345578197,
+          "rms_radius_nm": 4857.519357997302,
+          "alpha95_mrad": 30.000081588578073,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": -0.29126776441029484,
+        "drift_RMS_um": 65.87147186830501,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24000.8,
+        "mini_gain": 1.0000080968723972,
+        "surface": {
+          "D95_nm": 10135.219746522404,
+          "D90_nm": 9883.861065267754,
+          "rms_radius_nm": 4858.629848888132,
+          "alpha95_mrad": 29.9999153197,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": 1.1615025034044435e-06,
+        "drift_RMS_um": 66.16293828614567,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      },
+      {
+        "objective_At": -24000.8,
+        "mini_gain": 1.0000080969223977,
+        "surface": {
+          "D95_nm": 10135.219936902586,
+          "D90_nm": 9883.860913141643,
+          "rms_radius_nm": 4858.629830015145,
+          "alpha95_mrad": 29.999915322519886,
+          "core_count": 0,
+          "core_50pm_nA": 0.0,
+          "transmitted_uA": 14.918975830078125
+        },
+        "drift_D95_um": -3.778240504094154e-06,
+        "drift_RMS_um": 66.16293334300565,
+        "current_ledger": {
+          "gun_exit_A": 1.5e-05,
+          "C2_entrance_A": 1.5e-05,
+          "C2_exit_A": 1.4999542236328126e-05,
+          "specimen_A": 1.4918975830078125e-05,
+          "intercepted_A": {
+            "condenser_aperture_2": 4.57763671875e-10,
+            "objective_lens": 8.056640625e-08
+          }
+        },
+        "emitted": 32768,
+        "survived": 32591
+      }
+    ]
+  }
+}

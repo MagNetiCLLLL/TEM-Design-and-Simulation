@@ -17,14 +17,29 @@ imaging, convergence, aberrations and downstream focus.
 | Mini Condenser | Select the probe/illumination mode, Nanoprobe or Microprobe. | Preserve the current magnitude unless a deliberate tuning operation changes it. Existing mode-specific polarity rules remain in force. A change can require downstream focus revalidation. |
 | Mini Condenser and Objective | Jointly form the probe. | Account for both fields, their geometry, and the incoming beam. Do not infer a focused probe from a mode label. |
 | Objective | Control whether the probe is focused on the specimen. | Evaluate focus at the actual specimen entrance/reference plane and report which plane is used. Preserve defocus when the user deliberately perturbs a lens. |
-| Probe Corrector | Correct aberrations while maintaining the required optical conjugacies. | For the specified STEM Nanoprobe branch, compare the executed source-image waist between TL22 and TL21 with the executed waist between the two AC scan coils, but do not assume equal semi-angles. Microprobe requires its own source-image and pupil-plane survey. Whole-corrector mechanical faces and fringe-field reference planes are supplementary observations. Report actual transmitted populations and a common surviving cohort with original weights. |
-| AC Scan / DP12 | The same physical scan-coil assembly, named DP12 by CEOS in the probe-corrected system (user confirmation, 2026-11-07). | For the specified STEM Nanoprobe branch, its common tilt centre is to coincide with the front focal plane of the downstream Mini Condenser plus Upper Objective combination, converting a beam tilt into a probe shift at the specimen. In Microprobe, measure the two-coil mechanical shift/tilt response independently; a static source waist need not lie within the coils. Keep this distinct from the upstream C3 Lens. The software control/reference alias adds no separate physical field; scan and alignment drives share the physical coil limits. |
+| Probe Corrector | Correct aberrations while maintaining the required optical conjugacies. | For the specified STEM Nanoprobe branch, compare the source-image waist between TL22 and TL21 with the TL12 output waist downstream of AC. Measure the angular distribution at each waist with original current weights. Microprobe requires its own source-image and pupil-plane survey. |
+| AC Scan / DP12 | Two physical scan windings also supply the DP12 alignment drive. | For the specified STEM Nanoprobe branch, set the common X/Y scan pivot downstream of the lower winding, at the TL12 output waist and the specimen-referenced front focal plane of Mini Condenser plus Upper Objective. Measure the two-axis scan response there and at the specimen. Scan and alignment share the physical coil limits. |
 
 The stored presets can assign several controls together. Their values are
 reference starting points, not independent guarantees for each role. AC/Descan
 calibration changes scan-drive response matrices, not these illumination lens
 excitations. Descan remains a control channel on the existing shared
 Image/Diffraction physical deflector; it is not an extra magnetic element.
+
+### Operational fine focus in three-condenser Nanoprobe Normal
+
+After illumination and relay alignment, freeze C1, C2, weakly excited C3,
+ADL, the corrector transfer lenses, Mini Condenser and both scan-station
+drive ratios. Keep the physical C2 foil and specimen height fixed. Use the
+installed objective supply alone to place the probe on the specimen upper
+surface after each multipole adjustment. Its field still overlaps the
+preset Mini Condenser field. An intentional change to the illumination or
+transfer-lens match starts a new calibration.
+
+Measure the physical aperture-rim angles and the centroid and incidence
+response to the same X/Y scan commands. Report any residual scan change.
+Compare the surface D95, RMS radius and fixed-axis disk current on the same
+original source packets. Locate the D95 waist separately from the RMS waist.
 
 ## Physical two-condenser Nanoprobe requested on 2026-11-12
 
@@ -50,7 +65,7 @@ Adjust the Mini Condenser and Upper Objective fields deliberately to focus
 directly on the specimen upper surface. A separate bounded source-image waist
 between Mini Condenser and that surface invalidates the direct-focus branch.
 Do not impose a C2-to-C3 waist, a C3-to-ADL condition, corrector-internal waist
-counts or a corrector-exit crossover in the AC coils when those components
+counts or a TL12 output waist downstream of AC when those components
 are absent. Any driven AC shift/tilt assessment remains a separate measurement
 of the installed scan coils and downstream combined field.
 
@@ -148,6 +163,34 @@ the physical relay and distinguish fixed-control multipole comparisons from
 separately retuned illumination candidates. New finite-source comparisons must
 retain at least 1000 original positive-current particles and all absolute losses.
 
+## Transverse field sampling during corrector adjustment
+
+Before interpreting an asymmetric probe as an optical alignment or corrector
+error, compare the current-weighted centroid, the brightest patch and the full
+two-dimensional landing map at a fixed specimen plane. Hold the emitter, stops,
+ordinary lenses, corrector currents and source IDs fixed for the numerical
+comparison. Use an explicitly recorded transverse interpolation method. In the
+registered CESCOR vacuum bore, four-node cubic interpolation on the 0.30 and
+0.15 mm grids reproduced the same pattern. Bilinear interpolation on the
+square grid gave one side of the hexapole pattern excess current.
+
+For a nominal threefold field, compare the current map with its 120° rotation
+about the installed axis. This tests equality between the three directions.
+The third angular harmonic of the measured landings and the fitted A₂
+quadratures measure different properties and must be reported separately.
+Keep physical asymmetries in the working field. A half-turn of the registered
+vector field or an HP/HPol-off trace at fixed relay currents can locate a
+suspect asymmetry without changing the operating point.
+
+For A₂ tuning, measure both quadratures against independent changes of the
+two fine winding currents using the validated interpolation. Check the
+selected currents against the original settings at a finer field pitch.
+Record the fit over the full transmitted cone and the selected imaging cone,
+the specimen D95, convergence, absolute enclosed currents and axial focus.
+Changing the material mesh tests a separate source of error. Any residual
+smaller than the variation with mesh or fit aperture is specific to the
+quoted model. [CESCOR interpolation controls and measured landing maps](development/cescor_direct_probe_20261121/README.md#why-the-bright-patch-appears-off-axis)
+
 ## Current-control families requested on 2026-10-29
 
 Joint illumination design must test a family of settings, not just one narrow
@@ -160,15 +203,24 @@ a compensated response as passive optical insensitivity.
 
 Keep C2/C3 as the primary convergence-angle controls. Normal uses active weak
 C3 without a C3-to-ADL crossover; Large angle uses stronger C3 and the required
-additional crossover. Validate corrector internal source images independently.
-The corrector output source crossover should lie in the AC-coil region. The
-two-coil drive must provide an effective tilt that becomes a specimen shift
-through the Mini Condenser and Upper Objective combination. A static source
-waist and a driven virtual pivot are different observations. Report both,
-along with the actual mechanical mean
-incidence-angle change at the specimen upper surface. A canonical-angle target
-alone must not be described as measured mechanical telecentricity in a magnetic
-field. Do not impose the downstream edge of coil support as the pivot position.
+additional crossover. For installed finite-length lenses, measure both crossover
+intervals from the upstream lens exit to the downstream lens entrance. Normal
+requires exactly one two-dimensional C2-to-C3 source image in that
+open gap. Report waists inside the lens bodies separately. Measure the illuminated
+C2 aperture radius alongside the specimen angular distribution when the two
+condenser supplies change. The 100 µm value specifies its diameter. Count
+any interception at the physical foil, allowing zero intercepted current.
+An underfilled aperture may leave its nominal edge without a measurable
+incident direction. Validate corrector internal source images independently.
+For the specified Nanoprobe setting, TL12 must form its output waist directly
+at the common scan pivot downstream of the lower AC winding. Check for a
+separate earlier waist from the entrance of TL12 through the scan assembly.
+Each AC station applies a common first-order transverse deflection. Changing
+the relative drive moves the effective pivot without moving the windings.
+At the target plane, opposite commands along each scan axis must leave the
+centroid stationary and generate two independent tilt directions. At the
+specimen, report both the resulting displacement and the mechanical change
+in incidence angle in the objective immersion field.
 
 If excitation changes do not provide the requested Gun Lens current control,
 assess physical axial placement with the full electrostatic field, mechanical
@@ -212,13 +264,24 @@ different condition. Do not require B and D to vanish at the same input plane:
 that would make the transfer singular, and a measured finite-source waist
 does not impose that simultaneous condition. Finite-source and driven scan
 measurements remain necessary when nonlinear aberrations are significant.
-Only the static output waist is constrained to the AC-coil region. The user
-has not required the mathematical scan pivot to coincide with that waist or
-to lie between the physical coils. Search the relevant downstream transfer
-before rejecting a two-coil virtual pivot because it is absent inside the
-coils. In the objective immersion field, report canonical/Larmor and mechanical
-angular residuals separately; a canonical front-focal plane need not have an
-exactly zero mechanical-angle response.
+For this Nanoprobe setting, locate the common plane downstream of the AC
+windings. Match the static TL12 output waist and the driven scan pivot to
+the Mini Condenser plus Upper Objective front focal plane referred to the
+specimen upper surface.
+Locate the waist with scan and wobble off. Locate the focal plane
+independently with both axes of a point-tilt perturbation in the combined
+downstream lens field. Repeat the transfer in the complete installed field
+to quantify overlapping upstream fringes. Verify the common tilt center
+separately by driving the two deflectors. A mechanical midpoint, a static
+waist or a root found only in the full column cannot establish all three
+conditions. Report plane offsets, numerical resolution and both canonical
+and mechanical angular residuals in the objective immersion field.
+
+The [objective focus and STEM raster study](development/cescor_direct_probe_20261121/scan-focus-calibration.md)
+holds the scan calibration fixed during objective fine focus. It measures how
+much the specimen pixel scale, scan rotation and scan-dependent beam angle
+change. Those measurements address the operating range around a reference
+alignment separately from the nominal three-plane match.
 
 Thermo Fisher's [Krios training packet, pp. 13-15](https://cryoem.jhmi.edu/wp-content/uploads/2022/07/Krios-Customer-Packet.pdf#page=13)
 illustrates C1 source-image changes, aperture interception and condenser zoom.
@@ -275,12 +338,11 @@ apply to the installed three-condenser probe-corrected assembly. They do not
 add missing hardware or crossover requirements to a physical C1/C2 column;
 the direct Mini Condenser-to-specimen focus requirement still applies there.
 
-The user clarified the two comparison locations on 2026-10-27. The Normal-mode
-C3-to-ADL interval must remain free of crossovers. The next downstream
-source-image crossover is sought inside the corrector, between TL22 and TL21;
-the second crossover is sought between the upper and lower AC scan
-coils. Determine both from executed particle trajectories. A geometric midpoint,
-an interpolated candidate or a projected-ray intersection alone is insufficient.
+The Normal-mode C3-to-ADL interval must remain free of crossovers.
+Measure the internal source image between TL22 and TL21. The November 21
+clarification places the TL12 output waist at the virtual tilt plane downstream
+of the lower AC winding. Measure both waists with executed finite-source
+trajectories and locate the pivot independently with applied scan commands.
 
 On 2026-10-28 the user confirmed keeping the Normal entrance while matching
 the corrector interior to the CEOS optical principle. Device names need not
@@ -291,8 +353,8 @@ next crossover. Preserve its finite profile and overlapping fringes; weak
 excitation is neither zero field nor an independently acting thin-lens rule.
 
 The internal acceptance pattern is exactly one resolved, two-dimensional
-source-image waist between TL22 and TL21 and exactly one within the two AC
-scan-coil reference centers. Count and report all other actual waist brackets
+source-image waist between TL22 and TL21 and a direct TL12 output waist at
+the downstream pivot. Count and report all other actual waist brackets
 and unresolved intervals throughout the incident column. A matching total
 count alone is insufficient. This is an internal matching contract, not a
 claim that the full published upstream ray path or OEM absolute positions
