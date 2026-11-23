@@ -1,0 +1,142 @@
+{
+  "original_objective": {
+    "surface": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.089266317318325,
+      "RMS_radius_um": 0.8582107025759976,
+      "axis_50nm_nA": 67.291259765625,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.027645146183771514,
+        -0.023382013639712766
+      ],
+      "alpha95_mrad": 0.019287904060110113,
+      "largest_sampled_angle_mrad": 0.0345842899049042,
+      "specimen_uA": 15.0,
+      "count": 32768
+    },
+    "waists_mm": [
+      524.6714190375923,
+      790.9951182206282,
+      1141.700352967075,
+      1307.0051702001817,
+      1474.7028632344689
+    ],
+    "common_count": 32768,
+    "max_matched_gun_exit_energy_change_eV": 3.364402800798416e-08,
+    "changed_transmissions": 0,
+    "max_matched_specimen_displacement_nm": 1983.0725655470576
+  },
+  "half_tracking_step": {
+    "step_mm": 0.025,
+    "all_radial_waists_mm": [
+      524.6714964622745,
+      790.9941531178011,
+      1141.6868610117338,
+      1307.0257368185773,
+      1481.8825632170062
+    ],
+    "scan_housing_waists_mm": [],
+    "all_extrema_after_TL12_mm": {
+      "minima": [
+        1481.8825632170062
+      ],
+      "maxima": [
+        1420.8440330912667,
+        1568.2849790615264
+      ]
+    },
+    "scan_exit_to_surface_principal_waists_mm": [
+      [
+        1481.88258627208
+      ],
+      [
+        1481.8825401598197
+      ]
+    ],
+    "at_old_waist": {
+      "z_mm": 1474.6999999999998,
+      "rms_radius_um": 0.21325232604946617,
+      "rms_slope_um_per_mm": -0.02924854838842599
+    },
+    "surface": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 5.197434200026529,
+      "RMS_radius_um": 1.4441116141095598,
+      "axis_50nm_nA": 23.345947265625,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.03697356337852107,
+        -0.04312586011041841
+      ],
+      "alpha95_mrad": 0.03031125585112343,
+      "largest_sampled_angle_mrad": 0.054315502060355916,
+      "specimen_uA": 15.0,
+      "count": 32768
+    },
+    "near_surface_0p4mm_D95_um": [
+      5.1985915159718195,
+      5.197434200026529
+    ],
+    "common_count": 32768,
+    "max_matched_gun_exit_energy_change_eV": 0.0,
+    "changed_transmissions": 0,
+    "max_matched_specimen_displacement_nm": 0.003312310638720287
+  },
+  "one_mm_objective": {
+    "mesh_mm": 1.0,
+    "all_radial_waists_mm": [
+      524.6716900211527,
+      790.9943432035961,
+      1141.6870870223563,
+      1307.0166853431836,
+      1481.879357656964
+    ],
+    "scan_housing_waists_mm": [],
+    "all_extrema_after_TL12_mm": {
+      "minima": [
+        1481.879357656964
+      ],
+      "maxima": [
+        1420.8360738502047,
+        1568.240988077734
+      ]
+    },
+    "scan_exit_to_surface_principal_waists_mm": [
+      [
+        1481.8793801992738
+      ],
+      [
+        1481.8793351130503
+      ]
+    ],
+    "at_old_waist": {
+      "z_mm": 1474.6999999999998,
+      "rms_radius_um": 0.2132268288327521,
+      "rms_slope_um_per_mm": -0.029258509312171957
+    },
+    "surface": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 5.198707287356965,
+      "RMS_radius_um": 1.444469080199789,
+      "axis_50nm_nA": 23.345947265625,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.036947275964003864,
+        -0.04317564139717079
+      ],
+      "alpha95_mrad": 0.030319642808326,
+      "largest_sampled_angle_mrad": 0.05433190593507271,
+      "specimen_uA": 15.0,
+      "count": 32768
+    },
+    "near_surface_0p4mm_D95_um": [
+      5.199867164844216,
+      5.198707287356965
+    ],
+    "common_count": 32768,
+    "max_matched_gun_exit_energy_change_eV": 4.330649971961975e-08,
+    "changed_transmissions": 0,
+    "max_matched_specimen_displacement_nm": 4.375979410760253
+  }
+}

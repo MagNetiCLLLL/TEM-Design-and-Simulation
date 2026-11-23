@@ -1,0 +1,46 @@
+{
+  "foil_diameter_um": 100.0,
+  "foil_faces": [
+    {
+      "z_mm": 764.9,
+      "live": 8192,
+      "radius_p50_p95_max_um": [
+        0.07292785756315288,
+        0.1647577097477198,
+        0.26816026557111505
+      ],
+      "count_outer_ten_percent": 0
+    },
+    {
+      "z_mm": 765.1,
+      "live": 8192,
+      "radius_p50_p95_max_um": [
+        0.07441762289542032,
+        0.1681315789325781,
+        0.2736336908537064
+      ],
+      "count_outer_ten_percent": 0
+    }
+  ],
+  "transfer_model": "Round paraxial Larmor response of the re-solved field at 300 keV; extrapolation to the rim",
+  "c2_position_per_sample_angle_mm": [
+    45.139934657853196,
+    45.15136977412406
+  ],
+  "formal_c2_edge_mrad": [
+    1.10766619247996,
+    1.107385663197964
+  ],
+  "limiting_geometric_semiangle_mrad": 1.107385663197964,
+  "limiting_element": "condenser_aperture_2",
+  "limiting_z_mm": 765.068145239,
+  "model_valid_radius_um": 50.0,
+  "angle_for_50um_to_mini_mrad": 0.6978311753682067,
+  "required_peak_radius_30mrad_mini_to_surface_mm": 2.150161774744554,
+  "required_peak_at_mm": 1522.4016683582,
+  "last_outside_bore_for_30mrad_mm": 1597.5,
+  "aperture_radius_needed_for_30mrad_um": [
+    1354.6044454542023,
+    1354.9476018954379
+  ]
+}

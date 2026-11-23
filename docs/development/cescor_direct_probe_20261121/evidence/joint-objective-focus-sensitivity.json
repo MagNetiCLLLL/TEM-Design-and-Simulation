@@ -1,0 +1,98 @@
+[
+  {
+    "emitted": 32768,
+    "step_mm": 0.0375,
+    "transverse_pitch_mm": 0.15,
+    "specimen_survivors": 30432,
+    "same_full_source_IDs": true,
+    "independent_D95_um": 111.3446718146854,
+    "surface_rms_um": 25.898133474570884,
+    "incident_three_plane_profile": {
+      "surface_um": 111.3446718146854,
+      "minimum_um": 111.34467085729955,
+      "offset_nm": -0.49679188956931214
+    },
+    "radial_waists_from_1340_mm": [
+      1453.0651160508905,
+      1595.3012425423763
+    ],
+    "ac_radial_waists_mm": [],
+    "scan_largest_principal_growth_um_mrad": -15.77656918803805,
+    "radial_rms_at_AC_um": [
+      64.30889476967988,
+      46.93883766381647
+    ]
+  },
+  {
+    "emitted": 32768,
+    "step_mm": 0.01875,
+    "transverse_pitch_mm": 0.15,
+    "specimen_survivors": 30432,
+    "same_full_source_IDs": true,
+    "independent_D95_um": 111.34499214864425,
+    "surface_rms_um": 25.898214791628877,
+    "incident_three_plane_profile": {
+      "surface_um": 111.34499214864427,
+      "minimum_um": 111.3449010975804,
+      "offset_nm": -47.24674979021633
+    },
+    "radial_waists_from_1340_mm": [
+      1453.0651297481625,
+      1595.3013359308036
+    ],
+    "ac_radial_waists_mm": [],
+    "scan_largest_principal_growth_um_mrad": -15.77661371668747,
+    "radial_rms_at_AC_um": [
+      64.32361944921946,
+      46.92673632120804
+    ]
+  },
+  {
+    "emitted": 32768,
+    "step_mm": 0.0375,
+    "transverse_pitch_mm": 0.45,
+    "specimen_survivors": 30432,
+    "same_full_source_IDs": true,
+    "independent_D95_um": 111.34750672018845,
+    "surface_rms_um": 25.897836691531538,
+    "incident_three_plane_profile": {
+      "surface_um": 111.34750672018845,
+      "minimum_um": 111.34676715045023,
+      "offset_nm": 841.0192892145398
+    },
+    "radial_waists_from_1340_mm": [
+      1453.0652511258986,
+      1595.3019059943863
+    ],
+    "ac_radial_waists_mm": [],
+    "scan_largest_principal_growth_um_mrad": -15.770697424847127,
+    "radial_rms_at_AC_um": [
+      64.30909212333641,
+      46.93905401947193
+    ]
+  },
+  {
+    "emitted": 16384,
+    "step_mm": 0.0375,
+    "transverse_pitch_mm": 0.15,
+    "specimen_survivors": 15213,
+    "same_full_source_IDs": null,
+    "independent_D95_um": 111.30938571065225,
+    "surface_rms_um": 25.863046905837262,
+    "incident_three_plane_profile": {
+      "surface_um": 111.30938571065225,
+      "minimum_um": 111.17783015197786,
+      "offset_nm": -169522.02446279503
+    },
+    "radial_waists_from_1340_mm": [
+      1453.066418034652,
+      1595.3239951155747
+    ],
+    "ac_radial_waists_mm": [],
+    "scan_largest_principal_growth_um_mrad": -15.754685034241527,
+    "radial_rms_at_AC_um": [
+      64.28938321022042,
+      46.92444395259643
+    ]
+  }
+]

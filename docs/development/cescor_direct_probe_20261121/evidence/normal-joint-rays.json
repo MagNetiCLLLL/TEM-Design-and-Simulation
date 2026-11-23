@@ -1,0 +1,338 @@
+{
+  "mode": "Three-condenser Nanoprobe Normal, 300 kV",
+  "gun_exit_mm": 450.0,
+  "specimen_top_mm": 1599.1999975,
+  "aperture_diameter_um": 100.0,
+  "source_packets": 32768,
+  "source_current_A": 1.5e-05,
+  "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+  "objective_A": -12.54151379310345,
+  "objective_At": -14548.156,
+  "scan_command": {
+    "scan_enabled": false,
+    "wobble_enabled": false,
+    "kick_x_mrad": 0.0,
+    "kick_y_mrad": 0.0,
+    "DP12_offsets": {
+      "upper_x_mrad": 0.0,
+      "upper_y_mrad": 0.0,
+      "lower_x_mrad": 0.0,
+      "lower_y_mrad": 0.0
+    }
+  },
+  "scan_centers_mm": [
+    1387.5,
+    1412.5
+  ],
+  "local_interval_mm": [
+    1340.0,
+    1422.0
+  ],
+  "matched_local_IDs": 30396,
+  "matched_local_A": 1.39141845703125e-05,
+  "joint_solution_sha256": "ca6de5accdaf651cd6853e173200437b16e4bb752a8924e20ea1c2e82163496f",
+  "joint_currents_A": {
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0,
+    "adapter_lens": 10.0,
+    "probe_tl12_lens": 10.0
+  },
+  "replacement_turns": {
+    "adapter_lens": 23,
+    "probe_tl12_lens": 19
+  },
+  "inherited_settings": "normal-objective-probe.json",
+  "background_owners": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser"
+  ],
+  "archive_verified_bitwise": true,
+  "moment_columns": [
+    "rms_radius_um",
+    "cov_x_tx_um_mrad",
+    "cov_y_ty_um_mrad",
+    "min_principal_growth_um_mrad",
+    "max_principal_growth_um_mrad"
+  ],
+  "old": {
+    "all_live": {
+      "radial_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "x_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "y_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "radial_covariance_1403_1413_um_mrad": [
+        -467.4765573007512,
+        431.8109578626228
+      ],
+      "min_principal_growth_in_AC_um_mrad": -331.6422053839855,
+      "scan_center_rms_radius_um": [
+        117.37937897992195,
+        40.66689033120886
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        427.37972658171094,
+        388.3227800926703
+      ]
+    },
+    "common": {
+      "radial_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "x_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "y_waist_brackets_mm": [
+        [
+          1375.0,
+          1375.1423721961269
+        ],
+        [
+          1408.2541518017035,
+          1408.3666493541573
+        ]
+      ],
+      "radial_covariance_1403_1413_um_mrad": [
+        -467.4765573007512,
+        431.8109578626228
+      ],
+      "min_principal_growth_in_AC_um_mrad": -331.6422053839855,
+      "scan_center_rms_radius_um": [
+        117.37937897992195,
+        40.66689033120886
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        427.37972658171094,
+        388.3227800926703
+      ]
+    },
+    "local_survivors": 30396,
+    "local_A": 1.39141845703125e-05,
+    "ledger": {
+      "gun_exit_A": 1.5e-05,
+      "C2_entrance_A": 1.5e-05,
+      "C2_exit_A": 1.39141845703125e-05,
+      "specimen_A": 1.39141845703125e-05,
+      "intercepted_A": {
+        "condenser_aperture_2": 1.0858154296875e-06
+      }
+    },
+    "step_mm": 0.0375,
+    "corrector_table_sha256": "3a24a24dd2b6b7a1782871717263c15ae92e32a89dcf28c75571cbe51c82661e",
+    "vacuum_group_A": [
+      -3762.190576527835,
+      -4834.7910816299855,
+      -4006.9840234757166,
+      1120.9637233475692,
+      2046.7683573481747,
+      -1502.0722035701856,
+      764.600806317866,
+      -217.32322657891416,
+      3.201272914083286,
+      9.404081877319575,
+      -48.74974730252398,
+      77.23286545998405,
+      -435.06046089008646,
+      884.6217350789021,
+      265.96351138362365,
+      -5224.61030158364,
+      3313.860539184209,
+      7444.9269119775045,
+      61.64381278359023,
+      -721.7139558231136,
+      1984.3778442358068
+    ],
+    "surface_radial_covariance_um_mrad": -18.196630285028267,
+    "column_Bz_at_scans_mT": [
+      429.13817457131785,
+      192.3680007404342
+    ]
+  },
+  "joint": {
+    "all_live": {
+      "radial_waist_brackets_mm": [],
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": [],
+      "radial_covariance_1403_1413_um_mrad": [
+        23.625719566482527,
+        31.197805163389738
+      ],
+      "min_principal_growth_in_AC_um_mrad": 7.871306399025919,
+      "scan_center_rms_radius_um": [
+        93.19809981435618,
+        101.36790557415588
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        36.534553481849564,
+        24.079997468970262
+      ]
+    },
+    "common": {
+      "radial_waist_brackets_mm": [],
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": [],
+      "radial_covariance_1403_1413_um_mrad": [
+        23.514699677517825,
+        31.06249245006536
+      ],
+      "min_principal_growth_in_AC_um_mrad": 7.8023283796319935,
+      "scan_center_rms_radius_um": [
+        93.0370755692013,
+        101.18619811259447
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        36.38561552754873,
+        23.967470207849594
+      ]
+    },
+    "local_survivors": 30433,
+    "local_A": 1.3931121826171875e-05,
+    "ledger": {
+      "gun_exit_A": 1.5e-05,
+      "C2_entrance_A": 1.5e-05,
+      "C2_exit_A": 1.3931121826171875e-05,
+      "specimen_A": 1.3931121826171875e-05,
+      "intercepted_A": {
+        "condenser_aperture_2": 1.068878173828125e-06
+      }
+    },
+    "step_mm": 0.0375,
+    "corrector_table_sha256": "9bd3b0ad6fdec4c6378c69b2e8e6cba2f71d51a0f6679810e0c74e821567b832",
+    "vacuum_group_A": [
+      -3762.190576527835,
+      -4834.7910816299855,
+      -4006.9840234757166,
+      1120.9637233475692,
+      2046.7683573481747,
+      -1502.0722035701856,
+      764.600806317866,
+      -217.32322657891416,
+      3.201272914083286,
+      9.404081877319575,
+      -48.74974730252398,
+      77.23286545998405,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      61.64381278359023,
+      -721.7139558231136,
+      1984.3778442358068
+    ],
+    "surface_radial_covariance_um_mrad": 104.00132699042365,
+    "column_Bz_at_scans_mT": [
+      -41.58414136604124,
+      -41.015080174113905
+    ],
+    "corrector_Bz_at_scans_mT": [
+      1.1629771760565724,
+      0.7744320191768671
+    ]
+  },
+  "half_step_joint": {
+    "all_live": {
+      "radial_waist_brackets_mm": [],
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": [],
+      "radial_covariance_1403_1413_um_mrad": [
+        23.62582018243474,
+        31.197930032998087
+      ],
+      "min_principal_growth_in_AC_um_mrad": 7.871343693870665,
+      "scan_center_rms_radius_um": [
+        93.19826412480238,
+        101.368082563874
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        36.534455850238885,
+        24.08010972113758
+      ]
+    },
+    "common": {
+      "radial_waist_brackets_mm": [],
+      "x_waist_brackets_mm": [],
+      "y_waist_brackets_mm": [],
+      "radial_covariance_1403_1413_um_mrad": [
+        23.514799731033,
+        31.062616677870874
+      ],
+      "min_principal_growth_in_AC_um_mrad": 7.802365298605264,
+      "scan_center_rms_radius_um": [
+        93.03723955278356,
+        101.18637471598788
+      ],
+      "scan_center_radial_covariance_um_mrad": [
+        36.38551799661534,
+        23.967581855611712
+      ]
+    },
+    "step_mm": 0.01875,
+    "unchanged_survivor_IDs": true,
+    "max_local_rms_change_um": 0.00018044776633985293
+  },
+  "ray_archive_sha256": "e1cb0f6740a7e1e0f6ba220eebb2b3b39735024ec57e2549e2b394ae56baa21b"
+}

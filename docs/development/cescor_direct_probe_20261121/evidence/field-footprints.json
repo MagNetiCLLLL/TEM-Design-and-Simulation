@@ -1,0 +1,3178 @@
+{
+  "reference": "normal-objective-probe.json / after; registered incident path from gun exit to specimen entrance",
+  "z_domain_mm": [
+    450.0,
+    1599.1999975
+  ],
+  "grid_mm": 0.5,
+  "field_probes_radius_mm": [
+    0.6,
+    1.2
+  ],
+  "source_table_sha256": "3a24a24dd2b6b7a1782871717263c15ae92e32a89dcf28c75571cbe51c82661e",
+  "profile_file_sha256": "c954995e9ec6de934bdb378e80982fe9efdb5d90142a47058318d004c09b3d6c",
+  "mechanical_extents": {
+    "HP2 to HP1": {
+      "start_mm": 1129.5,
+      "end_mm": 1315.85,
+      "length_mm": 186.3499999999999
+    },
+    "ADL to TL12": {
+      "start_mm": 1070.0,
+      "end_mm": 1379.0,
+      "length_mm": 309.0
+    },
+    "Beam deflector to TL12": {
+      "start_mm": 1020.0,
+      "end_mm": 1379.0,
+      "length_mm": 359.0
+    },
+    "ADL to AC exit": {
+      "start_mm": 1070.0,
+      "end_mm": 1420.0,
+      "length_mm": 350.0
+    }
+  },
+  "components": {
+    "C1": {
+      "key": "condenser_lens_1",
+      "center_mm": 500.0,
+      "mechanical_span_mm": [
+        450.0,
+        550.0
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 8.029012993929978,
+      "peak_z_mm": 487.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            450.0,
+            779.2910857731824
+          ]
+        ],
+        "0.1": [
+          [
+            450.0,
+            609.1914817998874
+          ]
+        ],
+        "0.5": [
+          [
+            450.0,
+            538.4953136737323
+          ]
+        ]
+      },
+      "winding_A": [
+        -3762.190576527835,
+        -4834.7910816299855,
+        -4006.9840234757166,
+        1120.9637233475692
+      ]
+    },
+    "C2": {
+      "key": "condenser_lens_2",
+      "center_mm": 650.0,
+      "mechanical_span_mm": [
+        550.0,
+        750.0
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 1.7727657980075113,
+      "peak_z_mm": 578.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            450.0,
+            734.8074137233547
+          ]
+        ],
+        "0.1": [
+          [
+            461.722311702515,
+            633.1200038557936
+          ],
+          [
+            660.0759402236621,
+            704.401125962089
+          ]
+        ],
+        "0.5": [
+          [
+            532.6551789150795,
+            611.4476490631322
+          ]
+        ]
+      },
+      "winding_A": [
+        2046.7683573481747,
+        -1502.0722035701856,
+        764.600806317866,
+        -217.32322657891416
+      ]
+    },
+    "C3": {
+      "key": "condenser_lens_3",
+      "center_mm": 915.0,
+      "mechanical_span_mm": [
+        830.0,
+        1000.0
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 0.0635064178784645,
+      "peak_z_mm": 983.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            704.3107571576303,
+            898.8204634174567
+          ],
+          [
+            905.3861567712006,
+            916.967527631817
+          ],
+          [
+            921.3504403691709,
+            1258.2112402083815
+          ]
+        ],
+        "0.1": [
+          [
+            850.6729978128375,
+            864.7476605528814
+          ],
+          [
+            930.5050064351017,
+            1099.1302421374496
+          ]
+        ],
+        "0.5": [
+          [
+            950.1684065446883,
+            1028.4209340723237
+          ]
+        ]
+      },
+      "winding_A": [
+        3.201272914083286,
+        9.404081877319575,
+        -48.74974730252398,
+        77.23286545998405
+      ]
+    },
+    "ADL": {
+      "key": "adapter_lens",
+      "center_mm": 1088.2,
+      "mechanical_span_mm": [
+        1070.0,
+        1106.4
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 0.08763539221361714,
+      "peak_z_mm": 1096.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            915.2041044414818,
+            1285.4237998302522
+          ]
+        ],
+        "0.1": [
+          [
+            1026.9303438794686,
+            1176.0853456734494
+          ]
+        ],
+        "0.5": [
+          [
+            1068.852158573332,
+            1128.0673354171734
+          ]
+        ]
+      },
+      "winding_A": [
+        -435.06046089008646,
+        884.6217350789021,
+        265.96351138362365
+      ]
+    },
+    "TL12": {
+      "key": "probe_tl12_lens",
+      "center_mm": 1366.3,
+      "mechanical_span_mm": [
+        1353.6,
+        1379.0
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 0.5001915532653264,
+      "peak_z_mm": 1380.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1215.4981000032672,
+            1566.8277756916173
+          ]
+        ],
+        "0.1": [
+          [
+            1331.9397084904012,
+            1458.4846339596934
+          ]
+        ],
+        "0.5": [
+          [
+            1356.3017305650812,
+            1410.4605772375394
+          ]
+        ]
+      },
+      "winding_A": [
+        -5224.61030158364,
+        3313.860539184209,
+        7444.9269119775045
+      ]
+    },
+    "TL11 / Mini": {
+      "key": "mini_condenser",
+      "center_mm": 1522.5,
+      "mechanical_span_mm": [
+        1512.5,
+        1532.5
+      ],
+      "method": "installed vacuum winding Bz",
+      "units": "T",
+      "active": true,
+      "peak": 0.19157100691728574,
+      "peak_z_mm": 1531.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1439.1254434613115,
+            1599.1999975
+          ]
+        ],
+        "0.1": [
+          [
+            1494.6343750901679,
+            1570.6781718356535
+          ]
+        ],
+        "0.5": [
+          [
+            1517.5334179599774,
+            1546.5792795506245
+          ]
+        ]
+      },
+      "winding_A": [
+        61.64381278359023,
+        -721.7139558231136,
+        1984.3778442358068
+      ]
+    },
+    "Objective": {
+      "key": "objective_lens",
+      "center_mm": 1599.2,
+      "mechanical_span_mm": [
+        1389.0,
+        1809.4
+      ],
+      "method": "installed axisymmetric material Bz",
+      "units": "T",
+      "active": true,
+      "peak": 0.09124805834716745,
+      "peak_z_mm": 1530.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1278.9131210628675,
+            1306.6519723521178
+          ],
+          [
+            1316.560236127254,
+            1348.0275399218003
+          ],
+          [
+            1349.429840000438,
+            1364.2151138018219
+          ],
+          [
+            1364.8577648573673,
+            1540.4461847881084
+          ],
+          [
+            1593.967682240483,
+            1599.1999975
+          ]
+        ],
+        "0.1": [
+          [
+            1367.2498351909874,
+            1537.6119633900446
+          ]
+        ],
+        "0.5": [
+          [
+            1374.916342982252,
+            1386.9146840711703
+          ],
+          [
+            1419.2609382970577,
+            1535.0864411989319
+          ]
+        ]
+      }
+    },
+    "HP2": {
+      "key": "probe_hp2_hexapole",
+      "center_mm": 1144.5,
+      "mechanical_span_mm": [
+        1129.5,
+        1159.5
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/m\u00b2/A",
+      "active": true,
+      "peak": 21.476440600666297,
+      "peak_z_mm": 1143.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1121.3255278176487,
+            1166.6747134726331
+          ]
+        ],
+        "0.1": [
+          [
+            1125.4336985997068,
+            1163.153620881999
+          ]
+        ],
+        "0.5": [
+          [
+            1128.1187758767514,
+            1160.4216859718633
+          ]
+        ]
+      },
+      "bias_A": 70.0,
+      "perturbation_A": 0.7000000000000001,
+      "half_step_asymmetry_relative_to_peak": 0.0032310574124092815,
+      "radius_check_relative_to_peak": 0.008936452723561483,
+      "residuals": [
+        1.7743712463707863e-08,
+        9.424176417153457e-09
+      ]
+    },
+    "TL22": {
+      "key": "probe_tl22_lens",
+      "center_mm": 1166.35,
+      "mechanical_span_mm": [
+        1153.6,
+        1179.1
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/A",
+      "active": true,
+      "peak": 0.0007157451699068688,
+      "peak_z_mm": 1164.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1053.6162713140282,
+            1133.6244368926389
+          ],
+          [
+            1141.9732895517632,
+            1286.7208710086038
+          ]
+        ],
+        "0.1": [
+          [
+            1122.7141274271034,
+            1127.5860361893726
+          ],
+          [
+            1147.4107358471556,
+            1153.4530334458732
+          ],
+          [
+            1154.6718048196335,
+            1228.5346675921314
+          ]
+        ],
+        "0.5": [
+          [
+            1158.9890817870164,
+            1174.4298592913647
+          ]
+        ]
+      },
+      "bias_A": -145.0,
+      "perturbation_A": 1.45,
+      "half_step_asymmetry_relative_to_peak": 0.0027737249146560774,
+      "radius_check_relative_to_peak": 0.0,
+      "residuals": [
+        4.915569362016363e-10,
+        9.818996801267222e-11
+      ]
+    },
+    "TL21": {
+      "key": "probe_tl21_lens",
+      "center_mm": 1249.95,
+      "mechanical_span_mm": [
+        1237.2,
+        1262.7
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/A",
+      "active": true,
+      "peak": 0.00042232886202048746,
+      "peak_z_mm": 1250.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1101.5314260072187,
+            1129.9641128060384
+          ],
+          [
+            1156.2001281047123,
+            1294.240901781553
+          ],
+          [
+            1313.725652436611,
+            1389.040113199596
+          ],
+          [
+            1390.5935717999384,
+            1397.738283939174
+          ]
+        ],
+        "0.1": [
+          [
+            1179.9688543127697,
+            1289.101659912231
+          ]
+        ],
+        "0.5": [
+          [
+            1239.1306005428467,
+            1285.3606437933179
+          ]
+        ]
+      },
+      "bias_A": 330.0,
+      "perturbation_A": 3.3000000000000003,
+      "half_step_asymmetry_relative_to_peak": 0.00012536156868546801,
+      "radius_check_relative_to_peak": 0.0,
+      "residuals": [
+        1.7901708130783144e-08,
+        9.378202875213977e-13
+      ]
+    },
+    "HP1": {
+      "key": "probe_hp1_hexapole",
+      "center_mm": 1300.85,
+      "mechanical_span_mm": [
+        1285.85,
+        1315.85
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/m\u00b2/A",
+      "active": true,
+      "peak": 83.89772442910419,
+      "peak_z_mm": 1301.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1277.739017459479,
+            1323.953299783478
+          ]
+        ],
+        "0.1": [
+          [
+            1281.8991911198357,
+            1319.9552202663783
+          ]
+        ],
+        "0.5": [
+          [
+            1284.5759904739527,
+            1317.2129926542993
+          ]
+        ]
+      },
+      "bias_A": 16.0,
+      "perturbation_A": 0.16,
+      "half_step_asymmetry_relative_to_peak": 0.0014450272833740248,
+      "radius_check_relative_to_peak": 0.009275456846693899,
+      "residuals": [
+        4.940703354276726e-12,
+        1.0360462971171856e-08
+      ]
+    },
+    "HPol X": {
+      "key": "probe_hpol_hexapole",
+      "center_mm": 1317.2,
+      "mechanical_span_mm": [
+        1309.9,
+        1324.5
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/m\u00b2/A",
+      "active": true,
+      "peak": 9.03350157670726,
+      "peak_z_mm": 1321.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1279.103524509239,
+            1341.867261664243
+          ]
+        ],
+        "0.1": [
+          [
+            1283.0233222279285,
+            1335.5645906262519
+          ]
+        ],
+        "0.5": [
+          [
+            1299.3071600292178,
+            1328.2897127049407
+          ]
+        ]
+      },
+      "bias_A": -5.0,
+      "perturbation_A": 0.05,
+      "half_step_asymmetry_relative_to_peak": 0.00439998197351655,
+      "radius_check_relative_to_peak": 0.011304077293745184,
+      "residuals": [
+        6.940447625650248e-09,
+        2.9016990495710818e-11
+      ]
+    },
+    "HPol Y": {
+      "key": "probe_hpol_hexapole",
+      "center_mm": 1317.2,
+      "mechanical_span_mm": [
+        1309.9,
+        1324.5
+      ],
+      "method": "centered material winding response at final bias",
+      "units": "T/m\u00b2/A",
+      "active": true,
+      "peak": 13.103595081203839,
+      "peak_z_mm": 1312.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1278.1409141087784,
+            1341.3075709887567
+          ]
+        ],
+        "0.1": [
+          [
+            1282.168083201812,
+            1334.1469319918467
+          ]
+        ],
+        "0.5": [
+          [
+            1284.9661875053666,
+            1325.8677476974328
+          ]
+        ]
+      },
+      "bias_A": -2.71705,
+      "perturbation_A": 0.0271705,
+      "half_step_asymmetry_relative_to_peak": 0.0042582735914098915,
+      "radius_check_relative_to_peak": 0.007850792159206577,
+      "residuals": [
+        1.0265943815987132e-08,
+        2.543767279344738e-12
+      ]
+    },
+    "Condenser deflector upper X": {
+      "key": "condenser_deflector",
+      "center_mm": 800.0,
+      "mechanical_span_mm": [
+        790.0,
+        830.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.003680976371115128,
+      "peak_z_mm": 800.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            752.136661305429,
+            776.4395133417161
+          ],
+          [
+            779.791409149477,
+            820.2085908505231
+          ],
+          [
+            823.560486658284,
+            847.8633386945711
+          ]
+        ],
+        "0.1": [
+          [
+            784.8820306773808,
+            815.1179693226193
+          ]
+        ],
+        "0.5": [
+          [
+            791.9645103865671,
+            808.0354896134329
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 7.186825000083355e-15
+    },
+    "Condenser deflector upper Y": {
+      "key": "condenser_deflector",
+      "center_mm": 800.0,
+      "mechanical_span_mm": [
+        790.0,
+        830.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0018784823338567583,
+      "peak_z_mm": 800.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            732.807136529665,
+            766.8419992508435
+          ],
+          [
+            771.7376929985851,
+            828.262307001415
+          ],
+          [
+            833.1580007491566,
+            867.1928634703352
+          ]
+        ],
+        "0.1": [
+          [
+            779.0450765828244,
+            820.9549234171756
+          ]
+        ],
+        "0.5": [
+          [
+            789.0416321276629,
+            810.9583678723371
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 2.3086768567250823e-16
+    },
+    "Condenser deflector lower X": {
+      "key": "condenser_deflector",
+      "center_mm": 820.0,
+      "mechanical_span_mm": [
+        790.0,
+        830.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0036809763711151368,
+      "peak_z_mm": 820.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            772.1366613054289,
+            796.439513341716
+          ],
+          [
+            799.7914091494769,
+            840.2085908505231
+          ],
+          [
+            843.560486658284,
+            867.8633386945711
+          ]
+        ],
+        "0.1": [
+          [
+            804.8820306773807,
+            835.1179693226193
+          ]
+        ],
+        "0.5": [
+          [
+            811.9645103865671,
+            828.0354896134328
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 5.066122541042353e-15
+    },
+    "Condenser deflector lower Y": {
+      "key": "condenser_deflector",
+      "center_mm": 820.0,
+      "mechanical_span_mm": [
+        790.0,
+        830.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0018784823338567633,
+      "peak_z_mm": 820.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            752.8071365296648,
+            786.8419992508435
+          ],
+          [
+            791.737692998585,
+            848.262307001415
+          ],
+          [
+            853.1580007491565,
+            887.192863470335
+          ]
+        ],
+        "0.1": [
+          [
+            799.0450765828244,
+            840.9549234171756
+          ]
+        ],
+        "0.5": [
+          [
+            809.0416321276629,
+            830.958367872337
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 2.539544542397584e-15
+    },
+    "Beam deflector upper X": {
+      "key": "beam_deflector",
+      "center_mm": 1027.5,
+      "mechanical_span_mm": [
+        1020.0,
+        1060.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.007874479632817424,
+      "peak_z_mm": 1027.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            977.000309809371,
+            1003.0087821355104
+          ],
+          [
+            1006.1366698624548,
+            1048.8633301375453
+          ],
+          [
+            1051.9912178644895,
+            1077.999690190629
+          ]
+        ],
+        "0.1": [
+          [
+            1011.1427858064526,
+            1043.8572141935472
+          ]
+        ],
+        "0.5": [
+          [
+            1018.4360523559108,
+            1036.5639476440892
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 5.066828769381318e-15
+    },
+    "Beam deflector upper Y": {
+      "key": "beam_deflector",
+      "center_mm": 1027.5,
+      "mechanical_span_mm": [
+        1020.0,
+        1060.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0042364723425550276,
+      "peak_z_mm": 1027.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            958.3343559327169,
+            993.6650382619698
+          ],
+          [
+            998.3856190313064,
+            1056.6143809686935
+          ],
+          [
+            1061.33496173803,
+            1096.6656440672832
+          ]
+        ],
+        "0.1": [
+          [
+            1005.6333953538814,
+            1049.3666046461185
+          ]
+        ],
+        "0.5": [
+          [
+            1015.8167464127762,
+            1039.1832535872236
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 4.094735751138153e-16
+    },
+    "Beam deflector lower X": {
+      "key": "beam_deflector",
+      "center_mm": 1052.5,
+      "mechanical_span_mm": [
+        1020.0,
+        1060.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.007874479632817424,
+      "peak_z_mm": 1052.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1002.0003098093708,
+            1028.0087821355105
+          ],
+          [
+            1031.136669862455,
+            1073.863330137545
+          ],
+          [
+            1076.9912178644895,
+            1102.9996901906293
+          ]
+        ],
+        "0.1": [
+          [
+            1036.1427858064526,
+            1068.8572141935474
+          ]
+        ],
+        "0.5": [
+          [
+            1043.4360523559108,
+            1061.563947644089
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 5.066828769381318e-15
+    },
+    "Beam deflector lower Y": {
+      "key": "beam_deflector",
+      "center_mm": 1052.5,
+      "mechanical_span_mm": [
+        1020.0,
+        1060.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.004236472342555027,
+      "peak_z_mm": 1052.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            983.3343559327169,
+            1018.6650382619699
+          ],
+          [
+            1023.3856190313063,
+            1081.6143809686935
+          ],
+          [
+            1086.33496173803,
+            1121.6656440672832
+          ]
+        ],
+        "0.1": [
+          [
+            1030.6333953538815,
+            1074.3666046461185
+          ]
+        ],
+        "0.5": [
+          [
+            1040.8167464127764,
+            1064.1832535872236
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 2.047367875569077e-16
+    },
+    "DPH2 X": {
+      "key": "probe_dph2_coils",
+      "center_mm": 1144.5,
+      "mechanical_span_mm": [
+        1137.25,
+        1151.75
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.003198668325890024,
+      "peak_z_mm": 1144.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1125.2363940844625,
+            1134.7519234125546
+          ],
+          [
+            1135.1498799880023,
+            1153.8501200119977
+          ],
+          [
+            1154.2480765874452,
+            1163.7636059155375
+          ]
+        ],
+        "0.1": [
+          [
+            1136.1068301692221,
+            1152.8931698307777
+          ]
+        ],
+        "0.5": [
+          [
+            1137.8760743401913,
+            1151.1239256598087
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 2.255372215596753e-06
+    },
+    "DPH2 Y": {
+      "key": "probe_dph2_coils",
+      "center_mm": 1144.5,
+      "mechanical_span_mm": [
+        1137.25,
+        1151.75
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.002868592537195797,
+      "peak_z_mm": 1144.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1123.822159477645,
+            1134.2755527785737
+          ],
+          [
+            1134.68658016864,
+            1154.3134198313603
+          ],
+          [
+            1154.724447221426,
+            1165.1778405223547
+          ]
+        ],
+        "0.1": [
+          [
+            1135.8638157483535,
+            1153.1361842516462
+          ]
+        ],
+        "0.5": [
+          [
+            1137.895830806357,
+            1151.1041691936427
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 2.9986414934073775e-07
+    },
+    "DP22 X": {
+      "key": "probe_dp22_coils",
+      "center_mm": 1186.35,
+      "mechanical_span_mm": [
+        1179.1,
+        1193.6
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0008356456091529634,
+      "peak_z_mm": 1186.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1145.413015050725,
+            1166.7803679621861
+          ],
+          [
+            1169.0478820568899,
+            1203.6571082558157
+          ],
+          [
+            1205.91487674855,
+            1227.2877715822
+          ]
+        ],
+        "0.1": [
+          [
+            1172.8403529617262,
+            1199.859310205705
+          ]
+        ],
+        "0.5": [
+          [
+            1178.615524935898,
+            1194.0844699836143
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.8164195741042426e-15
+    },
+    "DP22 Y": {
+      "key": "probe_dp22_coils",
+      "center_mm": 1186.35,
+      "mechanical_span_mm": [
+        1179.1,
+        1193.6
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0007845346030114326,
+      "peak_z_mm": 1186.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1144.0598669848112,
+            1166.105959298362
+          ],
+          [
+            1168.4956804871251,
+            1204.2135358249507
+          ],
+          [
+            1206.5928946760314,
+            1228.6408426260832
+          ]
+        ],
+        "0.1": [
+          [
+            1172.4633134252574,
+            1200.242212714972
+          ]
+        ],
+        "0.5": [
+          [
+            1178.4548865337463,
+            1194.2459580747375
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.9347560141430587e-15
+    },
+    "DP21 X": {
+      "key": "probe_dp21_coils",
+      "center_mm": 1229.9,
+      "mechanical_span_mm": [
+        1222.6,
+        1237.2
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0008386711928990741,
+      "peak_z_mm": 1230.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1188.8997293215261,
+            1210.3044275037626
+          ],
+          [
+            1212.5662841804592,
+            1247.2390304304226
+          ],
+          [
+            1249.4856487006211,
+            1270.9002765561127
+          ]
+        ],
+        "0.1": [
+          [
+            1216.3586361327548,
+            1243.438531157502
+          ]
+        ],
+        "0.5": [
+          [
+            1222.1376612576805,
+            1237.6626099841458
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.5513142909859945e-15
+    },
+    "DP21 Y": {
+      "key": "probe_dp21_coils",
+      "center_mm": 1229.9,
+      "mechanical_span_mm": [
+        1222.6,
+        1237.2
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0007875262662058833,
+      "peak_z_mm": 1230.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1187.5482171432288,
+            1209.6292517669744
+          ],
+          [
+            1212.015189508539,
+            1247.7931889206463
+          ],
+          [
+            1250.1719601809787,
+            1272.2529861662956
+          ]
+        ],
+        "0.1": [
+          [
+            1215.9830283542788,
+            1243.822955976706
+          ]
+        ],
+        "0.5": [
+          [
+            1221.978349866432,
+            1237.8225492698575
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.6520624934209791e-15
+    },
+    "DPH1 X": {
+      "key": "probe_dph1_coils",
+      "center_mm": 1300.85,
+      "mechanical_span_mm": [
+        1293.6,
+        1308.1
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.003198694583286224,
+      "peak_z_mm": 1301.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1281.5889657714456,
+            1291.3127142453495
+          ],
+          [
+            1291.5389599776133,
+            1310.4017759736018
+          ],
+          [
+            1310.578917245965,
+            1320.1115314694591
+          ]
+        ],
+        "0.1": [
+          [
+            1292.4678317241276,
+            1309.250595674307
+          ]
+        ],
+        "0.5": [
+          [
+            1294.2276456062584,
+            1307.4730806699472
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.7840059571980205e-06
+    },
+    "DPH1 Y": {
+      "key": "probe_dph1_coils",
+      "center_mm": 1300.85,
+      "mechanical_span_mm": [
+        1293.6,
+        1308.1
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.002868526433971128,
+      "peak_z_mm": 1301.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1280.1719730821417,
+            1290.6945763637837
+          ],
+          [
+            1291.1266566959737,
+            1310.8291885539945
+          ],
+          [
+            1311.0538600788948,
+            1321.5238976966687
+          ]
+        ],
+        "0.1": [
+          [
+            1292.2094632909252,
+            1309.4741821024677
+          ]
+        ],
+        "0.5": [
+          [
+            1294.246986497876,
+            1307.45320858693
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 2.405284000226057e-07
+    },
+    "DP11 X": {
+      "key": "probe_dp11_coils",
+      "center_mm": 1346.3,
+      "mechanical_span_mm": [
+        1339.0,
+        1353.6
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0008384129961519107,
+      "peak_z_mm": 1346.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1305.2935816693991,
+            1326.7045661345862
+          ],
+          [
+            1328.9685780407037,
+            1363.6370710260446
+          ],
+          [
+            1365.8920777304468,
+            1387.3063841288765
+          ]
+        ],
+        "0.1": [
+          [
+            1332.7562902190086,
+            1359.842709581512
+          ]
+        ],
+        "0.5": [
+          [
+            1338.5367003995693,
+            1354.0636643262678
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.5517920320343787e-15
+    },
+    "DP11 Y": {
+      "key": "probe_dp11_coils",
+      "center_mm": 1346.3,
+      "mechanical_span_mm": [
+        1339.0,
+        1353.6
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0007872893940659586,
+      "peak_z_mm": 1346.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1303.9425194220369,
+            1326.0356846576926
+          ],
+          [
+            1328.410536060747,
+            1364.1930619852953
+          ],
+          [
+            1366.5662588276218,
+            1388.6583302043305
+          ]
+        ],
+        "0.1": [
+          [
+            1332.3776709971016,
+            1360.2242689847983
+          ]
+        ],
+        "0.5": [
+          [
+            1338.3759031296324,
+            1354.2243575431228
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 1.652559550260631e-15
+    },
+    "Upper scan X": {
+      "key": "ac_deflector",
+      "center_mm": 1387.5,
+      "mechanical_span_mm": [
+        1380.0,
+        1420.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.004961305108082452,
+      "peak_z_mm": 1387.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1343.4480933491946,
+            1366.3810179264442
+          ],
+          [
+            1368.865175658587,
+            1406.1348243414127
+          ],
+          [
+            1408.6189820735556,
+            1431.5519066508054
+          ]
+        ],
+        "0.1": [
+          [
+            1373.004905374693,
+            1401.9950946253068
+          ]
+        ],
+        "0.5": [
+          [
+            1379.2363960434495,
+            1395.7636039565502
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 6.993012677856771e-16
+    },
+    "Upper scan Y": {
+      "key": "ac_deflector",
+      "center_mm": 1387.5,
+      "mechanical_span_mm": [
+        1380.0,
+        1420.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.003477930007563323,
+      "peak_z_mm": 1387.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1334.6685040221362,
+            1361.9814154614266
+          ],
+          [
+            1365.2398987525219,
+            1409.7601012474781
+          ],
+          [
+            1413.0185845385731,
+            1440.3314959778636
+          ]
+        ],
+        "0.1": [
+          [
+            1370.4811456039777,
+            1404.518854396022
+          ]
+        ],
+        "0.5": [
+          [
+            1378.116465313624,
+            1396.8835346863757
+          ]
+        ]
+      },
+      "station_index": 0,
+      "quadrature_check_relative_to_peak": 4.987804447485629e-16
+    },
+    "Lower scan X": {
+      "key": "ac_deflector",
+      "center_mm": 1412.5,
+      "mechanical_span_mm": [
+        1380.0,
+        1420.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.004961305108082452,
+      "peak_z_mm": 1412.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1368.4480933491946,
+            1391.3810179264444
+          ],
+          [
+            1393.865175658587,
+            1431.1348243414127
+          ],
+          [
+            1433.6189820735556,
+            1456.5519066508052
+          ]
+        ],
+        "0.1": [
+          [
+            1398.004905374693,
+            1426.995094625307
+          ]
+        ],
+        "0.5": [
+          [
+            1404.2363960434495,
+            1420.7636039565502
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 3.4965063389283856e-16
+    },
+    "Lower scan Y": {
+      "key": "ac_deflector",
+      "center_mm": 1412.5,
+      "mechanical_span_mm": [
+        1380.0,
+        1420.0
+      ],
+      "method": "unit-current vacuum response of unpowered saddle winding",
+      "units": "T/A",
+      "active": false,
+      "peak": 0.0034779300075633234,
+      "peak_z_mm": 1412.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1359.6685040221364,
+            1386.9814154614269
+          ],
+          [
+            1390.2398987525219,
+            1434.760101247478
+          ],
+          [
+            1438.0185845385731,
+            1465.3314959778636
+          ]
+        ],
+        "0.1": [
+          [
+            1395.4811456039777,
+            1429.5188543960223
+          ]
+        ],
+        "0.5": [
+          [
+            1403.1164653136243,
+            1421.8835346863757
+          ]
+        ]
+      },
+      "station_index": 1,
+      "quadrature_check_relative_to_peak": 4.987804447485629e-16
+    },
+    "QPH2 X": {
+      "key": "probe_qph2_quadrupole",
+      "center_mm": 1128.15,
+      "mechanical_span_mm": [
+        1120.9,
+        1135.4
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18252463565051424,
+      "peak_z_mm": 1128.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1101.7820756564304,
+            1154.511621119576
+          ]
+        ],
+        "0.1": [
+          [
+            1109.091767776025,
+            1147.2101637591973
+          ]
+        ],
+        "0.5": [
+          [
+            1118.1308926319361,
+            1138.169361807981
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.1704298165722156e-11
+    },
+    "QPH2 Y": {
+      "key": "probe_qph2_quadrupole",
+      "center_mm": 1128.15,
+      "mechanical_span_mm": [
+        1120.9,
+        1135.4
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18252463565051424,
+      "peak_z_mm": 1128.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1101.7820756564304,
+            1154.511621119576
+          ]
+        ],
+        "0.1": [
+          [
+            1109.091767776025,
+            1147.2101637591973
+          ]
+        ],
+        "0.5": [
+          [
+            1118.1308926319361,
+            1138.169361807981
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.17039940360849e-11
+    },
+    "HPC X": {
+      "key": "probe_hpc_hexapole",
+      "center_mm": 1200.85,
+      "mechanical_span_mm": [
+        1193.6,
+        1208.1
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m\u00b2/A",
+      "active": false,
+      "peak": 13.32578829373051,
+      "peak_z_mm": 1201.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1176.79281482374,
+            1224.9043254338021
+          ]
+        ],
+        "0.1": [
+          [
+            1183.9744088251705,
+            1217.7306096782959
+          ]
+        ],
+        "0.5": [
+          [
+            1191.9398135301922,
+            1209.7610997165204
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.061932773632836e-10
+    },
+    "HPC Y": {
+      "key": "probe_hpc_hexapole",
+      "center_mm": 1200.85,
+      "mechanical_span_mm": [
+        1193.6,
+        1208.1
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m\u00b2/A",
+      "active": false,
+      "peak": 13.325788293730518,
+      "peak_z_mm": 1201.0,
+      "bands_mm": {
+        "0.01": [
+          [
+            1176.79281482374,
+            1224.9043254338021
+          ]
+        ],
+        "0.1": [
+          [
+            1183.9744088251707,
+            1217.7306096782959
+          ]
+        ],
+        "0.5": [
+          [
+            1191.9398135301922,
+            1209.7610997165204
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.0619141113254315e-10
+    },
+    "QPC X": {
+      "key": "probe_qpc_quadrupole",
+      "center_mm": 1215.35,
+      "mechanical_span_mm": [
+        1208.1,
+        1222.6
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18252463565051416,
+      "peak_z_mm": 1215.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1188.988378880424,
+            1241.7179243435696
+          ]
+        ],
+        "0.1": [
+          [
+            1196.2898362408027,
+            1234.4082322239751
+          ]
+        ],
+        "0.5": [
+          [
+            1205.330638192019,
+            1225.3691073680639
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.190897741159761e-11
+    },
+    "QPC Y": {
+      "key": "probe_qpc_quadrupole",
+      "center_mm": 1215.35,
+      "mechanical_span_mm": [
+        1208.1,
+        1222.6
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.1825246356505142,
+      "peak_z_mm": 1215.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1188.988378880424,
+            1241.7179243435696
+          ]
+        ],
+        "0.1": [
+          [
+            1196.2898362408027,
+            1234.4082322239751
+          ]
+        ],
+        "0.5": [
+          [
+            1205.330638192019,
+            1225.3691073680639
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.1908825346778976e-11
+    },
+    "QPH1 X": {
+      "key": "probe_qph1_quadrupole",
+      "center_mm": 1284.5,
+      "mechanical_span_mm": [
+        1277.2,
+        1291.8
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18368496165724096,
+      "peak_z_mm": 1284.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1258.1228682777255,
+            1310.8771317222745
+          ]
+        ],
+        "0.1": [
+          [
+            1265.4325983888687,
+            1303.5674016111311
+          ]
+        ],
+        "0.5": [
+          [
+            1274.4751096919802,
+            1294.5248903080198
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.140777076978052e-11
+    },
+    "QPH1 Y": {
+      "key": "probe_qph1_quadrupole",
+      "center_mm": 1284.5,
+      "mechanical_span_mm": [
+        1277.2,
+        1291.8
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18368496165724096,
+      "peak_z_mm": 1284.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1258.1228682777255,
+            1310.8771317222745
+          ]
+        ],
+        "0.1": [
+          [
+            1265.4325983888687,
+            1303.5674016111311
+          ]
+        ],
+        "0.5": [
+          [
+            1274.4751096919802,
+            1294.5248903080198
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.140777076978052e-11
+    },
+    "QPol X": {
+      "key": "probe_qpol_quadrupole",
+      "center_mm": 1331.75,
+      "mechanical_span_mm": [
+        1324.5,
+        1339.0
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.1824716991396706,
+      "peak_z_mm": 1331.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1305.3834844421156,
+            1358.1165155578842
+          ]
+        ],
+        "0.1": [
+          [
+            1312.6886913061194,
+            1350.8113086938806
+          ]
+        ],
+        "0.5": [
+          [
+            1321.7283317112,
+            1341.7716682887997
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.1836095638882243e-11
+    },
+    "QPol Y": {
+      "key": "probe_qpol_quadrupole",
+      "center_mm": 1331.75,
+      "mechanical_span_mm": [
+        1324.5,
+        1339.0
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.18247169913967057,
+      "peak_z_mm": 1331.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1305.3834844421156,
+            1358.1165155578842
+          ]
+        ],
+        "0.1": [
+          [
+            1312.6886913061194,
+            1350.8113086938806
+          ]
+        ],
+        "0.5": [
+          [
+            1321.7283317112,
+            1341.7716682887997
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.183624774781611e-11
+    },
+    "Condenser stigmator X": {
+      "key": "condenser_stigmator",
+      "center_mm": 1451.5,
+      "mechanical_span_mm": [
+        1436.5,
+        1466.5
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.5538999422979185,
+      "peak_z_mm": 1451.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1427.38115821947,
+            1475.61884178053
+          ]
+        ],
+        "0.1": [
+          [
+            1433.2753782571428,
+            1469.7246217428572
+          ]
+        ],
+        "0.5": [
+          [
+            1441.0693403194246,
+            1461.9306596805754
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.8875348188390645e-11
+    },
+    "Condenser stigmator Y": {
+      "key": "condenser_stigmator",
+      "center_mm": 1451.5,
+      "mechanical_span_mm": [
+        1436.5,
+        1466.5
+      ],
+      "method": "unit-current vacuum response of undriven trim",
+      "units": "T/m/A",
+      "active": false,
+      "peak": 0.5538999422979183,
+      "peak_z_mm": 1451.5,
+      "bands_mm": {
+        "0.01": [
+          [
+            1427.38115821947,
+            1475.61884178053
+          ]
+        ],
+        "0.1": [
+          [
+            1433.2753782571428,
+            1469.7246217428572
+          ]
+        ],
+        "0.5": [
+          [
+            1441.0693403194246,
+            1461.9306596805754
+          ]
+        ]
+      },
+      "quadrature_check_relative_to_peak": 3.8875247969656206e-11
+    }
+  },
+  "stations": {
+    "C1": {
+      "z_mm": 500.0,
+      "active_profile_fraction_at_center": {
+        "C2": 0.22954990007732085,
+        "C3": 0.0017843586684924766,
+        "ADL": 0.00032242272390399566,
+        "TL12": 9.212252898933496e-05,
+        "TL11 / Mini": 8.12573041089384e-06,
+        "Objective": 1.2754236994851424e-05,
+        "HP2": 1.8429664935623237e-12,
+        "TL22": 7.273214399527754e-05,
+        "TL21": 0.0001104068442256345,
+        "HP1": 4.4841248658623394e-13,
+        "HPol X": 1.589810000165935e-11,
+        "HPol Y": 7.205327226383608e-12
+      }
+    },
+    "C2": {
+      "z_mm": 650.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.04923712415601213,
+        "C3": 0.0055901197662303415,
+        "ADL": 0.0007582989415460673,
+        "TL12": 0.00015986785154971728,
+        "TL11 / Mini": 1.301046929457759e-05,
+        "Objective": 3.10672942469121e-05,
+        "HP2": 1.1184058976214188e-11,
+        "TL22": 0.0001526296294471237,
+        "TL21": 0.00021583697291839305,
+        "HP1": 1.0027209301436006e-12,
+        "HPol X": 6.527572454940874e-11,
+        "HPol Y": 2.7688877328522595e-11
+      }
+    },
+    "C3": {
+      "z_mm": 915.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.003321541998895761,
+        "C2": 0.004047632743103575,
+        "ADL": 0.009969244583605461,
+        "TL12": 0.0005965558238699909,
+        "TL11 / Mini": 3.794218412122183e-05,
+        "Objective": 0.00017335257745164273,
+        "HP2": 2.368314425995005e-09,
+        "TL22": 0.0011757013043150709,
+        "TL21": 0.0012248786829495441,
+        "HP1": 1.3484345453398233e-11,
+        "HPol X": 2.249421506193281e-09,
+        "HPol Y": 7.938185382050255e-10
+      }
+    },
+    "ADL": {
+      "z_mm": 1088.2,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0012219155441536855,
+        "C2": 0.0013907372724541297,
+        "C3": 0.12518473553809492,
+        "TL12": 0.0022386977915618677,
+        "TL11 / Mini": 0.00010167371526925919,
+        "Objective": 0.0007189003503018625,
+        "HP2": 0.0004777755155449089,
+        "TL22": 0.025546738258642773,
+        "TL21": 0.008240079786514327,
+        "HP1": 6.984928365098843e-08,
+        "HPol X": 9.734725249878274e-08,
+        "HPol Y": 2.179236423612547e-07
+      }
+    },
+    "TL12": {
+      "z_mm": 1366.3,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00039511830748310524,
+        "C2": 0.0004027032442315328,
+        "C3": 0.0037837451308718275,
+        "ADL": 0.0035420117053083897,
+        "TL11 / Mini": 0.0018933611192651601,
+        "Objective": 0.059843998071056635,
+        "HP2": 1.4053407481466342e-06,
+        "TL22": 0.0026583631409431855,
+        "TL21": 0.016152620169098214,
+        "HP1": 3.496013822831938e-05,
+        "HPol X": 0.001827054050794555,
+        "HPol Y": 0.0011487761006742502
+      }
+    },
+    "TL11 / Mini": {
+      "z_mm": 1522.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00024268309871901093,
+        "C2": 0.0002376974094892077,
+        "C3": 0.001364469872836106,
+        "ADL": 0.0009129867757236979,
+        "TL12": 0.021546968285988264,
+        "Objective": 0.8322451678290809,
+        "HP2": 5.603381086142752e-11,
+        "TL22": 0.0005571089674102764,
+        "TL21": 0.00199238764080586,
+        "HP1": 3.3692148851609747e-09,
+        "HPol X": 2.460924746371997e-07,
+        "HPol Y": 1.5199619612849106e-07
+      }
+    },
+    "Objective": {
+      "z_mm": 1599.2,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0001960773163587038,
+        "C2": 0.00018905501817485532,
+        "C3": 0.0009155939793059122,
+        "ADL": 0.0005566314301102338,
+        "TL12": 0.006284753127468838,
+        "TL11 / Mini": 0.025125982285552663,
+        "HP2": 1.608535165277039e-11,
+        "TL22": 0.00030938538023076784,
+        "TL21": 0.0009889574163136718,
+        "HP1": 4.3640773038976473e-10,
+        "HPol X": 2.7966580675135e-08,
+        "HPol Y": 1.7009917624909262e-08
+      }
+    },
+    "HP2": {
+      "z_mm": 1144.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0009373649469943495,
+        "C2": 0.001038034686222366,
+        "C3": 0.04402606197308909,
+        "ADL": 0.2799223741199999,
+        "TL12": 0.004013486898011606,
+        "TL11 / Mini": 0.00015247861221752044,
+        "Objective": 0.0012962653443186606,
+        "TL22": 0.03286759293455611,
+        "TL21": 0.002132654299562817,
+        "HP1": 3.357292016899371e-06,
+        "HPol X": 1.3254345671381376e-05,
+        "HPol Y": 1.2304756422075644e-05
+      }
+    },
+    "TL22": {
+      "z_mm": 1166.35,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0008507602806816498,
+        "C2": 0.0009328129512923293,
+        "C3": 0.03136489518153539,
+        "ADL": 0.13450673656738085,
+        "TL12": 0.005190705717982515,
+        "TL11 / Mini": 0.00018132120427138466,
+        "Objective": 0.001678155376457184,
+        "HP2": 0.012238957539741021,
+        "TL21": 0.06803153053972684,
+        "HP1": 1.0636927095929144e-06,
+        "HPol X": 2.0555366765472003e-06,
+        "HPol Y": 2.241625656461451e-06
+      }
+    },
+    "TL21": {
+      "z_mm": 1249.95,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0006027507750008689,
+        "C2": 0.0006386260729328853,
+        "C3": 0.010920498856631489,
+        "ADL": 0.01804891274278869,
+        "TL12": 0.016963714597700675,
+        "TL11 / Mini": 0.0003929811020221089,
+        "Objective": 0.005946770265350667,
+        "HP2": 1.1744694987572172e-06,
+        "TL22": 0.033215171000677654,
+        "HP1": 4.3233709395723353e-07,
+        "HPol X": 5.860318013292418e-06,
+        "HPol Y": 4.379063127590632e-06
+      }
+    },
+    "HP1": {
+      "z_mm": 1300.85,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0004974232469313018,
+        "C2": 0.0005175618826445505,
+        "C3": 0.006572702956260928,
+        "ADL": 0.007974949371307473,
+        "TL12": 0.03945993455761265,
+        "TL11 / Mini": 0.0007095562067436896,
+        "Objective": 0.015270965275344604,
+        "HP2": 0.00010596107007777319,
+        "TL22": 8.247193258528115e-05,
+        "TL21": 0.0022731276703013637,
+        "HPol X": 0.5133293223346312,
+        "HPol Y": 0.8487462921399023
+      }
+    },
+    "HPol X": {
+      "z_mm": 1317.2,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00046883620819924526,
+        "C2": 0.00048517714421370526,
+        "C3": 0.005672506326216872,
+        "ADL": 0.006378677497654093,
+        "TL12": 0.055532158247690554,
+        "TL11 / Mini": 0.0008816506264366279,
+        "Objective": 0.011005366826229747,
+        "HP2": 5.5496551331558124e-05,
+        "TL22": 0.004957744595264048,
+        "TL21": 0.034432887537143214,
+        "HP1": 0.5030253705745006
+      }
+    },
+    "HPol Y": {
+      "z_mm": 1317.2,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00046883620819924526,
+        "C2": 0.00048517714421370526,
+        "C3": 0.005672506326216872,
+        "ADL": 0.006378677497654093,
+        "TL12": 0.055532158247690554,
+        "TL11 / Mini": 0.0008816506264366279,
+        "Objective": 0.011005366826229747,
+        "HP2": 5.5496551331558124e-05,
+        "TL22": 0.004957744595264048,
+        "TL21": 0.034432887537143214,
+        "HP1": 0.5030253705745006
+      }
+    },
+    "Condenser deflector upper X": {
+      "z_mm": 800.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00822399179701854,
+        "C2": 0.005676581735110671,
+        "C3": 0.04561041704249623,
+        "ADL": 0.002501501799106382,
+        "TL12": 0.0003138409040435709,
+        "TL11 / Mini": 2.2742814759852576e-05,
+        "Objective": 7.926337582152268e-05,
+        "HP2": 1.447317889762361e-10,
+        "TL22": 0.000408625196112136,
+        "TL21": 0.0005108104236186712,
+        "HP1": 3.790933970180108e-12,
+        "HPol X": 3.8566212580164435e-10,
+        "HPol Y": 1.507770716809717e-10
+      }
+    },
+    "Condenser deflector upper Y": {
+      "z_mm": 800.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00822399179701854,
+        "C2": 0.005676581735110671,
+        "C3": 0.04561041704249623,
+        "ADL": 0.002501501799106382,
+        "TL12": 0.0003138409040435709,
+        "TL11 / Mini": 2.2742814759852576e-05,
+        "Objective": 7.926337582152268e-05,
+        "HP2": 1.447317889762361e-10,
+        "TL22": 0.000408625196112136,
+        "TL21": 0.0005108104236186712,
+        "HP1": 3.790933970180108e-12,
+        "HPol X": 3.8566212580164435e-10,
+        "HPol Y": 1.507770716809717e-10
+      }
+    },
+    "Condenser deflector lower X": {
+      "z_mm": 820.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.006883538146875038,
+        "C2": 0.006354135038193683,
+        "C3": 0.06682995979331488,
+        "ADL": 0.00305792770760268,
+        "TL12": 0.00034768952103570914,
+        "TL11 / Mini": 2.4710437271219622e-05,
+        "Objective": 9.034199100927882e-05,
+        "HP2": 2.1926327189574154e-10,
+        "TL22": 0.00047920372400763454,
+        "TL21": 0.0005849852188208511,
+        "HP1": 4.684935596846077e-12,
+        "HPol X": 5.080297893695074e-10,
+        "HPol Y": 1.9578168056843186e-10
+      }
+    },
+    "Condenser deflector lower Y": {
+      "z_mm": 820.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.006883538146875038,
+        "C2": 0.006354135038193683,
+        "C3": 0.06682995979331488,
+        "ADL": 0.00305792770760268,
+        "TL12": 0.00034768952103570914,
+        "TL11 / Mini": 2.4710437271219622e-05,
+        "Objective": 9.034199100927882e-05,
+        "HP2": 2.1926327189574154e-10,
+        "TL22": 0.00047920372400763454,
+        "TL21": 0.0005849852188208511,
+        "HP1": 4.684935596846077e-12,
+        "HPol X": 5.080297893695074e-10,
+        "HPol Y": 1.9578168056843186e-10
+      }
+    },
+    "Beam deflector upper X": {
+      "z_mm": 1027.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0016733808745051544,
+        "C2": 0.0019653445207601715,
+        "C3": 0.5108774067895817,
+        "ADL": 0.10168519402057519,
+        "TL12": 0.0013183281782049336,
+        "TL11 / Mini": 6.930134231652695e-05,
+        "Objective": 0.00041513452262374566,
+        "HP2": 0.00011870135468138382,
+        "TL22": 0.00817824403700182,
+        "TL21": 0.0044763429465356054,
+        "HP1": 1.4943541085719225e-07,
+        "HPol X": 3.1454646438705113e-07,
+        "HPol Y": 3.1449349283603716e-07
+      }
+    },
+    "Beam deflector upper Y": {
+      "z_mm": 1027.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0016733808745051544,
+        "C2": 0.0019653445207601715,
+        "C3": 0.5108774067895817,
+        "ADL": 0.10168519402057519,
+        "TL12": 0.0013183281782049336,
+        "TL11 / Mini": 6.930134231652695e-05,
+        "Objective": 0.00041513452262374566,
+        "HP2": 0.00011870135468138382,
+        "TL22": 0.00817824403700182,
+        "TL21": 0.0044763429465356054,
+        "HP1": 1.4943541085719225e-07,
+        "HPol X": 3.1454646438705113e-07,
+        "HPol Y": 3.1449349283603716e-07
+      }
+    },
+    "Beam deflector lower X": {
+      "z_mm": 1052.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0014643050204212228,
+        "C2": 0.001697570080221244,
+        "C3": 0.2806122187189942,
+        "ADL": 0.24262040662071646,
+        "TL12": 0.0016222802659404383,
+        "TL11 / Mini": 8.067784181306408e-05,
+        "Objective": 0.0005159870161747669,
+        "HP2": 0.0002163027737067758,
+        "TL22": 0.00962761987218862,
+        "TL21": 0.005138786733788371,
+        "HP1": 1.1827024659367167e-07,
+        "HPol X": 2.221027254080437e-07,
+        "HPol Y": 2.0689758253088015e-07
+      }
+    },
+    "Beam deflector lower Y": {
+      "z_mm": 1052.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0014643050204212228,
+        "C2": 0.001697570080221244,
+        "C3": 0.2806122187189942,
+        "ADL": 0.24262040662071646,
+        "TL12": 0.0016222802659404383,
+        "TL11 / Mini": 8.067784181306408e-05,
+        "Objective": 0.0005159870161747669,
+        "HP2": 0.0002163027737067758,
+        "TL22": 0.00962761987218862,
+        "TL21": 0.005138786733788371,
+        "HP1": 1.1827024659367167e-07,
+        "HPol X": 2.221027254080437e-07,
+        "HPol Y": 2.0689758253088015e-07
+      }
+    },
+    "DPH2 X": {
+      "z_mm": 1144.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0009373649469943495,
+        "C2": 0.001038034686222366,
+        "C3": 0.04402606197308909,
+        "ADL": 0.2799223741199999,
+        "TL12": 0.004013486898011606,
+        "TL11 / Mini": 0.00015247861221752044,
+        "Objective": 0.0012962653443186606,
+        "HP2": 0.9977946032470129,
+        "TL22": 0.03286759293455611,
+        "TL21": 0.002132654299562817,
+        "HP1": 3.357292016899371e-06,
+        "HPol X": 1.3254345671381376e-05,
+        "HPol Y": 1.2304756422075644e-05
+      }
+    },
+    "DPH2 Y": {
+      "z_mm": 1144.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0009373649469943495,
+        "C2": 0.001038034686222366,
+        "C3": 0.04402606197308909,
+        "ADL": 0.2799223741199999,
+        "TL12": 0.004013486898011606,
+        "TL11 / Mini": 0.00015247861221752044,
+        "Objective": 0.0012962653443186606,
+        "HP2": 0.9977946032470129,
+        "TL22": 0.03286759293455611,
+        "TL21": 0.002132654299562817,
+        "HP1": 3.357292016899371e-06,
+        "HPol X": 1.3254345671381376e-05,
+        "HPol Y": 1.2304756422075644e-05
+      }
+    },
+    "DP22 X": {
+      "z_mm": 1186.35,
+      "active_profile_fraction_at_center": {
+        "C1": 0.000780580918962727,
+        "C2": 0.0008484221030566257,
+        "C3": 0.02360856409191478,
+        "ADL": 0.07470940975239244,
+        "TL12": 0.00668625433878258,
+        "TL11 / Mini": 0.0002144505536498394,
+        "Objective": 0.0021585078996249514,
+        "HP2": 3.7735751847929244e-06,
+        "TL22": 0.2998323795638995,
+        "TL21": 0.14576589706509444,
+        "HP1": 2.055896853043082e-08,
+        "HPol X": 5.833677647213403e-08,
+        "HPol Y": 4.17551645973292e-08
+      }
+    },
+    "DP22 Y": {
+      "z_mm": 1186.35,
+      "active_profile_fraction_at_center": {
+        "C1": 0.000780580918962727,
+        "C2": 0.0008484221030566257,
+        "C3": 0.02360856409191478,
+        "ADL": 0.07470940975239244,
+        "TL12": 0.00668625433878258,
+        "TL11 / Mini": 0.0002144505536498394,
+        "Objective": 0.0021585078996249514,
+        "HP2": 3.7735751847929244e-06,
+        "TL22": 0.2998323795638995,
+        "TL21": 0.14576589706509444,
+        "HP1": 2.055896853043082e-08,
+        "HPol X": 5.833677647213403e-08,
+        "HPol Y": 4.17551645973292e-08
+      }
+    },
+    "DP21 X": {
+      "z_mm": 1229.9,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0006523918752975523,
+        "C2": 0.0006965555030277528,
+        "C3": 0.013665154945376849,
+        "ADL": 0.026605193867847304,
+        "TL12": 0.012389392895947229,
+        "TL11 / Mini": 0.0003203436286870134,
+        "Objective": 0.003994862599080893,
+        "HP2": 1.4585680478747395e-06,
+        "TL22": 0.09512955404615356,
+        "TL21": 0.4401826159597227,
+        "HP1": 1.2042587930683529e-08,
+        "HPol X": 8.970471407788149e-07,
+        "HPol Y": 2.764105713432322e-07
+      }
+    },
+    "DP21 Y": {
+      "z_mm": 1229.9,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0006523918752975523,
+        "C2": 0.0006965555030277528,
+        "C3": 0.013665154945376849,
+        "ADL": 0.026605193867847304,
+        "TL12": 0.012389392895947229,
+        "TL11 / Mini": 0.0003203436286870134,
+        "Objective": 0.003994862599080893,
+        "HP2": 1.4585680478747395e-06,
+        "TL22": 0.09512955404615356,
+        "TL21": 0.4401826159597227,
+        "HP1": 1.2042587930683529e-08,
+        "HPol X": 8.970471407788149e-07,
+        "HPol Y": 2.764105713432322e-07
+      }
+    },
+    "DPH1 X": {
+      "z_mm": 1300.85,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0004974232469313018,
+        "C2": 0.0005175618826445505,
+        "C3": 0.006572702956260928,
+        "ADL": 0.007974949371307473,
+        "TL12": 0.03945993455761265,
+        "TL11 / Mini": 0.0007095562067436896,
+        "Objective": 0.015270965275344604,
+        "HP2": 0.00010596107007777319,
+        "TL22": 8.247193258528115e-05,
+        "TL21": 0.0022731276703013637,
+        "HP1": 0.9992993285863488,
+        "HPol X": 0.5133293223346312,
+        "HPol Y": 0.8487462921399023
+      }
+    },
+    "DPH1 Y": {
+      "z_mm": 1300.85,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0004974232469313018,
+        "C2": 0.0005175618826445505,
+        "C3": 0.006572702956260928,
+        "ADL": 0.007974949371307473,
+        "TL12": 0.03945993455761265,
+        "TL11 / Mini": 0.0007095562067436896,
+        "Objective": 0.015270965275344604,
+        "HP2": 0.00010596107007777319,
+        "TL22": 8.247193258528115e-05,
+        "TL21": 0.0022731276703013637,
+        "HP1": 0.9992993285863488,
+        "HPol X": 0.5133293223346312,
+        "HPol Y": 0.8487462921399023
+      }
+    },
+    "DP11 X": {
+      "z_mm": 1346.3,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0004231385853960299,
+        "C2": 0.00043386836799470514,
+        "C3": 0.0044343749087782935,
+        "ADL": 0.0044417616863097805,
+        "TL12": 0.2582448105825927,
+        "TL11 / Mini": 0.0013547578295815218,
+        "Objective": 0.03351303197249381,
+        "HP2": 1.8037537948268618e-06,
+        "TL22": 0.003312303741705908,
+        "TL21": 0.021556058284497276,
+        "HP1": 0.0001275571271956586,
+        "HPol X": 0.003462414229130691,
+        "HPol Y": 0.0007280710102462425
+      }
+    },
+    "DP11 Y": {
+      "z_mm": 1346.3,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0004231385853960299,
+        "C2": 0.00043386836799470514,
+        "C3": 0.0044343749087782935,
+        "ADL": 0.0044417616863097805,
+        "TL12": 0.2582448105825927,
+        "TL11 / Mini": 0.0013547578295815218,
+        "Objective": 0.03351303197249381,
+        "HP2": 1.8037537948268618e-06,
+        "TL22": 0.003312303741705908,
+        "TL21": 0.021556058284497276,
+        "HP1": 0.0001275571271956586,
+        "HPol X": 0.003462414229130691,
+        "HPol Y": 0.0007280710102462425
+      }
+    },
+    "Upper scan X": {
+      "z_mm": 1387.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0003680504990449054,
+        "C2": 0.00037282365515495713,
+        "C3": 0.003224886694557062,
+        "ADL": 0.0028336897208078725,
+        "TL12": 0.9407643145430289,
+        "TL11 / Mini": 0.002824072441412838,
+        "Objective": 0.4532541427987734,
+        "HP2": 7.38993751163226e-07,
+        "TL22": 0.0020051787158177283,
+        "TL21": 0.010318009269301364,
+        "HP1": 2.262168302183318e-05,
+        "HPol X": 0.00033822137423248765,
+        "HPol Y": 0.00034479827398916014
+      }
+    },
+    "Upper scan Y": {
+      "z_mm": 1387.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0003680504990449054,
+        "C2": 0.00037282365515495713,
+        "C3": 0.003224886694557062,
+        "ADL": 0.0028336897208078725,
+        "TL12": 0.9407643145430289,
+        "TL11 / Mini": 0.002824072441412838,
+        "Objective": 0.4532541427987734,
+        "HP2": 7.38993751163226e-07,
+        "TL22": 0.0020051787158177283,
+        "TL21": 0.010318009269301364,
+        "HP1": 2.262168302183318e-05,
+        "HPol X": 0.00033822137423248765,
+        "HPol Y": 0.00034479827398916014
+      }
+    },
+    "Lower scan X": {
+      "z_mm": 1412.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0003392126701645842,
+        "C2": 0.0003412475964577801,
+        "C3": 0.00269780164631554,
+        "ADL": 0.002220449077756965,
+        "TL12": 0.4657237852034036,
+        "TL11 / Mini": 0.004891714678426948,
+        "Objective": 0.44891008499969115,
+        "HP2": 1.7389412569301435e-06,
+        "TL22": 0.0019241256410181984,
+        "TL21": 0.008120655375405702,
+        "HP1": 2.6178450821791277e-05,
+        "HPol X": 9.095965744827817e-05,
+        "HPol Y": 3.384117177764916e-05
+      }
+    },
+    "Lower scan Y": {
+      "z_mm": 1412.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0003392126701645842,
+        "C2": 0.0003412475964577801,
+        "C3": 0.00269780164631554,
+        "ADL": 0.002220449077756965,
+        "TL12": 0.4657237852034036,
+        "TL11 / Mini": 0.004891714678426948,
+        "Objective": 0.44891008499969115,
+        "HP2": 1.7389412569301435e-06,
+        "TL22": 0.0019241256410181984,
+        "TL21": 0.008120655375405702,
+        "HP1": 2.6178450821791277e-05,
+        "HPol X": 9.095965744827817e-05,
+        "HPol Y": 3.384117177764916e-05
+      }
+    },
+    "QPH2 X": {
+      "z_mm": 1128.15,
+      "active_profile_fraction_at_center": {
+        "C1": 0.001009994955449748,
+        "C2": 0.0011271125440580102,
+        "C3": 0.05802720386015786,
+        "ADL": 0.4985875275497945,
+        "TL12": 0.0033508290711558478,
+        "TL11 / Mini": 0.00013477568296230396,
+        "Objective": 0.001081363007246453,
+        "HP2": 0.5074499485666024,
+        "TL22": 0.09244617224648426,
+        "TL21": 0.016298332136259957,
+        "HP1": 1.7557174118244882e-06,
+        "HPol X": 6.855630740526853e-06,
+        "HPol Y": 6.370507504899915e-06
+      }
+    },
+    "QPH2 Y": {
+      "z_mm": 1128.15,
+      "active_profile_fraction_at_center": {
+        "C1": 0.001009994955449748,
+        "C2": 0.0011271125440580102,
+        "C3": 0.05802720386015786,
+        "ADL": 0.4985875275497945,
+        "TL12": 0.0033508290711558478,
+        "TL11 / Mini": 0.00013477568296230396,
+        "Objective": 0.001081363007246453,
+        "HP2": 0.5074499485666024,
+        "TL22": 0.09244617224648426,
+        "TL21": 0.016298332136259957,
+        "HP1": 1.7557174118244882e-06,
+        "HPol X": 6.855630740526853e-06,
+        "HPol Y": 6.370507504899915e-06
+      }
+    },
+    "HPC X": {
+      "z_mm": 1200.85,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0007344482093852695,
+        "C2": 0.0007934118178908409,
+        "C3": 0.019481611609582117,
+        "ADL": 0.051206125270125406,
+        "TL12": 0.008126612463521336,
+        "TL11 / Mini": 0.0002436810636851142,
+        "Objective": 0.0026529235077294034,
+        "HP2": 2.8307572485312946e-06,
+        "TL22": 0.22708479542651308,
+        "TL21": 0.22287347483189968,
+        "HP1": 2.373367630188114e-08,
+        "HPol X": 2.4878229298688642e-08,
+        "HPol Y": 5.123286701680282e-08
+      }
+    },
+    "HPC Y": {
+      "z_mm": 1200.85,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0007344482093852695,
+        "C2": 0.0007934118178908409,
+        "C3": 0.019481611609582117,
+        "ADL": 0.051206125270125406,
+        "TL12": 0.008126612463521336,
+        "TL11 / Mini": 0.0002436810636851142,
+        "Objective": 0.0026529235077294034,
+        "HP2": 2.8307572485312946e-06,
+        "TL22": 0.22708479542651308,
+        "TL21": 0.22287347483189968,
+        "HP1": 2.373367630188114e-08,
+        "HPol X": 2.4878229298688642e-08,
+        "HPol Y": 5.123286701680282e-08
+      }
+    },
+    "QPC X": {
+      "z_mm": 1215.35,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0006918740587531231,
+        "C2": 0.0007429944478141393,
+        "C3": 0.016244079462999734,
+        "ADL": 0.03636688388939377,
+        "TL12": 0.009978586207830832,
+        "TL11 / Mini": 0.0002784656175750338,
+        "Objective": 0.003222166081984026,
+        "HP2": 3.7308141808551845e-06,
+        "TL22": 0.14762106470729947,
+        "TL21": 0.33933366177387647,
+        "HP1": 7.174163373801806e-08,
+        "HPol X": 2.5508753785190694e-07,
+        "HPol Y": 2.704700918007283e-07
+      }
+    },
+    "QPC Y": {
+      "z_mm": 1215.35,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0006918740587531231,
+        "C2": 0.0007429944478141393,
+        "C3": 0.016244079462999734,
+        "ADL": 0.03636688388939377,
+        "TL12": 0.009978586207830832,
+        "TL11 / Mini": 0.0002784656175750338,
+        "Objective": 0.003222166081984026,
+        "HP2": 3.7308141808551845e-06,
+        "TL22": 0.14762106470729947,
+        "TL21": 0.33933366177387647,
+        "HP1": 7.174163373801806e-08,
+        "HPol X": 2.5508753785190694e-07,
+        "HPol Y": 2.704700918007283e-07
+      }
+    },
+    "QPH1 X": {
+      "z_mm": 1284.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0005283784809143293,
+        "C2": 0.0005528656572540237,
+        "C3": 0.00767059599945786,
+        "ADL": 0.010141714811926437,
+        "TL12": 0.02996374532653074,
+        "TL11 / Mini": 0.000579396992564119,
+        "Objective": 0.013250231698438055,
+        "HP2": 5.0674054707540306e-05,
+        "TL22": 0.019013826344503822,
+        "TL21": 0.6016460572098975,
+        "HP1": 0.4818686436726944,
+        "HPol X": 0.23625913068215987,
+        "HPol Y": 0.4061554227120451
+      }
+    },
+    "QPH1 Y": {
+      "z_mm": 1284.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0005283784809143293,
+        "C2": 0.0005528656572540237,
+        "C3": 0.00767059599945786,
+        "ADL": 0.010141714811926437,
+        "TL12": 0.02996374532653074,
+        "TL11 / Mini": 0.000579396992564119,
+        "Objective": 0.013250231698438055,
+        "HP2": 5.0674054707540306e-05,
+        "TL22": 0.019013826344503822,
+        "TL21": 0.6016460572098975,
+        "HP1": 0.4818686436726944,
+        "HPol X": 0.23625913068215987,
+        "HPol Y": 0.4061554227120451
+      }
+    },
+    "QPol X": {
+      "z_mm": 1331.75,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00044520764642349956,
+        "C2": 0.00045857467023294613,
+        "C3": 0.005003295431234696,
+        "ADL": 0.005294979436412282,
+        "TL12": 0.0989728537980761,
+        "TL11 / Mini": 0.0010846586031337153,
+        "Objective": 0.07491336883917499,
+        "HP2": 1.4278301274992666e-07,
+        "TL22": 0.004255079193632917,
+        "TL21": 0.02961013418664298,
+        "HP1": 0.00064264117030457,
+        "HPol X": 0.25292224096590504,
+        "HPol Y": 0.17557008470273594
+      }
+    },
+    "QPol Y": {
+      "z_mm": 1331.75,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00044520764642349956,
+        "C2": 0.00045857467023294613,
+        "C3": 0.005003295431234696,
+        "ADL": 0.005294979436412282,
+        "TL12": 0.0989728537980761,
+        "TL11 / Mini": 0.0010846586031337153,
+        "Objective": 0.07491336883917499,
+        "HP2": 1.4278301274992666e-07,
+        "TL22": 0.004255079193632917,
+        "TL21": 0.02961013418664298,
+        "HP1": 0.00064264117030457,
+        "HPol X": 0.25292224096590504,
+        "HPol Y": 0.17557008470273594
+      }
+    },
+    "Condenser stigmator X": {
+      "z_mm": 1451.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0002999441509164594,
+        "C2": 0.0002987048236767182,
+        "C3": 0.002081553666452484,
+        "ADL": 0.001571820557214712,
+        "TL12": 0.12345558786878799,
+        "TL11 / Mini": 0.014854550201301489,
+        "Objective": 0.6285656256349057,
+        "HP2": 2.1650874093748446e-10,
+        "TL22": 0.001074773280444448,
+        "TL21": 0.0044890799158000694,
+        "HP1": 4.127969021658003e-08,
+        "HPol X": 4.23792118225347e-06,
+        "HPol Y": 2.6435016602601775e-06
+      }
+    },
+    "Condenser stigmator Y": {
+      "z_mm": 1451.5,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0002999441509164594,
+        "C2": 0.0002987048236767182,
+        "C3": 0.002081553666452484,
+        "ADL": 0.001571820557214712,
+        "TL12": 0.12345558786878799,
+        "TL11 / Mini": 0.014854550201301489,
+        "Objective": 0.6285656256349057,
+        "HP2": 2.1650874093748446e-10,
+        "TL22": 0.001074773280444448,
+        "TL21": 0.0044890799158000694,
+        "HP1": 4.127969021658003e-08,
+        "HPol X": 4.23792118225347e-06,
+        "HPol Y": 2.6435016602601775e-06
+      }
+    },
+    "C2 aperture": {
+      "z_mm": 765.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.011529897644392623,
+        "C2": 0.0012115067542058215,
+        "C3": 0.023898772198187843,
+        "ADL": 0.0018112729124870634,
+        "TL12": 0.00026442316630314894,
+        "TL11 / Mini": 1.977341260776284e-05,
+        "Objective": 6.329941647374294e-05,
+        "HP2": 7.363675476806679e-11,
+        "TL22": 0.00031503483694877526,
+        "TL21": 0.00040837953029447766,
+        "HP1": 2.663062497746478e-12,
+        "HPol X": 2.4415326315536195e-10,
+        "HPol Y": 9.763613072113634e-11
+      }
+    },
+    "C3 aperture": {
+      "z_mm": 1010.0,
+      "active_profile_fraction_at_center": {
+        "C1": 0.001843902180656005,
+        "C2": 0.0021850221977439193,
+        "C3": 0.7445788775681065,
+        "ADL": 0.06313200208715027,
+        "TL12": 0.0011490108815229282,
+        "TL11 / Mini": 6.258080869270132e-05,
+        "Objective": 0.000358689709079781,
+        "HP2": 2.457845879859692e-06,
+        "TL22": 0.005391220548797076,
+        "TL21": 0.0035300726871285047,
+        "HP1": 3.3107249259131146e-09,
+        "HPol X": 1.1088118953380262e-08,
+        "HPol Y": 1.1246636337428546e-08
+      }
+    },
+    "Specimen entrance": {
+      "z_mm": 1599.1999975,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0001960773163587038,
+        "C2": 0.00018905501817485532,
+        "C3": 0.0009155939793059122,
+        "ADL": 0.0005566314301102338,
+        "TL12": 0.006284753127468838,
+        "TL11 / Mini": 0.025125982285552663,
+        "Objective": 0.07784069265745563,
+        "HP2": 1.608535165277039e-11,
+        "TL22": 0.00030938538023076784,
+        "TL21": 0.0009889574163136718,
+        "HP1": 4.3640773038976473e-10,
+        "HPol X": 2.7966580675135e-08,
+        "HPol Y": 1.7009917624909262e-08
+      }
+    },
+    "Virtual scan pivot": {
+      "z_mm": 1496.721503903524,
+      "active_profile_fraction_at_center": {
+        "C1": 0.00026163734248724034,
+        "C2": 0.00025774845368985015,
+        "C3": 0.001580075530128061,
+        "ADL": 0.0010998771331017735,
+        "TL12": 0.03708398446917773,
+        "TL11 / Mini": 0.11304400680124092,
+        "Objective": 0.6783095689515911,
+        "HP2": 8.72881753264789e-11,
+        "TL22": 0.0006972589335361242,
+        "TL21": 0.0026197036945154895,
+        "HP1": 7.694425310212977e-09,
+        "HPol X": 6.104083315215127e-07,
+        "HPol Y": 3.7860248600434155e-07
+      }
+    },
+    "Two-lens front focus": {
+      "z_mm": 1490.374923897848,
+      "active_profile_fraction_at_center": {
+        "C1": 0.0002666043251615942,
+        "C2": 0.00026302694040937323,
+        "C3": 0.0016399985693298432,
+        "ADL": 0.0011535588032268568,
+        "TL12": 0.042982371674108,
+        "TL11 / Mini": 0.078744263218745,
+        "Objective": 0.6718370618183884,
+        "HP2": 9.883739945465682e-11,
+        "TL22": 0.0007386095440727056,
+        "TL21": 0.002812163699487229,
+        "HP1": 9.554480649323782e-09,
+        "HPol X": 7.778451670860763e-07,
+        "HPol Y": 4.828955439563538e-07
+      }
+    }
+  },
+  "objective_field_at_downstream_stations": {
+    "Specimen entrance": {
+      "center_mm": 1599.1999975,
+      "objective_Bz_T": -0.0071028120653914405
+    },
+    "Physical objective aperture": {
+      "center_mm": 1600.7,
+      "objective_Bz_T": -0.006383189249632604
+    },
+    "Image / diffraction upper": {
+      "center_mm": 1674.4,
+      "objective_Bz_T": -0.07891235824887954
+    },
+    "Image / diffraction lower": {
+      "center_mm": 1699.4,
+      "objective_Bz_T": -0.06218311541564662
+    },
+    "Objective stigmator": {
+      "center_mm": 1746.9,
+      "objective_Bz_T": -0.05690568842924439
+    }
+  },
+  "objective_incident_and_outgoing_bands_mm": {
+    "0.01": [
+      [
+        1278.9161878725365,
+        1306.65021100272
+      ],
+      [
+        1316.561277175524,
+        1348.0274303703804
+      ],
+      [
+        1349.4299483318957,
+        1364.215061300171
+      ],
+      [
+        1364.857832348347,
+        1540.4460034958606
+      ],
+      [
+        1593.9679036973937,
+        1604.4340329638378
+      ],
+      [
+        1657.9732476264762,
+        1809.4
+      ]
+    ],
+    "0.1": [
+      [
+        1367.2501849917667,
+        1537.6117225607798
+      ],
+      [
+        1660.8183518757903,
+        1809.4
+      ]
+    ],
+    "0.5": [
+      [
+        1374.9179161472928,
+        1386.9136138360223
+      ],
+      [
+        1419.2737317760686,
+        1535.0861146758027
+      ],
+      [
+        1663.3486436765743,
+        1779.3459665433104
+      ]
+    ]
+  },
+  "outgoing_z_domain_mm": [
+    1599.1999975,
+    1809.4
+  ],
+  "outgoing_unit_windings": {
+    "Image / diffraction upper X": {
+      "center_mm": 1674.4,
+      "mechanical_span_mm": [
+        1666.9,
+        1706.9
+      ],
+      "units": "T/A",
+      "peak": 0.004959487672391738,
+      "quadrature_check_relative_to_peak": 4.372234569796369e-15,
+      "bands_mm": {
+        "0.01": [
+          [
+            1630.3402151752846,
+            1653.2832393223916
+          ],
+          [
+            1655.7676044858508,
+            1693.0362735532744
+          ],
+          [
+            1695.5207558034997,
+            1718.4601210208127
+          ]
+        ],
+        "0.1": [
+          [
+            1659.897180603832,
+            1688.9028159531274
+          ]
+        ],
+        "0.5": [
+          [
+            1666.1349464258656,
+            1682.664691248225
+          ]
+        ]
+      }
+    },
+    "Image / diffraction upper Y": {
+      "center_mm": 1674.4,
+      "mechanical_span_mm": [
+        1666.9,
+        1706.9
+      ],
+      "units": "T/A",
+      "peak": 0.0034768673724849194,
+      "quadrature_check_relative_to_peak": 4.490395983276461e-15,
+      "bands_mm": {
+        "0.01": [
+          [
+            1621.5613100322064,
+            1648.8751738592189
+          ],
+          [
+            1652.144218743333,
+            1696.6553845759192
+          ],
+          [
+            1699.9254221628973,
+            1727.237962454988
+          ]
+        ],
+        "0.1": [
+          [
+            1657.3754533667404,
+            1691.4249683959063
+          ]
+        ],
+        "0.5": [
+          [
+            1665.0140348845587,
+            1683.785488279726
+          ]
+        ]
+      }
+    },
+    "Image / diffraction lower X": {
+      "center_mm": 1699.4,
+      "mechanical_span_mm": [
+        1666.9,
+        1706.9
+      ],
+      "units": "T/A",
+      "peak": 0.004959487672391738,
+      "quadrature_check_relative_to_peak": 4.372234569796369e-15,
+      "bands_mm": {
+        "0.01": [
+          [
+            1655.3402151752844,
+            1678.2832393223916
+          ],
+          [
+            1680.7676044858508,
+            1718.0362735532742
+          ],
+          [
+            1720.5207558034997,
+            1743.4601210208127
+          ]
+        ],
+        "0.1": [
+          [
+            1684.897180603832,
+            1713.9028159531272
+          ]
+        ],
+        "0.5": [
+          [
+            1691.1349464258656,
+            1707.664691248225
+          ]
+        ]
+      }
+    },
+    "Image / diffraction lower Y": {
+      "center_mm": 1699.4,
+      "mechanical_span_mm": [
+        1666.9,
+        1706.9
+      ],
+      "units": "T/A",
+      "peak": 0.0034768673724849194,
+      "quadrature_check_relative_to_peak": 4.490395983276461e-15,
+      "bands_mm": {
+        "0.01": [
+          [
+            1646.5613100322064,
+            1673.8751738592186
+          ],
+          [
+            1677.144218743333,
+            1721.655384575919
+          ],
+          [
+            1724.9254221628973,
+            1752.2379624549878
+          ]
+        ],
+        "0.1": [
+          [
+            1682.3754533667404,
+            1716.424968395906
+          ]
+        ],
+        "0.5": [
+          [
+            1690.0140348845587,
+            1708.785488279726
+          ]
+        ]
+      }
+    },
+    "Objective stigmator X": {
+      "center_mm": 1746.9,
+      "mechanical_span_mm": [
+        1731.9,
+        1761.9
+      ],
+      "units": "T/m/A",
+      "peak": 0.5537749191623067,
+      "quadrature_check_relative_to_peak": 3.893815498450697e-11,
+      "bands_mm": {
+        "0.01": [
+          [
+            1722.78211357549,
+            1771.0210894849552
+          ]
+        ],
+        "0.1": [
+          [
+            1728.679732327545,
+            1765.1226112469826
+          ]
+        ],
+        "0.5": [
+          [
+            1736.4672141150381,
+            1757.33262424706
+          ]
+        ]
+      }
+    },
+    "Objective stigmator Y": {
+      "center_mm": 1746.9,
+      "mechanical_span_mm": [
+        1731.9,
+        1761.9
+      ],
+      "units": "T/m/A",
+      "peak": 0.5537749191623066,
+      "quadrature_check_relative_to_peak": 3.89383554672277e-11,
+      "bands_mm": {
+        "0.01": [
+          [
+            1722.78211357549,
+            1771.0210894849552
+          ]
+        ],
+        "0.1": [
+          [
+            1728.679732327545,
+            1765.1226112469826
+          ]
+        ],
+        "0.5": [
+          [
+            1736.4672141150381,
+            1757.33262424706
+          ]
+        ]
+      }
+    }
+  },
+  "max_abs_axis_E_in_ADL_to_AC_V_per_m": 1.3272710527155878e-06
+}

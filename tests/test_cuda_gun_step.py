@@ -110,6 +110,9 @@ def test_cancel_before_gpu_sample_never_updates_phase(reference_only):
 
 
 def test_cuda_launch_failure_does_not_retry_cpu(reference_only, monkeypatch):
+    from temsim.job_events import JobEvents, traced_job
+    from temsim.physics.backend_execution import backend_receipts
+
     phase, magnetic, electric = _phase(), _instrument(), _electric()
     sampler = SyntheticFieldSampler(magnetic)
     def launch_failure(_points):
@@ -117,10 +120,18 @@ def test_cuda_launch_failure_does_not_retry_cpu(reference_only, monkeypatch):
     sampler.field_at_global_positions_t = launch_failure
     monkeypatch.setattr(grounded_particle_step, "try_step",
         lambda *_a, **_k: pytest.fail("CUDA failure retried on the CPU"))
-    with cuda_step.cuda_gun_execution(binding(sampler)):
+    trace, receipts = JobEvents(), []
+    with traced_job(trace, {"request_id": "fixture"}), backend_receipts(receipts):
         with pytest.raises(GPUExecutionError, match="synthetic CUDA launch failure"):
-            static_energy_step(phase, 1e-14, sampler, electric, tolerance=1e-13)
+            with cuda_step.cuda_gun_execution(binding(sampler)):
+                static_energy_step(phase, 1e-14, sampler, electric, tolerance=1e-13)
     assert cuda_step.current_cuda_gun_binding() is None
+    event, = trace.snapshot()
+    receipt, = receipts
+    assert event["outcome"] == receipt["outcome"] == "raised"
+    assert "field_evidence" not in event and "execution_identity" not in event
+    assert receipt["field_evidence"] == sampler.execution_receipt()
+    assert receipt["execution_identity"] == binding(sampler).execution_identity
 
 
 @pytest.mark.parametrize("policy", ["Auto", "CPU", "Numba CPU"])

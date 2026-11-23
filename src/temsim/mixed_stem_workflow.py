@@ -54,7 +54,7 @@ def calculate_mixed_stem(state, *, request=None, existing_result=None,
     limited to an exactly matching captured input, not a displayed image.
     """
     from temsim.instrument_snapshot import capture_instrument_snapshot
-    from temsim.physics.compute_backend import require_coherent_cuda
+    from temsim.physics.compute_backend import require_instrument_coherent_cuda
     from temsim.physics.mixed_stem_scan import (
         MixedStemScanRequest, simulate_mixed_stem_scan, preflight_mixed_stem_material,
     )
@@ -64,7 +64,7 @@ def calculate_mixed_stem(state, *, request=None, existing_result=None,
     from temsim.specimen.source import validate_sample_source, specimen_is_vacuum
 
     _check(cancelled)
-    require_coherent_cuda("Require GPU")
+    require_instrument_coherent_cuda(state)
     request = (MixedStemScanRequest() if request is None else request).validate()
     require_local_mixed_stem_mode(state)
     inputs = capture_instrument_snapshot(state)

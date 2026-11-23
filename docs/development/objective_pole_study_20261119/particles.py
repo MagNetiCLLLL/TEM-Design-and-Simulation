@@ -8,7 +8,7 @@ from column import FACTOR, HERE, POINT, read_gun
 
 
 class Tracker:
-    def __init__(self, mesh):
+    def __init__(self, mesh, *, source=None):
         self.mesh = mesh
         r, v, j, l, dz = mesh.electric
         nr = min(len(r), np.searchsorted(r, 0.004) + 2)
@@ -35,12 +35,16 @@ class Tracker:
         self.r2 = r * r
         self.er, self.ep = cp.asarray(self.r2), cp.asarray(np.ascontiguousarray(coeff))
         self.h, self.rad = cp.asarray(np.diff(mesh.z)), cp.asarray(mesh.radius**2)
-        self.kernel = cp.RawKernel(
+        self.tables = ()
+        self._trace_kernel = cp.RawKernel(
             (HERE / "lorentz.cu").read_text(), "trace", options=("--std=c++11", "--fmad=false")
         )
         self.rest = m_e * c * c / e
         self.pc = np.sqrt(300000.0 * (300000.0 + 2 * self.rest))
-        self.input, self.weights, self.ids, self.de, self.current = read_gun(POINT)
+        self.input, self.weights, self.ids, self.de, self.current = read_gun(POINT) if source is None else source
+
+    def kernel(self, grid, block, args):
+        return self._trace_kernel(grid, block, (*args, *self.tables))
 
     def run(self, field, count=None, *, keep_history=True, record_probe=False, surface_index=None):
         data = self.input[:count]

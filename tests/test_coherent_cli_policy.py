@@ -43,9 +43,22 @@ def arguments(name, root):
     raise AssertionError(name)
 
 
-@pytest.mark.parametrize("name", ["inspect_surface_column", "audit_gun_axial_steps",
-    "validate_ac_wave_downstream", "validate_ac_wave_handoff", "validate_ac_wave_scan",
-    "benchmark_wave_hotpaths", "benchmark_stem_wave"])
+@pytest.mark.parametrize("name,option", [
+    ("inspect_surface_column", []), ("inspect_surface_column", ["--radial-backend", "cpu"]),
+    ("audit_gun_axial_steps", []), ("validate_ac_wave_downstream", []),
+    ("validate_ac_wave_handoff", []), ("validate_ac_wave_scan", []),
+])
+def test_retired_tip_diagnostics_reject_before_execution(name, option, monkeypatch, tmp_path):
+    from temsim.physics.retired_tip_wave import RetiredTipCoherentWorkflow
+    cli = load_cli(name, monkeypatch)
+    monkeypatch.setattr(backend, "coherent_cuda_capability",
+        lambda: pytest.fail("Retired diagnostics must not probe CUDA"))
+    with pytest.raises(RetiredTipCoherentWorkflow):
+        cli.main(arguments(name, tmp_path) + option)
+    assert not (tmp_path / "output").exists()
+
+
+@pytest.mark.parametrize("name", ["benchmark_wave_hotpaths", "benchmark_stem_wave"])
 def test_diagnostic_execution_rejects_missing_cuda_before_inputs_or_output(name, monkeypatch, tmp_path):
     cli = load_cli(name, monkeypatch)
     monkeypatch.setattr(backend, "coherent_cuda_capability",
@@ -63,7 +76,6 @@ def test_diagnostic_execution_rejects_missing_cuda_before_inputs_or_output(name,
 
 
 @pytest.mark.parametrize("name,option", [
-    ("inspect_surface_column", ["--radial-backend", "cpu"]),
     ("benchmark_stem_wave", ["--backends", "CPU"]),
     ("benchmark_stem_wave", ["--backends", "Numba CPU"]),
 ])

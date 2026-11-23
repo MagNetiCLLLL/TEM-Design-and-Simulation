@@ -1,0 +1,117 @@
+{
+  "field_sha256": "c31ce3337cbe27d7b30d61f6556a94b4355e8707a3dc61146989a7dc65398513",
+  "count": 32768,
+  "focal_plane_mm": 1444.813840412891,
+  "C2_aperture_faces": [
+    {
+      "z_mm": 764.9,
+      "radius_um": 50.0,
+      "populated_radius95_um": 0.26767379817700104,
+      "maximum_radius_um": 0.47390262013673673,
+      "surviving": 32768,
+      "transmitted_A": 1.5e-05
+    },
+    {
+      "z_mm": 765.1,
+      "radius_um": 50.0,
+      "populated_radius95_um": 0.2652831471288086,
+      "maximum_radius_um": 0.4696628637159132,
+      "surviving": 32768,
+      "transmitted_A": 1.5e-05
+    }
+  ],
+  "examined_mm": [
+    1420.0,
+    1500.0
+  ],
+  "full_population": {
+    "original_particles": 32768,
+    "first_id": 0,
+    "last_id": 32767,
+    "front_rms_nm": 224.4018636347409,
+    "front_half_variance_slopes_nm2_per_mm": [
+      0.0014240697739232192,
+      -0.0003686290851819159,
+      0.0017926988591051348
+    ],
+    "radial_minima_mm": [],
+    "directional_minima_mm": [
+      [
+        1445.952297774126
+      ],
+      []
+    ]
+  },
+  "disjoint_original_source_quarters": [
+    {
+      "original_particles": 8192,
+      "first_id": 0,
+      "last_id": 8191,
+      "front_rms_nm": 224.18367251328448,
+      "front_half_variance_slopes_nm2_per_mm": [
+        -0.003126465292329387,
+        -0.006311612089007641,
+        0.0031851467966782523
+      ],
+      "radial_minima_mm": [],
+      "directional_minima_mm": [
+        [],
+        []
+      ]
+    },
+    {
+      "original_particles": 8192,
+      "first_id": 8192,
+      "last_id": 16383,
+      "front_rms_nm": 224.51148515933514,
+      "front_half_variance_slopes_nm2_per_mm": [
+        0.011354638408838876,
+        0.0019465639145860947,
+        0.009408074494252782
+      ],
+      "radial_minima_mm": [],
+      "directional_minima_mm": [
+        [],
+        []
+      ]
+    },
+    {
+      "original_particles": 8192,
+      "first_id": 16384,
+      "last_id": 24575,
+      "front_rms_nm": 224.39848740189984,
+      "front_half_variance_slopes_nm2_per_mm": [
+        -0.003794107690306979,
+        -0.0024092294686611847,
+        -0.0013848782216457944
+      ],
+      "radial_minima_mm": [],
+      "directional_minima_mm": [
+        [],
+        [
+          1447.3981240626727
+        ]
+      ]
+    },
+    {
+      "original_particles": 8192,
+      "first_id": 24576,
+      "last_id": 32767,
+      "front_rms_nm": 224.5135852524291,
+      "front_half_variance_slopes_nm2_per_mm": [
+        0.001262178145825372,
+        -0.0020408545847801834,
+        0.0033030327306055552
+      ],
+      "radial_minima_mm": [
+        1440.2905854486903
+      ],
+      "directional_minima_mm": [
+        [
+          1447.2506126817925
+        ],
+        []
+      ]
+    }
+  ]
+}

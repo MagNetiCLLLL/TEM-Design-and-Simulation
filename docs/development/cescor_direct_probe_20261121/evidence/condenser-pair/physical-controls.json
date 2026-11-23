@@ -1,0 +1,113 @@
+{
+  "count": 4096,
+  "matched_source": true,
+  "comparisons": [
+    {
+      "case": "Vacuum windings  \u00b7  \u221241 A / +19.5 A",
+      "waists_mm": [
+        [
+          522.1143563419855
+        ],
+        [],
+        [
+          794.7470578313806
+        ],
+        [],
+        []
+      ],
+      "gun_sha256": "2c777f747a6058357f79dda4573a1507b93f6f9e5cbc252b2b36b324806a5016",
+      "trajectory_sha256": "bd8d64ff0b4058af9c786c687edf217c752c4a0d6632230f3e152aff315949bf"
+    },
+    {
+      "case": "Poles and returns  \u00b7  \u221241 A / +19.5 A",
+      "waists_mm": [
+        [
+          499.04944457222604
+        ],
+        [
+          728.9378649616555
+        ],
+        [],
+        [],
+        []
+      ],
+      "gun_sha256": "abe3dfb26f23489240300b1a0a8a7ee69eb7400a2bba37f2b08c93e9a5492c57",
+      "trajectory_sha256": "644480b39e25f086a0e34fc6e6d9dae76b4eefbd29cf3376aee789205731a898"
+    },
+    {
+      "case": "Poles and returns  \u00b7  \u221230 A / +16 A",
+      "waists_mm": [
+        [
+          524.671938325038
+        ],
+        [],
+        [
+          790.9956042732982
+        ],
+        [],
+        []
+      ],
+      "gun_sha256": "3dbf97c9ddc1ef4b5d7c5cbcc8819aff5149bee20292421bcbdaac66a78031fd",
+      "trajectory_sha256": "3e635a519c6202cf37b4a9df22f91fcf9612920fbfa23573d6788bf57b738b6a"
+    }
+  ],
+  "selected_1p5mm_550mm": {
+    "surface": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.0545229767141806,
+      "RMS_radius_um": 0.8567250480603966,
+      "axis_50nm_nA": 65.91796875,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.02809639860406337,
+        -0.022486440107385767
+      ],
+      "alpha95_mrad": 0.019063942154138362,
+      "largest_sampled_angle_mrad": 0.030426665591119506,
+      "specimen_uA": 15.0,
+      "count": 4096
+    },
+    "waists_mm": [
+      [
+        524.671938325038
+      ],
+      [],
+      [
+        790.9956042732982
+      ],
+      [],
+      []
+    ]
+  },
+  "refined_1mm_800mm": {
+    "surface": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.0523441541292433,
+      "RMS_radius_um": 0.8561486185771875,
+      "axis_50nm_nA": 65.91796875,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.02807842425060435,
+        -0.022471381020959944
+      ],
+      "alpha95_mrad": 0.01904910948745279,
+      "largest_sampled_angle_mrad": 0.030403272389634674,
+      "specimen_uA": 15.0,
+      "count": 4096
+    },
+    "waists_mm": [
+      [
+        524.6487164045727
+      ],
+      [],
+      [
+        791.0402241344566
+      ],
+      [],
+      []
+    ],
+    "field_key": "57eb9df5b854bc8b6834e8ae674b3758b6c28ef6119c4ab6c68da4e3ced0cc8a",
+    "gun_signature": "d490b7b95163e53167120b3ec7cce70146006f2f0ee79267fbfbc62088dee28b"
+  },
+  "refined_minus_tracking_D95_um": -0.00217882258493729
+}

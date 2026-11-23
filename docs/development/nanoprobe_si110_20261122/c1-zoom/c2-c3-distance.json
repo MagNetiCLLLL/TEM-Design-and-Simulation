@@ -1,0 +1,280 @@
+{
+  "C2_exit_mm": 750.0,
+  "fixed_winding_currents_A": {
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0,
+    "condenser_lens_1/physical-pack-0": -36.0,
+    "mini_condenser/physical-pack-3": 226.70154583016074,
+    "objective_lens/physical-pack-4": -1.2319450612962322,
+    "objective_lens/physical-pack-5": -1.2319450612962322,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": 10.0,
+    "probe_tl12_lens": -95.14963537
+  },
+  "source_identity": "Identical emitted phase, original IDs, absolute weights and emitted current; gun transport repeated in each total DC field.",
+  "rows": [
+    {
+      "run": "c1-zoom-foil",
+      "source_count": 16384,
+      "effective_count": 16384.0,
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "field_sha256": "53e150a724a501c9bd307970b807b655d49315616b1b3958f85c412028c6f0d6",
+      "C2_A": 16.659,
+      "C3_A": 6.70787,
+      "crossover_mm": 765.435968601153,
+      "distance_from_C2_exit_mm": 15.435968601153036,
+      "intermediate_waists_mm": [
+        506.9702486337583,
+        765.435968601153,
+        1208.0923653446337,
+        1423.1414171993051
+      ],
+      "terminal_rms_waists_mm": [
+        1599.141701015815
+      ],
+      "specimen": {
+        "D95_um": 0.0077964824630336335,
+        "RMS_radius_um": 0.0019734738939466805,
+        "axis_50nm_nA": 15000.0,
+        "axis_50pm_pA": 21972.65625,
+        "centroid_um": [
+          -3.283584600594947e-08,
+          -2.5772723923221896e-07
+        ],
+        "alpha95_mrad": 0.005675468811798241,
+        "largest_sampled_angle_mrad": 0.010512660571878607,
+        "specimen_uA": 15.0,
+        "count": 16384
+      },
+      "axis_50pm_packet_count": 24,
+      "disjoint_source_halves_alpha95_urad": [
+        5.678139935506379,
+        5.67122408846619
+      ],
+      "refined_integration": {
+        "step_mm": 0.025,
+        "surface": {
+          "D95_um": 0.007798094364495757,
+          "RMS_radius_um": 0.0019730956517323775,
+          "axis_50nm_nA": 15000.0,
+          "axis_50pm_pA": 21057.12890625,
+          "centroid_um": [
+            -3.1254630369205574e-08,
+            -2.574297005115938e-07
+          ],
+          "alpha95_mrad": 0.005675084456824201,
+          "largest_sampled_angle_mrad": 0.010511980634249575,
+          "specimen_uA": 15.0,
+          "count": 16384
+        },
+        "max_landing_change_nm": 0.018406563371406802
+      },
+      "rms_angle_urad": 3.1544988955260016,
+      "upper_pole_radius95_um": 0.36714510419791996,
+      "Mini_radius95_um": 0.4056702921982641,
+      "C2_foil_faces": [
+        {
+          "z_mm": 764.9,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.003910984166940638,
+            0.00891588661291327,
+            0.015358945461745741
+          ],
+          "count_outer_ten_percent": 0
+        },
+        {
+          "z_mm": 765.1,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.002459549695112279,
+            0.005626856931538079,
+            0.009500103947171651
+          ],
+          "count_outer_ten_percent": 0
+        }
+      ],
+      "formal_C2_edge_mrad": [
+        31.382303456772995,
+        49.49048095853719
+      ],
+      "formal_column_limit_mrad": 6.409275712698108,
+      "formal_limiting_element": "condenser_aperture_3",
+      "required_30mrad_radius_mm": 2.1442308548344267
+    },
+    {
+      "run": "c1-zoom-focused",
+      "source_count": 16384,
+      "effective_count": 16384.0,
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "field_sha256": "5c25874fc463a87323c1624997084e7bb1272c1a2e0c152bc9316e317eebca0f",
+      "C2_A": 17.576,
+      "C3_A": 6.5,
+      "crossover_mm": 752.8079750077262,
+      "distance_from_C2_exit_mm": 2.8079750077262133,
+      "intermediate_waists_mm": [
+        507.25926026482404,
+        752.8079750077262,
+        1208.0862221347,
+        1423.1393421656605
+      ],
+      "terminal_rms_waists_mm": [
+        1599.1418068008925
+      ],
+      "specimen": {
+        "D95_um": 0.010663714912640107,
+        "RMS_radius_um": 0.002536128373279182,
+        "axis_50nm_nA": 15000.0,
+        "axis_50pm_pA": 19226.07421875,
+        "centroid_um": [
+          -1.6621849489351929e-07,
+          -3.631699114719261e-07
+        ],
+        "alpha95_mrad": 0.006870086661653633,
+        "largest_sampled_angle_mrad": 0.012851670448220375,
+        "specimen_uA": 15.0,
+        "count": 16384
+      },
+      "axis_50pm_packet_count": 21,
+      "disjoint_source_halves_alpha95_urad": [
+        6.864562573373345,
+        6.876136305915255
+      ],
+      "refined_integration": null,
+      "rms_angle_urad": 3.8096562345565035,
+      "upper_pole_radius95_um": 0.4431860707210789,
+      "Mini_radius95_um": 0.4895136067520933,
+      "C2_foil_faces": [
+        {
+          "z_mm": 764.9,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.0992979791919465,
+            0.2252326366596252,
+            0.4002796052001172
+          ],
+          "count_outer_ten_percent": 0
+        },
+        {
+          "z_mm": 765.1,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.10093935349071291,
+            0.22895232616388977,
+            0.4068859351536363
+          ],
+          "count_outer_ten_percent": 0
+        }
+      ],
+      "formal_C2_edge_mrad": [
+        1.5186446500490967,
+        1.4939459241582669
+      ],
+      "formal_column_limit_mrad": 1.4939459241582669,
+      "formal_limiting_element": "condenser_aperture_2",
+      "required_30mrad_radius_mm": 2.144234291370946
+    },
+    {
+      "run": "c1-zoom-near-c2",
+      "source_count": 16384,
+      "effective_count": 16384.0,
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "field_sha256": "c89d63b5eab1d48f0b4ee6e8a7c2e60ef84c300b8b13a657b37341260c35b2c2",
+      "C2_A": 17.72155,
+      "C3_A": 6.472,
+      "crossover_mm": 751.0071177524483,
+      "distance_from_C2_exit_mm": 1.0071177524482664,
+      "intermediate_waists_mm": [
+        507.3055438175501,
+        751.0071177524483,
+        1208.0849946741207,
+        1423.1347455344603
+      ],
+      "terminal_rms_waists_mm": [
+        1599.139057379188
+      ],
+      "specimen": {
+        "D95_um": 0.01122415558553195,
+        "RMS_radius_um": 0.0026479911902069224,
+        "axis_50nm_nA": 15000.0,
+        "axis_50pm_pA": 19226.07421875,
+        "centroid_um": [
+          -1.991714129156303e-07,
+          -3.8099647292100285e-07
+        ],
+        "alpha95_mrad": 0.007050044811032831,
+        "largest_sampled_angle_mrad": 0.01322090639745095,
+        "specimen_uA": 15.0,
+        "count": 16384
+      },
+      "axis_50pm_packet_count": 21,
+      "disjoint_source_halves_alpha95_urad": [
+        7.044981733731984,
+        7.065458269029765
+      ],
+      "refined_integration": {
+        "step_mm": 0.025,
+        "surface": {
+          "D95_um": 0.011221069148809557,
+          "RMS_radius_um": 0.0026475891561810517,
+          "axis_50nm_nA": 15000.0,
+          "axis_50pm_pA": 18310.546875,
+          "centroid_um": [
+            -1.9739643411796788e-07,
+            -3.8036282963868e-07
+          ],
+          "alpha95_mrad": 0.007049600471599285,
+          "largest_sampled_angle_mrad": 0.013220111843282917,
+          "specimen_uA": 15.0,
+          "count": 16384
+        },
+        "max_landing_change_nm": 0.021538641326258712
+      },
+      "rms_angle_urad": 3.912848592471635,
+      "upper_pole_radius95_um": 0.45530645769059763,
+      "Mini_radius95_um": 0.5029758554344858,
+      "C2_foil_faces": [
+        {
+          "z_mm": 764.9,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.11613097595525906,
+            0.26338046545503657,
+            0.4680556585759669
+          ],
+          "count_outer_ten_percent": 0
+        },
+        {
+          "z_mm": 765.1,
+          "live": 16384,
+          "radius_p50_p95_max_um": [
+            0.11780076316960757,
+            0.2671646112896255,
+            0.4747769201278627
+          ],
+          "count_outer_ten_percent": 0
+        }
+      ],
+      "formal_C2_edge_mrad": [
+        1.3335887066308796,
+        1.3146817413660765
+      ],
+      "formal_column_limit_mrad": 1.3146817413660765,
+      "formal_limiting_element": "condenser_aperture_2",
+      "required_30mrad_radius_mm": 2.1442348258281143
+    }
+  ],
+  "measured_relative_gain_percent": 24.219602729154353,
+  "finite_interval_secant_urad_per_mm": -0.09526579861749569
+}

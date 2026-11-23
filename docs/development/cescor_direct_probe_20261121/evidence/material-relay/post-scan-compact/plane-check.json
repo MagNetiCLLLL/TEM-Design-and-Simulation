@@ -1,0 +1,139 @@
+{
+  "field_sha256": "c6f773dd2b6a28314d24ea071974f59a8a47308bf62070050b5fb6c13767966f",
+  "count": 8192,
+  "focal_plane_mm": 1458.3568082596637,
+  "C2_aperture_faces": [
+    {
+      "z_mm": 764.9,
+      "radius_um": 50.0,
+      "populated_radius95_um": 0.2656638682872394,
+      "maximum_radius_um": 0.43127060156450225,
+      "surviving": 8192,
+      "transmitted_A": 1.5e-05
+    },
+    {
+      "z_mm": 765.1,
+      "radius_um": 50.0,
+      "populated_radius95_um": 0.2632802581603815,
+      "maximum_radius_um": 0.4273943190286506,
+      "surviving": 8192,
+      "transmitted_A": 1.5e-05
+    }
+  ],
+  "examined_mm": [
+    1420.0,
+    1512.5
+  ],
+  "full_population": {
+    "original_particles": 8192,
+    "first_id": 0,
+    "last_id": 8191,
+    "front_rms_nm": 76.01537324111365,
+    "front_half_variance_slopes_nm2_per_mm": [
+      394.0555164254874,
+      196.9386932620173,
+      197.11682316347
+    ],
+    "radial_minima_mm": [
+      1444.5719324692814
+    ],
+    "directional_minima_mm": [
+      [
+        1444.572238927674
+      ],
+      [
+        1444.5716262401966
+      ]
+    ]
+  },
+  "disjoint_original_source_quarters": [
+    {
+      "original_particles": 2048,
+      "first_id": 0,
+      "last_id": 2047,
+      "front_rms_nm": 75.86724324465358,
+      "front_half_variance_slopes_nm2_per_mm": [
+        392.5377961059488,
+        195.3971389140614,
+        197.14065719188747
+      ],
+      "radial_minima_mm": [
+        1444.5724478994973
+      ],
+      "directional_minima_mm": [
+        [
+          1444.5730242628492
+        ],
+        [
+          1444.5718760046248
+        ]
+      ]
+    },
+    {
+      "original_particles": 2048,
+      "first_id": 2048,
+      "last_id": 4095,
+      "front_rms_nm": 76.03503676622495,
+      "front_half_variance_slopes_nm2_per_mm": [
+        394.24484790129793,
+        195.717260337022,
+        198.52758756427596
+      ],
+      "radial_minima_mm": [
+        1444.5714807057382
+      ],
+      "directional_minima_mm": [
+        [
+          1444.572555699074
+        ],
+        [
+          1444.5704175450874
+        ]
+      ]
+    },
+    {
+      "original_particles": 2048,
+      "first_id": 4096,
+      "last_id": 6143,
+      "front_rms_nm": 76.09776116996362,
+      "front_half_variance_slopes_nm2_per_mm": [
+        394.90732636289715,
+        196.74627880113675,
+        198.1610475617604
+      ],
+      "radial_minima_mm": [
+        1444.5718487195104
+      ],
+      "directional_minima_mm": [
+        [
+          1444.572869915329
+        ],
+        [
+          1444.5708339378002
+        ]
+      ]
+    },
+    {
+      "original_particles": 2048,
+      "first_id": 6144,
+      "last_id": 8191,
+      "front_rms_nm": 76.06043655716788,
+      "front_half_variance_slopes_nm2_per_mm": [
+        394.52374051028164,
+        196.60709275127195,
+        197.91664775900972
+      ],
+      "radial_minima_mm": [
+        1444.5719563432588
+      ],
+      "directional_minima_mm": [
+        [
+          1444.5727933574244
+        ],
+        [
+          1444.5711224969216
+        ]
+      ]
+    }
+  ]
+}

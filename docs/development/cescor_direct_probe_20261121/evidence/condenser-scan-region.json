@@ -1,0 +1,282 @@
+{
+  "operating_point_sha256": "e3a073b36f5a341dcf9cda4ea23e974d23baaec87e3a2ed95a3dc3dc235b9524",
+  "scan": {
+    "scan_enabled": false,
+    "wobble_enabled": false,
+    "kick_x_mrad": 0.0,
+    "kick_y_mrad": 0.0,
+    "DP12_offsets": {
+      "upper_x_mrad": 0.0,
+      "upper_y_mrad": 0.0,
+      "lower_x_mrad": 0.0,
+      "lower_y_mrad": 0.0
+    }
+  },
+  "corrector_A": {
+    "adapter_lens": 10.0,
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl12_lens": 255.71838,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0
+  },
+  "objective_A": -28.220275948275862,
+  "effective_source_count": 32768,
+  "comparison_start_mm": 1330.0,
+  "drift_start_mm": 1380.0,
+  "scan_field_table_sha256": "97a1e5d1dc659b5c6d8b9edea00f8c0574c1c5c2c8ee1ba9e03dcbac86253d29",
+  "retained_scan_command_mrad": [
+    0.0,
+    0.0
+  ],
+  "lower_TL12_control_field_sha256": "9bd3b0ad6fdec4c6378c69b2e8e6cba2f71d51a0f6679810e0c74e821567b832",
+  "scan_centres_mm": [
+    1387.5,
+    1412.5
+  ],
+  "objective_upper_winding_mm": [
+    1396.5,
+    1541.5
+  ],
+  "objective_winding_radius_mm": [
+    30.0,
+    66.0
+  ],
+  "objective_upper_yoke_mm": [
+    1391.5,
+    1546.5
+  ],
+  "objective_upper_pole_mm": [
+    1534.5,
+    1596.5
+  ],
+  "on_axis": {
+    "1360.0": {
+      "corrector_mT": 103.58708119225778,
+      "corrector_TL12_10_A_mT": 9.327609951879277,
+      "objective_original_mT": 16.47838345829381,
+      "objective_1mm_mT": -22.242055587249197,
+      "objective_0.5mm_mT": -22.261485197400642,
+      "mini_mT": 0.32510853344045976,
+      "total_original_mT": 120.78066059252433,
+      "total_0.5mm_mT": 82.04079193682988
+    },
+    "1366.0": {
+      "corrector_mT": 134.43490605023902,
+      "corrector_TL12_10_A_mT": 12.169783673928881,
+      "objective_original_mT": -10.097411207931845,
+      "objective_1mm_mT": -27.128640155240017,
+      "objective_0.5mm_mT": -27.151822589417577,
+      "mini_mT": 0.360790952437896,
+      "total_original_mT": 125.08099928791499,
+      "total_0.5mm_mT": 108.02658790642924
+    },
+    "1375.0": {
+      "corrector_mT": 81.14596286102065,
+      "corrector_TL12_10_A_mT": 6.560773044323089,
+      "objective_original_mT": -103.56086784899531,
+      "objective_1mm_mT": -36.48279978941632,
+      "objective_0.5mm_mT": -36.511014637792115,
+      "mini_mT": 0.42472898046390056,
+      "total_original_mT": -21.616898775193874,
+      "total_0.5mm_mT": 45.43295443600934
+    },
+    "1380.0": {
+      "corrector_mT": 51.9573601319578,
+      "corrector_TL12_10_A_mT": 2.8718432116617683,
+      "objective_original_mT": -138.79907608105475,
+      "objective_1mm_mT": -42.83022134873232,
+      "objective_0.5mm_mT": -42.85975223394213,
+      "mini_mT": 0.4668361518131285,
+      "total_original_mT": -86.00604472884899,
+      "total_0.5mm_mT": 9.933279118263616
+    },
+    "1382.0": {
+      "corrector_mT": 47.3392965669363,
+      "corrector_TL12_10_A_mT": 2.0928431194206962,
+      "objective_original_mT": -141.09141084720272,
+      "objective_1mm_mT": -45.59949196213685,
+      "objective_0.5mm_mT": -45.628860714412134,
+      "mini_mT": 0.48522700807321245,
+      "total_original_mT": -92.89967499749106,
+      "total_0.5mm_mT": 2.5628751352995245
+    },
+    "1387.5": {
+      "corrector_mT": 41.867368936798215,
+      "corrector_TL12_10_A_mT": 1.1629771760565724,
+      "objective_original_mT": -93.1314726049637,
+      "objective_1mm_mT": -53.76933335001473,
+      "objective_0.5mm_mT": -53.86075383784134,
+      "mini_mT": 0.5410103971203688,
+      "total_original_mT": -50.35990181605472,
+      "total_0.5mm_mT": -11.08918304893234
+    },
+    "1400.0": {
+      "corrector_mT": 31.680464333514035,
+      "corrector_TL12_10_A_mT": 0.8387816453648298,
+      "objective_original_mT": -72.17748214569453,
+      "objective_1mm_mT": -74.56891311666513,
+      "objective_0.5mm_mT": -74.59878322549993,
+      "mini_mT": 0.7034517609456342,
+      "total_original_mT": -39.43719282872227,
+      "total_0.5mm_mT": -41.85849390852766
+    },
+    "1408.0": {
+      "corrector_mT": 24.702388863561044,
+      "corrector_TL12_10_A_mT": 0.733333123674281,
+      "objective_original_mT": -90.91745908966728,
+      "objective_1mm_mT": -87.56331411805832,
+      "objective_0.5mm_mT": -87.58309244921375,
+      "mini_mT": 0.8425984760204812,
+      "total_original_mT": -65.01884130443445,
+      "total_0.5mm_mT": -61.68447466398092
+    },
+    "1412.5": {
+      "corrector_mT": 21.432167705492205,
+      "corrector_TL12_10_A_mT": 0.7744320191768671,
+      "objective_original_mT": -92.20706506870432,
+      "objective_1mm_mT": -94.486444723539,
+      "objective_0.5mm_mT": -94.25840992220155,
+      "mini_mT": 0.9371106754375513,
+      "total_original_mT": -69.4851610429315,
+      "total_0.5mm_mT": -71.53650589642872
+    },
+    "1420.0": {
+      "corrector_mT": 16.448579400607407,
+      "corrector_TL12_10_A_mT": 0.6151136220693386,
+      "objective_original_mT": -103.56588032832339,
+      "objective_1mm_mT": -104.00435611797232,
+      "objective_0.5mm_mT": -104.01816312934922,
+      "mini_mT": 1.1282396157277197,
+      "total_original_mT": -85.63726578608596,
+      "total_0.5mm_mT": -86.08954858711182
+    }
+  },
+  "original_objective_nodes_mm_mT": [
+    [
+      1344.0,
+      -12.503891658035817
+    ],
+    [
+      1366.0,
+      -10.097411207931843
+    ],
+    [
+      1388.0000000000002,
+      -83.91796986568042
+    ],
+    [
+      1389.2,
+      -63.08592109736838
+    ]
+  ],
+  "scan_maximum_objective_1mm_to_0_5mm_change_mT": 0.2703632425946484,
+  "extrema_1330_through_1478": {
+    "archive": [
+      {
+        "kind": "maximum",
+        "z_mm": 1399.695772256414,
+        "rms_um": 0.8312828985547378
+      },
+      {
+        "kind": "minimum",
+        "z_mm": 1474.7028632344689,
+        "rms_um": 0.005259448770547822
+      }
+    ],
+    "refined": [
+      {
+        "kind": "maximum",
+        "z_mm": 1420.8448590746782,
+        "rms_um": 1.0776692147077533
+      }
+    ],
+    "no_objective": [
+      {
+        "kind": "maximum",
+        "z_mm": 1384.549061743027,
+        "rms_um": 0.7974194751052938
+      }
+    ],
+    "no_corrector": [
+      {
+        "kind": "maximum",
+        "z_mm": 1390.3716943825693,
+        "rms_um": 1.0167131827910099
+      },
+      {
+        "kind": "minimum",
+        "z_mm": 1462.4316171142548,
+        "rms_um": 0.03494900750069269
+      }
+    ],
+    "drift": [],
+    "refined_drift": []
+  },
+  "radius_at_AC_exit_um": {
+    "archive": 0.7984323700998015,
+    "refined": 1.077516082914185,
+    "no_objective": 0.7602668051410881,
+    "no_corrector": 0.8804664158890521,
+    "drift": 1.1481203517300718,
+    "refined_drift": 1.1346181869581933
+  },
+  "radius_at_AC_entrance_um": 0.8161448010187482,
+  "centroids_at_AC_stations_nm_and_urad": {
+    "archive": {
+      "1380.0": [
+        -29.533181883576162,
+        -1.0255319106661254,
+        -0.1826206114837777,
+        0.592498680502943
+      ],
+      "1387.5": [
+        -30.206095865020313,
+        3.3642388399064806,
+        -0.033457930877165136,
+        0.3640920332427634
+      ],
+      "1412.5": [
+        -29.43047530206313,
+        11.183501134427352,
+        0.20197067952130449,
+        0.47392853341723395
+      ],
+      "1420.0": [
+        -27.211690633094754,
+        14.934536128579666,
+        0.3916034767486277,
+        0.49993521892037407
+      ]
+    },
+    "refined": {
+      "1380.0": [
+        -31.758225514026126,
+        -1.7003936643849802,
+        -0.27231925701597787,
+        -0.09269524400934373
+      ],
+      "1387.5": [
+        -33.83492153819991,
+        -1.7253100118741318,
+        -0.28042867071520117,
+        0.07272974176515318
+      ],
+      "1412.5": [
+        -39.23130212788472,
+        7.769002767257575,
+        -0.029428963176048505,
+        0.6978623388345323
+      ],
+      "1420.0": [
+        -38.56163673649211,
+        13.475363539962814,
+        0.22198333652106583,
+        0.8068832919590707
+      ]
+    }
+  },
+  "trajectory_controls": "All lens-field controls continue the same 32768 incident particles from 1330 mm; each drift continues its own 1380 mm positions and kinetic directions in zero force. Original full-weight RMS and 64 archived trajectories were checked."
+}

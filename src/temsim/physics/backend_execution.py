@@ -1,10 +1,11 @@
-"""Backend execution receipts and inexpensive capability preflight."""
+"""Backend execution receipts, scalar lifecycle events and capability preflight."""
 from collections import deque
 from contextlib import contextmanager
 from contextvars import ContextVar
 from functools import wraps
 from time import monotonic
 
+from temsim.immutable_json import freeze_json, thaw_json
 from temsim.job_events import is_job_scalar, job_event
 from temsim.physics.compute_backend import BACKEND_REQUIRE_GPU, GPUExecutionError, normalise_backend
 
@@ -23,12 +24,15 @@ def backend_receipts(rows):
 def record_backend(stage, requested, actual, *, outcome="returned", reason="", **details):
     row = dict(stage=str(stage), requested=str(requested), actual=str(actual),
                outcome=outcome, reason=str(reason), monotonic_s=monotonic(), **details)
-    # Nested field diagnostics belong to the calculation result. The lifecycle
-    # trace keeps the stage identity and scalar execution details.
-    job_event("backend_stage", **{key: value for key, value in row.items() if is_job_scalar(value)})
     rows = _RECEIPTS.get()
+    receipt = thaw_json(freeze_json(row)) if rows is not None else None
+    # Field samplers return structured execution records. Keep those on the
+    # calculation result. The job coordinator retains only scalar metadata.
+    event_fields = {key: value for key, value in row.items()
+                    if is_job_scalar(value)}
+    job_event("backend_stage", **event_fields)
     if rows is not None:
-        rows.append(row)
+        rows.append(receipt)
 
 
 def capture_worker_backends(function):

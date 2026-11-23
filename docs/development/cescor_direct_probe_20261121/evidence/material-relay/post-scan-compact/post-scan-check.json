@@ -1,0 +1,200 @@
+{
+  "previous": {
+    "label": "relay-final",
+    "field_sha256": "c31ce3337cbe27d7b30d61f6556a94b4355e8707a3dc61146989a7dc65398513",
+    "original": 32768,
+    "surviving": 32768,
+    "positive_effective_count": 32768.0,
+    "gap_waists_mm": [],
+    "front_mm": 1444.813840412891,
+    "checked_plane_mm": 1444.813840412891,
+    "planes": [
+      {
+        "z_mm": 1439.813840412891,
+        "offset_mm": -5.0,
+        "rms_nm": 224.4018498972946,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.001601773309729334,
+          0.0017504598399699326
+        ]
+      },
+      {
+        "z_mm": 1443.813840412891,
+        "offset_mm": -1.0,
+        "rms_nm": 224.40185816001127,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.0006890897919952119,
+          0.001725129111402111
+        ]
+      },
+      {
+        "z_mm": 1444.7138404128912,
+        "offset_mm": -0.1,
+        "rms_nm": 224.40186300889135,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.0004011665416277993,
+          0.0017858278716500243
+        ]
+      },
+      {
+        "z_mm": 1444.813840412891,
+        "offset_mm": 0.0,
+        "rms_nm": 224.40186363471676,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.0003686293673309263,
+          0.0017926985902886657
+        ]
+      },
+      {
+        "z_mm": 1444.913840412891,
+        "offset_mm": 0.1,
+        "rms_nm": 224.4018642781053,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.00033604915036365116,
+          0.001799526229239668
+        ]
+      },
+      {
+        "z_mm": 1445.813840412891,
+        "offset_mm": 1.0,
+        "rms_nm": 224.4018708518509,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -4.402987284294986e-05,
+          0.0018558001894787778
+        ]
+      },
+      {
+        "z_mm": 1449.813840412891,
+        "offset_mm": 5.0,
+        "rms_nm": 224.4019124368728,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          0.000865140266789251,
+          0.0016268790360698829
+        ]
+      }
+    ],
+    "opposite_half_plane_current_fraction": 0.0,
+    "open_gap_half_span_mm": 5.0,
+    "open_gap_opposite_half_plane_current_fraction": 0.0,
+    "open_gap_larmor_rotation_deg_at_300_kV": 0.0016221553992636056,
+    "opposite_half_plane_definition": "Negative dot product of the same ray's centroid-relative x,y positions 5 mm before and after the reference plane, in laboratory coordinates.",
+    "field_stations_mm": [
+      1387.5,
+      1412.5,
+      1444.813840412891,
+      1444.813840412891
+    ],
+    "full_Bz_mT": [
+      -4.599650632827587,
+      -2.0722640010610633,
+      8.07790422877169e-05,
+      8.07790422877169e-05
+    ],
+    "isolated_pair_Bz_mT": [
+      -0.4599074800098634,
+      -0.48947677543131246,
+      0.5083025059439015,
+      0.5083025059439015
+    ]
+  },
+  "current": {
+    "label": "post-scan-compact",
+    "field_sha256": "c6f773dd2b6a28314d24ea071974f59a8a47308bf62070050b5fb6c13767966f",
+    "original": 8192,
+    "surviving": 8192,
+    "positive_effective_count": 8192.0,
+    "gap_waists_mm": [
+      1444.5719324692814
+    ],
+    "front_mm": 1458.3568082596637,
+    "checked_plane_mm": 1444.5719324692814,
+    "planes": [
+      {
+        "z_mm": 1439.5719324692814,
+        "offset_mm": -5.0,
+        "rms_nm": 28.300577713350567,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -79.48275957336406,
+          -79.4286683600005
+        ]
+      },
+      {
+        "z_mm": 1443.5719324692814,
+        "offset_mm": -1.0,
+        "rms_nm": 5.732911555630506,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -16.1150099189255,
+          -16.110085328270483
+        ]
+      },
+      {
+        "z_mm": 1444.4719324692815,
+        "offset_mm": -0.1,
+        "rms_nm": 0.9768966188487909,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -1.6164395146272799,
+          -1.6077568415750783
+        ]
+      },
+      {
+        "z_mm": 1444.5719324692814,
+        "offset_mm": 0.0,
+        "rms_nm": 0.7949385816083515,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          -0.004822432906864379,
+          0.005031741546886391
+        ]
+      },
+      {
+        "z_mm": 1444.6719324692813,
+        "offset_mm": 0.1,
+        "rms_nm": 0.9769394675697789,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          1.6067841998822796,
+          1.6178307051417875
+        ]
+      },
+      {
+        "z_mm": 1445.5719324692814,
+        "offset_mm": 1.0,
+        "rms_nm": 5.73297793411838,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          16.101591811264075,
+          16.123735085414832
+        ]
+      },
+      {
+        "z_mm": 1449.5719324692814,
+        "offset_mm": 5.0,
+        "rms_nm": 28.296686601728897,
+        "directional_half_variance_slopes_nm2_per_mm": [
+          79.36408711963965,
+          79.43634980407583
+        ]
+      }
+    ],
+    "opposite_half_plane_current_fraction": 0.9996337890625,
+    "open_gap_half_span_mm": 5.0,
+    "open_gap_opposite_half_plane_current_fraction": 0.9996337890625,
+    "open_gap_larmor_rotation_deg_at_300_kV": -17.039873865318185,
+    "opposite_half_plane_definition": "Negative dot product of the same ray's centroid-relative x,y positions 5 mm before and after the reference plane, in laboratory coordinates.",
+    "field_stations_mm": [
+      1387.5,
+      1412.5,
+      1444.5719324692814,
+      1458.3568082596637
+    ],
+    "full_Bz_mT": [
+      -75.93883594328982,
+      -103.28531632146027,
+      -125.03824519391365,
+      -128.91149525715758
+    ],
+    "isolated_pair_Bz_mT": [
+      -69.92197569042037,
+      -100.93259502119518,
+      -124.26087471798992,
+      -128.4135834717577
+    ]
+  }
+}

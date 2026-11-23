@@ -1,0 +1,101 @@
+{
+  "physical_source_signature": "93ebbaeeb498cc84e7efc303ce2740986e3f1218c428fe5a739b8732f2cce931",
+  "trials": {
+    "relay-edge": {
+      "tracking": "../../relay-edge/tracking.json",
+      "full_volume_solution_sha256": "9d026ed1f1e2d31d72d3ce689dd82c870754055512ebd9276e5899026a94b944",
+      "bore_field": {
+        "file": "global-ae1ff1e609b0f049-dc-bore-0.25mm.npz",
+        "sha256": "52b07ac60839c0ea810ad6d0dac7bbf2e6a9436b0c7955b8b9d46813da1e6b42"
+      },
+      "particle_source": {
+        "file": "common-gun-db56ea8411ae5bcdbc1ec98a561367964499eba6111126605fcd8f4ffb12d533.npz",
+        "sha256": "cd0f9d5dad598eaf834b1f61723d5f38558007976065751dc8185513ac72afd9"
+      },
+      "landings": {
+        "file": "../../relay-edge/column-and-landings.npz",
+        "sha256": "5e6ae06c4e765c7a68778617d89b7d288fc012dc8fb20243520c9ad1b91e9578"
+      }
+    },
+    "c1-zoom-foil": {
+      "tracking": "../../c1-zoom-foil/tracking.json",
+      "full_volume_solution_sha256": "53e150a724a501c9bd307970b807b655d49315616b1b3958f85c412028c6f0d6",
+      "bore_field": {
+        "file": "global-7590bf2b28fbdf1c-dc-bore-0.25mm.npz",
+        "sha256": "d1e0665b914d76465dcebe8a1dc47b20590f3350c283ceeec2cdfdece1c08f68"
+      },
+      "particle_source": {
+        "file": "common-gun-6689c2c4b6b1b76938826534fc9b90c5479e67dc8b11f9085148cf11c359c9c6.npz",
+        "sha256": "fc419e2ea7034aead84cea60d1eef2c18253e37658a77202d1b27a2dfaee57f7"
+      },
+      "landings": {
+        "file": "../../c1-zoom-foil/column-and-landings.npz",
+        "sha256": "ee90ff4c678ef71ee8928258c44e1ebe62c896297ea07dcf3e13c71495095ac4"
+      }
+    },
+    "c1-zoom-focused": {
+      "tracking": "../../c1-zoom-focused/tracking.json",
+      "full_volume_solution_sha256": "5c25874fc463a87323c1624997084e7bb1272c1a2e0c152bc9316e317eebca0f",
+      "bore_field": {
+        "file": "global-9f346f0eb60a0020-dc-bore-0.25mm.npz",
+        "sha256": "bb0e12aafc0239770238578e7e0bee9871d61ce2e432defe135fc35fe683e266"
+      },
+      "particle_source": {
+        "file": "common-gun-e7097bed28bf677d31240844477de6f9da0c20c9f2d4ba5ff142225617d1239d.npz",
+        "sha256": "ba261427a40b4bc01ad4e0beab73e3b97cdd63fbec0c34059f2d1efa009a7da6"
+      },
+      "landings": {
+        "file": "../../c1-zoom-focused/column-and-landings.npz",
+        "sha256": "130dd2562ddb1481bcbe178dc41e8b41f676671612c585ce94f983ec1ebbd6c7"
+      }
+    },
+    "c1-zoom-near-c2": {
+      "tracking": "../../c1-zoom-near-c2/tracking.json",
+      "full_volume_solution_sha256": "c89d63b5eab1d48f0b4ee6e8a7c2e60ef84c300b8b13a657b37341260c35b2c2",
+      "bore_field": {
+        "file": "global-b932b73416404799-dc-bore-0.25mm.npz",
+        "sha256": "7ee05e018e65cf34355151b6c8169d9ef087439e0931e5b526f6f420225865e8"
+      },
+      "particle_source": {
+        "file": "common-gun-597124eecf2684fdfe69c4e3ece744808f76ca67e348263284e7dc98a1afc346.npz",
+        "sha256": "b45591ac26c6ead72b3664af70f83a7ac8c4f897fbaa5694dcccc64acbfb300e"
+      },
+      "landings": {
+        "file": "../../c1-zoom-near-c2/column-and-landings.npz",
+        "sha256": "0885e13218a227d44f37649922b6d9b6210e66f3e51ee557a1303b68322722f4"
+      }
+    },
+    "c1-zoom-near-c2-focused": {
+      "tracking": "../../c1-zoom-near-c2-focused/tracking.json",
+      "full_volume_solution_sha256": "32f70953fc6a9fb0a4f080f9ab48a9f353ad346c738e75b07d2ab4064c788e67",
+      "bore_field": {
+        "file": "global-1b213a3155920907-dc-bore-0.25mm.npz",
+        "sha256": "39b113ba5cfbbdcf1288e40a2785eb3a2f2d774215f3fbb8928406a65353e582"
+      },
+      "particle_source": {
+        "file": "common-gun-262f5eab02174d935d1f0bb3e62974fa3009b04f3dd7cba39748f05b9bf8dbe2.npz",
+        "sha256": "684f7277fe23d9a4a50935d30a6e49cba2cf98469e50ed579f269f77dbf20100"
+      },
+      "landings": {
+        "file": "../../c1-zoom-near-c2-focused/column-and-landings.npz",
+        "sha256": "dc5da963c02ac1b59a4ddd5893743bfef08daff2907b2fa4467725d22a6e15f4"
+      }
+    },
+    "angle-first-low-c3": {
+      "tracking": "../../angle-first-low-c3/tracking.json",
+      "full_volume_solution_sha256": "f12147a696dbd8fa41eb7f05ecb135add79371b2a13fe4213637e4a925a32800",
+      "bore_field": {
+        "file": "global-7234fe850ae12ca6-dc-bore-0.25mm.npz",
+        "sha256": "88ac2ee0e760122ab476aec4ba6c8668b4e1f4b23ddebcbb484f50ce8b89a5cb"
+      },
+      "particle_source": {
+        "file": "common-gun-0a0410b10ee5478dbf8fc14bc19dacd071c102b1165773454567445a15e31738.npz",
+        "sha256": "db5e564b9ab340a561c8ea25a2628301fb7f8977bd64540d62546d243c0d80a0"
+      },
+      "landings": {
+        "file": "../../angle-first-low-c3/column-and-landings.npz",
+        "sha256": "9928d3300f6d2396563b9dff374bd86355da3843648639efc7fff6f513d2f1f5"
+      }
+    }
+  }
+}

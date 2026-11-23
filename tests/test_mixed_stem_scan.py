@@ -77,6 +77,16 @@ def test_unsupported_cif_is_rejected_before_local_source_lift(mocked_scan,monkey
     assert not any(call[0]=='execute' for call in mocked_scan.calls)
 
 
+def test_live_cpu_scan_rejects_before_capture(monkeypatch):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(scan, "capture_instrument_snapshot",
+        lambda *_: pytest.fail("Live CPU policy reached instrument capture"))
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: pytest.fail("Live CPU policy probed CUDA"))
+    with pytest.raises(compute_backend.GPUExecutionError, match="Enable acceleration"):
+        scan.simulate_mixed_stem_scan(SimpleNamespace(acceleration_backend="CPU"), object())
+
+
 def test_existing_checkpoint_still_uses_strict_cuda_policy(mocked_scan, monkeypatch):
     from temsim.physics import compute_backend
     admitted = []

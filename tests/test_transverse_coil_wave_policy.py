@@ -43,5 +43,5 @@ def test_dynamic_current_rows_are_rejected_without_freezing_or_substituting(wrap
 @pytest.mark.parametrize('guard',[require_supported_column_wave_fields,require_supported_wave_dipoles])
 def test_old_wave_plan_routes_reject_ideal_mode_before_plan_or_provider_work(guard):
     state=SimpleNamespace(simulation_mode='unified',round_lens_field_model='copper_coil')
-    with pytest.raises(ValueError,match='classical particles only'):
+    with pytest.raises(ValueError,match='General/downstream coherent propagation is not qualified'):
         guard(state,0.,1.,None)

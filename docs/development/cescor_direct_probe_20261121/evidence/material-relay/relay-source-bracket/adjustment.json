@@ -1,0 +1,23 @@
+{
+  "from_label": "relay-final",
+  "TL12_A": -48.54951126302699,
+  "objective_A": -0.28193265672664225,
+  "delta_A": [
+    -0.0003885252966421243,
+    2.8420841562755046e-05
+  ],
+  "pre": [
+    "global-e48d3aeeb6110009.npz",
+    "global-72a73d5c1c41352b.npz"
+  ],
+  "final": [
+    "global-974312f37eaaa78a.npz",
+    "global-1e7785964d816c4b.npz"
+  ],
+  "second_label": "relay-registered",
+  "measured_slopes_nm2_per_mm": [
+    0.0014240697739232192,
+    -0.002678274415184718
+  ],
+  "interpolation_fraction": 0.34713561521830427
+}

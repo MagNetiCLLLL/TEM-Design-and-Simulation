@@ -1,0 +1,38 @@
+{
+  "accelerator_exit": {
+    "z_mm": 450.0,
+    "original_live": 8192,
+    "wavelength_nm": 0.0019687476934810533,
+    "Bz_on_axis_T": -0.06179575513414624,
+    "canonical_shift_max_inv_angstrom": 0.0007675616091989047,
+    "eigenemittances_dimensionless": [
+      0.0008984677091718701,
+      0.0009001047852250472
+    ],
+    "threshold": 0.07957747154594767,
+    "ratios_to_minimum": [
+      0.011290478218487991,
+      0.011311050322896107
+    ],
+    "covariance_matched_wave_admitted": false,
+    "message": "The measured source covariance has symplectic eigenemittances [0.000900104785221, 0.000898467709167] in (angstrom, cycles/angstrom) coordinates; each must exceed 0.0795774715459 for the declared covariance-matched minimum-uncertainty Gaussian lift. Its residual covariance would not be positive definite. A different quantum-broadening/coherence model must be declared; particle data and tolerances were not modified."
+  },
+  "specimen": {
+    "z_mm": 1599.1999974999999,
+    "original_live": 8192,
+    "wavelength_nm": 0.0019687476934810533,
+    "Bz_on_axis_T": 0.004781857102345524,
+    "canonical_shift_max_inv_angstrom": 1.3072235863215557e-06,
+    "eigenemittances_dimensionless": [
+      0.000899319973887943,
+      0.0009008146780589324
+    ],
+    "threshold": 0.07957747154594767,
+    "ratios_to_minimum": [
+      0.011301188092771705,
+      0.011319971099343186
+    ],
+    "covariance_matched_wave_admitted": false,
+    "message": "The measured source covariance has symplectic eigenemittances [0.000900814678059, 0.000899319973888] in (angstrom, cycles/angstrom) coordinates; each must exceed 0.0795774715459 for the declared covariance-matched minimum-uncertainty Gaussian lift. Its residual covariance would not be positive definite. A different quantum-broadening/coherence model must be declared; particle data and tolerances were not modified."
+  }
+}

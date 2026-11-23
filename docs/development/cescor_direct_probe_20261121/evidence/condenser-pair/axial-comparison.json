@@ -1,0 +1,232 @@
+{
+  "matched": {
+    "series_A": [
+      -41.0,
+      19.5
+    ],
+    "peak_vacuum": [
+      {
+        "z_mm": 495.0,
+        "Bz_T": -0.09156997281994302
+      },
+      {
+        "z_mm": 665.5,
+        "Bz_T": 0.05796152223943304
+      }
+    ],
+    "peak_material": [
+      {
+        "z_mm": 479.0,
+        "Bz_T": -0.13909743300884692
+      },
+      {
+        "z_mm": 636.5,
+        "Bz_T": 0.0779084647118809
+      }
+    ],
+    "comparison_planes_mm": [
+      490,
+      500,
+      540,
+      550,
+      560,
+      620,
+      650,
+      750
+    ],
+    "plane_vacuum_T": [
+      -0.09109699631381886,
+      -0.09111734958640867,
+      -0.05426340621652672,
+      -0.03786361104290988,
+      -0.020756788995519863,
+      0.047266650243724895,
+      0.05683393879979597,
+      0.025903091826748277
+    ],
+    "plane_material_T": [
+      -0.08517506149256947,
+      -0.011784459420042082,
+      -0.07361337547780743,
+      -0.10766112417369049,
+      -0.05854011709833579,
+      0.044473669814746354,
+      0.07558857152703019,
+      0.026551425862991113
+    ],
+    "residual": 1.865006658838668e-08,
+    "peak_iron_T": 0.7831530111300437,
+    "fine_peak_iron_T": 0.7829559420138785,
+    "nodes": 25612,
+    "fine_nodes": 50295,
+    "coarse_to_tracking_max_delta_T": 0.0007881110399233782,
+    "tracking_to_wider_max_delta_T": 5.369754356263079e-06,
+    "tracking_to_fine_wider_max_delta_T": 0.00036396257935132625,
+    "direct_FEM_bore_vs_open_recovery_max_T": 0.0023028576495219832,
+    "independent_finer_counts": [
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "prediction_counts": [
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "paraxial_source_conjugates_mm": {
+      "vacuum": [
+        522.1180362497958,
+        794.7504613079541
+      ],
+      "material": [
+        499.0521058340025,
+        728.9458077954614
+      ]
+    },
+    "prediction_image_mm": 499.0521058340025,
+    "prediction_gap_mm": null,
+    "fine_image_mm": 499.02795644639116,
+    "fine_gap_mm": null,
+    "field_digest": "3ca2ea6a4ba8622438c2f1c2abe7e9d0467539fb4e35384ce2b621952536a6e6",
+    "curve_digests": [
+      "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9"
+    ]
+  },
+  "tuned": {
+    "series_A": [
+      -30.0,
+      16.0
+    ],
+    "peak_vacuum": [
+      {
+        "z_mm": 494.49999999999994,
+        "Bz_T": -0.06623079828908965
+      },
+      {
+        "z_mm": 664.25,
+        "Bz_T": 0.04819383595268167
+      }
+    ],
+    "peak_material": [
+      {
+        "z_mm": 479.0,
+        "Bz_T": -0.10063898627327414
+      },
+      {
+        "z_mm": 635.5,
+        "Bz_T": 0.06618299713348903
+      }
+    ],
+    "comparison_planes_mm": [
+      490,
+      500,
+      540,
+      550,
+      560,
+      620,
+      650,
+      750
+    ],
+    "plane_vacuum_T": [
+      -0.06595085355494701,
+      -0.06581893296255535,
+      -0.03774967110055327,
+      -0.025295194839237322,
+      -0.012255801395758556,
+      0.04011268612999034,
+      0.047420300276185455,
+      0.02164788106972929
+    ],
+    "plane_material_T": [
+      -0.06159165122957985,
+      -0.008505401613185137,
+      -0.04921499220529108,
+      -0.0707901570856707,
+      -0.03765598027824603,
+      0.0380410965572427,
+      0.06358913713773445,
+      0.022127701324614273
+    ],
+    "residual": 1.261526999310751e-07,
+    "peak_iron_T": 0.5690509967533696,
+    "fine_peak_iron_T": 0.5694584354435271,
+    "nodes": 25612,
+    "fine_nodes": 50295,
+    "coarse_to_tracking_max_delta_T": 0.0005719794727025163,
+    "tracking_to_wider_max_delta_T": 1.2197223648440295e-05,
+    "tracking_to_fine_wider_max_delta_T": 0.0002597281499909371,
+    "direct_FEM_bore_vs_open_recovery_max_T": 0.0016782243980636158,
+    "independent_finer_counts": [
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "prediction_counts": [
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "paraxial_source_conjugates_mm": {
+      "vacuum": [
+        554.1432556102409,
+        998.8489824548717
+      ],
+      "material": [
+        524.6792355238146,
+        791.00717622674
+      ]
+    },
+    "prediction_image_mm": 524.6792355238146,
+    "prediction_gap_mm": 791.00717622674,
+    "fine_image_mm": 524.6562713667315,
+    "fine_gap_mm": 791.0520744801559,
+    "field_digest": "4dd914560b0499d258cb3f6ec551bee05d61b4db912ed979940400589564905c",
+    "curve_digests": [
+      "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9"
+    ]
+  },
+  "parts": {
+    "condenser_lens_1_lower_pole": {
+      "z_mm": [
+        490.0,
+        540.0
+      ],
+      "index": 0,
+      "assumed": false
+    },
+    "condenser_lens_1_yoke": {
+      "z_mm": [
+        450.0,
+        550.0
+      ],
+      "index": 0,
+      "assumed": true
+    },
+    "condenser_lens_2_upper_pole": {
+      "z_mm": [
+        560.0,
+        620.0
+      ],
+      "index": 0,
+      "assumed": false
+    },
+    "condenser_lens_2_yoke": {
+      "z_mm": [
+        550.0,
+        750.0
+      ],
+      "index": 0,
+      "assumed": true
+    }
+  },
+  "fixed_remote_axis_max_T_on_iron_z": 5.944539997401091e-05,
+  "scope": "C1 and C2 windings with their installed poles and outer returns, including incident C3 windings. Independent downstream material fields retained. Unspecified carrier mu_r=1."
+}

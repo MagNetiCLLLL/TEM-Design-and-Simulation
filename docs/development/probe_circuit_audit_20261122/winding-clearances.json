@@ -1,0 +1,738 @@
+[
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 1,
+    "clearance_mm": 3.1289664763067284,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592801,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 2,
+    "clearance_mm": 3.128966476306728,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592801,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 3,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 4,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 5,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592797,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 6,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592797,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 7,
+    "clearance_mm": 3.1289664763067258,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592803,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph2_quadrupole",
+    "pack": 8,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qph2_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.63007915928,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 1,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_1",
+    "pack_volume_mm3": 659.5158024000011,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 2,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_2",
+    "pack_volume_mm3": 659.5158024000011,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 3,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_3",
+    "pack_volume_mm3": 659.5158024000013,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 4,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_4",
+    "pack_volume_mm3": 659.5158024000012,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 5,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_5",
+    "pack_volume_mm3": 659.515802400001,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp2_hexapole",
+    "pack": 6,
+    "clearance_mm": 0.7279999999999518,
+    "nearest": "probe_hp2_hexapole/pole_pin_6",
+    "pack_volume_mm3": 659.5158024000009,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 1,
+    "clearance_mm": 3.5460514401289496,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480206,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 2,
+    "clearance_mm": 3.546051440128952,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480206,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 3,
+    "clearance_mm": 3.5460514401289527,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480206,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 4,
+    "clearance_mm": 3.5460514401289496,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.16885154802065,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 5,
+    "clearance_mm": 3.546051440128953,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480206,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 6,
+    "clearance_mm": 3.54605144012895,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480205,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 7,
+    "clearance_mm": 3.546051440128947,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.16885154802054,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 8,
+    "clearance_mm": 3.546051440128949,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.16885154802065,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 9,
+    "clearance_mm": 3.5460514401289456,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.16885154802065,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 10,
+    "clearance_mm": 3.5460514401289465,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480206,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 11,
+    "clearance_mm": 3.546051440128951,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.16885154802054,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpc_hexapole",
+    "pack": 12,
+    "clearance_mm": 3.54605144012895,
+    "nearest": "probe_hpc_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 455.1688515480205,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 1,
+    "clearance_mm": 3.1289664763067284,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 2,
+    "clearance_mm": 3.128966476306728,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 3,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 4,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 5,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592798,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 6,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592798,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 7,
+    "clearance_mm": 3.1289664763067258,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592803,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpc_quadrupole",
+    "pack": 8,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qpc_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.63007915928,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 1,
+    "clearance_mm": 3.1289664763067284,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.482700394861,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 2,
+    "clearance_mm": 3.128966476306728,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948614,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 3,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948614,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 4,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948612,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 5,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948611,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 6,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948611,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 7,
+    "clearance_mm": 3.1289664763067258,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.4827003948612,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qph1_quadrupole",
+    "pack": 8,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qph1_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 708.482700394861,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 1,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_1",
+    "pack_volume_mm3": 655.8920891999969,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 2,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_2",
+    "pack_volume_mm3": 655.8920891999969,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 3,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_3",
+    "pack_volume_mm3": 655.8920891999971,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 4,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_4",
+    "pack_volume_mm3": 655.8920891999973,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 5,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_5",
+    "pack_volume_mm3": 655.8920891999969,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hp1_hexapole",
+    "pack": 6,
+    "clearance_mm": 0.7239999999999327,
+    "nearest": "probe_hp1_hexapole/pole_pin_6",
+    "pack_volume_mm3": 655.8920891999973,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 1,
+    "clearance_mm": 3.5460514401289496,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594146,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 2,
+    "clearance_mm": 3.546051440128952,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759415,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 3,
+    "clearance_mm": 3.5460514401289527,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594157,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 4,
+    "clearance_mm": 3.5460514401289496,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594157,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 5,
+    "clearance_mm": 3.546051440128953,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759415,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 6,
+    "clearance_mm": 3.54605144012895,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759415,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 7,
+    "clearance_mm": 3.546051440128947,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594146,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 8,
+    "clearance_mm": 3.546051440128949,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594157,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 9,
+    "clearance_mm": 3.5460514401289456,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759417,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 10,
+    "clearance_mm": 3.5460514401289465,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759416,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 11,
+    "clearance_mm": 3.546051440128951,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.30794707594157,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_hpol_hexapole",
+    "pack": 12,
+    "clearance_mm": 3.54605144012895,
+    "nearest": "probe_hpol_hexapole_return_sleeve/body",
+    "pack_volume_mm3": 458.3079470759415,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 1,
+    "clearance_mm": 3.1289664763067284,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592803,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 2,
+    "clearance_mm": 3.128966476306728,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 3,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 4,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592802,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 5,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592798,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 6,
+    "clearance_mm": 3.1289664763067297,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592798,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 7,
+    "clearance_mm": 3.1289664763067258,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.6300791592803,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_qpol_quadrupole",
+    "pack": 8,
+    "clearance_mm": 3.1289664763067266,
+    "nearest": "probe_qpol_quadrupole_return_sleeve/body",
+    "pack_volume_mm3": 703.63007915928,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "adapter_lens_excitation_coil",
+    "pack": 1,
+    "clearance_mm": 1.2699999999999818,
+    "nearest": "adapter_lens_return_plates/lower",
+    "pack_volume_mm3": 55434.86756114004,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_tl12_lens_excitation_coil",
+    "pack": 1,
+    "clearance_mm": 0.7200000000000273,
+    "nearest": "probe_tl12_lens_return_plates/upper",
+    "pack_volume_mm3": 47237.290051739576,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_tl21_lens_excitation_coil",
+    "pack": 1,
+    "clearance_mm": 0.724999999999909,
+    "nearest": "probe_tl21_lens_return_plates/lower",
+    "pack_volume_mm3": 46366.78484145847,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_tl22_lens_excitation_coil",
+    "pack": 1,
+    "clearance_mm": 0.724999999999909,
+    "nearest": "probe_tl22_lens_return_plates/lower",
+    "pack_volume_mm3": 47021.6595303536,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph2_coils",
+    "pack": 1,
+    "clearance_mm": 0.58,
+    "nearest": "probe_hp2_hexapole/pole_pin_6",
+    "pack_volume_mm3": 14.111337292294412,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph2_coils",
+    "pack": 2,
+    "clearance_mm": 0.5799999999999997,
+    "nearest": "probe_hp2_hexapole/pole_pin_4",
+    "pack_volume_mm3": 14.111337292294362,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph2_coils",
+    "pack": 3,
+    "clearance_mm": 0.0999999999999992,
+    "nearest": "probe_hp2_hexapole/pole_pin_2",
+    "pack_volume_mm3": 14.857679175822348,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph2_coils",
+    "pack": 4,
+    "clearance_mm": 0.09999999999999966,
+    "nearest": "probe_hp2_hexapole/pole_pin_5",
+    "pack_volume_mm3": 14.857679175822412,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph1_coils",
+    "pack": 1,
+    "clearance_mm": 0.5800000000000001,
+    "nearest": "probe_hp1_hexapole/pole_pin_1",
+    "pack_volume_mm3": 14.111337292294397,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph1_coils",
+    "pack": 2,
+    "clearance_mm": 0.579999999999999,
+    "nearest": "probe_hp1_hexapole/pole_pin_3",
+    "pack_volume_mm3": 14.111337292294362,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph1_coils",
+    "pack": 3,
+    "clearance_mm": 0.09999999999999926,
+    "nearest": "probe_hp1_hexapole/pole_pin_2",
+    "pack_volume_mm3": 14.85767917582234,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dph1_coils",
+    "pack": 4,
+    "clearance_mm": 0.09999999999999909,
+    "nearest": "probe_hp1_hexapole/pole_pin_5",
+    "pack_volume_mm3": 14.857679175822376,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp22_coils",
+    "pack": 1,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl22_lens_lower_pole/body",
+    "pack_volume_mm3": 26.342496684428113,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp22_coils",
+    "pack": 2,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl22_lens_lower_pole/body",
+    "pack_volume_mm3": 26.34249668442783,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp22_coils",
+    "pack": 3,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl22_lens_lower_pole/body",
+    "pack_volume_mm3": 27.08883856795589,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp22_coils",
+    "pack": 4,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl22_lens_lower_pole/body",
+    "pack_volume_mm3": 27.088838567955236,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp21_coils",
+    "pack": 1,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl21_lens_upper_pole/body",
+    "pack_volume_mm3": 26.58696075535579,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp21_coils",
+    "pack": 2,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl21_lens_upper_pole/body",
+    "pack_volume_mm3": 26.58696075535528,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp21_coils",
+    "pack": 3,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl21_lens_upper_pole/body",
+    "pack_volume_mm3": 27.338449824286812,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp21_coils",
+    "pack": 4,
+    "clearance_mm": 0.13999999999998636,
+    "nearest": "probe_tl21_lens_upper_pole/body",
+    "pack_volume_mm3": 27.33844982428701,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp11_coils",
+    "pack": 1,
+    "clearance_mm": 0.14000000000010004,
+    "nearest": "probe_tl12_lens_upper_pole/body",
+    "pack_volume_mm3": 26.586960755356046,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp11_coils",
+    "pack": 2,
+    "clearance_mm": 0.14000000000010004,
+    "nearest": "probe_tl12_lens_upper_pole/body",
+    "pack_volume_mm3": 26.58696075535579,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp11_coils",
+    "pack": 3,
+    "clearance_mm": 0.14000000000010004,
+    "nearest": "probe_tl12_lens_upper_pole/body",
+    "pack_volume_mm3": 27.338449824286727,
+    "intersections_mm3": {}
+  },
+  {
+    "part": "probe_dp11_coils",
+    "pack": 4,
+    "clearance_mm": 0.14000000000010004,
+    "nearest": "probe_tl12_lens_upper_pole/body",
+    "pack_volume_mm3": 27.3384498242867,
+    "intersections_mm3": {}
+  }
+]

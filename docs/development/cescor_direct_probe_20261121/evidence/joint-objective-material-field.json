@@ -1,0 +1,31 @@
+{
+  "ampere_turns": 32735.5201,
+  "level": "gap-fine",
+  "padding": 8,
+  "shape": [
+    218,
+    804
+  ],
+  "iterations": 6,
+  "residual": 2.0357437050789153e-08,
+  "peak_material_T": 1.8730204444835032,
+  "peak_axis_T": 0.19989360514326066,
+  "sample_Bz_T": 0.05511155311755631,
+  "field_squared_integral_T2m": 0.005036693981738536,
+  "max_potential_fit_error_T": 0.004675780940144987,
+  "curve_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+  "field_digest": "7fae187125effe40e03ed2ec9c4050d3138893e55619304a730af73125bc985a",
+  "installed_geometry_digest": "36e640422d3eca6330e1c2e771c60add8372e7c6393e40479249c90e7c4a00f6",
+  "parts": [
+    "objective_lens",
+    "objective_lens_excitation_coil",
+    "objective_lens_housing",
+    "objective_lens_yoke",
+    "objective_lower_pole",
+    "objective_pole_sleeves",
+    "objective_return_plates",
+    "objective_terminal_vacuum_tube",
+    "objective_upper_pole"
+  ],
+  "elapsed_s": 13.776899599999524
+}

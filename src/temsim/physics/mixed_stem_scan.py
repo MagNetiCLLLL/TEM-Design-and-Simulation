@@ -1088,7 +1088,11 @@ def simulate_mixed_stem_scan(state, source, request=MixedStemScanRequest(), *,
     # This entry has an explicit CUDA-only wave contract. A checked historical
     # boundary may retain a CPU policy for its completed classical transport;
     # it does not request CPU execution for this new wave calculation.
-    require_coherent_cuda()
+    if validated_boundary is None:
+        require_coherent_cuda(getattr(state, "acceleration_backend", "Auto"),
+                              acceleration_enabled=getattr(state, "acceleration_enabled", True))
+    else:
+        require_coherent_cuda()
     from temsim.physics.mixed_stem_admission import require_local_mixed_stem_mode
     require_local_mixed_stem_mode(state)
     if not isinstance(source, ParticleWaveSource):

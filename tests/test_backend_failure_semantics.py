@@ -260,10 +260,22 @@ def test_traced_worker_publishes_full_backend_receipts_and_scalar_events(monkeyp
     gun_event, column_event = [row for row in trace.snapshot() if row["event"] == "backend_stage"]
     assert (gun_event["stage"], gun_event["actual"]) == ("gun_magnetic_sampling", "CUDA GPU")
     assert "execution_identity" not in gun_event and "field_evidence" not in gun_event
+    assert column_event["request_id"] == "fixture"
     assert (column_event["stage"], column_event["actual"]) == ("column", "CPU")
     assert "field_execution" not in column_event
     assert column_event["integration_nodes"] == 12 and column_event["retried"] is False
     assert column_event["display_history_step_mm"] is None
+
+
+def test_invalid_field_receipt_cannot_publish_arrays_or_partial_events():
+    import numpy as np
+    from temsim.job_events import JobEvents, traced_job
+
+    trace, receipts = JobEvents(), []
+    with traced_job(trace, {}), backend_receipts(receipts):
+        with pytest.raises(TypeError, match="arrays"):
+            record_backend("column", "Auto", "CPU", field_execution={"samples": np.ones(2)})
+    assert not receipts and not trace.snapshot()
 
 
 def test_compatible_reset_rebuilds_but_illegal_access_is_not_recovered(monkeypatch):

@@ -138,6 +138,21 @@ def test_result_does_not_accept_particle_setting_overrides(pipeline, tmp_path):
     assert pipeline.calls == ["cuda"]
 
 
+def test_profile_cpu_policy_rejects_before_particle_calculation(pipeline, monkeypatch, tmp_path):
+    from temsim import simulation_pipeline
+    from temsim.physics.compute_backend import GPUExecutionError
+    from temsim.working_point import WorkingPointCheckpoint
+    pipeline.state.acceleration_backend = "CPU"
+    monkeypatch.setattr(WorkingPointCheckpoint, "read_package",
+        lambda _: SimpleNamespace(compatible_state=lambda: pipeline.state))
+    monkeypatch.setattr(simulation_pipeline, "calculate",
+        lambda *_a, **_k: pytest.fail("CPU request reached particle calculation"))
+    output = tmp_path / "unstarted"
+    with pytest.raises(GPUExecutionError, match="Enable acceleration"):
+        cli.main(["--profile", "inputs.temwp", "--particles", "1024", "--output", str(output)])
+    assert not output.exists()
+
+
 def test_profile_rejects_insufficient_original_population_before_loading(tmp_path):
     with pytest.raises(SystemExit) as rejected:
         cli.main(["--profile", "inputs.temwp", "--particles", "999", "--output", str(tmp_path / "new")])

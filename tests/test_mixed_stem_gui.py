@@ -366,12 +366,30 @@ def test_load_mixed_button_requests_inspection_without_editing_state(panel):
 
 
 @pytest.fixture
-def controller(qtbot):
+def controller(qtbot, monkeypatch):
+    from temsim.physics import compute_backend
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: compute_backend.BackendCapability(True, "Synthetic GUI capability"))
     inputs=state()
     request=MixedStemScanRequest()
     owner=MixedStemScanController(lambda:inputs,lambda:request)
     yield owner,inputs,request
     assert owner.shutdown(5000)
+
+
+@pytest.mark.parametrize("backend,enabled", [("CPU", True), ("Auto", False)])
+def test_cpu_controls_reject_before_queue_or_snapshot(controller, monkeypatch, backend, enabled):
+    from temsim.gui import mixed_stem_controller
+    owner, inputs, request = controller
+    inputs.acceleration_backend = backend
+    inputs.acceleration_enabled = enabled
+    monkeypatch.setattr(mixed_stem_controller, "capture_instrument_snapshot",
+        lambda *_: pytest.fail("CPU request reached snapshot capture"))
+    errors = []
+    owner.failed.connect(errors.append)
+    owner.start(inputs, request)
+    assert len(errors) == 1 and "Enable acceleration" in errors[0]
+    assert owner.worker is None
 
 
 def test_default_request_uses_real_coordinated_admission_without_lowering_budgets(controller,qtbot,monkeypatch):

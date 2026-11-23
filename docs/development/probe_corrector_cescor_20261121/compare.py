@@ -85,8 +85,8 @@ def shared_inputs(ni=NI):
 class CircuitTracker(Tracker):
     """Add all three FEM components at every Runge-Kutta stage of the archived tracker."""
 
-    def __init__(self, mesh, table):
-        super().__init__(mesh)
+    def __init__(self, mesh, table, *, source=None):
+        super().__init__(mesh, source=source)
         xy, z, field = (table[k] for k in ("xy_m", "z_local_m", "B_zyx_T"))
         zv = mesh.nodes - START
         if zv.min() < z[0] - 1e-12 or zv.max() > z[-1] + 1e-12:
@@ -95,18 +95,16 @@ class CircuitTracker(Tracker):
         frac = (zv - z[iz]) / (z[iz + 1] - z[iz])
         self.tables = [cp.asarray(a) for a in (field, iz.astype(np.int32), frac)]
         helper = (HERE / "field_lookup.cu").read_text()
-        lookup = f"add_corrector(node,x,y,{len(xy)},{xy[0]:.17g},{1/(xy[1]-xy[0]):.17g},{float(table['valid_radius_m']):.17g},bx,by,bz);"
+        lookup = f"add_corrector(node,x,y,{len(xy)},{xy[0]:.17g},{1/(xy[1]-xy[0]):.17g},{float(table['valid_radius_m']):.17g},bx,by,bz CORRECTOR_FIELD_ARGUMENTS);"
         original = (PREVIOUS / "lorentz.cu").read_text()
         anchor = "int lo=0,hi=nr-1;"
         if original.count(anchor) != 1:
             raise RuntimeError("Reference integrator no longer matches the field hook")
-        self.module = cp.RawModule(
-            code=helper + original.replace(anchor, lookup + anchor), options=("--std=c++11", "--fmad=false")
-        )
-        self.kernel = self.module.get_function("trace")
-        for name, arr in zip(("cescor_b", "cescor_iz", "cescor_fz"), self.tables):
-            ptr = self.module.get_global(name)
-            cp.ndarray((1,), dtype=cp.uint64, memptr=ptr).set(np.array([arr.data.ptr], dtype=np.uint64))
+        self.install_field_kernel(helper + original.replace(anchor, lookup + anchor))
+
+    def install_field_kernel(self, source):
+        self.module = cp.RawModule(code=source, options=("--std=c++11", "--fmad=false"))
+        self._trace_kernel = self.module.get_function("trace")
 
 
 def setup(table, step, obs, cache, ni=NI):

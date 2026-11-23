@@ -53,8 +53,11 @@ def _particle_result(args, progress):
     from temsim.working_point import WorkingPointCheckpoint
     from temsim.simulation_pipeline import calculate
     from temsim.simulation_modes import require_coherent_mode
+    from temsim.physics.compute_backend import validate_coherent_cuda_policy
 
     state = WorkingPointCheckpoint.read_package(args.profile).compatible_state()
+    validate_coherent_cuda_policy(getattr(state, "acceleration_backend", "Auto"),
+                                  acceleration_enabled=getattr(state, "acceleration_enabled", True))
     require_coherent_mode(state)
     emitter = state.electron_gun.emitter
     emitter.ray_count = args.particles

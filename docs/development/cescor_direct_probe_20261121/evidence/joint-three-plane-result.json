@@ -1,0 +1,36 @@
+{
+  "mode": "300 kV three-condenser Nanoprobe Normal, diagnostic trial",
+  "accepted_as_operating_point": false,
+  "observations": {
+    "C1_radial_waists_450_550_mm": 35,
+    "C1_and_C2_off_waists": 0,
+    "static_AC_interval_waists": [],
+    "tl12_waist_minus_front_mm": -29.604999552238496,
+    "minimum_scan_displacement_plane_minus_front_mm": -23.74869816959722,
+    "minimum_scan_displacement_singular_nm_per_urad": [
+      8.276464401728232,
+      6.941794475099532
+    ],
+    "final_rms_waist_minus_specimen_mm": -3.8987549576238507
+  },
+  "source_sha256": "d705aeb1738580c30299711c4a5a62e8bd13c34a71b939622936e2eb343b78a2",
+  "tracking_field_sha256": "97a1e5d1dc659b5c6d8b9edea00f8c0574c1c5c2c8ee1ba9e03dcbac86253d29",
+  "evidence_sha256": {
+    "joint-baseline-scan.json": "dbd258ec7063d01ef234190009a9eada57e143924238161432b68d9de841fc99",
+    "joint-c1-topology-control.json": "de84da6884d702b63d9f57c5eb650aabd68711b706677d24910bbe14408d5bc7",
+    "joint-final-scan.json": "c4ee5052ae13b7fc3335c2cdf0fd76d0be3608eb7fec5901ce3b7067a16115aa",
+    "joint-objective-focus-current-density.npz": "41f530af20450dceb9835e3d7e84b8a78bdfe07dfa30de1618147525a362f37e",
+    "joint-objective-focus-particles.npz": "0e49af503996b06a196dcfa5e3f46bc16186e65bd9efe29f1870a41fd17ff441",
+    "joint-objective-focus-sensitivity.json": "2d068cd93c07daa73220292a7fa0cfe7e43e6c6b23363c0fe222891918af016d",
+    "joint-objective-focus.json": "13a47279c62552ef40d0a9e150c50acba9a1d14f4cc13f01516c7d72377f998d",
+    "joint-objective-material-field.json": "bec6a9f075a62e1aeae5bb3c1591d9f1ea7a5d7eb8bfe1ac7d3fa2ce67ee1b0c",
+    "joint-objective-material-field.npz": "10689499a1ebaf2332cf648981e460f6179832b5580e1d1f2c2bf82692c415b4",
+    "joint-objective-search.json": "9154425be11be27ea4cac24c1260d75cbad1e05f3b875618dceac39146f74801",
+    "joint-relay-alignment-current-density.npz": "91b2070701a2459ca7f98500fb5e06f5f066c8183efa4a6a70db84999c54d987",
+    "joint-relay-alignment-particles.npz": "393dc5baca7648c36644054e22afcb5fe84be05e34326427f0bb381ffffceafc",
+    "joint-relay-alignment.json": "7272d9ee7fc5a40fa1079ed642c6d39aa510e5ca80eb7a38a67afaf053b5a2cf",
+    "joint-relay-scan.json": "9986b8d4ca5acea8a92560f61835d6366437525e92f23b947a553a24a8f15b6e",
+    "joint-tl12-alignment-history.json": "82654bac13473c0e1cd39b0ef7def123c99d301f40c6ca27b2ccaea822664f76",
+    "joint-tl12-material-solution.npz": "7f65a9ad8230a9f2cdda8e31b86183993398b645a4525d2248a9b7dc496b5385"
+  }
+}

@@ -215,6 +215,14 @@ incident direction. Validate corrector internal source images independently.
 For the specified Nanoprobe setting, TL12 must form its output waist directly
 at the common scan pivot downstream of the lower AC winding. Check for a
 separate earlier waist from the entrance of TL12 through the scan assembly.
+On the requested operating branch, each round electromagnetic lens may form
+zero or one two-dimensional beam waist. Retain every measured minimum in the
+diagnostic, including those that disqualify a branch. Attribute a waist using
+the incoming convergence and the overlapping focusing fields. A waist can lie
+inside a downstream component's housing. Dipole deflectors translate the
+centroid position and direction. Stigmators correct differential focusing in
+the transverse axes. Neither receives a separate round-lens waist assignment.
+Check both transverse widths before counting a projected line crossing.
 Each AC station applies a common first-order transverse deflection. Changing
 the relative drive moves the effective pivot without moving the windings.
 At the target plane, opposite commands along each scan axis must leave the
@@ -318,6 +326,8 @@ For C3 + Probe Corrector in STEM Nanoprobe:
 | --- | --- | --- |
 | Normal | A crossover is required. | No crossover; C3 is weak in the project's convention. |
 | Large angle | A crossover is required. | A crossover is required; C3 is strong in the project's convention. |
+
+For the three-condenser Normal setting, use the [Nanoprobe Normal crossover and conjugate-plane guide](NANOPROBE_NORMAL_CROSSOVERS.md) for each downstream interval, the scan pivot and the terminal specimen focus.
 
 More generally, strong excitation means that the executed beam forms a
 crossover after the lens and before the next optical lens; weak excitation

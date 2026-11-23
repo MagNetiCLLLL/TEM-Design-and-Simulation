@@ -51,7 +51,9 @@ def test_read_validate_and_runtime_share_host_reference_without_changing_other_o
         assert row["local_center_z_mm"] == host["local_center_z_mm"]
         assert row["optical_reference_local_z_mm"] == host["optical_reference_local_z_mm"]
         assert row["effective_thickness_mm"] == host["effective_thickness_mm"] == 4.
-        assert row["mechanical_clear_bore_diameter_mm"] == 20.
+        # The DPH laminates sit inside the 8 mm hexapole apertures.
+        insert_bore = 6.12 if channel in ("probe_dph2_deflector", "probe_dph1_deflector") else 20.0
+        assert row["mechanical_clear_bore_diameter_mm"] == host["mechanical_clear_bore_diameter_mm"] == insert_bore
         if "dph" in channel:
             hp = resolved[host["optical_reference_host_key"]]
             assert row["optical_reference_local_z_mm"] == hp["optical_reference_local_z_mm"]

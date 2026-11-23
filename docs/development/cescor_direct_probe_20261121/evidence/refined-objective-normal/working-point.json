@@ -1,0 +1,301 @@
+{
+  "mode": "Three-condenser Nanoprobe Normal",
+  "parent_file": "../condenser-pair/working-point.json",
+  "launch": "Fresh physical effective source at z=0",
+  "objective_sha256": "4c39a67b59432b54300270cfaf67f394ace5d985a63117f9e0b02f7c61af6368",
+  "objective_A": -28.220275948275862,
+  "objective_At": -32735.5201,
+  "corrector_sha256": "97a1e5d1dc659b5c6d8b9edea00f8c0574c1c5c2c8ee1ba9e03dcbac86253d29",
+  "parent_sha256": "e3a073b36f5a341dcf9cda4ea23e974d23baaec87e3a2ed95a3dc3dc235b9524",
+  "scan": {
+    "scan_enabled": false,
+    "wobble_enabled": false,
+    "kick_x_mrad": 0.0,
+    "kick_y_mrad": 0.0,
+    "DP12_offsets": {
+      "upper_x_mrad": 0.0,
+      "upper_y_mrad": 0.0,
+      "lower_x_mrad": 0.0,
+      "lower_y_mrad": 0.0
+    }
+  },
+  "mesh_mm": 0.5,
+  "source_z_mm": 0.0,
+  "specimen_z_mm": 1599.1999975,
+  "max_gun_exit_energy_change_from_parent_eV": 3.364402800798416e-08,
+  "source_A": 1.5e-05,
+  "emitted_positive_count": 32768,
+  "specimen_count": 32768,
+  "effective_specimen_count": 32768.000000000604,
+  "objective_field_file": "objective-0.5mm.npz",
+  "objective_mesh_refined_z_mm": [
+    1280.0,
+    1440.0
+  ],
+  "objective_binding_scope": "Gun and complete downstream trajectory",
+  "focus_control": "Inherited currents, fixed specimen upper surface",
+  "signed_current_A": [
+    -30.0,
+    -30.0,
+    -30.0,
+    -30.0,
+    16.0,
+    16.0,
+    16.0,
+    16.0,
+    3.201272914083286,
+    9.404081877319575,
+    -48.74974730252398,
+    77.23286545998405,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    61.64381278359023,
+    -721.7139558231136,
+    1984.3778442358068,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    28.962896061940654,
+    0.06188894277520134,
+    32.8252695494996,
+    7.514137300316783
+  ],
+  "winding_owners": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "physical_turns": [
+    75,
+    75,
+    75,
+    75,
+    135,
+    135,
+    135,
+    135,
+    128,
+    128,
+    127,
+    127,
+    8,
+    8,
+    7,
+    7,
+    6,
+    6,
+    7,
+    6,
+    6,
+    7,
+    6,
+    6,
+    6,
+    6,
+    5,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    360,
+    648,
+    432,
+    648
+  ],
+  "corrector_A": {
+    "adapter_lens": 10.0,
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl12_lens": 255.71838,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0
+  },
+  "corrector_field_sha256": "97a1e5d1dc659b5c6d8b9edea00f8c0574c1c5c2c8ee1ba9e03dcbac86253d29",
+  "condenser_material_sha256": "4dd914560b0499d258cb3f6ec551bee05d61b4db912ed979940400589564905c",
+  "scan_calibration_sha256": "c4ee5052ae13b7fc3335c2cdf0fd76d0be3608eb7fec5901ce3b7067a16115aa",
+  "C2_aperture_diameter_um": 100.0,
+  "C2_foil": {
+    "764.9": {
+      "radius95_um": 0.2996027650641958,
+      "maximum_radius_um": 0.5432093176267768,
+      "aperture_radius_um": 50.0,
+      "survivors": 32768
+    },
+    "765.1": {
+      "radius95_um": 0.2973129515381431,
+      "maximum_radius_um": 0.5391047454781704,
+      "aperture_radius_um": 50.0,
+      "survivors": 32768
+    }
+  },
+  "current_ledger": {
+    "gun_exit_A": 1.5e-05,
+    "C2_entrance_A": 1.5e-05,
+    "C2_exit_A": 1.5e-05,
+    "specimen_A": 1.5e-05,
+    "intercepted_A": {}
+  },
+  "objective_axial_mT_by_mesh_and_station_mm": {
+    "0.5mm": {
+      "1380.0": -42.85975223394213,
+      "1387.5": -53.86075383784134,
+      "1408.0": -87.58309244921375,
+      "1412.5": -94.25840992220155,
+      "1420.0": -104.01816312934922
+    },
+    "1mm": {
+      "1380.0": -42.83022134873232,
+      "1387.5": -53.76933335001473,
+      "1408.0": -87.56331411805832,
+      "1412.5": -94.486444723539,
+      "1420.0": -104.00435611797232
+    }
+  },
+  "source_images": [
+    [
+      {
+        "z_mm": 524.6745481673333,
+        "magnifications": [
+          0.19717888473391568,
+          0.19717886703897933
+        ],
+        "angle_singular_nm_per_urad": [
+          1.8380721452812845e-06,
+          1.837280012882372e-06
+        ]
+      }
+    ],
+    [
+      {
+        "z_mm": 524.6745481672932,
+        "magnifications": [
+          0.19717888472979098,
+          0.19717886703442725
+        ],
+        "angle_singular_nm_per_urad": [
+          1.8380726249325723e-06,
+          1.837279872541517e-06
+        ]
+      }
+    ]
+  ],
+  "source_signature": "93ebbaeeb498cc84e7efc303ce2740986e3f1218c428fe5a739b8732f2cce931",
+  "probe_density_pixel_nm": 115.00000000000021,
+  "all_radial_waists_mm": [
+    524.6714964622405,
+    790.9941531176656,
+    1141.6868610116428,
+    1307.025736817812,
+    1481.882563216739
+  ],
+  "scan_housing_waists_mm": [],
+  "all_extrema_after_TL12_mm": {
+    "minima": [
+      1481.882563216739
+    ],
+    "maxima": [
+      1420.8440330907802,
+      1568.284978899294
+    ]
+  },
+  "scan_exit_to_surface_principal_waists_mm": [
+    [
+      1481.882586271813
+    ],
+    [
+      1481.8825401595525
+    ]
+  ],
+  "at_old_waist": {
+    "z_mm": 1474.6999999999998,
+    "rms_radius_um": 0.2132523260422155,
+    "rms_slope_um_per_mm": -0.02924854838856576
+  },
+  "surface": {
+    "z_mm": 1599.1999974999999,
+    "D95_um": 5.197434197985778,
+    "RMS_radius_um": 1.4441116135408998,
+    "axis_50nm_nA": 23.345947265625,
+    "axis_50pm_pA": 0.0,
+    "centroid_um": [
+      -0.03697359395505453,
+      -0.04312583386181452
+    ],
+    "alpha95_mrad": 0.030312089860985356,
+    "largest_sampled_angle_mrad": 0.05431699566982221,
+    "specimen_uA": 15.0,
+    "count": 32768
+  },
+  "near_surface_0p4mm_D95_um": [
+    5.198591513977511,
+    5.197434197985778
+  ],
+  "evidence_sha256": {
+    "objective-0.5mm.npz": "4c39a67b59432b54300270cfaf67f394ace5d985a63117f9e0b02f7c61af6368",
+    "objective-1mm.npz": "70de5137aeea63ab7cf3fb5e1d2e849bea3a89519e565feb936808cf9b2ed17d",
+    "fresh-emission-and-exit.npz": "dc51104e8536e9b7f2aff3c310726ee8878c79265bf38472f31bc78535cabfb0",
+    "column-and-landings.npz": "adf7e6418a148d2dce0da033a7e262f7a7aaa16d2318283017fbc211059c43da",
+    "tracking.json": "d3e4f681792ee4d9f48b334771a8eb649cda4655ad38abc7cdd1b9a1cef38521",
+    "matched-controls.json": "a062d115c7f3dcc5e1b2b2b8b281d1c0a8dce707633c05e059e9575c1c2bb335",
+    "full-column-rays.png": "994dd4bcd6b801edb3a67ccec3d74ba4e3d7446c6e306a6e4cf8bbff171018cb",
+    "tl12-scan-rays.png": "1ceb0421ea2766f34818822f70d25ef37786f44142267955ae3a18d309541e9c",
+    "specimen-probe.png": "27df58f2ddb1063004afbe7b4f31b82d37ada4167b7d133dc49ad320ae2abdf8"
+  }
+}

@@ -138,16 +138,17 @@ class DrivenTrace:
         self.grid = self.static_grid.copy()
         tracker.tables = [self.grid, cp.asarray(iz, dtype=cp.int32),
                           cp.asarray((nodes-target_z[iz]) / (target_z[iz+1]-target_z[iz]))]
-        for symbol, array in zip(("cescor_b", "cescor_iz", "cescor_fz"), tracker.tables, strict=True):
-            pointer = tracker.module.get_global(symbol)
-            cp.ndarray((1,), dtype=cp.uint64, memptr=pointer).set(np.array([array.data.ptr], np.uint64))
 
-    def means(self, field, station_urad, planes, expected=None):
+    def set_drive(self, station_urad):
         amps = self.current_matrix @ (station_urad * .001)
         self.grid[...] = self.static_grid
         for amp, basis in zip(amps, self.basis, strict=True):
             if amp:
                 self.grid += amp*basis
+        return amps
+
+    def means(self, field, station_urad, planes, expected=None):
+        self.set_drive(station_urad)
         m = self.model
         states = advance(m.t, field, m.t.input, m.en, m.phi0, m.loss, 0, m.indices(planes))
         means, masks = [], []

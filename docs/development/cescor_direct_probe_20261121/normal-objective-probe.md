@@ -1,5 +1,7 @@
 # Nanoprobe Normal with objective-only focus
 
+This is the archived focus calibration with the earlier ADL and TL12 vacuum windings. The current fixed-current replay uses the joint field including the poles and returns. [Current working point and ray diagrams](normal-joint-field.md)
+
 The 300 kV, three-condenser column gives a **7.952 µm D95** at the specimen upper surface after adjusting four physical corrector currents and the objective supply. The starting D95 was **8.115 µm**. The 100 µm C2 aperture rim spans **29.32–30.26 mrad** by azimuth. A bright center and a rim at approximately 4 µm radius remain. This operating point is still far from atomic resolution. [Absolute incident current map](normal-objective-final-probe.png) · [Matched before and after](normal-objective-probe-comparison.png)
 
 ![Specimen incident current density, original core landings and enclosed current](normal-objective-final-probe.png)
@@ -54,6 +56,8 @@ Changing the integration step from 0.0375 to 0.01875 mm changes the final D95 by
 ## Scan pivot and source waists
 
 The C2–C3 gap contains one source crossover at 806.00–806.25 mm. The C3–ADL gap and the region from the Mini Condenser exit to 0.25 mm ahead of the specimen contain zero crossovers in the two transverse projections. Downstream of HP1 the static radial waists are at 1375–1376 mm and 1408–1409 mm, both before and after correction. The static calculation uses zero scan drive.
+
+Restarting from the same particle states at the AC entrance and removing only the downstream TL12 field eliminates the 1408 mm waist. At its location, the original scan windings shift the centroid under a ±1 µrad command and change the centered RMS radius by less than 0.00001 nm. [Matched trajectory controls, component field ranges and housing comparison](field-range-audit.md)
 
 With the original AC upper/lower winding combination, symmetric ±1 µrad commands in X and Y locate the closest common downstream pivot at 1496.707 mm before and 1496.722 mm after correction. This is the plane of minimum two-axis position response in the measured 1420–1512 mm interval. The isolated Mini Condenser and incident-side objective fields put their front focal plane at 1490.370 and 1490.375 mm, respectively. The final pivot is 6.35 mm beyond that plane. The last static TL12 waist is about 82 mm upstream of the front focus. This 30 mrad setting still misses the intended three-plane coincidence.
 

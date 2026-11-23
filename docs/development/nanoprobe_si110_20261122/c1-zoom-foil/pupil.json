@@ -1,0 +1,234 @@
+{
+  "foil_diameter_um": 100.0,
+  "foil_faces": [
+    {
+      "z_mm": 764.9,
+      "live": 16384,
+      "radius_p50_p95_max_um": [
+        0.003910984166940638,
+        0.00891588661291327,
+        0.015358945461745741
+      ],
+      "count_outer_ten_percent": 0
+    },
+    {
+      "z_mm": 765.1,
+      "live": 16384,
+      "radius_p50_p95_max_um": [
+        0.002459549695112279,
+        0.005626856931538079,
+        0.009500103947171651
+      ],
+      "count_outer_ten_percent": 0
+    }
+  ],
+  "transfer_model": "Round paraxial Larmor response of the re-solved field at 300 keV; extrapolation to the rim",
+  "c2_position_per_sample_angle_mm": [
+    1.5927315482608373,
+    1.009470317727011
+  ],
+  "formal_c2_edge_mrad": [
+    31.382303456772995,
+    49.49048095853719
+  ],
+  "limiting_geometric_semiangle_mrad": 6.409275712698108,
+  "limiting_element": "condenser_aperture_3",
+  "limiting_z_mm": 1009.9,
+  "model_valid_radius_um": 50.0,
+  "angle_for_50um_to_mini_mrad": 0.6997613684037892,
+  "required_peak_radius_30mrad_mini_to_surface_mm": 2.1442308548344267,
+  "required_peak_at_mm": 1522.1499976676,
+  "last_outside_bore_for_30mrad_mm": 1597.5,
+  "aperture_radius_needed_for_30mrad_um": [
+    47.79628619409024,
+    30.2931980365456
+  ],
+  "geometric_stops_by_acceptance": [
+    {
+      "element": "condenser_aperture_3",
+      "z_mm": 1009.9,
+      "radius_mm": 2.0,
+      "paraxial_semiangle_mrad": 6.409275712698108
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 918.3499989811,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 6.92857286490548
+    },
+    {
+      "element": "condenser_aperture_3",
+      "z_mm": 1000.0,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 7.718278757187909
+    },
+    {
+      "element": "beam_deflector",
+      "z_mm": 1020.0,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 8.347841063800328
+    },
+    {
+      "element": "c1_c2_pole_piece_cartridge",
+      "z_mm": 649.0499995670001,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 11.680076247324651
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1060.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 11.687177216829177
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1070.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 12.372841407605309
+    },
+    {
+      "element": "condenser_lens_2_upper_pole",
+      "z_mm": 619.9999996302,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 12.96216774680986
+    },
+    {
+      "element": "condenser_deflector",
+      "z_mm": 829.9999991733,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 13.457232240958655
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1106.4,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 15.813700277640452
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1129.5,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 19.262089755803
+    },
+    {
+      "element": "c1_c2_pole_piece_cartridge",
+      "z_mm": 559.9999997607,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 22.49870073173369
+    },
+    {
+      "element": "c1_c2_pole_piece_cartridge",
+      "z_mm": 450.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 26.69614833980416
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1269.3499982176,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 28.99520638570223
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1262.6999982319999,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 29.200085749445996
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1285.85,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 30.54526084419987
+    },
+    {
+      "element": "condenser_aperture_2",
+      "z_mm": 764.9,
+      "radius_mm": 0.05,
+      "paraxial_semiangle_mrad": 31.382303456772995
+    },
+    {
+      "element": "condenser_lens_1_lower_pole",
+      "z_mm": 539.9999998042,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 33.39081499392868
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1315.85,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 38.03018390787399
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 789.9999992603999,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 40.272362747106115
+    },
+    {
+      "element": "objective_lens_excitation_coil",
+      "z_mm": 1522.0999976677,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 40.2844555374071
+    },
+    {
+      "element": "objective_lens",
+      "z_mm": 1518.1999976762,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 40.668795964303364
+    },
+    {
+      "element": "objective_upper_pole",
+      "z_mm": 1534.5,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 44.49783720095524
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1339.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 46.94163130772655
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 750.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 63.92149290631385
+    },
+    {
+      "element": "condenser_aperture_2",
+      "z_mm": 755.0,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 81.91949778214193
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1379.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 83.72930427551947
+    },
+    {
+      "element": "@vacuum_drift:column:c3_probecorrector",
+      "z_mm": 1193.6,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 85.32020677117882
+    },
+    {
+      "element": "@vacuum_tube:c1_c2_to_upper_objective",
+      "z_mm": 1380.0,
+      "radius_mm": 2.88,
+      "paraxial_semiangle_mrad": 85.64117992779157
+    },
+    {
+      "element": "sample_stage",
+      "z_mm": 1596.5,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 746.9568678633067
+    },
+    {
+      "element": "sample",
+      "z_mm": 1599.19995,
+      "radius_mm": 2.5,
+      "paraxial_semiangle_mrad": 1570.7773267949256
+    }
+  ]
+}

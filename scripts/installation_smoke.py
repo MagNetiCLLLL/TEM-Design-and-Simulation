@@ -24,6 +24,8 @@ def installation_checks():
     from temsim.physics.core import electron
     from temsim.physics.multislice import propagate_multislice
     from temsim.physics.simulation import run
+    from temsim.physics.beam_statistics import original_source_population
+    from temsim.physics.optical_tuning import DEFAULT_TUNING_SOURCE_PARTICLES
     from temsim.physics.source_admission import UnsupportedWaveSource, require_gun_wave_source
     from temsim.physics.wave_imaging import prepare_specimen_potentials, interaction_constant_rad_per_v_angstrom
     from temsim.specimen.presets import load_specimen_preset
@@ -32,13 +34,24 @@ def installation_checks():
     state=default_state()
     catalog=AssemblyCatalog(); catalog.apply(state,catalog.default_selection())
     state.acceleration_enabled=False; state.acceleration_backend="CPU"
-    state.electron_gun.emitter.ray_count=9
+    state.electron_gun.emitter.ray_count=DEFAULT_TUNING_SOURCE_PARTICLES
     state.step_mm=5.; state.history_step_mm=5.
     simulation=run(state,optical_only=True)
     assert simulation.gun_trace is not None
-    assert simulation.incident.x.shape[1] == 9
+    population=original_source_population(simulation.gun_trace)
+    assert population["emitted_count"] == state.electron_gun.emitter.ray_count
     assert all(np.all(np.isfinite(getattr(simulation.incident, key))) for key in ("x","y","tx","ty"))
-    state.sample.specimen_mode="reference"; state.sample.reference_sample_key="si_110"
+    from temsim.paths import BUNDLED_SI_CIF
+    from temsim.specimen.cif_io import read_cif_atoms
+    from temsim.specimen.geometry import quaternion_from_zone_axes, set_sample_orientation
+    state.sample.inserted=True
+    state.sample.specimen_mode="atomic"
+    state.sample.cif_path=str(BUNDLED_SI_CIF)
+    state.sample.specimen_preset_key="si_110"
+    state.sample.zone_axis_uvw=(1,1,0)
+    state.sample.in_plane_axis_uvw=(1,-1,0)
+    set_sample_orientation(state.sample,quaternion_from_zone_axes(
+        read_cif_atoms(BUNDLED_SI_CIF).cell.array,state.sample.zone_axis_uvw,state.sample.in_plane_axis_uvw))
     state.sample.thickness_nm=.4; state.sample.wave_grid_pixels=32
     state.sample.wave_field_of_view_angstrom=8.; state.sample.wave_atomistic_enabled=True
     state.sample.wave_multislice_enabled=True; state.sample.wave_frozen_phonon_enabled=False
@@ -71,7 +84,7 @@ def installation_checks():
         "scope":"Package imports, particle column, independent CIF/multislice kernel and offscreen GUI; excludes production TEM/STEM images",
         "utc":datetime.now(timezone.utc).isoformat(),"installed_module":str(Path(temsim.__file__).resolve()),
         "solver_source_sha256":solver_source_identity(),
-        "particle_column":{"status":"PASS","rays":int(simulation.incident.x.shape[1])},
+        "particle_column":{"status":"PASS","rays":population["emitted_count"],"source_population":population},
         "specimen_kernel":{"status":"PASS","case":"Si [110], 0.4 nm, 32 grid, normalized plane-wave fixture",
             "grid_shape":list(exit_wave.shape),"exit_norm":exit_norm,"backend":diagnostics.compute_backend},
         "wave_images":wave_images,"gui":"offscreen model inspector opened",

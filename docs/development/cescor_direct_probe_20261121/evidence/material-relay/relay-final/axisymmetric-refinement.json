@@ -1,0 +1,33 @@
+{
+  "pole_geometry": "Installed Mini and physical objective series pair, axisymmetric magnetic bodies only in the R-Z check",
+  "round_geometry_results": [
+    {
+      "nominal_refinement_mm": 1.0,
+      "isolated_axisymmetric_front_mm": [
+        1443.9500240722598
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819610776A-1mm.npz",
+      "sha256": "da7fcba0501783907d15b270f72548643468ed926a470670b62318cb0c97cc69"
+    },
+    {
+      "nominal_refinement_mm": 0.5,
+      "isolated_axisymmetric_front_mm": [
+        1444.155570880916
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819610776A-0.5mm.npz",
+      "sha256": "85ab6eb465a2c826dabf76d333164f312f227390b082b17622e8ea80e7d07b6d"
+    },
+    {
+      "nominal_refinement_mm": 0.25,
+      "isolated_axisymmetric_front_mm": [
+        1444.1309242714494
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819610776A-0.25mm.npz",
+      "sha256": "fba5c8cd721e25d8cd319fb2f53a588092788e04d02f80f6f29a8b2135708730"
+    }
+  ],
+  "all_installed_material_3d_same_paraxial_observer_mm": [
+    1444.8137280741173
+  ],
+  "all_material_3d_reported_mm": 1444.813840412891
+}

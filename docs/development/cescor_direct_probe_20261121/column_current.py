@@ -7,7 +7,6 @@ from pathlib import Path
 import sys
 from tempfile import NamedTemporaryFile
 
-import cupy as cp
 import numpy as np
 from scipy.interpolate import make_interp_spline
 
@@ -32,8 +31,8 @@ C2_FOIL = (0.7649, 0.7651)
 class ApertureTracker(CircuitTracker):
     """Bracket interception on the physical bore without accepting exterior trajectories."""
 
-    def __init__(self, mesh, table, transverse_interpolation="linear"):
-        super().__init__(mesh, table)
+    def __init__(self, mesh, table, transverse_interpolation="linear", *, source=None):
+        super().__init__(mesh, table, source=source)
         xy = table["xy_m"]
         limit = float(table["valid_radius_m"])
         helper = (STUDY / "field_lookup.cu").read_text()
@@ -66,7 +65,7 @@ class ApertureTracker(CircuitTracker):
         source = (PREVIOUS / "lorentz.cu").read_text()
         field_hook = "int lo=0,hi=nr-1;"
         fixed = (
-            f"add_corrector(node,x,y,{len(xy)},{xy[0]:.17g},{1/(xy[1]-xy[0]):.17g},{limit:.17g},bx,by,bz);"
+            f"add_corrector(node,x,y,{len(xy)},{xy[0]:.17g},{1/(xy[1]-xy[0]):.17g},{limit:.17g},bx,by,bz CORRECTOR_FIELD_ARGUMENTS);"
         )
         stage_guard = " || swept>=r2[nr-1]"
         contact = "if(endpoints>radius2[i]) {loss[j]=i;break;}"
@@ -81,11 +80,7 @@ class ApertureTracker(CircuitTracker):
         if(swept>{limit**2:.17g} || swept>=r2[nr-1]) {{loss[j]=-2;break;}}
         {contact}""",
         )
-        self.module = cp.RawModule(code=helper + source, options=("--std=c++11", "--fmad=false"))
-        self.kernel = self.module.get_function("trace")
-        for name, array in zip(("cescor_b", "cescor_iz", "cescor_fz"), self.tables):
-            ptr = self.module.get_global(name)
-            cp.ndarray((1,), dtype=cp.uint64, memptr=ptr).set(np.array([array.data.ptr], dtype=np.uint64))
+        self.install_field_kernel(helper + source)
 
 
 def baseline():
@@ -189,11 +184,20 @@ def fields(step_mm, observations, objective_ni=OBJECTIVE_NI, table_file=None):
     with np.load(basis_path) as b:
         np.testing.assert_array_equal(b["owners"], OWNER)
         coils = make_interp_spline(b["z"], b["round"][ACTIVE], k=5, axis=1)(mesh.nodes)
+    # A joint nonlinear table already includes each listed physical winding and
+    # its return flux. Remove the retired vacuum representation over the full column.
+    receipt = json.loads(str(table["report"])) if "report" in table else {}
+    mesh.fem_round_windings = np.isin(OWNER[ACTIVE], list(receipt.get("currents_A", {})))
+    coils[mesh.fem_round_windings] = 0.0
     return mesh, table, background, coils
 
 
 def field_array(mesh, background, coils, current_a):
-    total = background + (np.asarray(current_a) @ coils.reshape(len(coils), -1)).reshape(background.shape)
+    current_a = np.asarray(current_a)
+    covered = getattr(mesh, "fem_round_windings", None)
+    if covered is not None and np.any(current_a[covered] != 0.0):
+        raise ValueError("A winding in the joint FEM cannot also carry a separate vacuum-group current")
+    total = background + (current_a @ coils.reshape(len(coils), -1)).reshape(background.shape)
     return np.ascontiguousarray(np.column_stack((total, mesh.hex)))
 
 

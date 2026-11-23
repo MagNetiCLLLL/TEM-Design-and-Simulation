@@ -76,6 +76,8 @@ def installation_checks(output_directory: Path) -> dict:
     from temsim.optics.column import default_state
     from temsim.paths import CONFIG_ROOT
     from temsim.physics.simulation import run
+    from temsim.physics.beam_statistics import original_source_population
+    from temsim.physics.optical_tuning import DEFAULT_TUNING_SOURCE_PARTICLES
     from PySide6.QtCore import Qt
     from PySide6.QtWidgets import QApplication, QDockWidget, QMainWindow
 
@@ -96,7 +98,7 @@ def installation_checks(output_directory: Path) -> dict:
     catalog.apply(state, catalog.default_selection())
     state.acceleration_enabled = False  # Select the reference CPU backend, not gun physics.
     state.acceleration_backend = "CPU"
-    state.electron_gun.emitter.ray_count = 9
+    state.electron_gun.emitter.ray_count = DEFAULT_TUNING_SOURCE_PARTICLES
     state.step_mm = 5.
     state.history_step_mm = 5.
     if state.sample.wave_enabled or state.sample.stem_wave_enabled:
@@ -108,7 +110,10 @@ def installation_checks(output_directory: Path) -> dict:
         simulation = run(state, optical_only=True)
         column_seconds = perf_counter() - start
     gun = simulation.gun_trace
-    if gun is None or simulation.incident.x.shape[1] != 9:
+    if gun is None:
+        raise AssertionError("Missing executed gun emission")
+    population = original_source_population(gun)
+    if population["emitted_count"] != state.electron_gun.emitter.ray_count:
         raise AssertionError("The installed column did not execute the requested tip population")
     column_history = column_history_summary(simulation)
 
@@ -202,7 +207,8 @@ def installation_checks(output_directory: Path) -> dict:
         "installed_config_root": str(Path(CONFIG_ROOT).resolve()),
         "solver_source_sha256": solver_source_identity(), "cpu_resources": resources.to_dict(),
         "particle_column": {
-            "status": "PASS", "rays": 9, "seconds": column_seconds,
+            "status": "PASS", "rays": population["emitted_count"], "seconds": column_seconds,
+            "source_population": population,
             "scope": "Tip emission, extraction, acceleration, gun focusing, apertures and optical column; no specimen signals",
             "gun_endpoint_mm": float(gun.z_mm[-1]),
             **column_history,

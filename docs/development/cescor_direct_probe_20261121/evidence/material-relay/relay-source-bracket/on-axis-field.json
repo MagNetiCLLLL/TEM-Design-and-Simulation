@@ -1,0 +1,109 @@
+{
+  "samples": {
+    "TL12 exit": {
+      "z_mm": 1379.0,
+      "Bz_mT": -11.738055166066392
+    },
+    "Upper scan centre": {
+      "z_mm": 1387.5,
+      "Bz_mT": -4.599646005975671
+    },
+    "Lower scan centre": {
+      "z_mm": 1412.5,
+      "Bz_mT": -2.0721932150828835
+    },
+    "Lower scan exit": {
+      "z_mm": 1420.0,
+      "Bz_mT": -1.5980869046259834
+    },
+    "Illumination-side front": {
+      "z_mm": 1444.8140976117306,
+      "Bz_mT": 0.00014140758034184386
+    },
+    "Specimen upper surface": {
+      "z_mm": 1599.1999974999999,
+      "Bz_mT": 7.742710237874094
+    }
+  },
+  "regions": {
+    "C1 lens": {
+      "interval_mm": [
+        450.0,
+        550.0
+      ],
+      "signed_peak_mT": -101.04659751402734,
+      "signed_peak_z_mm": 479.0,
+      "integrated_Bz2_T2_mm": 0.3596850762669575
+    },
+    "C2 lens": {
+      "interval_mm": [
+        550.0,
+        750.0
+      ],
+      "signed_peak_mT": -72.4559194124984,
+      "signed_peak_z_mm": 550.0,
+      "integrated_Bz2_T2_mm": 0.4050347911466733
+    },
+    "C3 lens": {
+      "interval_mm": [
+        830.0,
+        1000.0
+      ],
+      "signed_peak_mT": 107.40858457417161,
+      "signed_peak_z_mm": 915.0,
+      "integrated_Bz2_T2_mm": 0.1851683409728886
+    },
+    "TL12 to scan exit": {
+      "interval_mm": [
+        1353.6,
+        1420.0
+      ],
+      "signed_peak_mT": -39.92789804921354,
+      "signed_peak_z_mm": 1366.4999999999998,
+      "integrated_Bz2_T2_mm": 0.02270994930943151
+    },
+    "Scan exit to Mini": {
+      "interval_mm": [
+        1420.0,
+        1512.5
+      ],
+      "signed_peak_mT": 61.610703267420085,
+      "signed_peak_z_mm": 1512.5,
+      "integrated_Bz2_T2_mm": 0.03288844861126293
+    },
+    "Mini to specimen": {
+      "interval_mm": [
+        1512.5,
+        1599.1999974999999
+      ],
+      "signed_peak_mT": 111.50282625079781,
+      "signed_peak_z_mm": 1524.5,
+      "integrated_Bz2_T2_mm": 0.20956434884659556
+    }
+  },
+  "bias": {
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0,
+    "condenser_lens_1/physical-pack-0": -30.0,
+    "condenser_lens_2/physical-pack-1": 16.0,
+    "condenser_lens_3/physical-pack-2": 6.9693644605429,
+    "mini_condenser/physical-pack-3": 158.95774026823455,
+    "objective_lens/physical-pack-4": -0.28193265672664225,
+    "objective_lens/physical-pack-5": -0.28193265672664225,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": 10.0,
+    "probe_tl12_lens": -48.54951126302699
+  },
+  "mesh": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed"
+}

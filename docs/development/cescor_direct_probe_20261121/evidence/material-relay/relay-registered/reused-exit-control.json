@@ -1,0 +1,29 @@
+{
+  "same_gun_exit_as": "relay-final",
+  "fresh_emission_in_this_field": false,
+  "field": "global-a7e43ed636758ae6.npz",
+  "front": 1444.8145810636945,
+  "est_radial": [
+    1444.8138007582202
+  ],
+  "est_directions": [
+    [
+      1448.6217780142158
+    ],
+    []
+  ],
+  "interpolated": [
+    0.22440140533103095,
+    -2.6008140254504163e-10,
+    2.6038910300047146e-10,
+    -1.0798779785425486e-09,
+    1.0801856789979784e-09
+  ],
+  "fresh_source_launch": "working-point.json",
+  "fresh_source_waists_mm": [
+    524.0668948466642,
+    787.2038143297079,
+    1221.1711704406341
+  ],
+  "field_sha256": "3e4de08d2152b159970554ff74633c7c195e76a4329d17cfdd063f025681d066"
+}

@@ -140,6 +140,12 @@ class MixedStemScanController(QObject):
     def start(self,state,request,*,existing_result=None):
         if self.closed:
             return
+        from temsim.physics.compute_backend import GPUExecutionError, require_instrument_coherent_cuda
+        try:
+            require_instrument_coherent_cuda(state)
+        except GPUExecutionError as error:
+            self.failed.emit(str(error))
+            return
         request.validate()
         captured=capture_instrument_snapshot(state)
         if int(state.electron_gun.emitter.ray_count)<1000:

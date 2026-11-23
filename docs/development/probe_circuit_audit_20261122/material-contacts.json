@@ -1,0 +1,1116 @@
+{
+  "installed_cad_parts": {
+    "adapter_lens": {
+      "material_counts": {},
+      "host_status": null
+    },
+    "probe_dph2_deflector": {
+      "material_counts": {},
+      "host_status": "modelled"
+    },
+    "probe_qph2_quadrupole": {
+      "material_counts": {
+        "copper_winding": 3072,
+        "insulator": 8
+      },
+      "host_status": "unverified"
+    },
+    "probe_hp2_hexapole": {
+      "material_counts": {
+        "soft_magnetic": 13,
+        "insulating_polymer_unspecified": 6,
+        "bonding_material_unspecified": 6,
+        "insulator": 12,
+        "copper_winding": 12
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens": {
+      "material_counts": {},
+      "host_status": null
+    },
+    "probe_dp22_deflector": {
+      "material_counts": {},
+      "host_status": "modelled"
+    },
+    "probe_hpc_hexapole": {
+      "material_counts": {
+        "copper_winding": 4608,
+        "insulator": 12
+      },
+      "host_status": "unverified"
+    },
+    "probe_qpc_quadrupole": {
+      "material_counts": {
+        "copper_winding": 3072,
+        "insulator": 8
+      },
+      "host_status": "unverified"
+    },
+    "probe_dp21_deflector": {
+      "material_counts": {},
+      "host_status": "modelled"
+    },
+    "probe_tl21_lens": {
+      "material_counts": {},
+      "host_status": null
+    },
+    "probe_dph1_deflector": {
+      "material_counts": {},
+      "host_status": "modelled"
+    },
+    "probe_qph1_quadrupole": {
+      "material_counts": {
+        "copper_winding": 3072,
+        "insulator": 8
+      },
+      "host_status": "unverified"
+    },
+    "probe_hp1_hexapole": {
+      "material_counts": {
+        "soft_magnetic": 13,
+        "insulating_polymer_unspecified": 6,
+        "bonding_material_unspecified": 6,
+        "insulator": 12,
+        "copper_winding": 12
+      },
+      "host_status": null
+    },
+    "probe_hpol_hexapole": {
+      "material_counts": {
+        "copper_winding": 4608,
+        "insulator": 12
+      },
+      "host_status": "unverified"
+    },
+    "probe_qpol_quadrupole": {
+      "material_counts": {
+        "copper_winding": 3072,
+        "insulator": 8
+      },
+      "host_status": "unverified"
+    },
+    "probe_dp11_deflector": {
+      "material_counts": {},
+      "host_status": "modelled"
+    },
+    "probe_tl12_lens": {
+      "material_counts": {},
+      "host_status": null
+    },
+    "probe_dp12_scan_deflector": {
+      "material_counts": {},
+      "host_status": null
+    },
+    "adapter_lens_upper_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "adapter_lens_lower_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_upper_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_lower_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_upper_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_lower_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_upper_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_lower_pole": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "adapter_lens_housing": {
+      "material_counts": {
+        "nonmagnetic_housing": 1,
+        "copper_cooling_plate": 2,
+        "insulator": 2
+      },
+      "host_status": null
+    },
+    "adapter_lens_yoke": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "adapter_lens_excitation_coil": {
+      "material_counts": {
+        "copper_winding": 1
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_housing": {
+      "material_counts": {
+        "nonmagnetic_housing": 1,
+        "copper_cooling_plate": 2,
+        "insulator": 2
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_yoke": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_excitation_coil": {
+      "material_counts": {
+        "copper_winding": 1
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_housing": {
+      "material_counts": {
+        "nonmagnetic_housing": 1,
+        "copper_cooling_plate": 2,
+        "insulator": 2
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_yoke": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_excitation_coil": {
+      "material_counts": {
+        "copper_winding": 1
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_housing": {
+      "material_counts": {
+        "nonmagnetic_housing": 1,
+        "copper_cooling_plate": 2,
+        "insulator": 2
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_yoke": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_excitation_coil": {
+      "material_counts": {
+        "copper_winding": 1
+      },
+      "host_status": null
+    },
+    "probe_dph2_coils": {
+      "material_counts": {
+        "copper_winding": 64,
+        "insulator": 12,
+        "bonding_material_unspecified": 1
+      },
+      "host_status": "modelled"
+    },
+    "probe_dph1_coils": {
+      "material_counts": {
+        "copper_winding": 64,
+        "insulator": 12,
+        "bonding_material_unspecified": 1
+      },
+      "host_status": "modelled"
+    },
+    "probe_dp22_coils": {
+      "material_counts": {
+        "copper_winding": 64,
+        "insulator": 12,
+        "bonding_material_unspecified": 1
+      },
+      "host_status": "modelled"
+    },
+    "probe_dp21_coils": {
+      "material_counts": {
+        "copper_winding": 64,
+        "insulator": 12,
+        "bonding_material_unspecified": 1
+      },
+      "host_status": "modelled"
+    },
+    "probe_dp11_coils": {
+      "material_counts": {
+        "copper_winding": 64,
+        "insulator": 12,
+        "bonding_material_unspecified": 1
+      },
+      "host_status": "modelled"
+    },
+    "adapter_lens_pole_sleeves": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "adapter_lens_return_plates": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_pole_sleeves": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl22_lens_return_plates": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_pole_sleeves": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl21_lens_return_plates": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_pole_sleeves": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_tl12_lens_return_plates": {
+      "material_counts": {
+        "soft_magnetic": 2
+      },
+      "host_status": null
+    },
+    "probe_qph2_quadrupole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_hpc_hexapole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_qpc_quadrupole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_qph1_quadrupole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_hpol_hexapole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    },
+    "probe_qpol_quadrupole_return_sleeve": {
+      "material_counts": {
+        "soft_magnetic": 1
+      },
+      "host_status": null
+    }
+  },
+  "materials": {
+    "probe_hp2_hexapole/return_yoke": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_pin_1": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_2": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_3": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_4": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_5": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_6": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_root_sleeve_1": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_2": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_3": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_4": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_5": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_6": "armco_pure_iron",
+    "probe_hp1_hexapole/return_yoke": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_pin_1": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_2": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_3": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_4": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_5": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_6": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_root_sleeve_1": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_2": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_3": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_4": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_5": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_6": "armco_pure_iron",
+    "probe_tl22_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl22_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl22_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl22_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl22_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl22_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl22_lens_yoke/body": "armco_pure_iron",
+    "probe_tl21_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl21_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl21_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl21_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl21_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl21_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl21_lens_yoke/body": "armco_pure_iron",
+    "adapter_lens_upper_pole/body": "armco_pure_iron",
+    "adapter_lens_lower_pole/body": "armco_pure_iron",
+    "adapter_lens_pole_sleeves/upper": "armco_pure_iron",
+    "adapter_lens_pole_sleeves/lower": "armco_pure_iron",
+    "adapter_lens_return_plates/upper": "armco_pure_iron",
+    "adapter_lens_return_plates/lower": "armco_pure_iron",
+    "adapter_lens_yoke/body": "armco_pure_iron",
+    "probe_tl12_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl12_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl12_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl12_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl12_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl12_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl12_lens_yoke/body": "armco_pure_iron",
+    "probe_qph2_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_hpc_hexapole_return_sleeve/body": "armco_pure_iron",
+    "probe_qpc_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_qph1_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_hpol_hexapole_return_sleeve/body": "armco_pure_iron",
+    "probe_qpol_quadrupole_return_sleeve/body": "armco_pure_iron"
+  },
+  "contacts": [
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_1",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.611614899857376
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_1",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158406
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_2",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158392
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_2",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.611614899857132
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_3",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158381
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_3",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.611614899857368
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_4",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158381
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_4",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.61161489985711
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_5",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158427
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_5",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.611614899856914
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_6",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 35.65006884158427
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_6",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "area_mm2": 14.611614899856914
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_1",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_1",
+      "area_mm2": 28.463457640862806
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_2",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_2",
+      "area_mm2": 28.46345764086279
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_3",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_3",
+      "area_mm2": 28.463457640862686
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_4",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_4",
+      "area_mm2": 28.46345764086272
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_5",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_5",
+      "area_mm2": 28.463457640862647
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_6",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_6",
+      "area_mm2": 28.463457640862757
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_1",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.56758182742826
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_1",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.45418934245468
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_2",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.45418934245441
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_2",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.567581827428677
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_3",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.454189342454406
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_3",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.567581827428796
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_4",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.454189342454406
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_4",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.567581827428544
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_5",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.45418934245487
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_5",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.567581827428345
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_6",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 35.454189342454406
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_6",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "area_mm2": 14.567581827428796
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_1",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_1",
+      "area_mm2": 28.37086410037111
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_2",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_2",
+      "area_mm2": 28.370864100371094
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_3",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_3",
+      "area_mm2": 28.370864100371357
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_4",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_4",
+      "area_mm2": 28.37086410037111
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_5",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_5",
+      "area_mm2": 28.3708641003713
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_6",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_6",
+      "area_mm2": 28.370864100371197
+    },
+    {
+      "first": "probe_tl22_lens_pole_sleeves/upper",
+      "second": "probe_tl22_lens_upper_pole/body",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl22_lens_lower_pole/body",
+      "second": "probe_tl22_lens_pole_sleeves/lower",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl22_lens_pole_sleeves/upper",
+      "second": "probe_tl22_lens_return_plates/upper",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "probe_tl22_lens_pole_sleeves/lower",
+      "second": "probe_tl22_lens_return_plates/lower",
+      "area_mm2": 88.37928453080815
+    },
+    {
+      "first": "probe_tl22_lens_return_plates/upper",
+      "second": "probe_tl22_lens_yoke/body",
+      "area_mm2": 127.56241248678315
+    },
+    {
+      "first": "probe_tl22_lens_return_plates/lower",
+      "second": "probe_tl22_lens_yoke/body",
+      "area_mm2": 127.5624124868194
+    },
+    {
+      "first": "probe_tl21_lens_pole_sleeves/upper",
+      "second": "probe_tl21_lens_upper_pole/body",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl21_lens_lower_pole/body",
+      "second": "probe_tl21_lens_pole_sleeves/lower",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl21_lens_pole_sleeves/upper",
+      "second": "probe_tl21_lens_return_plates/upper",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "probe_tl21_lens_pole_sleeves/lower",
+      "second": "probe_tl21_lens_return_plates/lower",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "probe_tl21_lens_return_plates/upper",
+      "second": "probe_tl21_lens_yoke/body",
+      "area_mm2": 127.31803855001169
+    },
+    {
+      "first": "probe_tl21_lens_return_plates/lower",
+      "second": "probe_tl21_lens_yoke/body",
+      "area_mm2": 127.31803855001169
+    },
+    {
+      "first": "adapter_lens_pole_sleeves/upper",
+      "second": "adapter_lens_upper_pole/body",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "adapter_lens_lower_pole/body",
+      "second": "adapter_lens_pole_sleeves/lower",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "adapter_lens_pole_sleeves/upper",
+      "second": "adapter_lens_return_plates/upper",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "adapter_lens_pole_sleeves/lower",
+      "second": "adapter_lens_return_plates/lower",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "adapter_lens_return_plates/upper",
+      "second": "adapter_lens_yoke/body",
+      "area_mm2": 124.46990093522051
+    },
+    {
+      "first": "adapter_lens_return_plates/lower",
+      "second": "adapter_lens_yoke/body",
+      "area_mm2": 124.46990093522051
+    },
+    {
+      "first": "probe_tl12_lens_pole_sleeves/upper",
+      "second": "probe_tl12_lens_upper_pole/body",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl12_lens_lower_pole/body",
+      "second": "probe_tl12_lens_pole_sleeves/lower",
+      "area_mm2": 416.763681425222
+    },
+    {
+      "first": "probe_tl12_lens_pole_sleeves/upper",
+      "second": "probe_tl12_lens_return_plates/upper",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "probe_tl12_lens_pole_sleeves/lower",
+      "second": "probe_tl12_lens_return_plates/lower",
+      "area_mm2": 88.37928453078304
+    },
+    {
+      "first": "probe_tl12_lens_return_plates/upper",
+      "second": "probe_tl12_lens_yoke/body",
+      "area_mm2": 127.71202455372499
+    },
+    {
+      "first": "probe_tl12_lens_return_plates/lower",
+      "second": "probe_tl12_lens_yoke/body",
+      "area_mm2": 127.71202455372499
+    }
+  ],
+  "checked_joints": [
+    {
+      "first": "adapter_lens_upper_pole/body",
+      "second": "adapter_lens_pole_sleeves/upper",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_pole_sleeves/upper",
+      "second": "adapter_lens_return_plates/upper",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_return_plates/upper",
+      "second": "adapter_lens_yoke/body",
+      "contact_mm2": 124.46990093522051,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_lower_pole/body",
+      "second": "adapter_lens_pole_sleeves/lower",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_pole_sleeves/lower",
+      "second": "adapter_lens_return_plates/lower",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_return_plates/lower",
+      "second": "adapter_lens_yoke/body",
+      "contact_mm2": 124.46990093522051,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "adapter_lens_upper_pole/body",
+      "second": "adapter_lens_lower_pole/body",
+      "contact_mm2": 0.0,
+      "clearance_mm": 14.0
+    },
+    {
+      "first": "probe_tl22_lens_upper_pole/body",
+      "second": "probe_tl22_lens_pole_sleeves/upper",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_pole_sleeves/upper",
+      "second": "probe_tl22_lens_return_plates/upper",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_return_plates/upper",
+      "second": "probe_tl22_lens_yoke/body",
+      "contact_mm2": 127.56241248678315,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_lower_pole/body",
+      "second": "probe_tl22_lens_pole_sleeves/lower",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_pole_sleeves/lower",
+      "second": "probe_tl22_lens_return_plates/lower",
+      "contact_mm2": 88.37928453080815,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_return_plates/lower",
+      "second": "probe_tl22_lens_yoke/body",
+      "contact_mm2": 127.5624124868194,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl22_lens_upper_pole/body",
+      "second": "probe_tl22_lens_lower_pole/body",
+      "contact_mm2": 0.0,
+      "clearance_mm": 12.0
+    },
+    {
+      "first": "probe_tl21_lens_upper_pole/body",
+      "second": "probe_tl21_lens_pole_sleeves/upper",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_pole_sleeves/upper",
+      "second": "probe_tl21_lens_return_plates/upper",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_return_plates/upper",
+      "second": "probe_tl21_lens_yoke/body",
+      "contact_mm2": 127.31803855001169,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_lower_pole/body",
+      "second": "probe_tl21_lens_pole_sleeves/lower",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_pole_sleeves/lower",
+      "second": "probe_tl21_lens_return_plates/lower",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_return_plates/lower",
+      "second": "probe_tl21_lens_yoke/body",
+      "contact_mm2": 127.31803855001169,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl21_lens_upper_pole/body",
+      "second": "probe_tl21_lens_lower_pole/body",
+      "contact_mm2": 0.0,
+      "clearance_mm": 12.0
+    },
+    {
+      "first": "probe_tl12_lens_upper_pole/body",
+      "second": "probe_tl12_lens_pole_sleeves/upper",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_pole_sleeves/upper",
+      "second": "probe_tl12_lens_return_plates/upper",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_return_plates/upper",
+      "second": "probe_tl12_lens_yoke/body",
+      "contact_mm2": 127.71202455372499,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_lower_pole/body",
+      "second": "probe_tl12_lens_pole_sleeves/lower",
+      "contact_mm2": 416.763681425222,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_pole_sleeves/lower",
+      "second": "probe_tl12_lens_return_plates/lower",
+      "contact_mm2": 88.37928453078304,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_return_plates/lower",
+      "second": "probe_tl12_lens_yoke/body",
+      "contact_mm2": 127.71202455372499,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_tl12_lens_upper_pole/body",
+      "second": "probe_tl12_lens_lower_pole/body",
+      "contact_mm2": 0.0,
+      "clearance_mm": 14.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_1",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_1",
+      "contact_mm2": 28.463457640862806,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_1",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.611614899857376,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_1",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158406,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_2",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_2",
+      "contact_mm2": 28.46345764086279,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_2",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.611614899857132,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_2",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158392,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_3",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_3",
+      "contact_mm2": 28.463457640862686,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_3",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.611614899857368,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_3",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158381,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_4",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_4",
+      "contact_mm2": 28.46345764086272,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_4",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.61161489985711,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_4",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158381,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_5",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_5",
+      "contact_mm2": 28.463457640862647,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_5",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.611614899856914,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_5",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158427,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_6",
+      "second": "probe_hp2_hexapole/pole_root_sleeve_6",
+      "contact_mm2": 28.463457640862757,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_root_sleeve_6",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 14.611614899856914,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp2_hexapole/pole_pin_6",
+      "second": "probe_hp2_hexapole/return_yoke",
+      "contact_mm2": 35.65006884158427,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_1",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_1",
+      "contact_mm2": 28.37086410037111,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_1",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.56758182742826,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_1",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.45418934245468,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_2",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_2",
+      "contact_mm2": 28.370864100371094,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_2",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.567581827428677,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_2",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.45418934245441,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_3",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_3",
+      "contact_mm2": 28.370864100371357,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_3",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.567581827428796,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_3",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.454189342454406,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_4",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_4",
+      "contact_mm2": 28.37086410037111,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_4",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.567581827428544,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_4",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.454189342454406,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_5",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_5",
+      "contact_mm2": 28.3708641003713,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_5",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.567581827428345,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_5",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.45418934245487,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_6",
+      "second": "probe_hp1_hexapole/pole_root_sleeve_6",
+      "contact_mm2": 28.370864100371197,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_root_sleeve_6",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 14.567581827428796,
+      "clearance_mm": 0.0
+    },
+    {
+      "first": "probe_hp1_hexapole/pole_pin_6",
+      "second": "probe_hp1_hexapole/return_yoke",
+      "contact_mm2": 35.454189342454406,
+      "clearance_mm": 0.0
+    }
+  ],
+  "isolated_solids": [
+    "probe_qph2_quadrupole_return_sleeve/body",
+    "probe_hpc_hexapole_return_sleeve/body",
+    "probe_qpc_quadrupole_return_sleeve/body",
+    "probe_qph1_quadrupole_return_sleeve/body",
+    "probe_hpol_hexapole_return_sleeve/body",
+    "probe_qpol_quadrupole_return_sleeve/body"
+  ]
+}

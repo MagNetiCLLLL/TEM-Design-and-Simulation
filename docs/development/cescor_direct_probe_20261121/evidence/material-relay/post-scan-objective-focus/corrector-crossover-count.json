@@ -1,0 +1,88 @@
+{
+  "original_particles": 16384,
+  "minimum_surviving": 16384,
+  "static_scan_A": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_field_sha256": "44441f08ea0753dbfa35b200660f990c55c347746a83a278d6ad487d0f9be901",
+  "observation_pitch_mm": 0.125,
+  "integration_step_limit_mm": 0.0375,
+  "definition": "Radial variance has a minimum and both eigenvalues of half the derivative of the 2D position covariance change from negative to positive within one observation interval of that minimum.",
+  "dense_checked_bounds_mm": [
+    1070.0,
+    1420.0
+  ],
+  "recorded_planes": 2806,
+  "method": "Native propagation from the saved same-field effective-source handoff, with physical contacts and original weights.",
+  "radial_minima_mm": [
+    1209.1533473986733
+  ],
+  "lower_eigenvalue_roots_mm": [
+    1209.1534130196749
+  ],
+  "upper_eigenvalue_roots_mm": [
+    1209.1532817716989
+  ],
+  "shared_crossovers": [
+    {
+      "z_mm": 1209.1533473986733,
+      "directional_roots_mm": [
+        1209.1534130196749,
+        1209.1532817716989
+      ],
+      "components": [
+        "QPC"
+      ],
+      "nearby_direct_observations": [
+        {
+          "z_mm": 1207.1533485207,
+          "rms_radius_nm": 9.394388320625392
+        },
+        {
+          "z_mm": 1209.1533485207,
+          "rms_radius_nm": 0.794249011832596
+        },
+        {
+          "z_mm": 1211.1533485207,
+          "rms_radius_nm": 9.394353629362433
+        }
+      ]
+    }
+  ],
+  "intervals": {
+    "HP2 entrance to HP1 exit": {
+      "bounds_mm": [
+        1129.5,
+        1315.85
+      ],
+      "count": 1
+    },
+    "HP2 entrance to TL12 exit (shaded corrector)": {
+      "bounds_mm": [
+        1129.5,
+        1379.0
+      ],
+      "count": 1
+    },
+    "ADL entrance to TL12 exit": {
+      "bounds_mm": [
+        1070.0,
+        1379.0
+      ],
+      "count": 1
+    },
+    "ADL entrance through lower scan exit": {
+      "bounds_mm": [
+        1070.0,
+        1420.0
+      ],
+      "count": 1
+    }
+  },
+  "post_scan_waists_from_full_trace_mm": [
+    1422.9868153369239
+  ]
+}

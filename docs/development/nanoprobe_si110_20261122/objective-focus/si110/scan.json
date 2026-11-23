@@ -1,0 +1,60 @@
+{
+  "source_particles": 16384,
+  "live": 16384,
+  "effective": 16383.999999999933,
+  "current_A": 1.5000000000000005e-05,
+  "surface": {
+    "D95_um": 0.0063873630294956725,
+    "RMS_radius_um": 0.0018587036516105994,
+    "axis_50nm_nA": 15000.0,
+    "axis_50pm_pA": 6408.69140625,
+    "centroid_um": [
+      -3.5033023384679726e-08,
+      1.4567136570465066e-08
+    ],
+    "alpha95_mrad": 0.0036858928510459343,
+    "largest_sampled_angle_mrad": 0.006677464360046267,
+    "specimen_uA": 15.0,
+    "count": 16384
+  },
+  "entrance_mm": 1599.1999974999999,
+  "entrance_file_sha256": "07180b6c57fa32013fa377536694dc67079fe181b00caedc0bda990ce37d8ec0",
+  "gun_file_sha256": "f4fa08b5b17c10c368ff35a779408ab468fc1494753f71deb831d6addbf770a1",
+  "cif_sha256": "944c5c81df5d813d051f96102eb9be37fac4b7647c2a9d1492d6333122be42c7",
+  "foil_nm": 5.0,
+  "pixel_nm": 0.02,
+  "pixels": 64,
+  "detector_windows_mrad": [
+    [
+      0.0,
+      15.0
+    ],
+    [
+      50.0,
+      150.0
+    ],
+    [
+      15.0,
+      50.0
+    ],
+    [
+      150.0,
+      3141.592653589793
+    ]
+  ],
+  "model": "Classical elastic periodic Si [110], translated specimen, ideal exit-angle detectors",
+  "independent_depth_error": 2.4222705725219355e-14,
+  "max_depth": 3.8045204271413153,
+  "max_angular_quadrature_error": 9.214938842538878e-08,
+  "max_omitted_scattering_probability": 1.5525569511623673e-43,
+  "pixel_current_balance_A": 5.929230630780102e-20,
+  "line": {
+    "x_nm": 0.01,
+    "cif_pair_nm": 0.1360925592499999,
+    "resolved_native_peaks": false
+  },
+  "df_rms_contrast": 0.05615833744641819,
+  "disjoint_source_df_correlation": -0.05490207373278725,
+  "half_df_relative_rms_difference": 0.11866551017728176,
+  "pair_spacing_nm": 0.1360925592499999
+}

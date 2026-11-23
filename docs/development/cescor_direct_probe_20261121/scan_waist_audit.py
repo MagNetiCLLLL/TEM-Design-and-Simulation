@@ -62,7 +62,8 @@ def rotation_to_sample(model, tracker, axis, planes):
     angle = np.r_[0., np.cumsum(np.diff(model.m.z) * (k[:-2:2] + 4*k[1::2] + k[2::2]) / 6)]
     at = model.indices(planes)
     delta = angle[model.indices([SURFACE])[0]] - angle[at]
-    return np.cos(delta)[:, None, None]*np.eye(2) + np.sin(delta)[:, None, None]*J, k[-1]
+    return (np.cos(delta)[:, None, None]*np.eye(2) + np.sin(delta)[:, None, None]*J,
+            k[2*model.indices([SURFACE])[0]])
 
 
 def differential(tracker, field, first, stops, scale=1., angular_only=False):

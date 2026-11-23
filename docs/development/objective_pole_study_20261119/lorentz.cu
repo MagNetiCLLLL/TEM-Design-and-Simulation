@@ -1,4 +1,9 @@
 // Double precision stationary relativistic Lorentz integration in laboratory coordinates.
+#ifndef CORRECTOR_FIELD_PARAMETERS
+#define CORRECTOR_FIELD_PARAMETERS
+#define CORRECTOR_FIELD_ARGUMENTS
+#endif
+
 struct Ray { double x,y,tx,ty,time; };
 
 __device__ Ray advance(Ray p, Ray derivative, double h) {
@@ -8,7 +13,7 @@ __device__ Ray advance(Ray p, Ray derivative, double h) {
 
 __device__ Ray derivative(Ray p, int node, const double *field, const double *electric,
                           const double *r2, int nr, double energy, double phi0,
-                          double rest, double factor, double reference_pc) {
+                          double rest, double factor, double reference_pc CORRECTOR_FIELD_PARAMETERS) {
     const double *f=field+20*node;
     double x=p.x,y=p.y,s=x*x+y*y;
     double bz=f[0]+s*(-f[2]/4+s*(f[4]/64+s*(-f[6]/2304+s*(f[8]/147456-s*f[10]/14745600))));
@@ -34,7 +39,8 @@ __device__ Ray derivative(Ray p, int node, const double *field, const double *el
 extern "C" __global__ void trace(double *phase, const double *energy, const double *phi0,
         const double *fields, const double *electric, const double *r2, int nr,
         const double *h, const double *radius2, int *loss, double *peak_r2,
-        double *minimum_margin, int first, int last, int count, double rest, double factor, double ref_pc) {
+        double *minimum_margin, int first, int last, int count, double rest, double factor, double ref_pc
+        CORRECTOR_FIELD_PARAMETERS) {
     int j=blockIdx.x*blockDim.x+threadIdx.x;
     if(j>=count || loss[j]!=-1) return;
     double *a=phase+5*j;
@@ -42,13 +48,13 @@ extern "C" __global__ void trace(double *phase, const double *energy, const doub
     double peak=peak_r2[j], margin=minimum_margin[j];
     for(int i=first;i<last;i++) {
         int node=2*i; double step=h[i];
-        Ray k1=derivative(p,node,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc);
+        Ray k1=derivative(p,node,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc CORRECTOR_FIELD_ARGUMENTS);
         Ray p2=advance(p,k1,step/2);
-        Ray k2=derivative(p2,node+1,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc);
+        Ray k2=derivative(p2,node+1,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc CORRECTOR_FIELD_ARGUMENTS);
         Ray p3=advance(p,k2,step/2);
-        Ray k3=derivative(p3,node+1,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc);
+        Ray k3=derivative(p3,node+1,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc CORRECTOR_FIELD_ARGUMENTS);
         Ray p4=advance(p,k3,step);
-        Ray k4=derivative(p4,node+2,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc);
+        Ray k4=derivative(p4,node+2,fields,electric,r2,nr,energy[j],phi0[j],rest,factor,ref_pc CORRECTOR_FIELD_ARGUMENTS);
         Ray next=p;
         next=advance(next,k1,step/6); next=advance(next,k2,step/3);
         next=advance(next,k3,step/3); next=advance(next,k4,step/6);

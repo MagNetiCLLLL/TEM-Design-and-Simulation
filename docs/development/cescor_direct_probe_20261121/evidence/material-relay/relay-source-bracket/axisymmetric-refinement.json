@@ -1,0 +1,34 @@
+{
+  "pair_sha256": "12ab9923af9fdfa6402b797377491f1ef2ebd6a676f58db7f6b5009a6ecd325a",
+  "pole_geometry": "Installed Mini Condenser and series objective with rotationally symmetric iron in the R-Z check",
+  "round_geometry_results": [
+    {
+      "nominal_refinement_mm": 1.0,
+      "isolated_axisymmetric_front_mm": [
+        1443.950290904206
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819326567A-1mm.npz",
+      "sha256": "fd434260f01ad5425bfd4b80c431be0483ce82d2c85c4473f788f1c315a15085"
+    },
+    {
+      "nominal_refinement_mm": 0.5,
+      "isolated_axisymmetric_front_mm": [
+        1444.1558366054928
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819326567A-0.5mm.npz",
+      "sha256": "a050d529aeb949d60d28f31f69eaf9565a0c861486985217181e47b50a7c39a9"
+    },
+    {
+      "nominal_refinement_mm": 0.25,
+      "isolated_axisymmetric_front_mm": [
+        1444.13118953854
+      ],
+      "source": "circuit-ampere-turns-condenser_lens_36.9693645-mini_condenser158.95774-pair--0.2819326567A-0.25mm.npz",
+      "sha256": "b19ea249618802a0016836ac0fbf895d34ea7461610016e4627f34220cf6a0c8"
+    }
+  ],
+  "all_installed_material_3d_same_paraxial_observer_mm": [
+    1444.8139852733664
+  ],
+  "all_material_3d_reported_mm": 1444.8140976117306
+}

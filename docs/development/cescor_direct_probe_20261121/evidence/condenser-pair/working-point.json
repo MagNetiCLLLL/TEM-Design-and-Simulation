@@ -1,0 +1,298 @@
+{
+  "mode": "Three-condenser Nanoprobe Normal; condenser-pair material working point",
+  "parent_file": "condenser-source-working-point.json",
+  "parent_sha256": "9aad8264aa4167dc10d998a6c16d23b6c1b36b4d5e770ad23293a873b89cd2eb",
+  "operating_point": {
+    "series_A": [
+      -30.0,
+      16.0
+    ],
+    "material_file": "field-9bf02de69c8e756dcb74.npz",
+    "material_sha256": "4dd914560b0499d258cb3f6ec551bee05d61b4db912ed979940400589564905c",
+    "predicted_counts": [
+      1,
+      0,
+      1,
+      0,
+      0
+    ],
+    "image_mm": 524.6792355238146,
+    "magnification": 0.19713433381314005,
+    "gap_mm": 791.00717622674,
+    "mesh_mm": 1.5,
+    "domain_mm": 550
+  },
+  "signed_current_A": [
+    -30.0,
+    -30.0,
+    -30.0,
+    -30.0,
+    16.0,
+    16.0,
+    16.0,
+    16.0,
+    3.201272914083286,
+    9.404081877319575,
+    -48.74974730252398,
+    77.23286545998405,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    61.64381278359023,
+    -721.7139558231136,
+    1984.3778442358068,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    28.962896061940654,
+    0.06188894277520134,
+    32.8252695494996,
+    7.514137300316783
+  ],
+  "winding_owners": [
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_1",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_2",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "condenser_lens_3",
+    "adapter_lens",
+    "adapter_lens",
+    "adapter_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl22_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl21_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "probe_tl12_lens",
+    "mini_condenser",
+    "mini_condenser",
+    "mini_condenser",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "objective_lens",
+    "diffraction_lens",
+    "intermediate_lens",
+    "projector_lens_1",
+    "projector_lens_2"
+  ],
+  "physical_turns": [
+    75,
+    75,
+    75,
+    75,
+    135,
+    135,
+    135,
+    135,
+    128,
+    128,
+    127,
+    127,
+    8,
+    8,
+    7,
+    7,
+    6,
+    6,
+    7,
+    6,
+    6,
+    7,
+    6,
+    6,
+    6,
+    6,
+    5,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    145,
+    360,
+    648,
+    432,
+    648
+  ],
+  "corrector_A": {
+    "adapter_lens": 10.0,
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl12_lens": 255.71838,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0
+  },
+  "objective_A": -28.220275948275862,
+  "objective_At": -32735.5201,
+  "downstream_tracking_field_sha256": "97a1e5d1dc659b5c6d8b9edea00f8c0574c1c5c2c8ee1ba9e03dcbac86253d29",
+  "shared_fem_implementation_sha256": "3bbfb030f6f60625a63041e4639a84f46f4943eee10275d94ebb7222cb59cfae",
+  "scan_calibration_sha256": "c4ee5052ae13b7fc3335c2cdf0fd76d0be3608eb7fec5901ce3b7067a16115aa",
+  "C2_aperture_diameter_um": 100.0,
+  "source_A": 1.5e-05,
+  "source_count": 32768,
+  "surface": {
+    "z_mm": 1599.1999974999999,
+    "D95_um": 3.089266317318325,
+    "RMS_radius_um": 0.8582107025759976,
+    "axis_50nm_nA": 67.291259765625,
+    "axis_50pm_pA": 0.0,
+    "centroid_um": [
+      -0.027645146183771514,
+      -0.023382013639712766
+    ],
+    "alpha95_mrad": 0.019287904060110113,
+    "largest_sampled_angle_mrad": 0.0345842899049042,
+    "specimen_uA": 15.0,
+    "count": 32768
+  },
+  "foil": {
+    "764.9": {
+      "radius95_um": 0.2996237469216882,
+      "maximum_radius_um": 0.5432624250302784,
+      "aperture_radius_um": 50.0,
+      "survivors": 32768
+    },
+    "765.1": {
+      "radius95_um": 0.29733617073441765,
+      "maximum_radius_um": 0.539157641018207,
+      "aperture_radius_um": 50.0,
+      "survivors": 32768
+    }
+  },
+  "material_assignments": {
+    "condenser_lens_1_lower_pole": {
+      "z_mm": [
+        490.0,
+        540.0
+      ],
+      "index": 0,
+      "assumed": false
+    },
+    "condenser_lens_1_yoke": {
+      "z_mm": [
+        450.0,
+        550.0
+      ],
+      "index": 0,
+      "assumed": true
+    },
+    "condenser_lens_2_upper_pole": {
+      "z_mm": [
+        560.0,
+        620.0
+      ],
+      "index": 0,
+      "assumed": false
+    },
+    "condenser_lens_2_yoke": {
+      "z_mm": [
+        550.0,
+        750.0
+      ],
+      "index": 0,
+      "assumed": true
+    }
+  },
+  "bore_field_assumptions": "C1 and C2 windings with their installed poles and outer returns, including incident C3 windings. Independent downstream material fields retained. Unspecified carrier mu_r=1.",
+  "probe_density_pixel_nm": 67.49999999999989,
+  "validation": {
+    "smaller_source_4096": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.0545229767141806,
+      "RMS_radius_um": 0.8567250480603966,
+      "axis_50nm_nA": 65.91796875,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.02809639860406337,
+        -0.022486440107385767
+      ],
+      "alpha95_mrad": 0.019063942154138362,
+      "largest_sampled_angle_mrad": 0.030426665591119506,
+      "specimen_uA": 15.0,
+      "count": 4096
+    },
+    "step_and_order_refinement_4096": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.054522978934566,
+      "RMS_radius_um": 0.8567250486826763,
+      "axis_50nm_nA": 65.91796875,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.02809637753142658,
+        -0.02248646649846686
+      ],
+      "alpha95_mrad": 0.019063373203422083,
+      "largest_sampled_angle_mrad": 0.0304257592988729,
+      "specimen_uA": 15.0,
+      "count": 4096
+    },
+    "step_and_order_refinement_32768": {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 3.0892663195449996,
+      "RMS_radius_um": 0.8582107031993647,
+      "axis_50nm_nA": 67.291259765625,
+      "axis_50pm_pA": 0.0,
+      "centroid_um": [
+        -0.02764512426739628,
+        -0.023382039606477986
+      ],
+      "alpha95_mrad": 0.019287331547561452,
+      "largest_sampled_angle_mrad": 0.03458326029129894,
+      "specimen_uA": 15.0,
+      "count": 32768
+    },
+    "max_matched_particle_displacement_nm": 0.0026123134070534337,
+    "fine_step_mm": 0.025,
+    "tracking_step_mm": 0.05
+  },
+  "evidence_sha256": {
+    "all-ray-density.npz": "19ce95fb0891472f6488457e0c908832bc3992931255e07eb7aeb345272dd8f1",
+    "all-ray-density.png": "ef07a19d61293eef8168c061afec3bc9bb631f4c6c2e99e732eb251fb31212c3",
+    "axial-comparison.json": "a95a951783f0fb3551c0541b7597df04d39dfab8176787cdf1fc243c20dc2c39",
+    "axial-field.png": "459de78d993f39215ed7f6decf9c31b4b9379dfd1c08f8aa950e8c131e415280",
+    "axial-profiles.npz": "20f568727ba7350681c5e41859e98661faa828e43c570b89a286aa956fbcf60b",
+    "column-and-landings.npz": "aa169ee8a59fd819221946a2c4e2f0cbaf6ee497dcbe4a367a63feff7a4a9349",
+    "condenser-ray-comparison.png": "d18add551a655dae20ade881d9d7f96cad979a45770dd5cafe2b4e176ac3fb00",
+    "fresh-emission-and-exit.npz": "5837282e39dfc6445ca449fdb176fd97105a6161d67d310cd8498c1c22e48eb4",
+    "full-column-rays.png": "5b50c0bf4e92897f1473eb0c2bf1d885c5678731d4b5f1069907c29aa4fd49e7",
+    "matched-material-field.npz": "3ca2ea6a4ba8622438c2f1c2abe7e9d0467539fb4e35384ce2b621952536a6e6",
+    "physical-controls.json": "d310bbbfb1bdaf25d3de987d8f27577bce76bd33f8e0998b46f52f4d12d8df86",
+    "ray-sections.png": "baaf45e40d98d5997f3ab7d2fac1e6222ef388d46f7b97e202f352a84426e6be",
+    "specimen-probe.png": "f039c1e3af379872e7479dcf9ed232ced1b1570a851a1295ddba04b337c50cea",
+    "tracking.json": "72981993c9c2d459514fedef3959d07fe6741a622f093efb0005065c55ffc319",
+    "tuned-material-field.npz": "4dd914560b0499d258cb3f6ec551bee05d61b4db912ed979940400589564905c"
+  }
+}

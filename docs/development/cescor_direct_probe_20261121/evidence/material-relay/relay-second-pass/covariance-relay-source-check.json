@@ -1,0 +1,38 @@
+{
+  "field": "global-bc4e4dc45528d9a5.npz",
+  "source_id": "common-gun-088567a18c541dfe1a281e71a97d610ad483ec70293cb156a04d142cdbf1f37d.npz",
+  "source_count": 32768,
+  "full_source_in_this_field": false,
+  "front_mm": 1444.8309214935082,
+  "front_growth_m_rad": [
+    -9.816529053405686e-17,
+    -5.515643991333717e-19,
+    -2.104487654242829e-18
+  ],
+  "surface_growth_m_rad": [
+    1.0122378770790946e-16,
+    -2.0799221369211506e-18,
+    6.350035427103715e-19
+  ],
+  "local_growth_derivative_um_mrad_per_mm": [
+    -4.3750811481110847e-07,
+    2.1518755461602467e-10,
+    1.7921183387595378e-10,
+    3.256887658600482e-10,
+    6.87106226319161e-11
+  ],
+  "specimen": {
+    "D95_um": 0.005508142596045693,
+    "RMS_radius_um": 0.001546714967820913,
+    "axis_50nm_nA": 15000.0,
+    "axis_50pm_pA": 14648.4375,
+    "centroid_um": [
+      2.0365895215893188e-07,
+      4.051196741551042e-08
+    ],
+    "alpha95_mrad": 0.005194615446675017,
+    "largest_sampled_angle_mrad": 0.009087931488476867,
+    "specimen_uA": 15.0,
+    "count": 32768
+  }
+}

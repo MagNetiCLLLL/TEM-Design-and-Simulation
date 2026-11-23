@@ -1,0 +1,273 @@
+{
+  "assembly_parts": 153,
+  "material_solids": 94,
+  "material_counts": {
+    "armco_pure_iron": 82,
+    "permenorm_5000_h2": 12
+  },
+  "assembly_sha256": "5d6c1419f2c5175651329acca8ea34c09754867536c4351127b124246316f368",
+  "mesh": {
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "recipe": "5d6c1419f2c5175651329acca8ea34c09754867536c4351127b124246316f368",
+    "nodes": 1102557,
+    "elements": 6841876,
+    "pitch": 9.0
+  },
+  "elements_solved": 6841872,
+  "residual": 7.104250260285841e-09,
+  "material_peaks": {
+    "armco_pure_iron": {
+      "h_a_per_m": 163314.21773680887,
+      "b_t": 2.350897867502561
+    },
+    "permenorm_5000_h2": {
+      "h_a_per_m": 23616.775746152423,
+      "b_t": 1.5638775211939266
+    }
+  },
+  "currents": {
+    "probe_hp1_hexapole": {
+      "A": 16.0,
+      "turns": 2,
+      "geometry": "hexapole"
+    },
+    "probe_hp2_hexapole": {
+      "A": 70.0,
+      "turns": 2,
+      "geometry": "hexapole"
+    },
+    "probe_hpol_hexapole_x": {
+      "A": -5.0,
+      "turns": 384,
+      "geometry": "hexapole"
+    },
+    "probe_hpol_hexapole_y": {
+      "A": -2.71705,
+      "turns": 384,
+      "geometry": "hexapole"
+    },
+    "probe_tl21_lens": {
+      "A": 330.0,
+      "turns": 19,
+      "geometry": "round"
+    },
+    "probe_tl22_lens": {
+      "A": -145.0,
+      "turns": 19,
+      "geometry": "round"
+    },
+    "condenser_lens_1/physical-pack-0": {
+      "A": -30.0,
+      "turns": 300,
+      "geometry": "round"
+    },
+    "condenser_lens_2/physical-pack-1": {
+      "A": 16.0,
+      "turns": 540,
+      "geometry": "round"
+    },
+    "condenser_lens_3/physical-pack-2": {
+      "A": 6.9693644605429,
+      "turns": 510,
+      "geometry": "round"
+    },
+    "mini_condenser/physical-pack-3": {
+      "A": 158.95774026823455,
+      "turns": 17,
+      "geometry": "round"
+    },
+    "objective_lens/physical-pack-4": {
+      "A": -0.28193265672664225,
+      "turns": 580,
+      "geometry": "round"
+    },
+    "objective_lens/physical-pack-5": {
+      "A": -0.28193265672664225,
+      "turns": 580,
+      "geometry": "round"
+    },
+    "diffraction_lens/physical-pack-6": {
+      "A": 28.96289606194065,
+      "turns": 360,
+      "geometry": "round"
+    },
+    "intermediate_lens/physical-pack-7": {
+      "A": 0.06188894277520134,
+      "turns": 648,
+      "geometry": "round"
+    },
+    "projector_lens_1/physical-pack-8": {
+      "A": 32.8252695494996,
+      "turns": 432,
+      "geometry": "round"
+    },
+    "projector_lens_2/physical-pack-9": {
+      "A": 7.514137300316783,
+      "turns": 648,
+      "geometry": "round"
+    },
+    "ac/0/x": {
+      "A": 0.0,
+      "turns": 104,
+      "geometry": "saddle"
+    },
+    "ac/0/y": {
+      "A": 0.0,
+      "turns": 104,
+      "geometry": "saddle"
+    },
+    "ac/1/x": {
+      "A": 0.0,
+      "turns": 104,
+      "geometry": "saddle"
+    },
+    "ac/1/y": {
+      "A": 0.0,
+      "turns": 104,
+      "geometry": "saddle"
+    },
+    "adapter_lens": {
+      "A": 10.0,
+      "turns": 23,
+      "geometry": "round"
+    },
+    "probe_tl12_lens": {
+      "A": -48.54951126302699,
+      "turns": 19,
+      "geometry": "round"
+    }
+  },
+  "material_regions": {
+    "probe_hp2_hexapole/return_yoke": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_pin_1": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_2": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_3": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_4": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_5": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_pin_6": "permenorm_5000_h2",
+    "probe_hp2_hexapole/pole_root_sleeve_1": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_2": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_3": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_4": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_5": "armco_pure_iron",
+    "probe_hp2_hexapole/pole_root_sleeve_6": "armco_pure_iron",
+    "probe_hp1_hexapole/return_yoke": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_pin_1": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_2": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_3": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_4": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_5": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_pin_6": "permenorm_5000_h2",
+    "probe_hp1_hexapole/pole_root_sleeve_1": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_2": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_3": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_4": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_5": "armco_pure_iron",
+    "probe_hp1_hexapole/pole_root_sleeve_6": "armco_pure_iron",
+    "probe_tl22_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl22_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl22_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl22_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl22_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl22_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl22_lens_yoke/body": "armco_pure_iron",
+    "probe_tl21_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl21_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl21_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl21_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl21_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl21_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl21_lens_yoke/body": "armco_pure_iron",
+    "adapter_lens_upper_pole/body": "armco_pure_iron",
+    "adapter_lens_lower_pole/body": "armco_pure_iron",
+    "adapter_lens_pole_sleeves/upper": "armco_pure_iron",
+    "adapter_lens_pole_sleeves/lower": "armco_pure_iron",
+    "adapter_lens_return_plates/upper": "armco_pure_iron",
+    "adapter_lens_return_plates/lower": "armco_pure_iron",
+    "adapter_lens_yoke/body": "armco_pure_iron",
+    "probe_tl12_lens_upper_pole/body": "armco_pure_iron",
+    "probe_tl12_lens_lower_pole/body": "armco_pure_iron",
+    "probe_tl12_lens_pole_sleeves/upper": "armco_pure_iron",
+    "probe_tl12_lens_pole_sleeves/lower": "armco_pure_iron",
+    "probe_tl12_lens_return_plates/upper": "armco_pure_iron",
+    "probe_tl12_lens_return_plates/lower": "armco_pure_iron",
+    "probe_tl12_lens_yoke/body": "armco_pure_iron",
+    "probe_qph2_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_hpc_hexapole_return_sleeve/body": "armco_pure_iron",
+    "probe_qpc_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_qph1_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "probe_hpol_hexapole_return_sleeve/body": "armco_pure_iron",
+    "probe_qpol_quadrupole_return_sleeve/body": "armco_pure_iron",
+    "condenser_lens_1_lower_pole/body": "armco_pure_iron",
+    "condenser_lens_1_yoke/body": "armco_pure_iron",
+    "condenser_lens_2_upper_pole/body": "armco_pure_iron",
+    "condenser_lens_2_yoke/body": "armco_pure_iron",
+    "condenser_lens_3_upper_pole/body": "armco_pure_iron",
+    "condenser_lens_3_lower_pole/body": "armco_pure_iron",
+    "condenser_lens_3_yoke/body": "armco_pure_iron",
+    "mini_condenser_upper_pole/body": "armco_pure_iron",
+    "mini_condenser_lower_pole/body": "armco_pure_iron",
+    "mini_condenser_yoke/body": "armco_pure_iron",
+    "objective_upper_pole/body": "armco_pure_iron",
+    "objective_lower_pole/body": "armco_pure_iron",
+    "objective_lens_yoke/upper": "armco_pure_iron",
+    "objective_lens_yoke/lower": "armco_pure_iron",
+    "objective_pole_sleeves/upper": "armco_pure_iron",
+    "objective_pole_sleeves/lower": "armco_pure_iron",
+    "objective_return_plates/upper": "armco_pure_iron",
+    "objective_return_plates/lower": "armco_pure_iron",
+    "diffraction_lens_upper_pole/body": "armco_pure_iron",
+    "diffraction_lens_lower_pole/body": "armco_pure_iron",
+    "intermediate_lens_upper_pole/body": "armco_pure_iron",
+    "intermediate_lens_lower_pole/body": "armco_pure_iron",
+    "projector_lens_1_upper_pole/body": "armco_pure_iron",
+    "projector_lens_1_lower_pole/body": "armco_pure_iron",
+    "projector_lens_2_upper_pole/body": "armco_pure_iron",
+    "projector_lens_2_lower_pole/body": "armco_pure_iron",
+    "diffraction_lens_yoke/body": "armco_pure_iron",
+    "intermediate_lens_yoke/body": "armco_pure_iron",
+    "projector_lens_1_yoke/body": "armco_pure_iron",
+    "projector_lens_2_yoke/body": "armco_pure_iron",
+    "dl_il_return_yoke/body": "armco_pure_iron",
+    "il_p1_return_yoke/body": "armco_pure_iron",
+    "p1_p2_return_yoke/body": "armco_pure_iron",
+    "p2_exit_return_yoke/body": "armco_pure_iron"
+  },
+  "solution": "global-974312f37eaaa78a.npz",
+  "solution_sha256": "70dff31831c80da5f7db6364edd974b0678a0ae6d3f816bb376ac41019e01ae0",
+  "unit_winding_field_checks": {
+    "probe_hp1_hexapole": 0.0015300304542935415,
+    "probe_hp2_hexapole": 0.001175953653720385,
+    "probe_hpol_hexapole_x": 0.0028140007615989767,
+    "probe_hpol_hexapole_y": 0.0031779433154905,
+    "probe_tl21_lens": 2.3065036184059776e-08,
+    "probe_tl22_lens": 4.5724455510793844e-08,
+    "condenser_lens_1/physical-pack-0": 5.5401838813084386e-08,
+    "condenser_lens_2/physical-pack-1": 3.9751822179653233e-08,
+    "condenser_lens_3/physical-pack-2": 1.4275843823763295e-06,
+    "mini_condenser/physical-pack-3": 1.2951235739101315e-07,
+    "objective_lens/physical-pack-4": 8.453810488459539e-07,
+    "objective_lens/physical-pack-5": 3.019998344128245e-07,
+    "diffraction_lens/physical-pack-6": 2.6529335952382674e-07,
+    "intermediate_lens/physical-pack-7": 3.5375741283897934e-08,
+    "projector_lens_1/physical-pack-8": 1.4035413457649253e-06,
+    "projector_lens_2/physical-pack-9": 1.4547403053277372e-06,
+    "ac/0/x": 0.0003020695023571877,
+    "ac/0/y": 0.0008223835730222087,
+    "ac/1/x": 0.0005331117329990577,
+    "ac/1/y": 0.0006379899242710062,
+    "adapter_lens": 2.0177548628102963e-07,
+    "probe_tl12_lens": 9.33847650218822e-07
+  },
+  "magnetic_force_input": "One summed Cartesian field from this nonlinear circuit; the separate axial kick table is zero",
+  "other_trims": "HPC, quadrupole trims, stigmators, alignment deflectors and scan/wobble have zero static drive in the physical-current working point",
+  "objective_pair": "Mini and the incident-side field of the physical series objective. Both 580-turn packs carry its signed current.",
+  "static_rotational_symmetry": "Two 120-degree rotations checked for every material solid and powered winding; AC unprojected",
+  "electric_field": "Installed electrostatic gun electrodes and column potential",
+  "static_scan_A": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

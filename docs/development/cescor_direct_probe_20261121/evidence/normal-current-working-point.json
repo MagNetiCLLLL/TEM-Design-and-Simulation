@@ -1,0 +1,14 @@
+{
+  "mode": "Three-condenser Nanoprobe Normal, 300 kV",
+  "base": "normal-objective-probe.json",
+  "base_stage": "after",
+  "base_sha256_lf": "d8457e21c77bd20d9fc6234c7ebc204d49b4721cd3ee06b75d274d7004d948f3",
+  "solution": "../../probe_circuit_audit_20261122/normal-joint-solution.npz",
+  "solution_sha256": "ca6de5accdaf651cd6853e173200437b16e4bb752a8924e20ea1c2e82163496f",
+  "field_table_sha256": "9bd3b0ad6fdec4c6378c69b2e8e6cba2f71d51a0f6679810e0c74e821567b832",
+  "circuit_sha256": "4cf08d47b98b079c7e344134213da17feef0e4be34756e13f6f3d0b2d5e9b291",
+  "mesh_id": "939978650c6373aec6bd0dfcdbca63ff4193a15e6bc8dd500cfb6e0b1e2ac597",
+  "replacement_current_A": {"adapter_lens": 10.0, "probe_tl12_lens": 10.0},
+  "replacement_turns": {"adapter_lens": 23, "probe_tl12_lens": 19},
+  "scan_command_mrad": [0.0, 0.0]
+}

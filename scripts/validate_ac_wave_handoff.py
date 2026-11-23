@@ -257,16 +257,13 @@ def main(argv=None):
     parser.add_argument('--positions',nargs='+')
     parser.add_argument('--prepare-only',action='store_true')
     args=parser.parse_args(argv)
-    if args.pin_patches or not args.prepare_only:
-        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
-        reject_retired_tip_coherent_workflow()
     if args.pin_patches:
         print(json.dumps(pin_changes(args.producer.resolve(),args.pin_patches),indent=2));return
+    if not args.prepare_only:
+        from temsim.physics.retired_tip_wave import reject_retired_tip_coherent_workflow
+        reject_retired_tip_coherent_workflow()
     if args.cache_key is None or args.output is None:
         parser.error('--cache-key and --output are required for handoff')
-    if not args.prepare_only:
-        from temsim.physics.compute_backend import require_coherent_cuda
-        require_coherent_cuda()
     snapshot,state,protocol,request,grid,boundary,descriptor=prepare(args)
     if args.prepare_only:
         print(json.dumps(dict(status='PREPARED_HANDOFF_ONLY',input_identity=snapshot.digest,

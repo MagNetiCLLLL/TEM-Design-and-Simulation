@@ -1,0 +1,351 @@
+{
+  "reference": "c1-zoom-near-c2",
+  "field_tangent": "global-b932b73416404799",
+  "source_moments_from_original": 16384,
+  "c1_A": -36.0,
+  "objective_A": -1.2319450612962322,
+  "C2_range_A": [
+    -120.0,
+    120.0
+  ],
+  "C3_range_A": [
+    -8.0,
+    8.0
+  ],
+  "increments_A": [
+    0.25,
+    0.125
+  ],
+  "tested": 123970,
+  "specimen_focus_penalty": false,
+  "results": {
+    "normal_positive": {
+      "all": {
+        "count": 31201,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            120.0,
+            0.0,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.74074085546805,
+          "radial_waists_mm": [
+            556.7583548968455,
+            632.8938863992566,
+            655.4967793068726,
+            682.2540754373102,
+            715.7114529676586,
+            790.4577745251644
+          ],
+          "total_waist_count": 8,
+          "sample_rms_nm": 19668.378214552555,
+          "foil_rms_um": 0.8357376707990846,
+          "mini_rms_um": 34.664572113501045,
+          "upper_pole_rms_um": 28.16584214088838
+        },
+        "above_rms_0p1_mrad": 17320,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "C1_image": {
+        "count": 23185,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            47.0,
+            0.0,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.5207349589632673,
+          "radial_waists_mm": [
+            518.8374229367284,
+            654.3719977033214,
+            738.610242846271,
+            1271.4157774171942,
+            1572.3966844672905
+          ],
+          "total_waist_count": 5,
+          "sample_rms_nm": 13948.794593225162,
+          "foil_rms_um": 0.6053214141056205,
+          "mini_rms_um": 24.29520545578905,
+          "upper_pole_rms_um": 19.7160283778039
+        },
+        "above_rms_0p1_mrad": 11475,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "condenser_crossings": {
+        "count": 1302,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.75,
+            0.0,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.2555250055563281,
+          "radial_waists_mm": [
+            507.11872476872855,
+            751.7192024748753,
+            1271.7727924964342,
+            1572.3810769658894
+          ],
+          "total_waist_count": 4,
+          "sample_rms_nm": 6850.698655945441,
+          "foil_rms_um": 0.13728688619446236,
+          "mini_rms_um": 11.920981470909704,
+          "upper_pole_rms_um": 9.673512693822063
+        },
+        "above_rms_0p1_mrad": 572,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "first_corrector_crossing": {
+        "count": 99,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.5,
+            6.125,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.023067225149567584,
+          "radial_waists_mm": [
+            507.2232440760954,
+            753.8372523886346,
+            1235.6338133475424,
+            1568.4866518091696
+          ],
+          "total_waist_count": 4,
+          "sample_rms_nm": 707.9944414148916,
+          "foil_rms_um": 0.11343719566811095,
+          "mini_rms_um": 0.9928235333956986,
+          "upper_pole_rms_um": 0.7832150709866257
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "all_four_before_Mini": {
+        "count": 11,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.72155,
+            6.472,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.003915835328078806,
+          "radial_waists_mm": [
+            507.30528817153976,
+            751.0067326714335,
+            1208.0800554940602,
+            1423.0963079284581,
+            1599.1263698864766
+          ],
+          "total_waist_count": 5,
+          "sample_rms_nm": 0.9497375975308637,
+          "foil_rms_um": 0.14652364885028316,
+          "mini_rms_um": 0.27951076415681037,
+          "upper_pole_rms_um": 0.25298720889616416
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "postscan_within_half_mm": {
+        "count": 1,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.72155,
+            6.472,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.003915835328078806,
+          "radial_waists_mm": [
+            507.30528817153976,
+            751.0067326714335,
+            1208.0800554940602,
+            1423.0963079284581,
+            1599.1263698864766
+          ],
+          "total_waist_count": 5,
+          "sample_rms_nm": 0.9497375975308637,
+          "foil_rms_um": 0.14652364885028316,
+          "mini_rms_um": 0.27951076415681037,
+          "upper_pole_rms_um": 0.25298720889616416
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      }
+    },
+    "all_signed": {
+      "all": {
+        "count": 123970,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            -70.0,
+            0.75,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 3.6611450372253884,
+          "radial_waists_mm": [
+            489.2081381488832,
+            555.8107798871911,
+            639.9384607304441,
+            680.6701086008137,
+            745.4051616664683,
+            1271.2901392171175
+          ],
+          "total_waist_count": 7,
+          "sample_rms_nm": 98770.39293246492,
+          "foil_rms_um": 3.520292733296688,
+          "mini_rms_um": 170.29615586333506,
+          "upper_pole_rms_um": 138.06175248547294
+        },
+        "above_rms_0p1_mrad": 87766,
+        "above_rms_1_mrad": 19322,
+        "above_rms_10_mrad": 0
+      },
+      "C1_image": {
+        "count": 108242,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            -70.0,
+            0.75,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 3.6611450372253884,
+          "radial_waists_mm": [
+            489.2081381488832,
+            555.8107798871911,
+            639.9384607304441,
+            680.6701086008137,
+            745.4051616664683,
+            1271.2901392171175
+          ],
+          "total_waist_count": 7,
+          "sample_rms_nm": 98770.39293246492,
+          "foil_rms_um": 3.520292733296688,
+          "mini_rms_um": 170.29615586333506,
+          "upper_pole_rms_um": 138.06175248547294
+        },
+        "above_rms_0p1_mrad": 76107,
+        "above_rms_1_mrad": 19322,
+        "above_rms_10_mrad": 0
+      },
+      "condenser_crossings": {
+        "count": 2522,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.75,
+            0.0,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.2555250055563281,
+          "radial_waists_mm": [
+            507.11872476872855,
+            751.7192024748753,
+            1271.7727924964342,
+            1572.3810769658894
+          ],
+          "total_waist_count": 4,
+          "sample_rms_nm": 6850.698655945441,
+          "foil_rms_um": 0.13728688619446236,
+          "mini_rms_um": 11.920981470909704,
+          "upper_pole_rms_um": 9.673512693822063
+        },
+        "above_rms_0p1_mrad": 1110,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "first_corrector_crossing": {
+        "count": 192,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.75,
+            -6.25,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.026497960985906642,
+          "radial_waists_mm": [
+            506.9300237280263,
+            752.7757026543111,
+            1237.1108534078544,
+            1568.8031404761316
+          ],
+          "total_waist_count": 4,
+          "sample_rms_nm": 805.2675599585833,
+          "foil_rms_um": 0.12428984616471557,
+          "mini_rms_um": 1.148738342332321,
+          "upper_pole_rms_um": 0.9084764931671792
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "all_four_before_Mini": {
+        "count": 22,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.72155,
+            6.472,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.003915835328078806,
+          "radial_waists_mm": [
+            507.30528817153976,
+            751.0067326714335,
+            1208.0800554940602,
+            1423.0963079284581,
+            1599.1263698864766
+          ],
+          "total_waist_count": 5,
+          "sample_rms_nm": 0.9497375975308637,
+          "foil_rms_um": 0.14652364885028316,
+          "mini_rms_um": 0.27951076415681037,
+          "upper_pole_rms_um": 0.25298720889616416
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      },
+      "postscan_within_half_mm": {
+        "count": 1,
+        "highest": {
+          "currents_A": [
+            -36.0,
+            17.72155,
+            6.472,
+            -1.2319450612962322
+          ],
+          "rms_angle_mrad": 0.003915835328078806,
+          "radial_waists_mm": [
+            507.30528817153976,
+            751.0067326714335,
+            1208.0800554940602,
+            1423.0963079284581,
+            1599.1263698864766
+          ],
+          "total_waist_count": 5,
+          "sample_rms_nm": 0.9497375975308637,
+          "foil_rms_um": 0.14652364885028316,
+          "mini_rms_um": 0.27951076415681037,
+          "upper_pole_rms_um": 0.25298720889616416
+        },
+        "above_rms_0p1_mrad": 0,
+        "above_rms_1_mrad": 0,
+        "above_rms_10_mrad": 0
+      }
+    }
+  },
+  "method": "First-order round transport with nonlinear DC and differential winding fields. Ranking uses the two-coordinate RMS mechanical slope including the Larmor boundary term. Extremes require a new nonlinear field solve and fresh finite-source trace."
+}

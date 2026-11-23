@@ -266,11 +266,16 @@ def require_coherent_cuda(requested=BACKEND_AUTO, *, acceleration_enabled=True):
     return BACKEND_REQUIRE_GPU
 
 
+def require_instrument_coherent_cuda(state):
+    """Check the live instrument selection before preparing a new coherent job."""
+    return require_coherent_cuda(getattr(state, "acceleration_backend", BACKEND_AUTO),
+        acceleration_enabled=bool(getattr(state, "acceleration_enabled", True)))
+
+
 def coherent_execution_state(state):
     """Keep the user's controls while requiring CUDA in a detached wave job."""
     from copy import copy
-    policy = require_coherent_cuda(getattr(state, "acceleration_backend", BACKEND_AUTO),
-        acceleration_enabled=bool(getattr(state, "acceleration_enabled", True)))
+    policy = require_instrument_coherent_cuda(state)
     working = copy(state)
     working.acceleration_backend = policy
     working.acceleration_enabled = True

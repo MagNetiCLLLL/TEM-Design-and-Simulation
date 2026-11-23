@@ -1,0 +1,18 @@
+{
+  "reference_label": "post-scan-registered",
+  "fixed_gun_exit_proposal": true,
+  "particles": 16384,
+  "objective_before_A": -10.828688394454575,
+  "proposed_A": -10.854710898968472,
+  "delta_A": -0.02602250451389743,
+  "span_A": 0.2,
+  "start_D95_gradient_nm_per_mm": -0.010607931370888321,
+  "proposed_D95_gradient_nm_per_mm": 8.273192980915445e-06,
+  "roots_A_and_gradient": [
+    [
+      -0.02602250451389743,
+      -4.2070483369736557e-17
+    ]
+  ],
+  "actual_objective_only_verification_required": true
+}

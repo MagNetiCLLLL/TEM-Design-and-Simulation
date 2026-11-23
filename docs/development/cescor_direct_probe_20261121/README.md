@@ -1,6 +1,18 @@
 # CESCOR probe current and direct specimen focus
 
-In three-condenser Nanoprobe Normal, adjusting the installed corrector and focusing with the objective alone gives a specimen D95 of 7.952 µm at a median pupil-edge angle of 29.80 mrad. The improvement in D95 persists on the independent material mesh. The change in central current depends on the mesh. [Final specimen probe, currents and focus verification](normal-objective-probe.md)
+In the latest zero-scan Nanoprobe Normal trial, 16,384 original particles form one shared crossover inside the probe corrector at 1209.153 mm and another at 1422.987 mm, beyond the lower scan winding. C1 lens remains at −30 A, C2 lens at +16 A and the physical C2 aperture diameter at 100 µm. Before the objective-only adjustment the post-scan waist was within 7 µm of both the driven AC pivot and the Mini Condenser–objective front. The adjustment separated the waist and the lens-pair front by 131 µm. The specimen D95 is 575.47 nm and a through-focus check does not establish a surface minimum. [Internal counts, three-plane comparison and specimen probe](post-scan-crossover.md) · [Earlier 5.487 nm specimen setting](material-relay.md)
+
+The earlier refined-objective calculation propagated 32,768 particles to the upper surface. Relative to its original objective mesh, the last upstream waist moved from 1474.70 to 1481.88 mm and the specimen D95 changed from 3.089 to 5.197 µm at fixed downstream currents. [Refined-objective control](refined-objective-normal.md) · [Archived working point](evidence/refined-objective-normal/working-point.json)
+
+The preceding condenser-pair study established one 5.07-fold demagnified source image, one crossover in the C2–C3 gap and zero crossovers from C3 to ADL. Its specimen result used the original objective mesh. [Condenser material fields and original full-column tracking](condenser-pair-fem.md)
+
+With vacuum condenser windings, relaunching the effective source with C1 lens at −41 A and C2 lens at +19.5 A gives one 5.76-fold demagnified source image at 522.117 mm and one free-gap waist at 794.747 mm. The original 8.03 T winding field and the mismatched historical gun exit are accounted for separately. [Condenser fields, current-off controls and before/after trajectories](condenser-source-audit.md)
+
+The joint-field relay trial aligns the TL12 radial waist and driven scan pivot at 1490.375 mm. Objective-only specimen refocusing separates the planes, and independent winding controls expose repeated C1-region waists. [Three-plane measurements, whole-column trajectories and specimen probes](joint-three-plane-focus.md)
+
+The earlier Nanoprobe Normal scan-region study uses the joint ADL–TL12 field with the installed poles and returns. At its inherited objective setting the beam expands through both scan windings and the previous 1408 mm crossover disappears. [Full-column and scan-region trajectories](normal-joint-field.md)
+
+The earlier working point with vacuum ADL and TL12 windings attained a specimen D95 of 7.952 µm at a median pupil-edge angle of 29.80 mrad. The improvement in D95 persisted on the independent material mesh. The change in central current depended on the mesh. [Archived specimen probe, currents and focus verification](normal-objective-probe.md)
 
 The condenser-current comparison places one source crossover in the free gap between the C2 lens and C3 lens and removes the crossover ahead of the ADL. It measures how far the fixed 100 µm C2 aperture is illuminated and the resulting convergence at the specimen. [Nanoprobe Normal trajectories and operating currents](condenser-normal.md)
 

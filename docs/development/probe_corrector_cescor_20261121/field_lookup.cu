@@ -1,10 +1,9 @@
-extern "C" {
-    __device__ const double *cescor_b;
-    __device__ const int *cescor_iz;
-    __device__ const double *cescor_fz;
-}
+// Each trajectory launch owns its field and axial interpolation tables.
+#define CORRECTOR_FIELD_PARAMETERS , const double *cescor_b, const int *cescor_iz, const double *cescor_fz
+#define CORRECTOR_FIELD_ARGUMENTS , cescor_b, cescor_iz, cescor_fz
 __device__ void add_corrector(int node, double x, double y, int width, double grid_min,
-                              double inverse_step, double radius, double& bx, double& by, double& bz) {
+                              double inverse_step, double radius, double& bx, double& by, double& bz
+                              CORRECTOR_FIELD_PARAMETERS) {
     const double u = (x - grid_min) * inverse_step;
     const double v = (y - grid_min) * inverse_step;
     if (!isfinite(u + v) || u < 0 || v < 0 || u >= width - 1 || v >= width - 1 ||

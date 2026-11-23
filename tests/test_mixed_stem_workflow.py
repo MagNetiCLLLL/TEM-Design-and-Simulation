@@ -45,7 +45,7 @@ def mocked(monkeypatch):
     captured = deepcopy(input_state)
     inputs = SimpleNamespace(digest=digest, restore=lambda: captured)
     monkeypatch.setattr(instrument_snapshot, "capture_instrument_snapshot", lambda _state: inputs)
-    monkeypatch.setattr(compute_backend, "require_coherent_cuda", lambda *_: calls.append("cuda"))
+    monkeypatch.setattr(compute_backend, "require_coherent_cuda", lambda *_a, **_k: calls.append("cuda"))
     monkeypatch.setattr(source, "validate_sample_source", lambda *_: None)
     monkeypatch.setattr(source, "specimen_is_vacuum", lambda *_: False)
     request = SimpleNamespace(validate=lambda: request)
@@ -88,7 +88,7 @@ def test_exact_existing_result_is_reused(mocked):
 
 def test_cuda_failure_prevents_particle_preparation(mocked, monkeypatch):
     from temsim.physics import compute_backend
-    def unavailable(*args):
+    def unavailable(*args, **kwargs):
         raise RuntimeError("CUDA unavailable")
     monkeypatch.setattr(compute_backend, "require_coherent_cuda", unavailable)
     with pytest.raises(RuntimeError, match="CUDA unavailable"):
@@ -118,6 +118,21 @@ def test_cancelled_request_never_prepares_or_publishes(mocked):
     with pytest.raises(InterruptedError, match="cancelled"):
         workflow.calculate_mixed_stem(mocked.inputs, cancelled=lambda: True)
     assert not mocked.calls
+
+
+@pytest.mark.parametrize("backend,enabled", [("CPU", True), ("Numba CPU", True), ("Auto", False)])
+def test_live_backend_rejects_before_field_or_instrument_capture(monkeypatch, backend, enabled):
+    from temsim.physics import compute_backend
+    from temsim import instrument_snapshot
+    inputs = state()
+    inputs.acceleration_backend = backend
+    inputs.acceleration_enabled = enabled
+    monkeypatch.setattr(compute_backend, "coherent_cuda_capability",
+        lambda: pytest.fail("Explicit CPU request probed CUDA"))
+    monkeypatch.setattr(instrument_snapshot, "capture_instrument_snapshot",
+        lambda *_: pytest.fail("Explicit CPU request captured inputs"))
+    with pytest.raises(compute_backend.GPUExecutionError, match="Enable acceleration"):
+        workflow.calculate_mixed_stem(inputs)
 
 
 def test_cancel_after_exact_handoff_never_starts_scan(mocked, monkeypatch):

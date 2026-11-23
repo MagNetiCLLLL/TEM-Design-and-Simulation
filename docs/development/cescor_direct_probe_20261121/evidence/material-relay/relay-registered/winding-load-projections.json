@@ -1,0 +1,141 @@
+{
+  "geometry_sha256": "5d6c1419f2c5175651329acca8ea34c09754867536c4351127b124246316f368",
+  "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "cells_per_winding": 2048,
+  "signed_projections_per_cell": 3,
+  "gauss_points_per_edge": 4,
+  "channels": {
+    "probe_hp2_hexapole": {
+      "source_geometry_sha256": "6d85370e4839ac66d3b674c6791130676fcdf3f5a145a73f62299fe24b60d185",
+      "stored_load_sha256": "8d8ebc5e3610c93ea60042234b1b939bee0a29ee26a062540eee6bba0f370a72",
+      "maximum_relative_to_peak": 0.004240957360612586,
+      "rms_relative_to_peak": 8.154358017560703e-05
+    },
+    "probe_hp1_hexapole": {
+      "source_geometry_sha256": "56d44a3ba5d99dd1172e15486051e9572c62061bfbb33e5d3de30f8a1bf5597a",
+      "stored_load_sha256": "67efbf8c7be91b3ab79015abd094de47c02e7b0a1336a98275d0f4ae80b1c267",
+      "maximum_relative_to_peak": 0.0003572807947704884,
+      "rms_relative_to_peak": 6.736141271793165e-06
+    },
+    "probe_tl22_lens": {
+      "source_geometry_sha256": "8b0c5b34eb7e38b4dcaa7a6a9fdc275306813224f40689f87a19b889529fdd02",
+      "stored_load_sha256": "1c39d034af736c7ffadc1e9d6f27b7f4d042fb99887127fa2b77b483d9abc4d9",
+      "maximum_relative_to_peak": 1.986699609931154e-08,
+      "rms_relative_to_peak": 8.782957871516336e-10
+    },
+    "probe_tl21_lens": {
+      "source_geometry_sha256": "9fe08002bd1f6e08bd4e1a9afc336e257784cd34c913166fd29c297a9e627354",
+      "stored_load_sha256": "1aa2875ca02679d1dc981975faa952a19c2350af3f33a4547c2cea780876f8cc",
+      "maximum_relative_to_peak": 1.9246313807595755e-08,
+      "rms_relative_to_peak": 7.523236729594838e-10
+    },
+    "adapter_lens": {
+      "source_geometry_sha256": "52611cf0be869031b2efdec12145b4516fcc03dcc212f441c8c82db563a91f41",
+      "stored_load_sha256": "a0336e1e804d1aca0b160ab9a9020b3f2d054592ac94eb4ef963a5fdd0507a28",
+      "maximum_relative_to_peak": 1.9501495723726264e-07,
+      "rms_relative_to_peak": 3.853256296159623e-09
+    },
+    "probe_tl12_lens": {
+      "source_geometry_sha256": "78bd94ec9af827f98a0723eddefadd6398728e343a7a1695ea0dbe02ce6e9b8a",
+      "stored_load_sha256": "5c8d7bdf84361dc79a866a298c4657e22f0317cf2396ca65d67a0b967e876eac",
+      "maximum_relative_to_peak": 3.386200714126922e-07,
+      "rms_relative_to_peak": 6.75478005921322e-09
+    },
+    "probe_hpol_hexapole_x": {
+      "source_geometry_sha256": "dd63dba5a691d4419371053a50c857266c4ddf47ed1284045d4b174dc4432913",
+      "stored_load_sha256": "ddaf50ce4aea484a391e2560ceabf3d1d5d4d391314165255c139b057fe0a509",
+      "maximum_relative_to_peak": 0.0003676192780306969,
+      "rms_relative_to_peak": 7.94691929516651e-06
+    },
+    "probe_hpol_hexapole_y": {
+      "source_geometry_sha256": "4406761106049250858ddef7f2b650a6631d34d07835c9c3663a08654ee2b7ab",
+      "stored_load_sha256": "ed3d838a692a12662b6cb8150a3ec9173c85bdbc70220b2a6eacd0bf61ed2373",
+      "maximum_relative_to_peak": 0.0007662418795691812,
+      "rms_relative_to_peak": 1.1547626529821526e-05
+    },
+    "condenser_lens_1/physical-pack-0": {
+      "source_geometry_sha256": "2825dd7cf7584d39ebd01bb149350a521cd16ddc9438a892f0860424cadfc635",
+      "stored_load_sha256": "0805753e5483bf0cd0921accf02eb98e166037ac7bb70517220cf59b4bbf4431",
+      "maximum_relative_to_peak": 1.3639884096078789e-06,
+      "rms_relative_to_peak": 1.9167716168013285e-08
+    },
+    "condenser_lens_2/physical-pack-1": {
+      "source_geometry_sha256": "cbaba63b08163bd9305b1fc393195ff64afd53f1599e103b5bf37c99a8e0b45d",
+      "stored_load_sha256": "f6ad1b8e169774c4b082a0255400d2eb16a971eb7108d17f1e3e6e0c6731d135",
+      "maximum_relative_to_peak": 2.5453967534788254e-08,
+      "rms_relative_to_peak": 8.08772283507833e-10
+    },
+    "condenser_lens_3/physical-pack-2": {
+      "source_geometry_sha256": "c1ba8d24f29e91bd2810e28690a9865a21e5e2a8c9780a3921dfea03db346da4",
+      "stored_load_sha256": "b7a00dbe79d5c6a6064e5a7a5b2863105f9cbd36022fb852fed56b493980a40b",
+      "maximum_relative_to_peak": 1.3729594073517982e-06,
+      "rms_relative_to_peak": 2.2113272268372736e-08
+    },
+    "mini_condenser/physical-pack-3": {
+      "source_geometry_sha256": "a7e82190cdcc3e0d2effe51ab0b9bdb1e45fc51466ee9ea1e78ed9b3ca0ea146",
+      "stored_load_sha256": "9abc992f6ff99f3d2c355abba76f0d25da04e90af6237718b8747995262bde69",
+      "maximum_relative_to_peak": 1.1316867134814598e-07,
+      "rms_relative_to_peak": 2.411256026086726e-09
+    },
+    "objective_lens/physical-pack-4": {
+      "source_geometry_sha256": "6e9bdac8660f01382670c6122ad2cb3a0234741887e3de611be4d43edb24999d",
+      "stored_load_sha256": "44f632e9adbabc5147999c006ad5cb4ce75ba04edb5b51fdc5e757ea7b6bb417",
+      "maximum_relative_to_peak": 2.4972838269607202e-06,
+      "rms_relative_to_peak": 3.5066823142713874e-08
+    },
+    "objective_lens/physical-pack-5": {
+      "source_geometry_sha256": "af24bc207e4a21b46e3d1561f77f6691c87565410ee3f47eb27c75917dbaa231",
+      "stored_load_sha256": "efbfc23b9f9f9d32d0820c558a71d1bed2c933f76fadb0060a465a0547faabd9",
+      "maximum_relative_to_peak": 7.47096538233545e-06,
+      "rms_relative_to_peak": 9.548173003997068e-08
+    },
+    "diffraction_lens/physical-pack-6": {
+      "source_geometry_sha256": "4bdff1085bc9cefb6934a01d2e91d16b5415b8cce6c787bbc47aa3b1fec1e0b4",
+      "stored_load_sha256": "4f2807280e42e6d27074a36aa153644080a1afad9a7d1ce2758da34846cf7983",
+      "maximum_relative_to_peak": 1.948809557801976e-05,
+      "rms_relative_to_peak": 2.489356919048283e-07
+    },
+    "intermediate_lens/physical-pack-7": {
+      "source_geometry_sha256": "cb1f8b500501ee18350584f0c4a0aa57368ddbd91b3c95c59e8759b5565a0172",
+      "stored_load_sha256": "d025ea5a3c375c9ab3084b5ca15865bac3bb0d10acdd4a953f268da1df85ce2b",
+      "maximum_relative_to_peak": 1.5603175350462197e-06,
+      "rms_relative_to_peak": 1.997714542305697e-08
+    },
+    "projector_lens_1/physical-pack-8": {
+      "source_geometry_sha256": "aa23c4e270ef3d2f8155d84ae61fdc8eef1a7c5afa839e3dcd7d58c6154eb230",
+      "stored_load_sha256": "65949405b1d9afe71175efef4cce72261bb03b171a9f9f7bbb30445f9cc80f72",
+      "maximum_relative_to_peak": 1.6146044654800497e-06,
+      "rms_relative_to_peak": 2.338109946902156e-08
+    },
+    "projector_lens_2/physical-pack-9": {
+      "source_geometry_sha256": "05f2864b453c037a41089bca4476d5f17aba3493b9f719653893623486b4f15f",
+      "stored_load_sha256": "34f11f26304df36816feebbaef593edffda296f2c1023012207a4af037b2f0c7",
+      "maximum_relative_to_peak": 2.0220336764965242e-07,
+      "rms_relative_to_peak": 4.4742332514229955e-09
+    },
+    "ac/0/x": {
+      "source_geometry_sha256": "d83dfb69426dec369d28defdd589fc6b73bb522faf9043edcf4fdcb51e3e45fc",
+      "stored_load_sha256": "fbbb0951674025248e314f06c9ac6482a0457c1630fbbbc72ff3c683c01e65df",
+      "maximum_relative_to_peak": 0.0003690786275679249,
+      "rms_relative_to_peak": 7.606367433882927e-06
+    },
+    "ac/0/y": {
+      "source_geometry_sha256": "690427b820528bbd1ae720868ea5eb729b7afc16ba778d8ad34599beed4f3d7f",
+      "stored_load_sha256": "c466a7f8028e204b3fe9c34a01f4970ca109c0b75c906313cbdb1236c5b274bf",
+      "maximum_relative_to_peak": 0.00025019345955628767,
+      "rms_relative_to_peak": 7.562354180609959e-06
+    },
+    "ac/1/x": {
+      "source_geometry_sha256": "ec0c178b9988f963c48f611901ed46a80f43c5118aad063b6b6af4682199ef7d",
+      "stored_load_sha256": "4dbfa18d29596dc9eef352edf2c1827f4eb94af66709fd76e6591739c867f10f",
+      "maximum_relative_to_peak": 0.0005377309261854759,
+      "rms_relative_to_peak": 3.691837549113659e-05
+    },
+    "ac/1/y": {
+      "source_geometry_sha256": "33ea6124ca83c2b934185ef89129115eadbfee949d57d96a6e979fd384209126",
+      "stored_load_sha256": "3767ab06ab84206ae916b1499ff44054b5ced157f3685f89d41141879d5f29ff",
+      "maximum_relative_to_peak": 0.0005942861600252685,
+      "rms_relative_to_peak": 3.374592425054353e-05
+    }
+  }
+}

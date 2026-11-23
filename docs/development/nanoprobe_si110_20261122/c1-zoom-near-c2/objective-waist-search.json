@@ -1,0 +1,78 @@
+{
+  "objective_before_A": -1.2319450612962322,
+  "proposed_A": -1.2434119980751728,
+  "bracket_A": [
+    -1.3019450612962322,
+    -1.161945061296232
+  ],
+  "current_changes_only": "series objective",
+  "source_count": 16384,
+  "source_solution": "global-b932b73416404799.npz",
+  "native_tangent_check": {
+    "delta_A": -0.011467982441693702,
+    "D95_offset_um": 0.011744344268144538,
+    "RMS_offset_um": 67.91673115072612,
+    "D95_at_waist_nm": 11.202449374681265,
+    "D95_at_surface_nm": 11.202607196181493
+  },
+  "sensitivity_um_per_A": -11231.483796314507,
+  "sampled": [
+    {
+      "delta_A": -0.07,
+      "D95_offset_um": 660.4282481489877,
+      "RMS_offset_um": 731.01466450783,
+      "D95_at_waist_nm": 11.298316261058595,
+      "D95_at_surface_nm": 16.117130512993846
+    },
+    {
+      "delta_A": -0.012517982441693703,
+      "D95_offset_um": 11.794381534727506,
+      "RMS_offset_um": 79.72062528383246,
+      "D95_at_waist_nm": 11.2040849172942,
+      "D95_at_surface_nm": 11.245576931973014
+    },
+    {
+      "delta_A": -0.011467982441693702,
+      "D95_offset_um": 2.526166125241258e-07,
+      "RMS_offset_um": 67.90623326481048,
+      "D95_at_waist_nm": 11.202468029497544,
+      "D95_at_surface_nm": 11.202468032892227
+    },
+    {
+      "delta_A": -0.011467967441693698,
+      "D95_offset_um": -0.00016821511187019994,
+      "RMS_offset_um": 67.90606450861578,
+      "D95_at_waist_nm": 11.20246800637018,
+      "D95_at_surface_nm": 11.202468425239118
+    },
+    {
+      "delta_A": -0.011466083266230422,
+      "D95_offset_um": -0.021330300220231448,
+      "RMS_offset_um": 67.88486676126784,
+      "D95_at_waist_nm": 11.202465108997519,
+      "D95_at_surface_nm": 11.202518228537627
+    },
+    {
+      "delta_A": -0.011054660284362486,
+      "D95_offset_um": -4.642015677835454,
+      "RMS_offset_um": 63.25641418929074,
+      "D95_at_waist_nm": 11.201832779109308,
+      "D95_at_surface_nm": 11.225092431366214
+    },
+    {
+      "delta_A": -0.010417982441693702,
+      "D95_offset_um": -11.791734437532963,
+      "RMS_offset_um": 56.09475721385289,
+      "D95_at_waist_nm": 11.200855595604743,
+      "D95_at_surface_nm": 11.23660462889206
+    },
+    {
+      "delta_A": 0.07,
+      "D95_offset_um": -908.14282442267,
+      "RMS_offset_um": -840.0441046188682,
+      "D95_at_waist_nm": 11.088546384438667,
+      "D95_at_surface_nm": 17.23029656922291
+    }
+  ],
+  "method": "Gun held for proposal only. Axial offset of the weighted D95 minimum from the upper surface, using local slopes. Independent nonlinear re-solve, source launch and two-sided native focus check required."
+}

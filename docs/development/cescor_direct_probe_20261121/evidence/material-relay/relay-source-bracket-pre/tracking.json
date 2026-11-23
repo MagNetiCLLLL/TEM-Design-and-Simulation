@@ -1,0 +1,317 @@
+{
+  "count": 1024,
+  "surface_z_mm": 1599.1999974999999,
+  "surface": {
+    "D95_um": 0.0054215618713912206,
+    "RMS_radius_um": 0.0015345279774337216,
+    "axis_50nm_nA": 15000.0,
+    "axis_50pm_pA": 29296.875,
+    "centroid_um": [
+      -1.9152970519987633e-06,
+      -2.2661668697214e-06
+    ],
+    "alpha95_mrad": 0.0050739717266063316,
+    "largest_sampled_angle_mrad": 0.008048784206619983,
+    "specimen_uA": 15.0,
+    "count": 1024
+  },
+  "waists_mm": [
+    524.0672241016932,
+    787.2040965024165,
+    1221.1719334940321
+  ],
+  "principal_waists_mm": [
+    [
+      524.0680890185268,
+      787.2049730409822,
+      1221.1732615086817
+    ],
+    [
+      524.0663653522251,
+      787.2032254366272,
+      1221.1706075777731
+    ]
+  ],
+  "surface_radial_cov_um_mrad": -1.56370515541357e-07,
+  "focus_profile": [
+    {
+      "z_mm": 1599.0,
+      "D95_um": 0.006116519967396407,
+      "rms_um": 0.0016568102187917157,
+      "core_50nm_nA": 15000.0,
+      "core_50pm_pA": 0.0
+    },
+    {
+      "z_mm": 1599.1999974999999,
+      "D95_um": 0.0054215618713912206,
+      "rms_um": 0.0015345279774337216,
+      "core_50nm_nA": 15000.0,
+      "core_50pm_pA": 29296.875
+    }
+  ],
+  "gun_source": "F:\\tem_simulator_v2\\outputs\\material-relay-20261122\\common-gun-d68b08d5271c6014b6d20065a89c76004d9c97b1e5ea0db67b4146fc5a9d8e88.npz",
+  "finite_source_effective": 1024.0,
+  "operational_fronts": [
+    {
+      "z_mm": 1444.6258381703703,
+      "checked_z_mm": 1444.6283604284001,
+      "canonical_D_singular": [
+        3.237945737854377e-05,
+        3.237945737854377e-05
+      ],
+      "B_singular_mm": [
+        77.89690571239299,
+        77.89690571239298
+      ]
+    }
+  ],
+  "field": {
+    "bias": {
+      "probe_hp1_hexapole": 16.0,
+      "probe_hp2_hexapole": 70.0,
+      "probe_hpol_hexapole_x": -5.0,
+      "probe_hpol_hexapole_y": -2.71705,
+      "probe_tl21_lens": 330.0,
+      "probe_tl22_lens": -145.0,
+      "condenser_lens_1/physical-pack-0": -30.0,
+      "condenser_lens_2/physical-pack-1": 16.0,
+      "condenser_lens_3/physical-pack-2": 6.9693644605429,
+      "mini_condenser/physical-pack-3": 158.95774026823455,
+      "objective_lens/physical-pack-4": -0.281961077568205,
+      "objective_lens/physical-pack-5": -0.281961077568205,
+      "diffraction_lens/physical-pack-6": 28.96289606194065,
+      "intermediate_lens/physical-pack-7": 0.06188894277520134,
+      "projector_lens_1/physical-pack-8": 32.8252695494996,
+      "projector_lens_2/physical-pack-9": 7.514137300316783,
+      "ac/0/x": 0.0,
+      "ac/0/y": 0.0,
+      "ac/1/x": 0.0,
+      "ac/1/y": 0.0,
+      "adapter_lens": 10.0,
+      "probe_tl12_lens": -48.54951126302699
+    },
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "peak_relative_Taylor_error": 8.44780763457354e-08,
+    "field_check_n": 95,
+    "order1_vs_4_peak_absolute_T": 0.00033890199953920305,
+    "check_peak_induced_T": 0.08200045801395843,
+    "local_radius_m": 5e-05,
+    "step_mm": 0.5,
+    "quadrature": 4,
+    "source": "global-e48d3aeeb6110009.npz",
+    "solution_sha256": "ca24b78403867afb888c917f0d1981bfeebe9b473df9c3f17e4eefbee62b24e3",
+    "response_sha256": null,
+    "channel": "dc",
+    "evaluator": "quadratic-bore-c3-dc-v1"
+  },
+  "sha": "982b8e2bf6dec2f3f84d17933701801dc19ce4dfa8ecc688186c641ec0e257d7",
+  "AC_command_static": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "step_mm": 0.075,
+  "bore_spline_sampling_mm": 0.125,
+  "isolated_pair_fronts": [
+    {
+      "z_mm": 1444.813840412891,
+      "checked_z_mm": 1444.778357165,
+      "canonical_D_singular": [
+        0.0004570018533497281,
+        0.0004570018533497281
+      ],
+      "B_singular_mm": [
+        77.64342503022989,
+        77.64342503022989
+      ]
+    }
+  ],
+  "pair": {
+    "bias": {
+      "probe_hp1_hexapole": 0.0,
+      "probe_hp2_hexapole": 0.0,
+      "probe_hpol_hexapole_x": 0.0,
+      "probe_hpol_hexapole_y": 0.0,
+      "probe_tl21_lens": 0.0,
+      "probe_tl22_lens": 0.0,
+      "condenser_lens_1/physical-pack-0": 0.0,
+      "condenser_lens_2/physical-pack-1": 0.0,
+      "condenser_lens_3/physical-pack-2": 0.0,
+      "mini_condenser/physical-pack-3": 158.95774026823455,
+      "objective_lens/physical-pack-4": -0.281961077568205,
+      "objective_lens/physical-pack-5": -0.281961077568205,
+      "diffraction_lens/physical-pack-6": 0.0,
+      "intermediate_lens/physical-pack-7": 0.0,
+      "projector_lens_1/physical-pack-8": 0.0,
+      "projector_lens_2/physical-pack-9": 0.0,
+      "ac/0/x": 0.0,
+      "ac/0/y": 0.0,
+      "ac/1/x": 0.0,
+      "ac/1/y": 0.0,
+      "adapter_lens": 0.0,
+      "probe_tl12_lens": 0.0
+    },
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "peak_relative_Taylor_error": 1.7223958424669942e-07,
+    "field_check_n": 95,
+    "order1_vs_4_peak_absolute_T": 1.4415477811490994e-05,
+    "check_peak_induced_T": 0.04022810326623745,
+    "local_radius_m": 5e-05,
+    "step_mm": 0.5,
+    "quadrature": 4,
+    "source": "global-72a73d5c1c41352b.npz",
+    "solution_sha256": "11e0cb1228e4ea5f9ee47cba10571f60dc0e61c5dd41fcf34f1f81308b205dcc",
+    "response_sha256": null,
+    "channel": "dc",
+    "evaluator": "quadratic-bore-c3-dc-v1"
+  },
+  "pivot": {
+    "command_urad": 1.0,
+    "mix": [
+      [
+        -1.2371672689182112,
+        0.05158106851595135
+      ],
+      [
+        -0.02597572486210904,
+        -1.2407130345930144
+      ],
+      [
+        1.7897035928247347,
+        -0.01005300259224371
+      ],
+      [
+        -0.012882004695709746,
+        2.058049631007763
+      ]
+    ],
+    "candidates": [
+      {
+        "z_mm": 1444.8104480622098,
+        "axis_minima_mm": [
+          1444.8105175770086,
+          1444.8103785473984
+        ],
+        "position_nm_per_urad": [
+          [
+            -6.951333544752602e-05,
+            0.0003543980621540671
+          ],
+          [
+            -0.0002277599417131133,
+            6.95165381274055e-05
+          ]
+        ],
+        "tilt_urad_per_urad": [
+          [
+            0.9999996583568429,
+            -5.073257285115172e-06
+          ],
+          [
+            6.748141312295147e-06,
+            1.0000016736350283
+          ]
+        ],
+        "position_singular_nm_per_urad": [
+          0.0003851089430406551,
+          0.00019704906083533482
+        ],
+        "tilt_singular_urad_per_urad": [
+          1.000001976221657,
+          0.9999993558051505
+        ]
+      }
+    ],
+    "front_focus_response": {
+      "position_nm_per_urad": [
+        [
+          0.0033228272841417067,
+          0.00035438082229331266
+        ],
+        [
+          -0.00022773678608305553,
+          0.0034618619488152548
+        ]
+      ],
+      "tilt_urad_per_urad": [
+        [
+          0.999994409623475,
+          -5.090813962162359e-06
+        ],
+        [
+          6.903637857077184e-06,
+          0.999995219209788
+        ]
+      ],
+      "position_singular_nm_per_urad": [
+        0.0034988416609738936,
+        0.003310774253142258
+      ],
+      "tilt_singular_urad_per_urad": [
+        0.9999958071279804,
+        0.9999938217412493
+      ]
+    },
+    "physical_A_per_command_urad": [
+      [
+        7.408389353029722e-07,
+        3.386669662659109e-05
+      ],
+      [
+        -4.92521583352277e-05,
+        2.0739282601532547e-06
+      ],
+      [
+        3.78529668260106e-07,
+        -5.741158550663852e-05
+      ],
+      [
+        7.167733265831192e-05,
+        -3.8847505581835543e-07
+      ]
+    ],
+    "full_rank_at_surface": {
+      "position_nm_per_urad": [
+        [
+          54.131561489652995,
+          -52.27218329877942
+        ],
+        [
+          52.12122163178655,
+          54.409449684410795
+        ]
+      ],
+      "tilt_urad_per_urad": [
+        [
+          -0.10084121324160494,
+          -0.09784954303812435
+        ],
+        [
+          0.0965443046088001,
+          -0.0995057972712601
+        ]
+      ],
+      "position_singular_nm_per_urad": [
+        75.45608774080699,
+        75.13984215002823
+      ],
+      "tilt_singular_urad_per_urad": [
+        0.14051151233748943,
+        0.13864416577853553
+      ]
+    },
+    "current_A": 1.5e-05,
+    "even_max_position_nm": 9.288617490984321e-06,
+    "specimen_surviving": 1024,
+    "sampled_mm": [
+      1420.0,
+      1599.1999974999999
+    ],
+    "target_mm": 1444.813840412891,
+    "new_calibration": false,
+    "signed_commands_from_source": false,
+    "application": "Signed 1 microradian X and Y commands",
+    "mix_parent": "F:\\tem_simulator_v2\\docs\\development\\cescor_direct_probe_20261121\\evidence\\material-relay\\relay-before-final-focus\\scan-calibration.json"
+  }
+}
