@@ -1,0 +1,182 @@
+{
+  "50": {
+    "upstream_face": {
+      "count": 1785,
+      "current_uA": 0.48431396484375
+    },
+    "bore_wall": {
+      "count": 734,
+      "current_uA": 0.18436431884765625
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      14.000466728971281,
+      18.807246583501783
+    ],
+    "entrance": {
+      "arriving_count": 98382,
+      "arriving_uA": 5.7881927490234375,
+      "maximum_arrival_radius_mm": 4.462821878696483,
+      "bore_wall_group_entry_radius_mm": [
+        3.7994399097274623,
+        3.999811833223319
+      ],
+      "bore_wall_group_outward_angle_deg": [
+        19.75585001530507,
+        21.957356735685245
+      ]
+    }
+  },
+  "500": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 2840,
+      "current_uA": 0.7531356811523438
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      14.960701609114393,
+      18.09727172021721
+    ]
+  },
+  "1000": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 4200,
+      "current_uA": 1.0862445831298828
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      16.25518129510816,
+      20.144826130694142
+    ]
+  },
+  "1200": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 4247,
+      "current_uA": 1.097574234008789
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      16.681660306435205,
+      20.562998466986325
+    ],
+    "entrance": {
+      "arriving_count": 98391,
+      "arriving_uA": 5.79071044921875,
+      "maximum_arrival_radius_mm": 3.3565541401021792,
+      "bore_wall_group_entry_radius_mm": [
+        2.948676313542497,
+        3.3565541401021792
+      ],
+      "bore_wall_group_outward_angle_deg": [
+        13.979228359429868,
+        15.928532362906367
+      ]
+    }
+  },
+  "1500": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 4156,
+      "current_uA": 1.0758304595947266
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      17.275523000517737,
+      21.073311878419368
+    ]
+  },
+  "1800": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 3978,
+      "current_uA": 1.033029556274414
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      17.819664933125903,
+      21.447454435731405
+    ]
+  },
+  "2000": {
+    "upstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "bore_wall": {
+      "count": 3840,
+      "current_uA": 0.9996128082275391
+    },
+    "downstream_face": {
+      "count": 0,
+      "current_uA": 0.0
+    },
+    "first_bore_wall_strike_z_range_mm": [
+      18.16546691784619,
+      21.713346830741603
+    ]
+  },
+  "matched_face_to_wall": {
+    "count": 1785,
+    "current_uA": 0.48431396484375,
+    "plotted_ids": [
+      101,
+      670,
+      325,
+      637,
+      478,
+      678,
+      69
+    ],
+    "example_id": 637,
+    "example_entry_r_mm": {
+      "50": 4.266794078791523,
+      "1200": 3.2868757181185586
+    },
+    "example_first_hit_zr_mm": {
+      "50": [
+        14.000000000000002,
+        4.266794078791523
+      ],
+      "1200": [
+        17.087280022734078,
+        4.0
+      ]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "pair_field": "global-b57b6e58df0c259f.npz",
+  "full_field": "global-4efbde5f244b4eb3.npz",
+  "excitation": {
+    "probe_hp1_hexapole": 0.0,
+    "probe_hp2_hexapole": 0.0,
+    "probe_hpol_hexapole_x": 0.0,
+    "probe_hpol_hexapole_y": 0.0,
+    "probe_tl21_lens": 0.0,
+    "probe_tl22_lens": 0.0,
+    "condenser_lens_1/physical-pack-0": 0.0,
+    "condenser_lens_2/physical-pack-1": 0.0,
+    "condenser_lens_3/physical-pack-2": 0.0,
+    "mini_condenser/physical-pack-3": 226.70154583016074,
+    "objective_lens/physical-pack-4": -1.19,
+    "objective_lens/physical-pack-5": -1.19,
+    "diffraction_lens/physical-pack-6": 0.0,
+    "intermediate_lens/physical-pack-7": 0.0,
+    "projector_lens_1/physical-pack-8": 0.0,
+    "projector_lens_2/physical-pack-9": 0.0,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": 0.0,
+    "probe_tl12_lens": 0.0
+  },
+  "all_fronts": [
+    {
+      "z_mm": 1479.8223465364856,
+      "checked_z_mm": 1479.8041535497,
+      "canonical_D_singular": [
+        0.00041844662290327675,
+        0.0004184466229032767
+      ],
+      "B_singular_mm": [
+        43.4630456818976,
+        43.4630456818976
+      ]
+    }
+  ],
+  "definition": "Canonical outgoing angular response D=0 at the specimen upper surface. Incident propagation includes only the jointly solved Mini and series objective excitation."
+}

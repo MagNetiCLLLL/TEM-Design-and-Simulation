@@ -164,6 +164,14 @@ class Circuit:
                 for lam in .5**np.arange(18):
                     trial=u+lam*du
                     new=self.assemble(trial,h,"energy")
+                    # Near a B-H interpolation knot, two Newton iterates can have
+                    # indistinguishable total energy but different field residuals.
+                    # Use residual descent to resolve the line search at that scale.
+                    if residual < 1e-4 and abs(new-energy)<=2e-13*max(abs(energy),1e-30):
+                        rr,_=self.assemble(trial,h,"residual")
+                        if float(cp.linalg.norm(rr)) < (1-1e-4*lam)*residual*scale:
+                            u=trial;break
+                        continue
                     if new<=energy+1e-4*lam*descent:
                         u=trial;break
                     if abs(new-energy)<=2e-13*max(abs(energy),1e-30):

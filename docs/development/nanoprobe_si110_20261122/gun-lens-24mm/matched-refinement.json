@@ -1,0 +1,78 @@
+{
+  "lens_kV": 0.01713,
+  "field_sha256": "a76593827f4d6305244f225ace4073332c4cafe82df3c908cc1e7b69c5a9c4cd",
+  "grid_shape": [
+    409,
+    3632
+  ],
+  "trace_step_mm": 0.1,
+  "number_original": 1024,
+  "first_id": 0,
+  "last_id": 1023,
+  "represented_current_uA": 0.9375,
+  "planes": [
+    {
+      "z_mm": 23.9,
+      "rms_radius_nm": 4.232229930298509,
+      "D95_nm": 15.58417290102607,
+      "alpha95_urad": 70.4295339344489,
+      "rms_envelope_slope_urad": -38.799703418299856
+    },
+    {
+      "z_mm": 23.975,
+      "rms_radius_nm": 1.484423194627772,
+      "D95_nm": 5.282775740288817,
+      "alpha95_urad": 69.59244701764719,
+      "rms_envelope_slope_urad": -30.948366842875632
+    },
+    {
+      "z_mm": 24.0,
+      "rms_radius_nm": 0.9331503089130404,
+      "D95_nm": 3.1771542499374417,
+      "alpha95_urad": 69.31393596347047,
+      "rms_envelope_slope_urad": -7.9797069751239365
+    },
+    {
+      "z_mm": 24.01,
+      "rms_radius_nm": 0.9352280593699643,
+      "D95_nm": 3.212506628340826,
+      "alpha95_urad": 69.20302089863911,
+      "rms_envelope_slope_urad": 8.363990023955417
+    },
+    {
+      "z_mm": 24.025,
+      "rms_radius_nm": 1.2046638857883971,
+      "D95_nm": 4.1445070031890845,
+      "alpha95_urad": 69.0375155595639,
+      "rms_envelope_slope_urad": 25.391364700049692
+    },
+    {
+      "z_mm": 24.075,
+      "rms_radius_nm": 2.874167644429903,
+      "D95_nm": 10.018137617879946,
+      "alpha95_urad": 68.49322723859733,
+      "rms_envelope_slope_urad": 36.63959949118216
+    },
+    {
+      "z_mm": 24.1,
+      "rms_radius_nm": 3.800737166777864,
+      "D95_nm": 13.31417840008607,
+      "alpha95_urad": 68.22526907904161,
+      "rms_envelope_slope_urad": 37.36383689143099
+    },
+    {
+      "z_mm": 26.0,
+      "rms_radius_nm": 67.77498910007178,
+      "D95_nm": 239.43318761181166,
+      "alpha95_urad": 52.82459627682147,
+      "rms_envelope_slope_urad": 29.7996794142195
+    },
+    {
+      "z_mm": 450.0,
+      "rms_radius_nm": 2940.650458902807,
+      "D95_nm": 10423.371810493381,
+      "alpha95_urad": 94.72587079892772,
+      "rms_envelope_slope_urad": -11.195444652330188
+    }
+  ]
+}

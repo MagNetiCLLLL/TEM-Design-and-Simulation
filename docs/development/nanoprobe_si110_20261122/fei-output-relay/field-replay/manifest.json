@@ -1,0 +1,29 @@
+{
+  "material_field": {
+    "sha256": "03c48de09d7cb6d9e47a0099d9fb35d258815b99e903c72d87aa69d7b766baf1",
+    "destination": "outputs/material-relay-20261122/global-3ac89f2d186bbf5c.npz"
+  },
+  "archives": {
+    "anode-mesh15-50V.npz": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+    "global-3ac89f2d186bbf5c-column-2880um-nested.npz": "0d0ad75d7606ab53077e442f0d22ff0ec2026203b2a07e596c87abc685cee667",
+    "global-3ac89f2d186bbf5c-fei-output-full-axis.npz": "f92470fdf19565dac9189edb8f237fcc51c46566212f25ce8f0fd7134588befb",
+    "global-3ac89f2d186bbf5c-fei-scan-column-axis0.npz": "f6894f2846cb866a2851fed9feacced6c3a520e1d9420797a76e1dc05e782523",
+    "global-3ac89f2d186bbf5c-fei-scan-column-axis1.npz": "20fe1ccc07449ed09976e5817765d4ecbc88a3139ac03eb593efe13f2b364aee",
+    "global-3ac89f2d186bbf5c-fei-scan-gun-axis0.npz": "372a60b81ff3c42dfcdb54e128c0bd23b4547e45e5efd07b65ebab9815e7149a",
+    "global-3ac89f2d186bbf5c-fei-scan-gun-axis1.npz": "d0ba62551b0605080543265ee2f4e92ceac473029eb9c18a6aa269eb8ac1a366",
+    "global-3ac89f2d186bbf5c-gun.npz": "6dd19f750f0281762f559f7976da4d911b9c07ced713e02cf3b5f650fb6565db",
+    "material-mesh.npz": "f6a71ca6a0139f257c2fe515f4840b346c3691e663c489a88250bb3b16e3985f",
+    "material-state.npz": "98ac2d616e446936d3fed21457625822bec047a6441317749f49a762a86023f9"
+  },
+  "tracking_tables": {
+    "global-3ac89f2d186bbf5c-gun.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-gun.npz",
+    "global-3ac89f2d186bbf5c-column-2880um-nested.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-column-2880um-nested.npz",
+    "global-3ac89f2d186bbf5c-fei-scan-column-axis0.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-fei-scan-column-axis0.npz",
+    "global-3ac89f2d186bbf5c-fei-scan-column-axis1.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-fei-scan-column-axis1.npz",
+    "global-3ac89f2d186bbf5c-fei-scan-gun-axis0.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-fei-scan-gun-axis0.npz",
+    "global-3ac89f2d186bbf5c-fei-scan-gun-axis1.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-fei-scan-gun-axis1.npz",
+    "global-3ac89f2d186bbf5c-fei-output-full-axis.npz": "outputs/fei-condenser-20261123/global-3ac89f2d186bbf5c-fei-output-full-axis.npz",
+    "anode-mesh15-50V.npz": "outputs/fei-gun-acceptance-20261123/anode-mesh15-50V.npz"
+  },
+  "restoration": "Run restore_checkpoint.py in the parent directory. The SHA-256 of the reconstructed native 3D FEM volume was checked against the original."
+}

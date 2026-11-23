@@ -1,0 +1,41 @@
+{
+  "lens_kV": 5.2,
+  "field_sha256": "70f1ea92b62990e08f25aec1f4acc27106515a6f1c02e9b2b038362a2e70755a",
+  "cells_per_bore": 16,
+  "grid_shape": [
+    313,
+    2737
+  ],
+  "trace_step_mm": 0.2,
+  "step_factor": 1.0,
+  "emission_energy_eV": 0.3,
+  "angular_checks": [
+    {
+      "perturbation_urad": 0.5,
+      "roots_x": [],
+      "roots_y": [],
+      "foil_separation_nm": [
+        0.2593871193912989,
+        0.2593871193912994
+      ]
+    },
+    {
+      "perturbation_urad": 1.0,
+      "roots_x": [],
+      "roots_y": [],
+      "foil_separation_nm": [
+        0.5187742387824046,
+        0.5187742387824062
+      ]
+    },
+    {
+      "perturbation_urad": 2.0,
+      "roots_x": [],
+      "roots_y": [],
+      "foil_separation_nm": [
+        1.0375484775632737,
+        1.0375484775632766
+      ]
+    }
+  ]
+}

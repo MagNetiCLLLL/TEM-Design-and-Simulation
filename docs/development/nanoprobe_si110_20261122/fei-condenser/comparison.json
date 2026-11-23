@@ -1,0 +1,722 @@
+{
+  "waist_windows_mm": [
+    [
+      450,
+      650
+    ],
+    [
+      750,
+      830
+    ],
+    [
+      1179.1,
+      1237.2
+    ],
+    [
+      1420,
+      1512.5
+    ]
+  ],
+  "operating_points": {
+    "before": {
+      "C1_A": -36.0,
+      "C2_A": 17.72155,
+      "originals": 262144,
+      "specimen_primaries": 1283,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.27633637888357043,
+        "reverse": 0.0,
+        "extractor": 9.349708557128906,
+        "electrostatic_lens": 0.6722259521484375,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.00011444091796875,
+        "accelerator:3": 0.015163421630859375,
+        "accelerator:4": 0.005650520324707031,
+        "accelerator:5": 0.0048923492431640625,
+        "accelerator:6": 0.0033617019653320312,
+        "accelerator:7": 0.005993843078613281,
+        "accelerator:8": 0.0008869171142578125,
+        "accelerator:9": 0.0021886825561523438,
+        "grounded_outlet:14": 0.09439945220947266,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.044002532958984375,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.005850791931152344,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3673124313354492,
+        "exit_anode": 0.014133453369140625,
+        "C1_aperture": 2.1401712228544056,
+        "accelerator_bore": 1.6689205169677734,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32868683338165283
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.7633637888357044e-07,
+        "C2_entrance_A": 2.7633637888357044e-07,
+        "C2_exit_A": 6.228145910426974e-08,
+        "specimen_A": 1.686629606410861e-08,
+        "intercepted_A": {
+          "@vacuum_drift:column:c3_probecorrector": 8.58306884765625e-11,
+          "@vacuum_tube:c1_c2_to_upper_objective": 4.763603210449219e-09,
+          "condenser_aperture_2": 2.140549197793007e-07,
+          "objective_lens": 4.056572914123535e-08
+        }
+      },
+      "D95_um": 3387.1233291312183,
+      "specimen_nA": 16.86629606410861,
+      "alpha95_mrad": 60.4909090616611,
+      "aperture_rim": {
+        "count": 119,
+        "max_radius_um": 49.98259177885044,
+        "angle_range_mrad": [
+          4.216106230871829,
+          49.13529867331197
+        ],
+        "median_mrad": 33.23413928704727,
+        "percentile95_mrad": 42.044877924147784
+      },
+      "positive_radial_current_fraction": 0.9999995858652496,
+      "live_waists_mm": [
+        506.1360854273989,
+        749.298862600137,
+        1147.93043073201,
+        1304.7647139081103,
+        1573.8072653442364
+      ],
+      "waist_counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "outside_windows_mm": [
+        749.298862600137,
+        1147.93043073201,
+        1304.7647139081103,
+        1573.8072653442364
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1573.0,
+        523.1794666891823
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 44.513980587144516,
+      "field_receipt_residual": 9.236657811916143e-09,
+      "solution": "global-1b213a3155920907",
+      "field_sha256": "32f70953fc6a9fb0a4f080f9ab48a9f353ad346c738e75b07d2ab4064c788e67"
+    },
+    "upper-relay-512k": {
+      "C1_A": -34.0,
+      "C2_A": 9.0,
+      "originals": 524288,
+      "specimen_primaries": 563,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.27371791773475707,
+        "reverse": 0.0,
+        "extractor": 9.353141784667969,
+        "electrostatic_lens": 0.6687355041503906,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.00011444091796875,
+        "accelerator:3": 0.013189315795898438,
+        "accelerator:4": 0.006022453308105469,
+        "accelerator:5": 0.0048923492431640625,
+        "accelerator:6": 0.003325939178466797,
+        "accelerator:7": 0.0050640106201171875,
+        "accelerator:8": 0.0011944770812988281,
+        "accelerator:9": 0.002052783966064453,
+        "grounded_outlet:14": 0.0925898551940918,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.046977996826171875,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.008282661437988281,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3669548034667969,
+        "exit_anode": 0.013875961303710938,
+        "C1_aperture": 2.1375960332807153,
+        "accelerator_bore": 1.6736483573913574,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32862335443496704
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.737179177347571e-07,
+        "C2_entrance_A": 2.737179177347571e-07,
+        "C2_exit_A": 1.6651705373078584e-08,
+        "specimen_A": 1.6651705373078584e-08,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.570662123616785e-07
+        }
+      },
+      "D95_um": 476.54422527266496,
+      "specimen_nA": 16.651705373078585,
+      "alpha95_mrad": 8.915637108578485,
+      "aperture_rim": {
+        "count": 13,
+        "max_radius_um": 49.339970739700135,
+        "angle_range_mrad": [
+          2.655991274973318,
+          8.864033482184318
+        ],
+        "median_mrad": 3.4476684471363486,
+        "percentile95_mrad": 8.864033482184318
+      },
+      "positive_radial_current_fraction": 0.9884024461912179,
+      "live_waists_mm": [
+        507.459100564011,
+        768.6165333837812,
+        1229.5529252513695,
+        1572.443480783386
+      ],
+      "waist_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1572.443480783386
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1572.0,
+        39.23377262990498
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 4.558026227886962,
+      "field_receipt_residual": 4.762799902604972e-10,
+      "solution": "global-b7e03e3ec2da7af4",
+      "field_sha256": "353de877a712e74940ded30ec5948ecd0d0bd0ba8017796a7429306374deffc0"
+    },
+    "size-1m": {
+      "C1_A": -30.0,
+      "C2_A": 6.25,
+      "originals": 1048576,
+      "specimen_primaries": 306,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.27090188465081155,
+        "reverse": 0.0,
+        "extractor": 9.35342788696289,
+        "electrostatic_lens": 0.6690323352813721,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.000171661376953125,
+        "accelerator:3": 0.013318061828613281,
+        "accelerator:4": 0.005643367767333984,
+        "accelerator:5": 0.004813671112060547,
+        "accelerator:6": 0.0036084651947021484,
+        "accelerator:7": 0.004427433013916016,
+        "accelerator:8": 0.001341104507446289,
+        "accelerator:9": 0.0022101402282714844,
+        "grounded_outlet:14": 0.09234309196472168,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.04800036549568176,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.010109692811965942,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3674483299255371,
+        "exit_anode": 0.013446807861328125,
+        "C1_aperture": 2.1371406654361635,
+        "accelerator_bore": 1.6743528842926025,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.3282621502876282
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.7090188465081155e-07,
+        "C2_entrance_A": 2.7090188465081155e-07,
+        "C2_exit_A": 3.4972355933859946e-09,
+        "specimen_A": 3.4972355933859946e-09,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.6740464905742555e-07
+        }
+      },
+      "D95_um": 405.0967632858692,
+      "specimen_nA": 3.4972355933859944,
+      "alpha95_mrad": 7.636329701225546,
+      "aperture_rim": {
+        "count": 14,
+        "max_radius_um": 49.81701387448034,
+        "angle_range_mrad": [
+          1.9932789854480664,
+          5.083649885826784
+        ],
+        "median_mrad": 2.616427217686808,
+        "percentile95_mrad": 4.754610895210621
+      },
+      "positive_radial_current_fraction": 1.0,
+      "live_waists_mm": [
+        514.2004692590151,
+        1224.4130138947985,
+        1270.5048880465254,
+        1572.8413312451157
+      ],
+      "waist_counts": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1270.5048880465254,
+        1572.8413312451157
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1573.0,
+        29.34880848333554
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 3.5644222403721684,
+      "field_receipt_residual": 5.915286010256472e-12,
+      "solution": "global-efbabd31c596a0d1",
+      "field_sha256": "6bca1a0b63d8229d761f236a8c6df832e66bf113bc9d3b33031fe12025cd6e27"
+    },
+    "angle-control": {
+      "C1_A": -38.0,
+      "C2_A": 13.75,
+      "originals": 262144,
+      "specimen_primaries": 887,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.2794307260774076,
+        "reverse": 0.0,
+        "extractor": 9.349708557128906,
+        "electrostatic_lens": 0.6722259521484375,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.00011444091796875,
+        "accelerator:3": 0.014820098876953125,
+        "accelerator:4": 0.005650520324707031,
+        "accelerator:5": 0.0048923492431640625,
+        "accelerator:6": 0.0033617019653320312,
+        "accelerator:7": 0.005879402160644531,
+        "accelerator:8": 0.0006580352783203125,
+        "accelerator:9": 0.0024175643920898438,
+        "grounded_outlet:14": 0.0936269760131836,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.04261493682861328,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.004792213439941406,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.36742687225341797,
+        "exit_anode": 0.014247894287109375,
+        "C1_aperture": 2.140524408314377,
+        "accelerator_bore": 1.6684627532958984,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32914459705352783
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.794307260774076e-07,
+        "C2_entrance_A": 2.794307260774076e-07,
+        "C2_exit_A": 4.5533410739153627e-08,
+        "specimen_A": 4.5418969821184875e-08,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.3389731533825398e-07,
+          "objective_lens": 1.1444091796875e-10
+        }
+      },
+      "D95_um": 1720.904220871458,
+      "specimen_nA": 45.418969821184874,
+      "alpha95_mrad": 32.922564927740694,
+      "aperture_rim": {
+        "count": 58,
+        "max_radius_um": 49.96014688563236,
+        "angle_range_mrad": [
+          3.0225853256469506,
+          40.953622440605635
+        ],
+        "median_mrad": 5.846185857045098,
+        "percentile95_mrad": 40.953622440605635
+      },
+      "positive_radial_current_fraction": 1.0,
+      "live_waists_mm": [
+        502.1591841006334,
+        766.6712824849855,
+        1207.9211642111904,
+        1298.1884918614392,
+        1573.967113824987
+      ],
+      "waist_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1298.1884918614392,
+        1573.967113824987
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1574.5,
+        117.25571258445456
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 17.91933748105582,
+      "field_receipt_residual": 9.976920004116066e-11,
+      "solution": "global-7bf662a4cd7cb231",
+      "field_sha256": "3d0a34c21101a55a2e6069f83b2a57d153b283bfb4abdd3d9241f18df43594b0"
+    },
+    "rim-control": {
+      "C1_A": -33.25,
+      "C2_A": 14.5,
+      "originals": 262144,
+      "specimen_primaries": 568,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.2733858162537217,
+        "reverse": 0.0,
+        "extractor": 9.349708557128906,
+        "electrostatic_lens": 0.6722259521484375,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.00011444091796875,
+        "accelerator:3": 0.015048980712890625,
+        "accelerator:4": 0.005536079406738281,
+        "accelerator:5": 0.0050067901611328125,
+        "accelerator:6": 0.0033617019653320312,
+        "accelerator:7": 0.005993843078613281,
+        "accelerator:8": 0.0008869171142578125,
+        "accelerator:9": 0.0020742416381835938,
+        "grounded_outlet:14": 0.0945425033569336,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.04414558410644531,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.0084686279296875,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3673124313354492,
+        "exit_anode": 0.014133453369140625,
+        "C1_aperture": 2.1396456426009536,
+        "accelerator_bore": 1.6692638397216797,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32914459705352783
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.7338581625372174e-07,
+        "C2_entrance_A": 2.7338581625372174e-07,
+        "C2_exit_A": 2.719653071835637e-08,
+        "specimen_A": 2.719653071835637e-08,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.4618928553536533e-07
+        }
+      },
+      "D95_um": 1405.4667221773093,
+      "specimen_nA": 27.19653071835637,
+      "alpha95_mrad": 27.26398223131834,
+      "aperture_rim": {
+        "count": 32,
+        "max_radius_um": 49.8270588654376,
+        "angle_range_mrad": [
+          1.1356404220855953,
+          34.94393803979369
+        ],
+        "median_mrad": 4.716859778606139,
+        "percentile95_mrad": 34.94393803979369
+      },
+      "positive_radial_current_fraction": 1.0,
+      "live_waists_mm": [
+        510.14942583196085,
+        768.1009839782856,
+        1211.5186233157829,
+        1297.0563224326115,
+        1573.959734132757
+      ],
+      "waist_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1297.0563224326115,
+        1573.959734132757
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1574.5,
+        107.71657265611758
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 15.269957917264811,
+      "field_receipt_residual": 4.7795309853331314e-12,
+      "solution": "global-e1cc25e234c9a796",
+      "field_sha256": "30c8f1f62286f81f074dfd03e650e57356c3e6cdcb4e4c3096e38a2b3e068b96"
+    },
+    "angle-balance": {
+      "C1_A": -33.25,
+      "C2_A": 14.75,
+      "originals": 524288,
+      "specimen_primaries": 1344,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.272069372003898,
+        "reverse": 0.0,
+        "extractor": 9.353055953979492,
+        "electrostatic_lens": 0.6688213348388672,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.00011444091796875,
+        "accelerator:3": 0.013017654418945312,
+        "accelerator:4": 0.005908012390136719,
+        "accelerator:5": 0.004813671112060547,
+        "accelerator:6": 0.003383159637451172,
+        "accelerator:7": 0.0050640106201171875,
+        "accelerator:8": 0.0011944770812988281,
+        "accelerator:9": 0.002052783966064453,
+        "grounded_outlet:14": 0.09274005889892578,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.047664642333984375,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.008983612060546875,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3668975830078125,
+        "exit_anode": 0.013875961303710938,
+        "C1_aperture": 2.137513660127297,
+        "accelerator_bore": 1.6740703582763672,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32875925302505493
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.72069372003898e-07,
+        "C2_entrance_A": 2.72069372003898e-07,
+        "C2_exit_A": 3.1767259351909164e-08,
+        "specimen_A": 3.1767259351909164e-08,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.403021126519889e-07
+        }
+      },
+      "D95_um": 1689.6051974517052,
+      "specimen_nA": 31.76725935190916,
+      "alpha95_mrad": 32.2178765762914,
+      "aperture_rim": {
+        "count": 80,
+        "max_radius_um": 49.985112538774324,
+        "angle_range_mrad": [
+          2.0355670482009653,
+          41.295810353107356
+        ],
+        "median_mrad": 20.62470157828781,
+        "percentile95_mrad": 41.01454285675739
+      },
+      "positive_radial_current_fraction": 1.0,
+      "live_waists_mm": [
+        510.25960098789784,
+        767.3028619793166,
+        1207.6751198277846,
+        1299.5900524197002,
+        1574.048132534305
+      ],
+      "waist_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1299.5900524197002,
+        1574.048132534305
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1574.5,
+        119.40749782889552
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 17.44523372953266,
+      "field_receipt_residual": 1.645790038254789e-08,
+      "solution": "global-0cb944d7e386bcab",
+      "field_sha256": "ec4c5e83517930d928b6a0d8f7a3ddc22813e455f54053a4f8bb26ee9e9fff38"
+    },
+    "rim-1m": {
+      "C1_A": -33.25,
+      "C2_A": 15.0,
+      "originals": 1048576,
+      "specimen_primaries": 3375,
+      "gun_first_hit_uA": {
+        "gun_exit": 0.2732455119257793,
+        "reverse": 0.0,
+        "extractor": 9.35342788696289,
+        "electrostatic_lens": 0.6690323352813721,
+        "accelerator:0": 0.0,
+        "accelerator:1": 0.0,
+        "accelerator:2": 0.000171661376953125,
+        "accelerator:3": 0.013146400451660156,
+        "accelerator:4": 0.005643367767333984,
+        "accelerator:5": 0.004853010177612305,
+        "accelerator:6": 0.0035512447357177734,
+        "accelerator:7": 0.004398822784423828,
+        "accelerator:8": 0.0013124942779541016,
+        "accelerator:9": 0.0023567676544189453,
+        "grounded_outlet:14": 0.0923001766204834,
+        "grounded_outlet:15": 0.0,
+        "grounded_outlet:16": 0.047088414430618286,
+        "grounded_outlet:17": 0.0,
+        "grounded_outlet:18": 0.008579492568969727,
+        "grounded_outlet:19": 0.0,
+        "grounded_outlet:20": 0.0,
+        "grounded_outlet:21": 0.0,
+        "grounded_outlet_joint:0": 0.0,
+        "grounded_outlet_joint:1": 0.0,
+        "grounded_outlet_joint:2": 0.0,
+        "grounded_outlet_joint:3": 0.0,
+        "grounded_outlet_joint:4": 0.0,
+        "grounded_outlet_joint:5": 0.0,
+        "grounded_outlet_joint:6": 0.0,
+        "feg_emitter_enclosure": 0.0,
+        "feg_cathode_holder": 0.0,
+        "gun_aperture": 0.3674769401550293,
+        "exit_anode": 0.013475418090820312,
+        "C1_aperture": 2.1374931052559987,
+        "accelerator_bore": 1.6742527484893799,
+        "gun_deflector_bore": 0.0,
+        "gun_stigmator_bore": 0.0,
+        "outside_outlet_entrance": 0.32819420099258423
+      },
+      "column_first_hit_A": {
+        "gun_exit_A": 2.732455119257793e-07,
+        "C2_entrance_A": 2.732455119257793e-07,
+        "C2_exit_A": 3.943316813092679e-08,
+        "specimen_A": 3.943316813092679e-08,
+        "intercepted_A": {
+          "condenser_aperture_2": 2.338123437948525e-07
+        }
+      },
+      "D95_um": 2046.2834035833498,
+      "specimen_nA": 39.43316813092679,
+      "alpha95_mrad": 39.055033662103554,
+      "aperture_rim": {
+        "count": 192,
+        "max_radius_um": 49.99936572480197,
+        "angle_range_mrad": [
+          2.1666370977649474,
+          51.045301099984556
+        ],
+        "median_mrad": 30.611132122516246,
+        "percentile95_mrad": 47.46113045746255
+      },
+      "positive_radial_current_fraction": 1.0,
+      "live_waists_mm": [
+        510.4512954077158,
+        767.2174440818794,
+        1202.4933371776988,
+        1302.0353381777336,
+        1574.128005137231
+      ],
+      "waist_counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "outside_windows_mm": [
+        1302.0353381777336,
+        1574.128005137231
+      ],
+      "intermediate_windows_pass": false,
+      "upstream_min_D95_z_mm_and_value_um": [
+        1574.5,
+        132.57255693207946
+      ],
+      "sample_z_mm": 1599.1999975,
+      "sample_RMS_slope_mrad": 21.22837262125742,
+      "field_receipt_residual": 3.2828396537737217e-09,
+      "solution": "global-36784bded757dad8",
+      "field_sha256": "8ebde4d76d6341bfb92578186e184474d0196c0e36443b1c7b01d800fe9948d1"
+    }
+  },
+  "fixed_currents_A": {
+    "probe_hp1_hexapole": 16.0,
+    "probe_hp2_hexapole": 70.0,
+    "probe_hpol_hexapole_x": -5.0,
+    "probe_hpol_hexapole_y": -2.71705,
+    "probe_tl21_lens": 330.0,
+    "probe_tl22_lens": -145.0,
+    "condenser_lens_3/physical-pack-2": 6.472,
+    "mini_condenser/physical-pack-3": 226.70154583016074,
+    "objective_lens/physical-pack-4": -1.2434119980751728,
+    "objective_lens/physical-pack-5": -1.2434119980751728,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": 10.0,
+    "probe_tl12_lens": -95.14963537
+  },
+  "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "circuit_sha256": "ea1b693f87e957592c0dce4de25ee4068a32dfab24b3029fd051c6b5310a2ca0",
+  "geometry_and_sources_sha256": "8f8d49299ed86fa06f6ba10ddec01ee095f31938972337e06eecada32bc9827a"
+}

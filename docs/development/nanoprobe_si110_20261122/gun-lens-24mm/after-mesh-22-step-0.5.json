@@ -1,0 +1,95 @@
+{
+  "lens_kV": 0.01713,
+  "field_sha256": "a76593827f4d6305244f225ace4073332c4cafe82df3c908cc1e7b69c5a9c4cd",
+  "cells_per_bore": 22,
+  "grid_shape": [
+    409,
+    3632
+  ],
+  "trace_step_mm": 0.1,
+  "step_factor": 0.5,
+  "emission_energy_eV": 0.3,
+  "angular_checks": [
+    {
+      "perturbation_urad": 0.5,
+      "roots_x": [
+        {
+          "z_mm": 24.005105674398855,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.051563963215735e-07
+        }
+      ],
+      "roots_y": [
+        {
+          "z_mm": 24.005105674398852,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.0515639632159788e-07
+        }
+      ],
+      "foil_separation_nm": [
+        0.00014555633976047437,
+        0.0001455563397602947
+      ]
+    },
+    {
+      "perturbation_urad": 1.0,
+      "roots_x": [
+        {
+          "z_mm": 24.00510567455079,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.0509951250309037e-07
+        }
+      ],
+      "roots_y": [
+        {
+          "z_mm": 24.00510567455077,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.0509951251351273e-07
+        }
+      ],
+      "foil_separation_nm": [
+        0.00029111267957116144,
+        0.0002911126795700157
+      ]
+    },
+    {
+      "perturbation_urad": 2.0,
+      "roots_x": [
+        {
+          "z_mm": 24.005105677394898,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.0352797863820523e-07
+        }
+      ],
+      "roots_y": [
+        {
+          "z_mm": 24.00510567739489,
+          "bracket_mm": [
+            24.005,
+            24.01
+          ],
+          "opposite_ray_residual_nm_at_1urad": 1.0352797864148897e-07
+        }
+      ],
+      "foil_separation_nm": [
+        0.0005822254751074316,
+        0.0005822254751066135
+      ]
+    }
+  ]
+}

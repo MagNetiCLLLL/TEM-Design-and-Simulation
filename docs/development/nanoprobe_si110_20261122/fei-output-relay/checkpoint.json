@@ -1,0 +1,162 @@
+{
+  "saved_utc": "2026-11-23T23:40:32+00:00",
+  "mode": "Nanoprobe Normal",
+  "gun_lens_V": 50,
+  "extractor_V": 4000,
+  "independent_anode_V": 4000,
+  "gun_aperture_z_mm": 24,
+  "gun_aperture_diameter_mm": 4,
+  "total_emission_uA": 15,
+  "c2_aperture_diameter_um": 100,
+  "positive_source_particles_full_static": 1048576,
+  "tip_to_specimen_top_mm": 1599.1999975,
+  "scan_diagnostic_command_urad": [
+    -1,
+    1
+  ],
+  "scan_calibration": "../c1-zoom-focused/ac-pivot.json",
+  "stages": {
+    "starting": {
+      "field_file": "outputs/material-relay-20261122/global-b7e03e3ec2da7af4.npz",
+      "field_sha256": "353de877a712e74940ded30ec5948ecd0d0bd0ba8017796a7429306374deffc0",
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "material_regions": 94,
+      "field_residual": 4.762799902604972e-10,
+      "currents_A": {
+        "probe_hp1_hexapole": 16.0,
+        "probe_hp2_hexapole": 70.0,
+        "probe_hpol_hexapole_x": -5.0,
+        "probe_hpol_hexapole_y": -2.71705,
+        "probe_tl21_lens": 330.0,
+        "probe_tl22_lens": -145.0,
+        "condenser_lens_1/physical-pack-0": -34.0,
+        "condenser_lens_2/physical-pack-1": 9.0,
+        "condenser_lens_3/physical-pack-2": 6.472,
+        "mini_condenser/physical-pack-3": 226.70154583016074,
+        "objective_lens/physical-pack-4": -1.2434119980751728,
+        "objective_lens/physical-pack-5": -1.2434119980751728,
+        "diffraction_lens/physical-pack-6": 28.96289606194065,
+        "intermediate_lens/physical-pack-7": 0.06188894277520134,
+        "projector_lens_1/physical-pack-8": 32.8252695494996,
+        "projector_lens_2/physical-pack-9": 7.514137300316783,
+        "ac/0/x": 0.0,
+        "ac/0/y": 0.0,
+        "ac/1/x": 0.0,
+        "ac/1/y": 0.0,
+        "adapter_lens": 10.0,
+        "probe_tl12_lens": -95.14963537
+      },
+      "joint_front_mm": [
+        1479.6434553381393
+      ],
+      "installed_field_front_mm": [
+        1479.500598513116
+      ],
+      "signed_pivot_mm": 1423.0432878962527,
+      "sample_D95_um": 483.39564178202113,
+      "absolute_radial_waists_mm": [
+        507.5752989573823,
+        768.8199207759565,
+        1230.688384367452,
+        1572.4245371195354
+      ],
+      "available_files": [
+        "front.json",
+        "pivot-response.npz",
+        "pivot.json"
+      ]
+    },
+    "tl12_set": {
+      "field_file": "outputs/material-relay-20261122/global-0181022ecf14185b.npz",
+      "field_sha256": "4c6325327c20821a62759a05237675fd71d7fe20b25eaee361919ad5792caed1",
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "material_regions": 94,
+      "field_residual": 5.7223989902343626e-11,
+      "currents_A": {
+        "probe_hp1_hexapole": 16.0,
+        "probe_hp2_hexapole": 70.0,
+        "probe_hpol_hexapole_x": -5.0,
+        "probe_hpol_hexapole_y": -2.71705,
+        "probe_tl21_lens": 330.0,
+        "probe_tl22_lens": -145.0,
+        "condenser_lens_1/physical-pack-0": -34.0,
+        "condenser_lens_2/physical-pack-1": 9.0,
+        "condenser_lens_3/physical-pack-2": 6.472,
+        "mini_condenser/physical-pack-3": 226.70154583016074,
+        "objective_lens/physical-pack-4": -1.2434119980751728,
+        "objective_lens/physical-pack-5": -1.2434119980751728,
+        "diffraction_lens/physical-pack-6": 28.96289606194065,
+        "intermediate_lens/physical-pack-7": 0.06188894277520134,
+        "projector_lens_1/physical-pack-8": 32.8252695494996,
+        "projector_lens_2/physical-pack-9": 7.514137300316783,
+        "ac/0/x": 0.0,
+        "ac/0/y": 0.0,
+        "ac/1/x": 0.0,
+        "ac/1/y": 0.0,
+        "adapter_lens": 10.0,
+        "probe_tl12_lens": -320.006
+      },
+      "joint_front_mm": [
+        1479.6434553381393
+      ],
+      "installed_field_front_mm": [
+        1479.1202020808025
+      ],
+      "available_files": [
+        "front.json"
+      ]
+    },
+    "objective_set": {
+      "field_file": "outputs/material-relay-20261122/global-3ac89f2d186bbf5c.npz",
+      "field_sha256": "03c48de09d7cb6d9e47a0099d9fb35d258815b99e903c72d87aa69d7b766baf1",
+      "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+      "material_regions": 94,
+      "field_residual": 1.592247078239893e-08,
+      "currents_A": {
+        "probe_hp1_hexapole": 16.0,
+        "probe_hp2_hexapole": 70.0,
+        "probe_hpol_hexapole_x": -5.0,
+        "probe_hpol_hexapole_y": -2.71705,
+        "probe_tl21_lens": 330.0,
+        "probe_tl22_lens": -145.0,
+        "condenser_lens_1/physical-pack-0": -34.0,
+        "condenser_lens_2/physical-pack-1": 9.0,
+        "condenser_lens_3/physical-pack-2": 6.472,
+        "mini_condenser/physical-pack-3": 226.70154583016074,
+        "objective_lens/physical-pack-4": -1.0,
+        "objective_lens/physical-pack-5": -1.0,
+        "diffraction_lens/physical-pack-6": 28.96289606194065,
+        "intermediate_lens/physical-pack-7": 0.06188894277520134,
+        "projector_lens_1/physical-pack-8": 32.8252695494996,
+        "projector_lens_2/physical-pack-9": 7.514137300316783,
+        "ac/0/x": 0.0,
+        "ac/0/y": 0.0,
+        "ac/1/x": 0.0,
+        "ac/1/y": 0.0,
+        "adapter_lens": 10.0,
+        "probe_tl12_lens": -320.006
+      },
+      "joint_front_mm": [
+        1480.4486551316134
+      ],
+      "installed_field_front_mm": [
+        1479.9411967321357
+      ],
+      "available_files": [
+        "front.json"
+      ]
+    }
+  },
+  "in_progress_at_save": [
+    "Full one-million-primary physical-tip trajectories for the two new excitations, signed scan diagnostics and specimen current/focus checks. Completed products are recorded separately in the final operating point."
+  ],
+  "replay_from_this_folder": [
+    "exact.py --count 1048576 -- -320.006 -1.0000 final",
+    "pivot.py global-3ac89f2d186bbf5c final",
+    "front.py global-3ac89f2d186bbf5c final",
+    "verification.py final",
+    "figures.py",
+    "report.py"
+  ],
+  "final_record": "operating-point.json"
+}

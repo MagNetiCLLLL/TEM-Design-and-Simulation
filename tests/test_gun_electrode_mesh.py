@@ -98,6 +98,7 @@ def test_installed_tip_numerics_are_editable_without_changing_emission_or_geomet
     assert changed.field_numerics.electrode_cells_per_bore == 16
     assert changed.field_numerics.electrode_corner_cells == 16
     state = default_state()
+    state.electron_gun.emitter.sampling = None  # The physical tip surface defines its own emission law.
     state.electron_gun.emitter.surface_model = original
     old = field_request(state.electron_gun)
     state.electron_gun.emitter.surface_model = changed

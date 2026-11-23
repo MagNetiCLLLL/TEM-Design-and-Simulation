@@ -1,0 +1,65 @@
+{
+  "specimen_z_mm": 1599.1999974999999,
+  "minimum_D95_z_mm": 1599.1999974999999,
+  "minimum_D95_um": 72.07534844790197,
+  "at_search_boundary": false,
+  "rms_waists_mm": [
+    1597.009833170224
+  ],
+  "at_specimen": {
+    "D95_um": 72.07534844790197,
+    "rms_um": 25.20173313247533,
+    "alpha95_mrad": 3.3798551225266724,
+    "axis_alpha95_mrad": 3.401064075439367,
+    "axis_core_50pm_pA": 0.0,
+    "count": 564,
+    "ess": 400.6205609963765,
+    "sample_nA": 16.70892583206296,
+    "centroid_um": [
+      -0.11523828646312494,
+      0.20041872805211322
+    ]
+  },
+  "inward_current_fraction": 0.32204721874904635,
+  "aperture_rim": [
+    {
+      "inner_radius_um": 45.0,
+      "outer_radius_um": 50.0,
+      "n": 30,
+      "median_mrad": 3.137870719532788,
+      "range_mrad": [
+        0.6774588028699157,
+        3.7975807042854273
+      ],
+      "inward_current_fraction": 0.44046413705542964
+    },
+    {
+      "inner_radius_um": 47.5,
+      "outer_radius_um": 50.0,
+      "n": 14,
+      "median_mrad": 3.088322431785175,
+      "range_mrad": [
+        0.8465252006176097,
+        3.480650600998778
+      ],
+      "inward_current_fraction": 0.41861125305172314
+    },
+    {
+      "inner_radius_um": 49.0,
+      "outer_radius_um": 50.0,
+      "n": 4,
+      "median_mrad": 3.088322431785175,
+      "range_mrad": [
+        0.877707857554145,
+        3.455485838421083
+      ],
+      "inward_current_fraction": 0.5815284021250511
+    }
+  ],
+  "rim_maximum_um": 49.847478229254875,
+  "outermost_ray": {
+    "source_id": 149013,
+    "angle_mrad": 3.088322431785175
+  },
+  "continuation": "Vacuum diagnostic on both sides. Material scattering excluded after the specimen surface."
+}

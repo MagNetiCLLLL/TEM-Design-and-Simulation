@@ -1,5 +1,13 @@
 # Why the Nanoprobe Normal illumination cone is narrow
 
+The output-relay study keeps the +50 V gun and −34/+9 A condensers, measures the AC scan pivot with signed 1 µrad commands, sets TL12, and adjusts only the objective for specimen focus. It records the physical aperture-edge angles and the Mini–objective front alongside the measured beam waist. [Operating point, full-column trajectories and specimen probe](fei-output-relay/README.md)
+
+With the physical tip and a +50 V gun lens, the first real point image is at 25.26 mm. Tuning C1/C2 to −34/+9 A puts waists in the C2–C3 and TL22–TL21 gaps. The downstream waist falls in the upper objective, upstream of the specimen. [Physical-source C1/C2 tuning, measured rays and specimen landing maps](fei-condenser/README.md)
+
+The physical-tip gun comparison adds a conducting 24 mm aperture and an independent +4 kV anode. At +1.20 kV gun-lens bias, the extractor, gun lens and aperture intercept 9.21, 1.10 and 2.93 µA of the 15 µA emitted. The 450 mm exit receives 2.99 nA. The following older studies use a different effective-source angular distribution. [Gun trajectories, voltage sweep and collector currents](fei-gun-control/README.md)
+
+A gun-only continuation places the first effective-source image at the 24 mm gun aperture with a tip-referenced gun-lens bias of +0.01713 kV. At the 450 mm gun exit the current-weighted semi-angle increases from 11.33 to 96.93 µrad and the transmitted current is 15.0 µA. The specimen results below refer to the earlier +5.2 kV gun. [Gun ray diagrams, voltage scan and continuation data](gun-lens-24mm/README.md)
+
 With the C2–C3 crossover 1.007 mm beyond the C2 lens exit, an objective-only adjustment places the sampled D95 minimum on the specimen upper surface. The 95% current semi-angle is **7.040 µrad** and D95 is **11.208 nm**. A weak-C3 control reached 0.44738 mrad at the specimen with a diverging beam and displaced downstream waists. The 30 mrad imaging target remains open. [Condenser comparison and focus measurements](c1-zoom/README.md)
 
 The earlier joint-field baseline delivers **4.604 µrad at the specimen for 95% of the transmitted current**. The largest sampled angle is 8.274 µrad. All 16,384 original electrons reach the upper surface at 1599.1999975 mm, carrying 15.0 µA in this run. Four intermediate beam waists form at 524.722, 765.552, 1208.284 and 1424.770 mm. The 95% current diameter at the surface is 11.13 nm. These measurements use the absolute trajectories in the stationary, unscanned column. [Tracking record](relay-edge/tracking.json) · [Full-column rays](relay-edge/full-column-rays.png)
