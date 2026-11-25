@@ -129,14 +129,14 @@ The [mixed-coherence workflow](docs/MIXED_COHERENCE.md) documents the local hand
 and its assumptions; [calculation progress](docs/CALCULATION_PROGRESS.md) explains the
 separate current-step and completed-stage indicators.
 
-Without a saved startup result, the desktop uses the ordinary **FEG / C3 +
-Probe Corrector** assembly and its **Finite-Field Optics / Nanoprobe** preset,
-with 3,000 source particles and a 0.05 mm maximum integration step. It does not
-automatically import a separate working-point package. The selected particle
-count and integration step remain visible; saved-result startup retains its
-captured inputs. The
-[default calibration report](docs/development/FINITE_FIELD_NANOPROBE_DEFAULT_2026-10-27.md)
-records the controls, fixed-particle validation limits and how to reload them.
+The desktop starts in **Nanoprobe Normal** with the +50 V FEI gun and the A2-adjusted
+probe corrector. It traces 50,000 original tip primaries through the saved joint material field. Open
+**C1 and C2 source images** to inspect the demagnified gun image, the physical
+trajectories through the 100 µm C2 foil and the full incident-current envelope.
+**Switch to editable instrument** opens the general-purpose column editor.
+[Startup working point](configs/operating_modes/fei_50v_hpol_a2/profile.json) ·
+[A2 and through-focus measurements](docs/development/nanoprobe_si110_20261122/fei-corrector-a2/README.md) ·
+[Crossover measurements and interpretation](docs/NANOPROBE_NORMAL_CROSSOVERS.md#checking-the-c1-source-image)
 
 The physical **C2** two-condenser assembly is a separate choice. For its accepted
 10 mrad Nanoprobe/Diffraction working point, explicitly open the

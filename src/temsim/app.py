@@ -167,6 +167,6 @@ def create_application(argv: Sequence[str] | None = None) -> QApplication:
 
 def run(argv: Sequence[str] | None = None) -> int:
     application = create_application(argv)
-    window = MainWindow()
+    window = MainWindow(joint_fem_startup=True)
     window.show()
     return application.exec()

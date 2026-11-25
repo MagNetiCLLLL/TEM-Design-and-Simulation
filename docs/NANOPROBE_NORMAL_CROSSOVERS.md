@@ -8,6 +8,8 @@ The simulator and Müller et al. call the round transfer lens **above the scan c
 
 | Beam interval, downstream from the effective source | Required intermediate crossovers | Where to look in the present geometry |
 | --- | ---: | --- |
+| C1 exit winding → C2 entrance pole | **1 demagnified source image** | 545–560 mm in the +50 V material assembly. C1 and C2 share a magnetic return path. |
+| C2 lens exit → C3 lens entrance | **1** | 750–830 mm. Track the same primaries that pass the 100 µm C2 foil at 764.9–765.1 mm. |
 | C3 lens exit → ADL entrance | 0 | 1000.0–1070.0 mm. This is the weak-C3 Normal branch. |
 | ADL entrance → TL22 centre | 0 | 1070.0–1166.35 mm, including HP2. |
 | TL22 centre → TL21 centre | **1** | In the gap between the TL22 exit and TL21 entrance, 1179.10–1237.20 mm. Aim for the optical symmetry plane of this pair. |
@@ -22,6 +24,16 @@ Count a static waist with scanning off. Track the same positive-current source p
 
 In the published drawing, the axial ray identifies source images. The other, selected field ray crosses the axis at the conjugate HP and aperture planes. Count only the source images for the table. The published example also images the source above ADL. The C3 lens–ADL zero in this guide is specific to the selected Normal mode. [Müller et al., Fig. 2](https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3)
 
+### Checking the C1 source image
+
+For the +50 V gun, locate the first real image of the emitting tip. Use this as the C1 object plane. Launch opposite 1 µrad angular perturbations in x and y at that plane and find the common minimum of the two-dimensional angular response. Opposite 0.1 µm position perturbations at the same object measure the two principal transverse magnifications. Both must be below unity for demagnification. Measure the physical crossover separately from the weighted x, y and radial widths of the same C2-transmitted primaries throughout the condenser relay.
+
+The installed C1 winding ends at 545 mm and its lower pole ends at 540 mm. The C2 upper pole starts at 560 mm and its winding starts at 569 mm. The two outer yokes meet at 550 mm. This defines the 545–560 mm source-image interval while retaining the actual overlapping magnetic fields. Inspect the full live-current envelope as well. The intercepted part of the incident beam can have a different waist. At the foil, use the same surviving primaries on each side of a step when checking a change of slope.
+
+The desktop's **C1 and C2 source images** tab displays physical rays selected at the C2 foil. The dashed lines mark the source-image measurements. The bottom panel displays both current-weighted envelopes. [Initial C1 relay measurements](development/nanoprobe_si110_20261122/fei-condenser/c1-interlens.json)
+
+At the earlier +50 V illumination setting used for the C2 excitation measurement, the C1 lens runs at −21.25 A, the C2 lens at −14.85 A and the C3 lens at +6.472 A. The C2-transmitted bundle crosses at 752.75 mm, 2.75 mm beyond the C2 lens exit. The ±1 µrad point-source check gives 752.72 mm. The full live-current envelope, which includes primaries later intercepted by the foil, has a radial RMS minimum at 764.77 mm. At the specimen upper surface the current-weighted angular 95th percentile is 7.02 mrad and the median for the populated outer 47.5–50 µm of the foil is 6.90 mrad. Both transverse widths are increasing at the specimen with the inherited objective excitation. [Selectable +50 V reference](../configs/operating_modes/fei_50v/profile.json) · [C2-only current comparison](development/nanoprobe_si110_20261122/fei-condenser/c2-excitation.json) · [Tip-to-specimen trajectories](development/nanoprobe_si110_20261122/fei-condenser/c2-excitation-full-column.png) · [C2–C3 gap](development/nanoprobe_si110_20261122/fei-condenser/c2-excitation-waists.png)
+
 ## Conditions to preserve while tuning
 
 1. **Hexapole and pupil conjugacy.** TL22 and TL21 image the HP2 field midplane onto the HP1 field midplane. The output relay (TL12 and the TL11 Mini Condenser) matches HP1 to the illumination-side **coma-free aperture plane of the objective**. Locate that optical plane at the operating objective current. Test HP2→HP1, HP1→pupil and HP2→pupil with ±1 µrad launch-angle perturbations in x and y at fixed launch position. At a conjugate plane the first-order change in landing position approaches zero for both input directions. Record the residual in nm/µrad and the image magnification and rotation. The symmetric HP pair uses unit-magnitude imaging and matched field azimuth as a design reference. The HP1→pupil magnification sets the scale of the correction. The TL22/TL21 mechanical midpoint, currently 1208.15 mm, is only a reference for locating the core's optical symmetry. [Relay measurement](development/cescor_direct_probe_20261121/relay-conjugacy.md) · [CEOS on symmetry and three-lobe aberration](https://www.ceos-gmbh.de/en/produkte/residualsCEXCOR)
@@ -35,6 +47,8 @@ For a centred beam in an ideal pure hexapole, the leading transverse magnetic fi
 To attribute a measured change to the pair, compare its operating excitation with a second joint finite-element solve at zero HP1/HP2 current. Keep the installed pole pieces, sleeves, return paths, material curves, other winding currents and physical apertures identical. Relaunch the same particles from the effective source in each field. Compare paraxial transfer, static waist positions and specimen landings at the same objective setting before allowing refocus.
 
 ## Reference measurement for the present geometry
+
+The selectable **Nanoprobe Normal | Corrector relay** working point starts with the +50 V gun. Its [original 10,000-primary relay measurement](development/nanoprobe_si110_20261122/fei-corrector-relay/README.md) documents the two intermediate waists. Current joint FEM profiles use 50,000 original tip primaries. The [HPol A2 measurement](development/nanoprobe_si110_20261122/fei-corrector-a2/README.md) gives the full-column trajectories and measured specimen focus of the startup working point. The AC pivot measurements below belong to the older working point.
 
 The archived material-field run used 16,384 original particles at zero scan, with the C1 lens at −30 A and the C2 lens at +16 A. The two downstream waists are **1209.153 mm** between TL22 and TL21 and **1422.987 mm** after the lower scan winding. Only the first falls inside the shaded HP2–TL12 corrector body. The earlier full-column waists are at 524.047 and 787.096 mm. [Saved working point and ray measurements](development/cescor_direct_probe_20261121/evidence/material-relay/post-scan-objective-focus/working-point.json) · [Dense count inside the corrector](development/cescor_direct_probe_20261121/evidence/material-relay/post-scan-objective-focus/corrector-crossover-count.json)
 

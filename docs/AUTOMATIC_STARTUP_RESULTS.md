@@ -1,12 +1,14 @@
 # Automatic startup results
 
-After a current particle calculation completes, the application saves its
-executed result and calculated settings in the background. On the next launch,
-**Automatic — last completed particle result** restores that file before any
-initial preview, gun propagation or optical preset calculation is submitted.
-The first run still needs to calculate when no compatible result exists.
+The desktop launcher opens the saved +50 V joint FEM working point with the A2-adjusted
+probe corrector and traces its 50,000 tip primaries on each launch. Selecting **Switch to editable
+instrument** opens the column editor with automatic startup recovery skipped
+for that session. Stored particle results remain available in the result browser.
+[Desktop startup](../README.md) · [Joint FEM working point](../configs/operating_modes/fei_50v_hpol_a2/profile.json)
 
-Choose the behavior under **File → Startup result**:
+For an editor opened directly with startup recovery enabled, **File → Startup
+result** controls which saved calculation opens. The editor saves completed
+particle calculations and their settings in the background.
 
 - **Automatic — last completed particle result** is the default. It follows
   successful automatic particle saves.

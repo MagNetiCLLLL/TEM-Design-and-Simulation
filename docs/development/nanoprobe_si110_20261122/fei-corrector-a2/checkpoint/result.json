@@ -1,0 +1,233 @@
+{
+  "profile": "Nanoprobe Normal \u00b7 HPol A2 adjustment",
+  "field_sha256": "e5a29aea84b51918f43f022052a466e9324f0e9cfe0b0c4a72d303a07239992b",
+  "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "field_tables": {
+    "gun_electric": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+    "gun_magnetic": "03188ac4ff69864c335a8742cf714f53617b7323ea6ef19f5257893b550daad0",
+    "column_magnetic": "22d6da2b83dd40d226db0188ee785b678797e8dee2ea1e1703f6a52f90b1303c",
+    "tracking": "1e3ddacedc894c16d7eac210c17cb27dc4d2072ec7f08c45f7c93c9280d01249"
+  },
+  "matched_field_receipts": 10,
+  "materials": [
+    "armco_pure_iron",
+    "permenorm_5000_h2"
+  ],
+  "material_regions": 94,
+  "currents_A": {
+    "probe_hp1_hexapole": 27.323732,
+    "probe_hp2_hexapole": -15.121203,
+    "probe_hpol_hexapole_x": -10.180505,
+    "probe_hpol_hexapole_y": -12.884576,
+    "probe_tl21_lens": 356.532584,
+    "probe_tl22_lens": -178.071536,
+    "condenser_lens_1/physical-pack-0": -21.25,
+    "condenser_lens_2/physical-pack-1": -14.85,
+    "condenser_lens_3/physical-pack-2": 6.379553,
+    "mini_condenser/physical-pack-3": 358.913895,
+    "objective_lens/physical-pack-4": -14.517475,
+    "objective_lens/physical-pack-5": -14.517475,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": -13.624616,
+    "probe_tl12_lens": -136.50329
+  },
+  "tetrahedra": 6841872,
+  "gun_lens_V": 50,
+  "c2_aperture_um": 100,
+  "emitted": 50000,
+  "gun_exit": 3232,
+  "sample": 917,
+  "effective_count": 140.39792650824882,
+  "gun_exit_nA": 282.18449707031243,
+  "sample_nA": 6.144104003906248,
+  "specimen_z_mm": 1599.1999974999999,
+  "D95_um": 0.6759998297150579,
+  "condenser_relay": {
+    "interlens_interval_mm": [
+      545.0,
+      560.0
+    ],
+    "gun_object_z_mm": 25.259476056123997,
+    "angular_step_urad": 1.0,
+    "position_step_um": 0.1,
+    "source_images": [
+      {
+        "z_mm": 549.3570747903758,
+        "principal_magnifications": [
+          0.27596601827804135,
+          0.2759660106699199
+        ],
+        "residual_nm_per_urad": [
+          0.0008780609381705451,
+          0.000878060938170545
+        ]
+      },
+      {
+        "z_mm": 752.7439756845364,
+        "principal_magnifications": [
+          0.27767275179729595,
+          0.2776727456682659
+        ],
+        "residual_nm_per_urad": [
+          0.0008272683296642057,
+          0.0008272674414014217
+        ]
+      }
+    ],
+    "C2_foil_exit_z_mm": 765.1,
+    "C2_transmitted": 917,
+    "C2_transmitted_nA": 6.144104003906248,
+    "C2_bundle_waists_mm": {
+      "x": [
+        549.3915759869212,
+        752.7716583973385
+      ],
+      "y": [
+        549.390538773633,
+        752.771447282751
+      ],
+      "r": [
+        549.3910384346407,
+        752.7715440174957
+      ]
+    },
+    "all_live_waists_mm": {
+      "x": [
+        525.4114050264693,
+        580.2223195471051,
+        764.4741949797461
+      ],
+      "y": [
+        525.4923579872922,
+        579.69900823397,
+        762.5182110746919
+      ],
+      "r": [
+        525.4526341293591,
+        579.9546377946384,
+        763.4988871861822
+      ]
+    }
+  },
+  "full_column_source_images": [
+    {
+      "z_mm": 549.3570747903758,
+      "principal_magnifications": [
+        0.27596601827804135,
+        0.2759660106699199
+      ],
+      "residual_nm_per_urad": [
+        0.0008780609381705451,
+        0.000878060938170545
+      ]
+    },
+    {
+      "z_mm": 752.7439756845364,
+      "principal_magnifications": [
+        0.27767275179729595,
+        0.2776727456682659
+      ],
+      "residual_nm_per_urad": [
+        0.0008272683296642057,
+        0.0008272674414014217
+      ]
+    },
+    {
+      "z_mm": 1218.9130719744087,
+      "principal_magnifications": [
+        0.21281218091904058,
+        0.21281217548218104
+      ],
+      "residual_nm_per_urad": [
+        0.0008273688235818816,
+        0.0008273685968192626
+      ]
+    },
+    {
+      "z_mm": 1439.717043368761,
+      "principal_magnifications": [
+        0.4620156183729322,
+        0.4620156150612549
+      ],
+      "residual_nm_per_urad": [
+        0.001271446654646789,
+        0.0012714446614066235
+      ]
+    },
+    {
+      "z_mm": 1598.8771852518262,
+      "principal_magnifications": [
+        0.4876824245758293,
+        0.4876824245758292
+      ],
+      "residual_nm_per_urad": [
+        0.0015591717468204386,
+        0.0015591717462249222
+      ]
+    }
+  ],
+  "column_live_waists_mm": {
+    "x": [
+      525.4114050264693,
+      580.2223195471051,
+      764.4741949797461,
+      1217.4448354793383,
+      1440.02013828221
+    ],
+    "y": [
+      525.4923579872922,
+      579.69900823397,
+      762.5182110746919,
+      1218.4266837699593,
+      1440.0103116104783,
+      1599.1931811578859
+    ],
+    "r": [
+      525.4526341293591,
+      579.9546377946384,
+      763.4988871861822,
+      1217.9723895060213,
+      1440.0148581972803
+    ]
+  },
+  "measured_relay": {
+    "field_sha256": "e5a29aea84b51918f43f022052a466e9324f0e9cfe0b0c4a72d303a07239992b",
+    "HP2_HP1_effective_midplanes_mm": [
+      1142.7650520385914,
+      1300.774906188041
+    ],
+    "HP2_image_mm": 1300.7622527539334,
+    "HP2_image_magnifications": [
+      0.5819070579659983,
+      0.5819070424226623
+    ],
+    "HP1_image_mm": 1522.1552334024436,
+    "objective_radial_coma_zero_mm": 1522.1239187791664,
+    "postscan_allowed_interval_mm": [
+      1420,
+      1512.5
+    ]
+  },
+  "specimen_cohort_waists_mm": {
+    "x": [
+      1217.4448354793383,
+      1440.02013828221
+    ],
+    "y": [
+      1218.4266837699593,
+      1440.0103116104783,
+      1599.1931811578859
+    ],
+    "r": [
+      1217.9723895060213,
+      1440.0148581972803
+    ]
+  }
+}

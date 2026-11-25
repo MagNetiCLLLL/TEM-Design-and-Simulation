@@ -182,6 +182,9 @@ Keep physical asymmetries in the working field. A half-turn of the registered
 vector field or an HP/HPol-off trace at fixed relay currents can locate a
 suspect asymmetry without changing the operating point.
 
+For the +50 V Nanoprobe Normal joint material field, use the same 50,000 original
+positive-current tip particles on both sides of each adjustment. [HPol calibration and focal planes](development/nanoprobe_si110_20261122/fei-corrector-a2/README.md)
+
 For A₂ tuning, measure both quadratures against independent changes of the
 two fine winding currents using the validated interpolation. Check the
 selected currents against the original settings at a finer field pitch.

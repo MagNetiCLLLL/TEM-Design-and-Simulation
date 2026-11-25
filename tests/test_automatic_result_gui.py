@@ -230,9 +230,19 @@ def test_explicit_input_startup_preserves_automatic_saves_and_named_priority(
     from temsim.paths import project_root
     from temsim.working_point import WorkingPointCheckpoint
 
-    _, errors, root = gui_environment
-    point_path = (project_root() / "profiles" /
-                  "feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp")
+    make, errors, root = gui_environment
+    historical = project_root() / "profiles/feg-nanoprobe-300kv-12p87mrad-initial-20261110.temwp"
+    with pytest.raises(ValueError, match="Changed assembly:column"):
+        WorkingPointCheckpoint.read_package(historical).compatible_state()
+    source_window = make()
+    state = source_window.state
+    state.electron_gun.emitter.ray_count = 10000
+    state.electron_gun.emitter.energy_spread_fwhm_ev = 0.3
+    state.step_mm = 0.025
+    inputs = capture_instrument_snapshot(state)
+    point_path = root / "explicit-current-design.temwp"
+    WorkingPointCheckpoint(inputs, {}, state.sample.z_mm, inputs.digest, {}).write_package(point_path, mode="inputs")
+    source_window.close()
     point = WorkingPointCheckpoint.read_package(point_path)
     expected = capture_instrument_snapshot(point.compatible_state())
     automatic = AutomaticResult(root / "saved_results")
@@ -269,7 +279,7 @@ def test_explicit_input_startup_preserves_automatic_saves_and_named_priority(
     actual = capture_instrument_snapshot(window.state)
     assert actual.graph == expected.graph and actual.external_inputs == expected.external_inputs
     assert window._active_working_checkpoint.digest == point.digest
-    assert window.high_rays.value() == 16384 and window.high_step.value() == 0.025
+    assert window.high_rays.value() == 10000 and window.high_step.value() == 0.025
     assert window.state.electron_gun.emitter.energy_spread_fwhm_ev == 0.3
     assert not window.preview_timer.isActive() and window.workspace._last_result is None
     assert not errors

@@ -27,8 +27,8 @@ def distribution(apex_field, radius_nm=100., phi=4.35):
 
 
 def emit(apex_field, count):
-    if count < 1024 or count & (count-1):
-        raise ValueError('Use a power of two with at least 1024 original particles')
+    if count < 1024 or count % (len(STRATA) - 1):
+        raise ValueError('Use at least 1024 original particles in complete eight-stratum blocks')
     angle, cdf, raw_current = distribution(apex_field)
     strata = len(STRATA)-1
     row = np.arange(count)
@@ -37,7 +37,8 @@ def emit(apex_field, count):
     budget = np.zeros(count)
     for k,(lo,hi) in enumerate(zip(STRATA[:-1],STRATA[1:])):
         chosen = row[k::strata]
-        u = qmc.Sobol(4, scramble=True, seed=20261123+k).random_base2(int(np.log2(len(chosen))))
+        power = (len(chosen) - 1).bit_length()
+        u = qmc.Sobol(4, scramble=True, seed=20261123+k).random_base2(power)[:len(chosen)]
         theta = np.interp(lo+(hi-lo)*u[:,0],cdf,angle)
         az = 2*np.pi*u[:,1]
         st,ct,ca,sa = np.sin(theta),np.cos(theta),np.cos(az),np.sin(az)

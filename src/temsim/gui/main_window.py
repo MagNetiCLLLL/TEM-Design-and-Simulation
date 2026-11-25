@@ -33,6 +33,7 @@ from PySide6.QtWidgets import (
     QProgressBar,
     QPushButton,
     QSplitter,
+    QStackedWidget,
     QToolBar,
     QWidget,
     QVBoxLayout,
@@ -202,18 +203,29 @@ class MainWindow(QMainWindow):
     PREVIEW_DEBOUNCE_MS = 250
     DESIGN_EXPLORER_DEBOUNCE_MS = 200
 
-    def __init__(self, parent: QWidget | None = None, *, startup_working_point: Path | None = None) -> None:
+    def __init__(self, parent: QWidget | None = None, *, startup_working_point: Path | None = None,
+                 joint_fem_startup: bool = False) -> None:
         super().__init__(parent)
         self._startup_working_point = startup_working_point
+        self._joint_fem_startup = joint_fem_startup
+        self.fem_page = None
+        self._editor_layout = None
         install_numeric_input_policy()
         self.setObjectName("mainWindow")
         self.setWindowTitle(WINDOW_TITLE)
         self.resize(1500, 920)
         self.setDockNestingEnabled(True)
 
+        if joint_fem_startup:
+            self.setCentralWidget(QStackedWidget(self))
+            self._open_joint_fem()
+        else:
+            self._initialize_editable_instrument()
+
+    def _initialize_editable_instrument(self):
         from temsim.gui.result_files import ResultFiles
-        startup_settings = QSettings() if startup_working_point is not None else None
-        self.result_files = ResultFiles(self, startup_settings=startup_settings)
+        startup_settings = QSettings() if self._startup_working_point is not None else None
+        self.result_files = ResultFiles(self, startup_settings=startup_settings, skip_startup_result=self._joint_fem_startup)
 
         self.catalog = AssemblyCatalog()
         self.selection = self.catalog.default_selection()
@@ -254,7 +266,11 @@ class MainWindow(QMainWindow):
         self.workspace.model_inspector.error.connect(self._show_error)
         self.workspace.model_inspector.pole_materials.save_requested.connect(self._save_manifest_updates)
         self.workspace.hardware_tuning.runtime_changed.connect(self._hardware_tuning_changed)
-        self.setCentralWidget(self.workspace)
+        if self._joint_fem_startup:
+            self.centralWidget().addWidget(self.workspace)
+            self.centralWidget().setCurrentWidget(self.workspace)
+        else:
+            self.setCentralWidget(self.workspace)
 
         self.assembly_panel = AssemblyPanel(
             self.catalog, self.selection, self
@@ -541,10 +557,51 @@ class MainWindow(QMainWindow):
         self.workspace.interactive_calculation.controller.busy_changed.connect(self.result_files.refresh_actions)
         self.calculations.pool.coordinator.changed.connect(self.result_files.refresh_actions)
         self.result_files.refresh_actions()
+        self.simulation_menu.addAction("Open +50 V joint FEM working point…", self._open_joint_fem)
         if self.result_files.hold_automatic_preview:
             QTimer.singleShot(0, self.result_files.start)
         elif not self._install_startup_working_point():
             self.preview_timer.start(self.INITIAL_PREVIEW_DELAY_MS)
+
+    def _open_joint_fem(self):
+        if self._editor_layout is not None:
+            return
+        from temsim.gui.joint_fem_page import JointFEMPage
+
+        if self.fem_page is None:
+            stack = self.centralWidget()
+            if not isinstance(stack, QStackedWidget):
+                editor = self.takeCentralWidget()
+                stack = QStackedWidget(self)
+                stack.addWidget(editor)
+                self.setCentralWidget(stack)
+            self.fem_page = JointFEMPage(stack)
+            stack.addWidget(self.fem_page)
+            self.fem_page.open_editor.connect(self._show_editable_instrument)
+        self._editor_layout = self.saveState()
+        if hasattr(self, "preview_timer"):
+            self.preview_timer.stop()
+        self.centralWidget().setCurrentWidget(self.fem_page)
+        for kind in (QDockWidget, QToolBar):
+            for control in self.findChildren(kind, options=Qt.FindDirectChildrenOnly):
+                control.hide()
+        self.menuBar().hide()
+        self.statusBar().hide()
+        self.fem_page.start()
+
+    def _show_editable_instrument(self):
+        if self._editor_layout is None:
+            return
+        self.fem_page.shutdown()
+        self.menuBar().show()
+        self.statusBar().show()
+        previous_layout = self._editor_layout
+        self._editor_layout = None
+        if not hasattr(self, "workspace"):
+            self._initialize_editable_instrument()
+        else:
+            self.centralWidget().setCurrentWidget(self.workspace)
+            self.restoreState(previous_layout)
 
     def _install_startup_working_point(self) -> bool:
         if self._startup_working_point is None:
@@ -2349,6 +2406,8 @@ class MainWindow(QMainWindow):
                 and self._interactive_preview_generation == self.calculations.generation)
 
     def schedule_preview(self, _parameter: str = "", *, automatic: bool = True) -> None:
+        if self._editor_layout is not None:
+            return
         if hasattr(self, "mixed_stem"):
             self.mixed_stem.cancel()
         if self.result_files.loading:
@@ -2558,6 +2617,8 @@ class MainWindow(QMainWindow):
         )
 
     def run_preview(self) -> None:
+        if self._editor_layout is not None:
+            return
         if self.result_files.loading or (self.sender() is self.preview_timer
                                          and self.result_files.hold_automatic_preview):
             return
@@ -3412,6 +3473,11 @@ class MainWindow(QMainWindow):
         self.resize(1500, 920)
 
     def closeEvent(self, event: QCloseEvent) -> None:  # noqa: N802
+        if not hasattr(self, "workspace"):
+            self.fem_page.shutdown()
+            super().closeEvent(event)
+            return
+        self._show_editable_instrument()
         # Release shared numerical admission before waiting for other workers.
         self.workspace.magnetic_field.field_lines.set_active(False)
         if not self.working_points.shutdown():

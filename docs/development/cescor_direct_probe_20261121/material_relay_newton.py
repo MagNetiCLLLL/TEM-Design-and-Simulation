@@ -87,8 +87,14 @@ class Circuit:
         if mode=="moments":
             peaks={key:dict(h_a_per_m=float(norm[mask].max()),b_t=float((mu_0*(1+chi[mask])*norm[mask]).max()))
                    for key,mask,hv,*_ in self.curves}
-            if any(peaks[key]["h_a_per_m"]>float(hv[-1])*(1+1e-9) for key,_,hv,*_ in self.curves):
-                raise ValueError("Outside the sourced magnetization curve")
+            for key,_,hv,*_ in self.curves:
+                maximum = float(hv[-1])
+                applied = peaks[key]["h_a_per_m"]
+                if applied > maximum * (1 + 1e-9):
+                    raise ValueError(
+                        f"Outside the sourced magnetization curve for {key}: "
+                        f"{applied:.1f} A/m exceeds {maximum:.1f} A/m"
+                    )
             return (self.v[:,None]*m).get(),peaks
         projected=self.v[:,None]*cp.einsum("eij,ej->ei",self.g,m)
         rhs=self.P.T@(vac-cp.bincount(self.t.ravel(),weights=projected.ravel(),minlength=len(full)))
@@ -102,7 +108,7 @@ class Circuit:
         mat.sort_indices()
         return rhs,float(energy),mat
 
-    def solve(self,q,reference,path,*,cold=False,predictor=None):
+    def solve(self,q,reference,path,*,cold=False,predictor=None,proportional_seed=False):
         h=cp.zeros((len(self.v),3))
         for key,current in q.items():
             if current:
@@ -112,6 +118,19 @@ class Circuit:
             if orig["mesh_id"]!=self.geo.mesh_id:raise ValueError("Different mesh")
             u=cp.asarray(data["free_potential_a"])
         previous=orig["excitation"]
+        if proportional_seed:
+            if cold or predictor is not None or set(previous) != set(q):
+                raise ValueError("A proportional initial guess requires one matching reference")
+            reference_current = next((v for v in previous.values() if v), None)
+            if reference_current is None:
+                raise ValueError("A zero-current reference cannot be scaled")
+            key = next(k for k, v in previous.items() if v)
+            ratio = q[key] / reference_current
+            if not all(np.isclose(q[k], ratio*v, rtol=1e-12, atol=1e-14) for k,v in previous.items()):
+                raise ValueError("The winding excitations are not proportional")
+            # This scales only the starting scalar potential. Every residual,
+            # B-H constitutive evaluation and stored moment uses the new drive.
+            u *= ratio
         if cold:
             u.fill(0)
         dif={k:q[k]-previous[k] for k in q}
@@ -124,7 +143,7 @@ class Circuit:
                 raise ValueError("Initial-guess linearization belongs to a different field")
         for name,keys in groups(q).items():
             delta=dif[keys[0]];direction=resp/(name+"-potential.npy")
-            if not cold and delta and direction.exists() and all(dif[k]==delta for k in keys):
+            if not (cold or proportional_seed) and delta and direction.exists() and all(dif[k]==delta for k in keys):
                 u+=delta*cp.asarray(np.load(direction))
         scale=max(1e-24,float(cp.linalg.norm(self.assemble(cp.zeros_like(u),h,"residual")[0])))
         history=[];factor=None

@@ -1,0 +1,1154 @@
+{
+  "study": "Nanoprobe Normal C2-only excitation towards the C2 exit",
+  "parent_C2_A": -12.7,
+  "selected_C2_A": -14.85,
+  "selected_scope": "Illumination alignment. Both transverse widths expand at the specimen with the retained downstream supplies.",
+  "fixed": {
+    "primaries": 10000,
+    "emitted_uA": 15,
+    "gun_lens_V": 50,
+    "extractor_V": 4000,
+    "anode_V": 4000,
+    "column_kV": 300,
+    "C2_foil_diameter_um": 100,
+    "C1_lens_A": -21.25,
+    "C3_lens_A": 6.472,
+    "other_winding_currents": {
+      "probe_hp1_hexapole": 16.0,
+      "probe_hp2_hexapole": 70.0,
+      "probe_hpol_hexapole_x": -5.0,
+      "probe_hpol_hexapole_y": -2.71705,
+      "probe_tl21_lens": 330.0,
+      "probe_tl22_lens": -145.0,
+      "condenser_lens_1/physical-pack-0": -21.25,
+      "condenser_lens_3/physical-pack-2": 6.472,
+      "mini_condenser/physical-pack-3": 226.70154583016074,
+      "objective_lens/physical-pack-4": -1.0,
+      "objective_lens/physical-pack-5": -1.0,
+      "diffraction_lens/physical-pack-6": 28.96289606194065,
+      "intermediate_lens/physical-pack-7": 0.06188894277520134,
+      "projector_lens_1/physical-pack-8": 32.8252695494996,
+      "projector_lens_2/physical-pack-9": 7.514137300316783,
+      "ac/0/x": 0.0,
+      "ac/0/y": 0.0,
+      "ac/1/x": 0.0,
+      "ac/1/y": 0.0,
+      "adapter_lens": 10.0,
+      "probe_tl12_lens": -320.006
+    },
+    "electric_sha256": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+    "emission_and_tracking_sha256": "1851f9581104e048fc6bff2015c4a9e5777df0c2b3afbaafc07b41efb3c427fb"
+  },
+  "parent_field_sha256": "783f68b007b6d6bee40fe6e3bcd4a381c9e7cbc6cd35e02b751dd19755583ed6",
+  "selected_field_validation": {
+    "sites": 840,
+    "sampled_radius_max_mm": 0.6367636840776157,
+    "p95_error_T": 1.1258145364432968e-08,
+    "max_error_T": 5.622723140420105e-08,
+    "worst_z_mm": 1534.0,
+    "worst_radius_mm": 0.2681930660137425,
+    "native_solution_sha256": "cab60e5ff5b186ed0545ce11ce07dfaf4ea2f3c90a76bc4edb58733b7bd13b1e",
+    "field_table_sha256": "e1545aa8815ede7bfb2e6be31de417914b721dfb00ccde72406c1e411f317f2b",
+    "changed_winding_keys": [
+      "condenser_lens_2/physical-pack-1"
+    ],
+    "windings": 22,
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "residual": 6.385832653712664e-11,
+    "tetrahedra": 6841872,
+    "material_regions": 94,
+    "sampled_population": "Specimen-reaching source primaries; on-path checks use a stratified sample and large-radius sites."
+  },
+  "desktop_replay": {
+    "emitted": 10000,
+    "specimen_primaries": 186,
+    "same_physical_arrays": true,
+    "qt_platform": "offscreen"
+  },
+  "specimen_plane": "Physical upper surface at 1599.1999975 mm",
+  "source_count_per_trial": 10000,
+  "C3_entrance_mm": 830,
+  "C2_lens_exit_mm": 750,
+  "angle_definition": "95th absolute-current percentile of the polar angle relative to the current-weighted mean incident direction at the specimen upper surface. For the rim median, keep only arrivals in the outer 47.5\u201350 micrometres on either foil face.",
+  "waist_definition": "Centred, current-weighted x, y and radial RMS waists of the same positive-current primaries that passed both C2 foil faces. The differential point source images are reported separately.",
+  "cases": [
+    {
+      "C2_lens_A": -12.7,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          551.5569200567337
+        ],
+        "y": [
+          551.5598071158644
+        ],
+        "r": [
+          551.5583351649498
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 551.5196823700117,
+          "principal_magnifications": [
+            0.2771220385844364,
+            0.27712202981048184
+          ],
+          "residual_nm_per_urad": [
+            0.0007634870339861813,
+            0.0007634870339861813
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          809.3156033549138
+        ],
+        "y": [
+          809.3197130051237
+        ],
+        "r": [
+          809.3176461063867
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 809.2347224304667,
+          "principal_magnifications": [
+            0.4081400557599262,
+            0.4081400533325926
+          ],
+          "residual_nm_per_urad": [
+            0.0013175170933992593,
+            0.0013175170933992593
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.9877450724164,
+        580.8110227928919,
+        809.3176461063867,
+        1269.809289575102,
+        1432.8350016202282
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 14.204269604062215,
+      "C2_exit_distance_mm": 59.317646106386746,
+      "C3_entrance_distance_mm": 20.682353893613254,
+      "full_column_waists_mm": {
+        "x": [
+          529.8024710850626,
+          581.1510223184174,
+          809.3156033549138,
+          1275.6200790422206,
+          1430.5930077577914
+        ],
+        "y": [
+          526.3312392606906,
+          580.4881442193497,
+          809.3197130051237,
+          1265.7132695026812,
+          1434.6675471162096
+        ],
+        "r": [
+          527.9877450724164,
+          580.8110227928919,
+          809.3176461063867,
+          1269.809289575102,
+          1432.8350016202282
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 551.5196823700117,
+          "principal_magnifications": [
+            0.2771220385844364,
+            0.27712202981048184
+          ],
+          "residual_nm_per_urad": [
+            0.0007634870339861813,
+            0.0007634870339861813
+          ]
+        },
+        {
+          "z_mm": 809.2347224304667,
+          "principal_magnifications": [
+            0.4081400557599262,
+            0.4081400533325926
+          ],
+          "residual_nm_per_urad": [
+            0.0013175170933992593,
+            0.0013175170933992593
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 632,
+      "C2_transmitted": 30,
+      "specimen_count": 30,
+      "specimen_effective_count": 5.206735889402996,
+      "specimen_nA": 1.3238525390625004,
+      "D95_um": 51.65027830298647,
+      "rms_um": 16.444790771520893,
+      "outward_current_fraction": 0.3163208852005532,
+      "specimen_rms_radius_slope_mrad": -0.926343443858198,
+      "specimen_rms_xy_slopes_mrad": [
+        -0.33663580818562355,
+        -1.024431039595564
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1599.1999974999999,
+        "D95_um": 51.650276523331065,
+        "bracketed_in_observed_planes": false,
+        "adjacent_observation_z_mm": [
+          1599.1899975,
+          1599.1999974999999
+        ]
+      },
+      "alpha95_current_mrad": 3.1964352176085833,
+      "rim_47p5_50um": {
+        "count": 1,
+        "current_nA": 0.00274658203125,
+        "effective_count": 1.0,
+        "median_mrad": 3.375196014291043,
+        "range_mrad": [
+          3.375196014291043,
+          3.375196014291043
+        ]
+      },
+      "max_sampled_foil_radius_um": 49.64448928833008,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 49.64448928833008,
+        "angle_mrad": 3.375196014291043,
+        "source_id": 8929,
+        "current_nA": 0.00274658203125
+      },
+      "Bz_650mm_T": -0.0697865846742995,
+      "integral_Bz2_560_750mm_T2m": 0.00040469467502352117,
+      "matched_field_receipts": 5,
+      "field_sha256": "783f68b007b6d6bee40fe6e3bcd4a381c9e7cbc6cd35e02b751dd19755583ed6",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 14.204269463287917,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.1964352176085833,
+        "trial_current_from_new_arrivals_fraction": 0.0
+      }
+    },
+    {
+      "C2_lens_A": -12.95,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          551.3052228357426
+        ],
+        "y": [
+          551.3067826632708
+        ],
+        "r": [
+          551.3059756189268
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 551.2685364134576,
+          "principal_magnifications": [
+            0.2769697518452221,
+            0.2769697506526809
+          ],
+          "residual_nm_per_urad": [
+            2.549581144738967e-05,
+            2.5495811447389668e-05
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          799.8413618402254
+        ],
+        "y": [
+          799.8465173454746
+        ],
+        "r": [
+          799.843782098235
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 799.7736016366042,
+          "principal_magnifications": [
+            0.38514281229843916,
+            0.38514281229843916
+          ],
+          "residual_nm_per_urad": [
+            0.0012460763865766284,
+            0.0012460763865766282
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.9521146607705,
+        580.6824281099623,
+        799.843782098235,
+        1264.879682714664,
+        1429.4909890422468
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 24.59514882296945,
+      "C2_exit_distance_mm": 49.84378209823501,
+      "C3_entrance_distance_mm": 30.15621790176499,
+      "full_column_waists_mm": {
+        "x": [
+          529.7705690355955,
+          581.0381850733817,
+          799.8413618402254,
+          931.0607092240664,
+          1242.3010351001453,
+          1270.5864441229887,
+          1427.6776412926756
+        ],
+        "y": [
+          526.2917868971472,
+          580.3453262393363,
+          799.8465173454746,
+          1260.7548833212834,
+          1431.206905010937
+        ],
+        "r": [
+          527.9521146607705,
+          580.6824281099623,
+          799.843782098235,
+          1264.879682714664,
+          1429.4909890422468
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 551.2685364134576,
+          "principal_magnifications": [
+            0.2769697518452221,
+            0.2769697506526809
+          ],
+          "residual_nm_per_urad": [
+            2.549581144738967e-05,
+            2.5495811447389668e-05
+          ]
+        },
+        {
+          "z_mm": 799.7736016366042,
+          "principal_magnifications": [
+            0.38514281229843916,
+            0.38514281229843916
+          ],
+          "residual_nm_per_urad": [
+            0.0012460763865766284,
+            0.0012460763865766282
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 632,
+      "C2_transmitted": 45,
+      "specimen_count": 45,
+      "specimen_effective_count": 6.360340306344639,
+      "specimen_nA": 1.4758300781250004,
+      "D95_um": 62.8979814785185,
+      "rms_um": 17.27600523671906,
+      "outward_current_fraction": 0.38287841191066985,
+      "specimen_rms_radius_slope_mrad": -0.3101212231945125,
+      "specimen_rms_xy_slopes_mrad": [
+        -0.10704547480679377,
+        -0.35611512960393205
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1597.5,
+        "D95_um": 61.902665518657514,
+        "bracketed_in_observed_planes": true,
+        "adjacent_observation_z_mm": [
+          1597.0,
+          1597.5,
+          1598.0
+        ]
+      },
+      "alpha95_current_mrad": 3.313538365644782,
+      "rim_47p5_50um": {
+        "count": 2,
+        "current_nA": 0.04669189453125,
+        "effective_count": 1.1245136186770428,
+        "median_mrad": 4.538266367995984,
+        "range_mrad": [
+          4.538266367995984,
+          4.565309431616417
+        ]
+      },
+      "max_sampled_foil_radius_um": 49.09218978881836,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 49.09218978881836,
+        "angle_mrad": 4.565309431616417,
+        "source_id": 8465,
+        "current_nA": 0.00274658203125
+      },
+      "Bz_650mm_T": -0.0709834789510751,
+      "integral_Bz2_560_750mm_T2m": 0.00041847419762050227,
+      "matched_field_receipts": 5,
+      "field_sha256": "042abc612e280afd30e49ecc4bed55eac9cb788e3500773f1836c84b6dfd7607",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 21.935870451907128,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.16624215917731,
+        "trial_current_from_new_arrivals_fraction": 0.10297766749379644
+      }
+    },
+    {
+      "C2_lens_A": -13.2,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          551.0553982333101
+        ],
+        "y": [
+          551.0597238588783
+        ],
+        "r": [
+          551.0572829996918
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 551.0180515224828,
+          "principal_magnifications": [
+            0.2768551688234888,
+            0.2768551685028295
+          ],
+          "residual_nm_per_urad": [
+            0.0007742058666543181,
+            0.000774205657642483
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          791.4316147146025
+        ],
+        "y": [
+          791.4275794875321
+        ],
+        "r": [
+          791.4292474915015
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 791.365077032705,
+          "principal_magnifications": [
+            0.36491081791247687,
+            0.3649108097357618
+          ],
+          "residual_nm_per_urad": [
+            0.0011822166553117055,
+            0.0011822166054049985
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.9154171186643,
+        580.5517771020611,
+        791.4292474915015,
+        1153.4021667865502,
+        1277.2272442379412,
+        1433.466142955312
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 49.098446275493345,
+      "C2_exit_distance_mm": 41.42924749150154,
+      "C3_entrance_distance_mm": 38.57075250849846,
+      "full_column_waists_mm": {
+        "x": [
+          529.7379847732909,
+          580.9237717389402,
+          791.4316147146025,
+          999.1448899162972,
+          1138.1438294648501,
+          1152.8124691898288,
+          1233.4176514214023,
+          1277.5448337263736,
+          1424.931904599499
+        ],
+        "y": [
+          526.2518360612049,
+          580.2000484027125,
+          791.4275794875321,
+          1147.9470796442638,
+          1156.0669140746832,
+          1276.1481101103034,
+          1437.9816342272466,
+          1596.8068523397685
+        ],
+        "r": [
+          527.9154171186643,
+          580.5517771020611,
+          791.4292474915015,
+          1153.4021667865502,
+          1277.2272442379412,
+          1433.466142955312
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 551.0180515224828,
+          "principal_magnifications": [
+            0.2768551688234888,
+            0.2768551685028295
+          ],
+          "residual_nm_per_urad": [
+            0.0007742058666543181,
+            0.000774205657642483
+          ]
+        },
+        {
+          "z_mm": 791.365077032705,
+          "principal_magnifications": [
+            0.36491081791247687,
+            0.3649108097357618
+          ],
+          "residual_nm_per_urad": [
+            0.0011822166553117055,
+            0.0011822166054049985
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 632,
+      "C2_transmitted": 74,
+      "specimen_count": 74,
+      "specimen_effective_count": 12.39212814308264,
+      "specimen_nA": 3.1223144531250004,
+      "D95_um": 128.88719917583174,
+      "rms_um": 38.96038311702741,
+      "outward_current_fraction": 0.40728360309641093,
+      "specimen_rms_radius_slope_mrad": -0.5030195442830487,
+      "specimen_rms_xy_slopes_mrad": [
+        -1.1490553958341387,
+        0.4356589921084505
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1599.1999974999999,
+        "D95_um": 128.88719559201974,
+        "bracketed_in_observed_planes": false,
+        "adjacent_observation_z_mm": [
+          1599.1899975,
+          1599.1999974999999
+        ]
+      },
+      "alpha95_current_mrad": 4.989837278180089,
+      "rim_47p5_50um": {
+        "count": 8,
+        "current_nA": 0.42462158203125,
+        "effective_count": 1.6163309580207148,
+        "median_mrad": 3.9399007128390338,
+        "range_mrad": [
+          3.377404944288848,
+          4.487419131191165
+        ]
+      },
+      "max_sampled_foil_radius_um": 49.898193359375,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 49.898193359375,
+        "angle_mrad": 3.7388633064718513,
+        "source_id": 6112,
+        "current_nA": 0.00018310546875
+      },
+      "Bz_650mm_T": -0.07218035771815398,
+      "integral_Bz2_560_750mm_T2m": 0.00043249059275251526,
+      "matched_field_receipts": 5,
+      "field_sha256": "dc466647e2bba8ff25857e9267f7d438992492ffa3b1dbd898f18b17b54f607a",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 29.605112340115774,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.135810850037553,
+        "trial_current_from_new_arrivals_fraction": 0.576002814919071
+      }
+    },
+    {
+      "C2_lens_A": -13.4,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          550.853039321541
+        ],
+        "y": [
+          550.8550114581726
+        ],
+        "r": [
+          550.8538080683111
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 550.8179712739105,
+          "principal_magnifications": [
+            0.2767527765505281,
+            0.2767527717208784
+          ],
+          "residual_nm_per_urad": [
+            0.0008427858670109009,
+            0.0008427858670109009
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          785.3342685955296
+        ],
+        "y": [
+          785.3307674264784
+        ],
+        "r": [
+          785.3321252630191
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 785.2796305318623,
+          "principal_magnifications": [
+            0.35046175041022537,
+            0.3504617421799003
+          ],
+          "residual_nm_per_urad": [
+            0.0011373248957859579,
+            0.0011373246050192416
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.8904201374573,
+        580.4465533233846,
+        785.3321252630191,
+        1236.9584550280172,
+        1280.0490625646385,
+        1431.3011352545918,
+        1598.3094178433148
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 70.69076629977158,
+      "C2_exit_distance_mm": 35.332125263019066,
+      "C3_entrance_distance_mm": 44.667874736980934,
+      "full_column_waists_mm": {
+        "x": [
+          529.71645786394,
+          580.8323964363814,
+          785.3342685955296,
+          1140.5784313379656,
+          1152.6124873381734,
+          1267.1187954774969,
+          1430.5142045262526
+        ],
+        "y": [
+          526.2232335431881,
+          580.0822772134734,
+          785.3307674264784,
+          1158.769805957519,
+          1230.1117616727263,
+          1287.0024930651957,
+          1431.8023831607302,
+          1593.991165648122
+        ],
+        "r": [
+          527.8904201374573,
+          580.4465533233846,
+          785.3321252630191,
+          1236.9584550280172,
+          1280.0490625646385,
+          1431.3011352545918,
+          1598.3094178433148
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 550.8179712739105,
+          "principal_magnifications": [
+            0.2767527765505281,
+            0.2767527717208784
+          ],
+          "residual_nm_per_urad": [
+            0.0008427858670109009,
+            0.0008427858670109009
+          ]
+        },
+        {
+          "z_mm": 785.2796305318623,
+          "principal_magnifications": [
+            0.35046175041022537,
+            0.3504617421799003
+          ],
+          "residual_nm_per_urad": [
+            0.0011373248957859579,
+            0.0011373246050192416
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 632,
+      "C2_transmitted": 107,
+      "specimen_count": 107,
+      "specimen_effective_count": 17.431654214135694,
+      "specimen_nA": 3.9993896484375004,
+      "D95_um": 159.5223794360731,
+      "rms_um": 49.7308839984081,
+      "outward_current_fraction": 0.5497665048988187,
+      "specimen_rms_radius_slope_mrad": 0.25831264050118957,
+      "specimen_rms_xy_slopes_mrad": [
+        -0.8824832045789268,
+        0.9999741274086251
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1598.9299975,
+        "D95_um": 157.70014779098065,
+        "bracketed_in_observed_planes": true,
+        "adjacent_observation_z_mm": [
+          1598.9199975,
+          1598.9299975,
+          1598.9399975000001
+        ]
+      },
+      "alpha95_current_mrad": 5.658494880697927,
+      "rim_47p5_50um": {
+        "count": 8,
+        "current_nA": 0.41949462890625,
+        "effective_count": 1.5777473304570033,
+        "median_mrad": 5.658494880697927,
+        "range_mrad": [
+          4.449021243467666,
+          6.495324849044956
+        ]
+      },
+      "max_sampled_foil_radius_um": 49.89128875732422,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 49.89128875732422,
+        "angle_mrad": 4.538288641936052,
+        "source_id": 9218,
+        "current_nA": 0.0439453125
+      },
+      "Bz_650mm_T": -0.0731378450791442,
+      "integral_Bz2_560_750mm_T2m": 0.0004438742384749357,
+      "matched_field_receipts": 5,
+      "field_sha256": "f1ae99f5068d6f31ff5f301402ce2b92d318bcacca65764d903e899eb63b2f93",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 35.68796632203916,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.111378397247755,
+        "trial_current_from_new_arrivals_fraction": 0.6689863565607544
+      }
+    },
+    {
+      "C2_lens_A": -14.2,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          550.0472040305453
+        ],
+        "y": [
+          550.0391774799359
+        ],
+        "r": [
+          550.0434768003204
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 550.0212489118449,
+          "principal_magnifications": [
+            0.2763046319891227,
+            0.27630462461716454
+          ],
+          "residual_nm_per_urad": [
+            0.0008705059794356756,
+            0.0008705059794356756
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          765.2889360424492
+        ],
+        "y": [
+          765.2899672478046
+        ],
+        "r": [
+          765.2894533061768
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 765.2850866038577,
+          "principal_magnifications": [
+            0.30465284059209014,
+            0.30465284059209014
+          ],
+          "residual_nm_per_urad": [
+            0.000969490444194031,
+            0.0009694892141538417
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.7648825816404,
+        580.0120819011125,
+        765.2894533061768,
+        1157.4061241416514,
+        1187.9017051543499,
+        1304.2405104977536,
+        1444.2801305694916,
+        1589.5786100829232
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 280.2433990657071,
+      "C2_exit_distance_mm": 15.289453306176824,
+      "C3_entrance_distance_mm": 64.71054669382318,
+      "full_column_waists_mm": {
+        "x": [
+          529.6011599864444,
+          580.4527542598754,
+          765.2889360424492,
+          1150.7519541800013,
+          1186.9688585613208,
+          1307.6885554149314,
+          1446.0787312678526,
+          1591.1397323333485
+        ],
+        "y": [
+          526.0888038844703,
+          579.5987905961388,
+          765.2899672478046,
+          1188.4715690522744,
+          1301.3428833779847,
+          1441.9977473404388,
+          1588.2425563654965
+        ],
+        "r": [
+          527.7648825816404,
+          580.0120819011125,
+          765.2894533061768,
+          1157.4061241416514,
+          1187.9017051543499,
+          1304.2405104977536,
+          1444.2801305694916,
+          1589.5786100829232
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 550.0212489118449,
+          "principal_magnifications": [
+            0.2763046319891227,
+            0.27630462461716454
+          ],
+          "residual_nm_per_urad": [
+            0.0008705059794356756,
+            0.0008705059794356756
+          ]
+        },
+        {
+          "z_mm": 765.2850866038577,
+          "principal_magnifications": [
+            0.30465284059209014,
+            0.30465284059209014
+          ],
+          "residual_nm_per_urad": [
+            0.000969490444194031,
+            0.0009694892141538417
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 632,
+      "C2_transmitted": 481,
+      "specimen_count": 481,
+      "specimen_effective_count": 62.98144793588227,
+      "specimen_nA": 17.669860839843754,
+      "D95_um": 754.7228622816226,
+      "rms_um": 242.9069856984548,
+      "outward_current_fraction": 0.672345364296743,
+      "specimen_rms_radius_slope_mrad": 3.017013272375717,
+      "specimen_rms_xy_slopes_mrad": [
+        1.7912775851990976,
+        2.435967596113502
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1596.5,
+        "D95_um": 715.5794306332002,
+        "bracketed_in_observed_planes": true,
+        "adjacent_observation_z_mm": [
+          1596.0,
+          1596.5,
+          1597.0
+        ]
+      },
+      "alpha95_current_mrad": 12.751672069098817,
+      "rim_47p5_50um": {
+        "count": 0,
+        "current_nA": 0.0,
+        "effective_count": 0.0,
+        "median_mrad": null,
+        "range_mrad": null
+      },
+      "max_sampled_foil_radius_um": 2.366899251937866,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 2.366899251937866,
+        "angle_mrad": 11.572061560169832,
+        "source_id": 4476,
+        "current_nA": 1.125
+      },
+      "Bz_650mm_T": -0.07696763966915311,
+      "integral_Bz2_560_750mm_T2m": 0.0004909240654963805,
+      "matched_field_receipts": 5,
+      "field_sha256": "b749883714c0f256ec9e7e21e41072fffbfcdd740d4a7fabca3a423e0dfc1853",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 59.431953587136874,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.066692286637728,
+        "trial_current_from_new_arrivals_fraction": 0.9250784965958901
+      }
+    },
+    {
+      "C2_lens_A": -14.85,
+      "C2_interval_mm": [
+        750.0,
+        830.0
+      ],
+      "specimen_z_mm": 1599.1999974999999,
+      "C1_interlens_waists_mm": {
+        "x": [
+          549.4122661485561
+        ],
+        "y": [
+          549.410183604665
+        ],
+        "r": [
+          549.4113377939163
+        ]
+      },
+      "C1_source_images": [
+        {
+          "z_mm": 549.3777895121783,
+          "principal_magnifications": [
+            0.2759081792839614,
+            0.2759081792344097
+          ],
+          "residual_nm_per_urad": [
+            0.0009011732215153846,
+            0.0009011732166763521
+          ]
+        }
+      ],
+      "C2_C3_waists_mm": {
+        "x": [
+          752.74857128204
+        ],
+        "y": [
+          752.7498257569072
+        ],
+        "r": [
+          752.7491318828276
+        ]
+      },
+      "C2_C3_source_images": [
+        {
+          "z_mm": 752.7217222067549,
+          "principal_magnifications": [
+            0.2775785541199122,
+            0.27757854917670555
+          ],
+          "residual_nm_per_urad": [
+            0.0008281632972864936,
+            0.0008281632972864936
+          ]
+        }
+      ],
+      "C3_ADL_waists_mm": {
+        "x": [],
+        "y": [],
+        "r": []
+      },
+      "column_radial_waists_mm": [
+        527.6566466365123,
+        579.6490673661538,
+        764.7684171506689,
+        1214.8949753788884,
+        1293.0923151735556,
+        1429.055112345947,
+        1593.7365827718165
+      ],
+      "C3_entrance_current_weighted_rms_radius_um": 206.01289014488506,
+      "C2_exit_distance_mm": 2.7491318828275553,
+      "C3_entrance_distance_mm": 77.25086811717244,
+      "full_column_waists_mm": {
+        "x": [
+          529.4995354570785,
+          580.1359375911745,
+          764.8260990364297,
+          1148.212399490601,
+          1222.6789568608817,
+          1301.958949351287,
+          1430.0574336061602,
+          1598.0736054348
+        ],
+        "y": [
+          525.9748325946147,
+          579.1947657578608,
+          762.7275762444887,
+          1209.118091421522,
+          1287.696164015603,
+          1427.0799897456025,
+          1590.845880998948
+        ],
+        "r": [
+          527.6566466365123,
+          579.6490673661538,
+          764.7684171506689,
+          1214.8949753788884,
+          1293.0923151735556,
+          1429.055112345947,
+          1593.7365827718165
+        ]
+      },
+      "upper_images": [
+        {
+          "z_mm": 549.3777895121783,
+          "principal_magnifications": [
+            0.2759081792839614,
+            0.2759081792344097
+          ],
+          "residual_nm_per_urad": [
+            0.0009011732215153846,
+            0.0009011732166763521
+          ]
+        },
+        {
+          "z_mm": 752.7217222067549,
+          "principal_magnifications": [
+            0.2775785541199122,
+            0.27757854917670555
+          ],
+          "residual_nm_per_urad": [
+            0.0008281632972864936,
+            0.0008281632972864936
+          ]
+        }
+      ],
+      "tip_emitted": 10000,
+      "gun_exit": 633,
+      "C2_transmitted": 186,
+      "specimen_count": 186,
+      "specimen_effective_count": 30.46380934681748,
+      "specimen_nA": 6.765380859375,
+      "D95_um": 276.9099325536573,
+      "rms_um": 76.1895438508008,
+      "outward_current_fraction": 0.7206885352387139,
+      "specimen_rms_radius_slope_mrad": 1.5958758545737617,
+      "specimen_rms_xy_slopes_mrad": [
+        0.1826373717891536,
+        2.0887711035268453
+      ],
+      "smallest_sampled_D95_in_objective_approach": {
+        "z_mm": 1594.0,
+        "D95_um": 229.35049384141553,
+        "bracketed_in_observed_planes": true,
+        "adjacent_observation_z_mm": [
+          1593.5,
+          1594.0,
+          1594.5
+        ]
+      },
+      "alpha95_current_mrad": 7.0225261622741,
+      "rim_47p5_50um": {
+        "count": 12,
+        "current_nA": 0.1875,
+        "effective_count": 4.533324110261821,
+        "median_mrad": 6.903562339255691,
+        "range_mrad": [
+          6.26666797812973,
+          9.163410664713933
+        ]
+      },
+      "max_sampled_foil_radius_um": 49.65157699584961,
+      "outermost_sampled_foil_ray": {
+        "radius_um": 49.65157699584961,
+        "angle_mrad": 7.355829258603202,
+        "source_id": 8034,
+        "current_nA": 0.0439453125
+      },
+      "Bz_650mm_T": -0.08007947581249855,
+      "integral_Bz2_560_750mm_T2m": 0.0005309402421599177,
+      "matched_field_receipts": 5,
+      "field_sha256": "cab60e5ff5b186ed0545ce11ce07dfaf4ea2f3c90a76bc4edb58733b7bd13b1e",
+      "same_specimen_primaries_as_parent": {
+        "count": 30,
+        "current_nA": 1.3238525390625004,
+        "C3_entrance_parent_rms_radius_um": 14.204269463287917,
+        "C3_entrance_trial_rms_radius_um": 77.84992406333411,
+        "alpha95_parent_mrad": 3.1964352176085833,
+        "alpha95_trial_mrad": 3.0404278359071966,
+        "trial_current_from_new_arrivals_fraction": 0.8043195842806106
+      }
+    }
+  ],
+  "replay": "Run python -m temsim.joint_fem OUTPUT_FOLDER with the project interpreter to retrace the selected current from the tip.",
+  "figures": [
+    "c2-excitation-full-column.png",
+    "c2-excitation-waists.png"
+  ]
+}

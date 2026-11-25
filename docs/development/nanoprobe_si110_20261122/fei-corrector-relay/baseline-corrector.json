@@ -1,0 +1,438 @@
+{
+  "case_profile": "outputs/fei-c3-adl-crossover-10000/C3_6.696000_ADL_40.000000/profile.json",
+  "accelerating_kV": 300,
+  "c2_aperture_diameter_um": 100,
+  "emitted": 10000,
+  "specimen_arrivals": 187,
+  "specimen_current_nA": 6.76556396484375,
+  "effective_particle_count": 30.465457699212127,
+  "field_checks": {
+    "native": "outputs/material-relay-20261122/global-fe83b328dc6bd231.npz",
+    "native_sha256": "a5f68dcd32793b2c76ed7c89e470d7ac6707b857b5db2833ebeef784e30d98d5",
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "tetrahedra": 6841872,
+    "materials": [
+      "armco_pure_iron",
+      "permenorm_5000_h2"
+    ],
+    "material_region_count": 94,
+    "field_receipts_verified": 10,
+    "native_relative_residual": 1.0988354920686647e-08,
+    "transport_sampling": "Threefold-symmetrised zero-scan field, degree five transverse fit and cubic interpolation along z.",
+    "on_axis_field": "Total signed Bz in the inner transport layer at x=y=0, including all powered elements and magnetised material."
+  },
+  "components": {
+    "ADL": {
+      "component": "adapter_lens",
+      "nominal_extent_mm": [
+        1070.0,
+        1106.4
+      ],
+      "centre_mm": 1088.2,
+      "signed_total_Bz_at_centre_mT": 46.14360164958765,
+      "signed_total_Bz_extremum_in_extent_mT": 46.14465573077795,
+      "axial_extremum_position_mm": 1088.1514666666667,
+      "sources": {
+        "adapter_lens": {
+          "kind": "round",
+          "current_A": 40.0,
+          "turns": 23
+        }
+      }
+    },
+    "HP2": {
+      "component": "probe_hp2_hexapole",
+      "nominal_extent_mm": [
+        1129.5,
+        1159.5
+      ],
+      "centre_mm": 1144.5,
+      "signed_total_Bz_at_centre_mT": -0.6933107520053513,
+      "signed_total_Bz_extremum_in_extent_mT": -64.77678251345124,
+      "axial_extremum_position_mm": 1159.5,
+      "sources": {
+        "probe_hp2_hexapole": {
+          "kind": "hexapole",
+          "current_A": 70.0,
+          "turns": 2,
+          "positive_winding_azimuth_deg": [
+            30.0,
+            150.0,
+            270.0
+          ]
+        }
+      }
+    },
+    "TL22": {
+      "component": "probe_tl22_lens",
+      "nominal_extent_mm": [
+        1153.6,
+        1179.1
+      ],
+      "centre_mm": 1166.35,
+      "signed_total_Bz_at_centre_mT": -117.91803835416229,
+      "signed_total_Bz_extremum_in_extent_mT": -122.16606055099567,
+      "axial_extremum_position_mm": 1164.378,
+      "sources": {
+        "probe_tl22_lens": {
+          "kind": "round",
+          "current_A": -145.0,
+          "turns": 19
+        }
+      }
+    },
+    "TL21": {
+      "component": "probe_tl21_lens",
+      "nominal_extent_mm": [
+        1237.2,
+        1262.7
+      ],
+      "centre_mm": 1249.95,
+      "signed_total_Bz_at_centre_mT": 163.9650345796572,
+      "signed_total_Bz_extremum_in_extent_mT": 163.97179129669277,
+      "axial_extremum_position_mm": 1250.018,
+      "sources": {
+        "probe_tl21_lens": {
+          "kind": "round",
+          "current_A": 330.0,
+          "turns": 19
+        }
+      }
+    },
+    "HP1": {
+      "component": "probe_hp1_hexapole",
+      "nominal_extent_mm": [
+        1285.85,
+        1315.85
+      ],
+      "centre_mm": 1300.85,
+      "signed_total_Bz_at_centre_mT": -0.39474521597327245,
+      "signed_total_Bz_extremum_in_extent_mT": 47.48238592133468,
+      "axial_extremum_position_mm": 1285.85,
+      "sources": {
+        "probe_hp1_hexapole": {
+          "kind": "hexapole",
+          "current_A": 16.0,
+          "turns": 2,
+          "positive_winding_azimuth_deg": [
+            27.592867137067643,
+            147.59286713706763,
+            267.5928671370676
+          ]
+        }
+      }
+    },
+    "HPol": {
+      "component": "probe_hpol_hexapole",
+      "nominal_extent_mm": [
+        1309.9,
+        1324.5
+      ],
+      "centre_mm": 1317.2,
+      "signed_total_Bz_at_centre_mT": -33.08366232490599,
+      "signed_total_Bz_extremum_in_extent_mT": -42.90216490535047,
+      "axial_extremum_position_mm": 1321.6676,
+      "sources": {
+        "probe_hpol_hexapole_x": {
+          "kind": "hexapole",
+          "current_A": -5.0,
+          "turns": 384,
+          "positive_winding_azimuth_deg": [
+            0.0,
+            120.0,
+            240.0
+          ]
+        },
+        "probe_hpol_hexapole_y": {
+          "kind": "hexapole",
+          "current_A": -2.71705,
+          "turns": 384,
+          "positive_winding_azimuth_deg": [
+            30.0,
+            150.0,
+            270.0
+          ]
+        }
+      }
+    },
+    "QPol": {
+      "component": "probe_qpol_quadrupole",
+      "nominal_extent_mm": [
+        1324.5,
+        1339.0
+      ],
+      "centre_mm": 1331.75,
+      "signed_total_Bz_at_centre_mT": -43.17799343148581,
+      "signed_total_Bz_extremum_in_extent_mT": -48.75512639365923,
+      "axial_extremum_position_mm": 1339.0,
+      "sources": {}
+    },
+    "TL12": {
+      "component": "probe_tl12_lens",
+      "nominal_extent_mm": [
+        1353.6,
+        1379.0
+      ],
+      "centre_mm": 1366.3,
+      "signed_total_Bz_at_centre_mT": -159.85790292831038,
+      "signed_total_Bz_extremum_in_extent_mT": -159.85790292831038,
+      "axial_extremum_position_mm": 1366.3,
+      "sources": {
+        "probe_tl12_lens": {
+          "kind": "round",
+          "current_A": -320.006,
+          "turns": 19
+        }
+      }
+    },
+    "Upper AC": {
+      "component": null,
+      "nominal_extent_mm": [
+        1380.0,
+        1395.0
+      ],
+      "centre_mm": 1387.5,
+      "signed_total_Bz_at_centre_mT": -55.03102480245744,
+      "signed_total_Bz_extremum_in_extent_mT": -65.1735566265217,
+      "axial_extremum_position_mm": 1380.0,
+      "sources": {
+        "ac/0/x": {
+          "kind": "saddle",
+          "current_A": 0.0,
+          "turns": 104,
+          "positive_winding_azimuth_deg": [
+            0
+          ]
+        },
+        "ac/0/y": {
+          "kind": "saddle",
+          "current_A": 0.0,
+          "turns": 104,
+          "positive_winding_azimuth_deg": [
+            90
+          ]
+        }
+      }
+    },
+    "Lower AC": {
+      "component": null,
+      "nominal_extent_mm": [
+        1405.0,
+        1420.0
+      ],
+      "centre_mm": 1412.5,
+      "signed_total_Bz_at_centre_mT": -31.08679323284263,
+      "signed_total_Bz_extremum_in_extent_mT": -38.29543562551683,
+      "axial_extremum_position_mm": 1405.0,
+      "sources": {
+        "ac/1/x": {
+          "kind": "saddle",
+          "current_A": 0.0,
+          "turns": 104,
+          "positive_winding_azimuth_deg": [
+            0
+          ]
+        },
+        "ac/1/y": {
+          "kind": "saddle",
+          "current_A": 0.0,
+          "turns": 104,
+          "positive_winding_azimuth_deg": [
+            90
+          ]
+        }
+      }
+    },
+    "Mini / TL11": {
+      "component": "mini_condenser",
+      "nominal_extent_mm": [
+        1512.5,
+        1532.5
+      ],
+      "centre_mm": 1522.5,
+      "signed_total_Bz_at_centre_mT": 150.4403779243983,
+      "signed_total_Bz_extremum_in_extent_mT": 152.58142693449344,
+      "axial_extremum_position_mm": 1524.34,
+      "sources": {
+        "mini_condenser/physical-pack-3": {
+          "kind": "round",
+          "current_A": 226.70154583016074,
+          "turns": 17
+        }
+      }
+    }
+  },
+  "nominal_steering_controls_without_separate_driven_source": [
+    "probe_dph2_deflector",
+    "probe_dp22_deflector",
+    "probe_dp21_deflector",
+    "probe_dph1_deflector",
+    "probe_dp11_deflector",
+    "probe_qpol_quadrupole"
+  ],
+  "hexapole_harmonics": {
+    "HP2": {
+      "radius_mm": 0.35,
+      "half_width_mm": 24.0,
+      "peak_T_per_m2": 3719.3279741093043,
+      "peak_z_mm": 1142.625,
+      "integral_absolute_harmonic_T_per_m": 70.10808600890053,
+      "field_centroid_mm": 1139.90839915375
+    },
+    "HP1": {
+      "radius_mm": 0.35,
+      "half_width_mm": 24.0,
+      "peak_T_per_m2": 935.7161414370432,
+      "peak_z_mm": 1309.475,
+      "integral_absolute_harmonic_T_per_m": 21.18495277108228,
+      "field_centroid_mm": 1300.9962668818823
+    }
+  },
+  "harmonic_definition": "Modulus of the Fourier coefficient of (Bx+iBy) exp(2i phi) divided by r^2 for the total field. Integral of the modulus over the stated window.",
+  "pole_to_transfer_centre_separations_mm": {
+    "HP2_to_TL22": 21.84999999999991,
+    "TL21_to_HP1": 50.899999999999864
+  },
+  "screenshot_lines_left_to_right": [
+    {
+      "index": 1,
+      "z_mm": 1144.5,
+      "meaning": "HP2 midplane"
+    },
+    {
+      "index": 2,
+      "z_mm": 1193.3580434925675,
+      "meaning": "TL22-TL21 beam waist"
+    },
+    {
+      "index": 3,
+      "z_mm": 1254.0595142865932,
+      "meaning": "Upstream image of radial zero"
+    },
+    {
+      "index": 4,
+      "z_mm": 1300.85,
+      "meaning": "HP1 midplane"
+    },
+    {
+      "index": 5,
+      "z_mm": 1311.2354764208799,
+      "meaning": "First image of HP2"
+    },
+    {
+      "index": 6,
+      "z_mm": 1426.2065735960107,
+      "meaning": "Objective radial coma zero"
+    },
+    {
+      "index": 7,
+      "z_mm": 1467.1784290307953,
+      "meaning": "Downstream image of HP1"
+    },
+    {
+      "index": 8,
+      "z_mm": 1502.8346154882138,
+      "meaning": "Second image of HP2"
+    }
+  ],
+  "active_core_transfer": {
+    "mag_at_actual_image": [
+      0.6505987779769908,
+      0.6505987752859076
+    ],
+    "rotation_in_lab_deg": -125.58166156235566,
+    "target_midplane_shift_nm_per_urad": [
+      15.962936241976502,
+      15.962935797887292
+    ],
+    "field_centroid_image_mm": 1309.3638145116502
+  },
+  "source_images_in_view_mm": [
+    1194.3915625514408,
+    1359.486882958082
+  ],
+  "finite_bundle_axis_minima_in_view_mm": {
+    "x": [
+      1196.4958628453694,
+      1338.921450387487,
+      1382.4579360535981
+    ],
+    "y": [
+      1190.8231115024491,
+      1349.2093054178783
+    ],
+    "r": [
+      1193.3580551414016,
+      1345.1813215595498
+    ]
+  },
+  "bundle_RMS_um_at_stations": {
+    "1193.36": {
+      "x_um": 18.377686097628054,
+      "y_um": 20.767327539764416,
+      "radius_um": 27.73123220210038
+    },
+    "1345.18": {
+      "x_um": 33.72348254302274,
+      "y_um": 27.841115532139614,
+      "radius_um": 43.731007179157274
+    },
+    "1359.49": {
+      "x_um": 37.75103345644948,
+      "y_um": 31.22032600650303,
+      "radius_um": 48.988256582392246
+    },
+    "1382.46": {
+      "x_um": 31.83257319238773,
+      "y_um": 48.68742569893083,
+      "radius_um": 58.1702513080151
+    },
+    "1420.00": {
+      "x_um": 52.36863031824671,
+      "y_um": 61.00339509618783,
+      "radius_um": 80.39830629230184
+    },
+    "1512.50": {
+      "x_um": 119.06847658234314,
+      "y_um": 118.28128801375844,
+      "radius_um": 167.83255110327576
+    },
+    "1426.21": {
+      "x_um": 57.174218941264144,
+      "y_um": 63.40877292795824,
+      "radius_um": 85.37894234395843
+    }
+  },
+  "postscan": {
+    "allowed_interval_mm": [
+      1420.0,
+      1512.5
+    ],
+    "radial_RMS_increasing_at_all_saved_stations": true,
+    "inspected_stations": 196,
+    "near_axis_source_images_in_interval_mm": []
+  },
+  "startup_comparison": {
+    "default_profile": "configs/operating_modes/fei_50v/profile.json",
+    "differences_A": {
+      "condenser_lens_3/physical-pack-2": {
+        "desktop_default": 6.472,
+        "plotted_run": 6.696
+      },
+      "objective_lens/physical-pack-4": {
+        "desktop_default": -1.0,
+        "plotted_run": -1.477614
+      },
+      "objective_lens/physical-pack-5": {
+        "desktop_default": -1.0,
+        "plotted_run": -1.477614
+      },
+      "adapter_lens": {
+        "desktop_default": 10.0,
+        "plotted_run": 40.0
+      }
+    }
+  },
+  "reference_design": "https://www.ceos-gmbh.de/en/produkte/stemkorrektoren/dcor-ascor/Mueller2006a.pdf#page=3",
+  "provenance": "Read from the saved nonlinear solution, its winding definitions, the production transport field table and existing same-particle trajectories. No new field solution or particle propagation."
+}

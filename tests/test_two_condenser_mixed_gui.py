@@ -138,14 +138,14 @@ def test_c2_sample_page_five_to_ten_nm_keeps_upper_fields_controls_and_snapshot(
     assert_c2_hardware(restored)
 
 
-def test_desktop_run_uses_ordinary_startup_without_an_implicit_working_point(monkeypatch):
+def test_desktop_launch_selects_the_joint_fem_working_point(monkeypatch):
     from temsim import app
     calls = []
     monkeypatch.setattr(app, "create_application", lambda _: SimpleNamespace(exec=lambda: 0))
     monkeypatch.setattr(app, "MainWindow", lambda *a, **k:
                         (calls.append((a,k)) or SimpleNamespace(show=lambda: None)))
     assert app.run([]) == 0
-    assert calls == [((),{})]
+    assert calls == [((),{"joint_fem_startup": True})]
 
 
 def test_c2_manual_objective_focus_does_not_reapply_other_lenses_or_move_the_surface(window,c2_state,monkeypatch):

@@ -36,10 +36,11 @@ def format_data_size(value):
 class ResultFiles(QObject):
     """Own file intent; the calculation controller owns bounded background IO."""
 
-    def __init__(self, window, *, startup_settings=None):
+    def __init__(self, window, *, startup_settings=None, skip_startup_result=False):
         super().__init__(window)
         self.window = window
         self._startup_settings = startup_settings
+        self._skip_startup_result = skip_startup_result
         prefer_working_point = self._prefer_startup_working_point()
         self.library = None
         self.startup_error = None
@@ -50,14 +51,14 @@ class ResultFiles(QObject):
         try:
             root = application_result_library_root()
             self.library = ResultLibrary(root)
-            self.startup_entry = self.library.startup_entry()
+            self.startup_entry = None if skip_startup_result else self.library.startup_entry()
         except (OSError, ValueError) as exc:
             self.startup_entry = None
             self.startup_error = str(exc)
         if self.startup_error is None:
             try:
                 self.automatic_store = AutomaticResult(root)
-                if self.startup_entry is None and not prefer_working_point and self.automatic_store.enabled():
+                if not skip_startup_result and self.startup_entry is None and not prefer_working_point and self.automatic_store.enabled():
                     self.startup_entry = self.automatic_store.entry()
                     self.automatic_startup = self.startup_entry is not None
             except (OSError, ValueError) as exc:
@@ -154,7 +155,7 @@ class ResultFiles(QObject):
         self.export_action.setEnabled(available and not conflict and not self.loading and not self._saving)
         self.named_action.setEnabled(self.export_action.isEnabled() and self.startup_error is None)
         self.saved_menu.setEnabled(not conflict and not self._saving)
-        self.startup_menu.setEnabled(not conflict and not self.loading and not self._saving)
+        self.startup_menu.setEnabled(not self._skip_startup_result and not conflict and not self.loading and not self._saving)
 
     def refresh_menus(self):
         """Read the library only for explicit menu use or a library change."""

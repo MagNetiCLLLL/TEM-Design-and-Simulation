@@ -1,0 +1,188 @@
+{
+  "case": "FEI +50 V Nanoprobe Normal condenser relay",
+  "emitted": 10000,
+  "emitted_uA": 15,
+  "gun_lens_V": 50,
+  "extractor_V": 4000,
+  "anode_V": 4000,
+  "gun_aperture_diameter_mm": 4,
+  "C2_aperture_diameter_um": 100,
+  "weak_C3_A": 6.472,
+  "source_phase_and_weights_sha256": "1851f9581104e048fc6bff2015c4a9e5777df0c2b3afbaafc07b41efb3c427fb",
+  "gun_electric_sha256": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+  "same_intercepted_ids_at_extractor_gun_lens_gun_aperture_and_exit_anode": true,
+  "shared_mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "shared_geometry_and_material_recipe_sha256": "8f8d49299ed86fa06f6ba10ddec01ee095f31938972337e06eecada32bc9827a",
+  "material_regions": 94,
+  "windings": 22,
+  "tetrahedra": 6841872,
+  "solved_residual": 1.7688596408887513e-09,
+  "native_solution_path": "outputs/material-relay-20261122/global-421d7d4125c02f39.npz",
+  "baseline": {
+    "C1_A": -34.0,
+    "C2_A": 9.0,
+    "native_field_sha256": "03c48de09d7cb6d9e47a0099d9fb35d258815b99e903c72d87aa69d7b766baf1",
+    "gun_exit": 686,
+    "gun_exit_nA": 295.4397583007813,
+    "C2": {
+      "gun_object_z_mm": 25.25941909665793,
+      "angular_step_urad": 1.0,
+      "position_step_um": 0.1,
+      "source_images": [
+        {
+          "z_mm": 510.9933631618092,
+          "principal_magnifications": [
+            0.17268243662275085,
+            0.17268243614750517
+          ],
+          "residual_nm_per_urad": [
+            0.000664052086771121,
+            0.0006640516965545288
+          ]
+        },
+        {
+          "z_mm": 1019.3300022672802,
+          "principal_magnifications": [
+            0.2082865050447814,
+            0.20828650202501509
+          ],
+          "residual_nm_per_urad": [
+            0.000898432133571455,
+            0.0008984309886460867
+          ]
+        }
+      ],
+      "C2_foil_exit_z_mm": 765.1,
+      "C2_transmitted": 8,
+      "C2_transmitted_nA": 10.875,
+      "C2_bundle_waists_mm": {
+        "x": [
+          467.8342475389007,
+          780.9502104688117
+        ],
+        "y": [
+          468.2058667358842,
+          785.0554204057755
+        ],
+        "r": [
+          468.0689661056921,
+          783.6375910483144
+        ]
+      },
+      "all_live_waists_mm": {
+        "x": [
+          509.9786634465618,
+          780.9502104688117
+        ],
+        "y": [
+          509.32364546557505,
+          785.0554204057755
+        ],
+        "r": [
+          509.67020519331305,
+          783.6375910483144
+        ]
+      }
+    },
+    "specimen_z_mm": 1599.1999974999999,
+    "specimen_count": 8,
+    "specimen_effective_count": 6.62204724409449,
+    "specimen_nA": 10.875,
+    "specimen_D95_um": 77.3261090888957,
+    "column_radial_waists_mm": [
+      509.6702051933131,
+      783.6375910483144,
+      1236.6066407246815,
+      1422.4272827662278,
+      1596.072922351922
+    ]
+  },
+  "adjusted": {
+    "C1_A": -21.25,
+    "C2_A": -12.7,
+    "native_field_sha256": "783f68b007b6d6bee40fe6e3bcd4a381c9e7cbc6cd35e02b751dd19755583ed6",
+    "gun_exit": 632,
+    "gun_exit_nA": 283.16986083984375,
+    "C2": {
+      "interlens_interval_mm": [
+        545.0,
+        560.0
+      ],
+      "gun_object_z_mm": 25.259482615231676,
+      "angular_step_urad": 1.0,
+      "position_step_um": 0.1,
+      "source_images": [
+        {
+          "z_mm": 551.5196823700117,
+          "principal_magnifications": [
+            0.2771220385844364,
+            0.27712202981048184
+          ],
+          "residual_nm_per_urad": [
+            0.0007634870339861813,
+            0.0007634870339861813
+          ]
+        },
+        {
+          "z_mm": 809.2347224304667,
+          "principal_magnifications": [
+            0.4081400557599262,
+            0.4081400533325926
+          ],
+          "residual_nm_per_urad": [
+            0.0013175170933992593,
+            0.0013175170933992593
+          ]
+        }
+      ],
+      "C2_foil_exit_z_mm": 765.1,
+      "C2_transmitted": 30,
+      "C2_transmitted_nA": 1.3238525390625004,
+      "C2_bundle_waists_mm": {
+        "x": [
+          551.5569200567337,
+          809.3156033549138
+        ],
+        "y": [
+          551.5598071158644,
+          809.3197130051237
+        ],
+        "r": [
+          551.5583351649498,
+          809.3176461063867
+        ]
+      },
+      "all_live_waists_mm": {
+        "x": [
+          529.8024710850626,
+          581.1510223184174,
+          809.3156033549138
+        ],
+        "y": [
+          526.3312392606906,
+          580.4881442193497,
+          809.3197130051237
+        ],
+        "r": [
+          527.9877450724164,
+          580.8110227928919,
+          809.3176461063867
+        ]
+      }
+    },
+    "specimen_z_mm": 1599.1999974999999,
+    "specimen_count": 30,
+    "specimen_effective_count": 5.206735889402996,
+    "specimen_nA": 1.3238525390625004,
+    "specimen_D95_um": 51.65027830298647,
+    "column_radial_waists_mm": [
+      527.9877450724164,
+      580.8110227928919,
+      809.3176461063867,
+      1269.809289575102,
+      1432.8350016202282
+    ]
+  },
+  "interpretation": "C1 images the real gun crossover into the 545 to 560 mm interlens interval. The C2-transmitted current has two-axis waists there and in the C2 to C3 gap. The entire incident-current envelope has different minima. The corrector waist is downstream of the TL22 to TL21 target. No objective refocus or angular-edge calibration was performed.",
+  "replay": "Run python -m temsim.joint_fem OUTPUT_FOLDER with the project interpreter. The desktop starts the same fixed 10,000-primary calculation."
+}
