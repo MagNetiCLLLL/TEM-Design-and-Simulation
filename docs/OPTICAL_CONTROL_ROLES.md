@@ -1,16 +1,14 @@
 # Optical control roles and illumination constraints
 
-This is the project's control contract clarified by the user on 2026-10-27.
-It describes the intended TEM/STEM operating roles, not a universal vendor
-current table or evidence that every stored working point has been qualified.
-The roles are coupled: changing one lens can also change transmission, source
-imaging, convergence, aberrations and downstream focus.
+The operating rules below are specific to the installed column and selected
+mode. Changing one lens can change transmission, source imaging, convergence,
+aberrations and downstream focus together.
 
 ## Controls
 
 | Component | Intended role | Required interpretation |
 | --- | --- | --- |
-| Gun Lens | Control the current admitted to the column through physical aperture interception, with C1-aperture clipping as the requested current-control mechanism. | Report gun-aperture and C1-aperture losses separately and retain absolute source weights. Changing lens strength does not itself change the emitted current or justify renormalizing transmitted particles. Check actual aperture filling before assuming there is current control. |
+| Gun Lens | Set the illumination of the downstream apertures and hence the current admitted to the column. | Apply physical interception at the gun electrodes, gun aperture and C1 aperture. The 1000 µm C1 aperture can select the beam. Measure the current intercepted by each element and retain original source weights. |
 | C1 Lens | Control microscope **spot size** through source imaging/demagnification, and the current delivered below C1. | In the requested Thermo Fisher convention, spot size is a dimensionless integer operating index, not a specimen-plane diameter or raster pixel size. Preserve any existing scale; a calibrated index may select coupled condenser settings, but no unmeasured index-to-current table may be invented. |
 | C2 and C3, when installed | Jointly control probe convergence semi-angle in three-condenser Nanoprobe mode. | A physical two-condenser column instead uses its actual C1/C2 illumination system; do not require or synthesize a missing C3. Measure the executed beam at the specified specimen plane with the declared current-weighted angular statistic. A saved target or a single lens percentage is not a measurement. |
 | C3 | Select the Normal or Large angle optical branch in hardware that contains C3. | A physical two-condenser column has neither branch. C3 range selection is distinct from the Mini Condenser's Nanoprobe/Microprobe selection. Absolute excitation percentage alone does not establish the branch. |
@@ -28,18 +26,39 @@ Image/Diffraction physical deflector; it is not an extra magnetic element.
 
 ### Operational fine focus in three-condenser Nanoprobe Normal
 
-After illumination and relay alignment, freeze C1, C2, weakly excited C3,
-ADL, the corrector transfer lenses, Mini Condenser and both scan-station
-drive ratios. Keep the physical C2 foil and specimen height fixed. Use the
-installed objective supply alone to place the probe on the specimen upper
-surface after each multipole adjustment. Its field still overlaps the
-preset Mini Condenser field. An intentional change to the illumination or
-transfer-lens match starts a new calibration.
+For the +50 V joint finite-element working point, use the 100 µm diameter
+C2 aperture and the same 100,000 original positive-current tip particles in
+each comparison. Propagate through the physical apertures at their installed
+positions and retain measured changes in transmission.
 
-Measure the physical aperture-rim angles and the centroid and incidence
-response to the same X/Y scan commands. Report any residual scan change.
-Compare the surface D95, RMS radius and fixed-axis disk current on the same
-original source packets. Locate the D95 waist separately from the RMS waist.
+During probe tuning, **any installed hexapole supply of the probe corrector**
+may be varied independently or in combination. The joint field with the HPC
+windings includes sources for HP1, HP2, HPC X/Y and HPol X/Y. The older
+1.743 µm working point is its zero-HPC reference. See the
+[hexapole inventory](NANOPROBE_NORMAL_CROSSOVERS.md#how-hp1-and-hp2-affect-convergence).
+Apply each trial excitation to the winding and magnetic-material model.
+After each change, refocus with the installed
+objective supply driving both objective packs together. Keep the aligned
+condenser, ADL, transfer-lens, Mini Condenser and scan settings fixed during
+this corrector comparison. An intentional change to the illumination or
+transfer match starts a new calibration.
+
+Minimize the **full transmitted beam's native D95 at the specimen upper
+surface**. Retain the two intermediate waists near 1220 and 1439 mm and
+check their physical intervals and conjugacies using the
+[crossover guide](NANOPROBE_NORMAL_CROSSOVERS.md). Record the signed beam
+width slope from the C3 lens exit to the ADL entrance. Outward motion was a
+proxy for stronger ADL excitation. Evaluate the actual ADL winding current
+and magnetic field when comparing illumination settings. Both converging and
+diverging segments are admissible if the gap contains no crossover.
+
+Measure alpha95, the populated aperture-rim angles, the RMS waist, total
+current and current within a **50 nm radius** of the fixed axis as
+diagnostics. A second disk of the same radius about the current centroid
+can quantify the effect of a lateral shift. These measurements have no target
+values in this size optimization. In a driven scan calibration, record the
+centroid and incidence response to the same X/Y commands before and after
+the change.
 
 ## Physical two-condenser Nanoprobe requested on 2026-11-12
 
@@ -182,8 +201,9 @@ Keep physical asymmetries in the working field. A half-turn of the registered
 vector field or an HP/HPol-off trace at fixed relay currents can locate a
 suspect asymmetry without changing the operating point.
 
-For the +50 V Nanoprobe Normal joint material field, use the same 50,000 original
-positive-current tip particles on both sides of each adjustment. [HPol calibration and focal planes](development/nanoprobe_si110_20261122/fei-corrector-a2/README.md)
+The earlier [HPol calibration and focal-plane measurements](development/nanoprobe_si110_20261122/fei-corrector-a2/README.md)
+used 50,000 original tip particles. The current Nanoprobe comparison uses the
+source count specified under operational fine focus above.
 
 For A₂ tuning, measure both quadratures against independent changes of the
 two fine winding currents using the validated interpolation. Check the
@@ -246,21 +266,18 @@ source distribution fixed unless separately authorized.
 Later on 2026-10-29, the user explicitly authorized changes to the original
 electron-source emission parameters for probe-tail research. Keep the original
 source as a named comparison and prepare a new input snapshot for each source
-law. Start with isolated angular-distribution and energy-width controls, execute
-the complete new source, then report any separate lens compensation used to
-restore alpha95 and the native-D95 surface waist. Do not remove selected
+law. The October source-law study requested isolated angular-distribution and
+energy-width changes, with separate lens compensation to restore its reference
+alpha95 and surface waist. For a new source study, propagate the complete
+changed source and report physical losses. Do not remove selected
 specimen-plane particles or present that deletion as a new source calculation.
 Narrowing the source angular distribution at unchanged emitted current and
 source size changes the assumed source brightness; distinguish this design
 assumption from physical aperture losses and from measured gun performance.
 The 100 um C2 aperture constraint and minimum source sampling still apply.
 
-The user selected sensitivity reporting without a pass/fail threshold for
-Gun Lens and C1 variations. Do not apply the previously proposed 1% angle
-variation or 1 nm perturbation-focus threshold as acceptance limits. This does
-not remove the separately declared nominal working-point focus requirement.
-The requested control families remain unqualified until their actual currents,
-angle changes and native D95 waist displacements have been reported.
+For Gun Lens and C1 sensitivity studies, report actual currents, angular
+changes and native D95 waist displacements for each control perturbation.
 
 The AC common tilt centre must still match the downstream front focal plane.
 Two-coil position-plus-tilt compensation can produce small specimen angle
@@ -302,14 +319,11 @@ reduce the maximum admitted current in the discussed FEI configuration.
 These sources support the operating interpretation, not an OEM calibration
 of this simulator or a universal current ratio between neighbouring indices.
 
-For the current preset search, use C2 and C3 as the primary controls for the
-specimen convergence semi-angle. Use the Mini Condenser and Upper Objective
-combination to compensate focus at the specimen surface, with corrector
-entrance/output matching and aberration correction measured separately. Their
-physical coupling must be reported; it does not make Mini Condenser or Upper
-Objective the primary angle-fitting controls. During an aberration-only
-adjustment, hold C2/C3 fixed and check that a smaller probe was not obtained
-merely by reducing the convergence angle.
+During condenser zoom calibration, use the C2 and C3 lenses as the primary
+controls for the specimen convergence semi-angle. Measure the combined Mini
+Condenser and Upper Objective focus, corrector entrance/output matching and
+aberrations separately. During a corrector-only adjustment, keep the condenser
+settings fixed and report the measured angular distribution alongside D95.
 
 For a C2/C3 zoom comparison, measure the moving C2-to-C3 source image
 and the first downstream source image formed with C3 and ADL energized.
@@ -418,86 +432,42 @@ the selected field ray in the CEOS diagram describe different conjugate-plane
 families. State the entrance/output reference planes, retained fringe fields
 and measured sample angle when assessing a front-focal-plane claim.
 
-For the strength search requested on **2026-10-28**, the current target is
-**alpha95 = 30 mrad at the specimen upper surface**, a **100 um C2 aperture
-diameter**, and the **native D95 waist at that surface**. The user's latest
-instruction removes the earlier D95 < 0.7 nm hard limit. Report and minimize
-D95 without imposing an undeclared size cap. Both 95% statistics use the original positive-current weights
-that physically reach that plane: alpha95 is the angular containment semi-angle
-about the current-weighted chief direction; D95 is the spatial containment
-diameter about the current-weighted beam centroid. Report RMS size separately;
-the previous 0.2 nm candidate-screening value is not an additional user-selected
-acceptance limit. There is no prescribed transmitted-current limit. Report the absolute current
-and interception losses; neither acceptance filtering nor arbitrary current
-normalization is permitted.
+At the specimen, alpha95 is the semi-angle enclosing 95% of the transmitted
+current about its weighted chief direction. For a physical rim measurement,
+identify electrons by their radius at the C2 aperture, state the radial band,
+then measure their directions at the specimen. An underfilled rim may have
+too little current for a measured direction. Report the two angle measurements
+separately. The full-beam surface D95 selects the working point.
 
-This latest selection supersedes the **2026-10-27 physical pupil-edge 30 mrad
-objective for new tuning**. Keep the physical pupil edge as a separate measured
-observable; do not infer it from alpha95 or the maximum sampled particle angle.
-Historical edge-acceptance reports retain their original definitions and do not
-qualify the new alpha95 working point. Follow the remaining topology, source,
-focus, current, convergence, and driven-scan requirements in the
-[optical acceptance contract](development/FINITE_FIELD_OPTICAL_ACCEPTANCE_CONTRACT_2026-10-27.md)
-before claiming joint qualification. The older alpha95 fitters still require
-those independent checks and must not silently impose their extra historical
-size/current gates on this user-selected specification.
-
-Use `scripts/measure_optical_acceptance.py` for the separate physical-pupil
-measurement and incident-column joint report. It brackets actual source-to-column
-mechanical interception with zero-current diagnostic rays and reports source
-filling and current quantiles separately. Its reference-source, nominal-energy
-boundary is not a complete mixed-energy finite-source or scan qualification.
-The older `qualify_finite_field_nanoprobe.py --target` remains an explicitly
-labelled alpha95 diagnostic and must not certify a 30 mrad aperture-edge target.
+The [physical-pupil measurement study](development/FINITE_FIELD_OPTICAL_ACCEPTANCE_CONTRACT_2026-10-27.md)
+documents a separate nominal-energy diagnostic. Its script,
+`scripts/measure_optical_acceptance.py`, brackets mechanical interception
+with zero-current rays and reports the physical-source filling separately.
 
 ## Unified D95 probe-waist definition
 
-The user's subsequent 2026-10-28 clarification requires a consistent size and
-focus definition. For the current 100 um C2 / 30 mrad alpha95 probe target,
-the specimen probe waist is the minimum of **native current-weighted D95(z)**,
-and that minimum must lie at the specimen upper surface within the declared
-numerical placement tolerance. The latest instruction removes the former
-0.7 nm size limit; no default absolute D95 acceptance cap applies. Report the
-actual D95, D90 and RMS separately. Any future optional size cap must be
-explicitly selected and recorded, never silently inherited from old reports.
+At each saved plane, compute the current-weighted centroid of the arriving
+electrons. D95 is twice the 95th weighted percentile of their distances from
+that centroid. Keep original source IDs, currents, energies and interception
+records. Calculate D95 directly from the transverse landing coordinates.
 
-Before resuming joint tuning, perform the requested monochromatic-source
-control and distinguish source-energy effects, gun numerical precision and
-field-model sensitivity. Hold physical controls fixed during attribution and
-report the actual alpha95 in every control experiment. Do not silently retune
-an energy/control experiment to 30 mrad; retain 30 mrad as the subsequent
-working-point target. Changing the source energy law is a declared physical
-control experiment, not fixed-source numerical convergence.
-
-Do not substitute an RMS minimum, an RMS covariance-waist estimate, a smoothed
-quantile, or a fitted parabolic vertex for this D95-waist condition. Earlier
-mixed RMS-focus/D95-size searches are historical proposals, not qualification
-under the clarified definition. RMS focus and RMS convergence are no longer
-hard gates for this probe target; numerical convergence must instead check
-native D95, its observed minimum-plane bracket, alpha95 and actual current.
-
-Determine D95(z) from actual unified-field propagation at explicitly saved
-planes and each plane's complete actual positive-current population. Preserve
-all original source IDs, weights, energies and contact records. A minimum at
-a scan boundary, an unresolved plateau or competing minimum, or a nearby
-population change cannot certify a continuous optical waist. A scan extending
-past the sample reference plane is a vacuum-probe optical diagnostic; it does
-not validate specimen scattering. Upstream conjugacy/topology observations
-remain separate evidence and do not prove the specimen D95-waist location.
-
-The existing engineering placement budget is +/-1 nm. Report the actual
-executed bracket and its sampling resolution; refine the local observations
-before qualification. This is a numerical tolerance, not a claim to prove an
-exact real-number minimum at an exactly equal Z coordinate.
+After objective fine focus, bracket the minimum of full-beam D95(z) on both
+sides of the specimen upper surface. Report the measured offset, axial step
+and any unresolved plateau, competing minimum or change in population.
+Extension through the nominal sample in vacuum measures optical focus.
+The axial step measures resolution along z. The transverse coordinates and
+current weights determine the lateral diameter. Locate RMS minima separately
+and identify the population and centering convention for each reported current.
 
 ## Minimum source sampling for subsequent physical tests
 
 On 2026-10-29 the user required **at least 1000 original positive-current
 source particles for all subsequent finite-source physical calculations**,
 including quick tests, sensitivity studies, tuning prescreens and finite-current
-scanning diagnostics. The usual starting count is **1024** when the selected
-source sampler supports it. Apply this rule even when an older script or
-candidate snapshot supplies a smaller count.
+scanning diagnostics. The general starting count is **1024** when the selected
+source sampler supports it. The current three-condenser probe comparison
+uses a fixed **100,000** emitted particles at every setting. A source-count
+convergence study uses separate, explicitly identified runs.
 
 Explicitly record any numerical count change in a new input snapshot. Preserve
 the source law, original weights and physical aperture interception; do not
@@ -518,7 +488,7 @@ are separate diagnostic categories and do not substitute for finite-source runs.
 
 ## Qualification boundary and this maintenance change
 
-The current Finite-Field Normal preset has a fixed 49-particle, approximately
+The October 27 Finite-Field Normal preset had a fixed 49-particle, approximately
 10 mrad focus record at 0.05 and 0.025 mm integration steps. Its record explicitly
 marks source-sampling convergence and condenser topology as `NOT_TESTED`.
 See [the recorded scope](development/FINITE_FIELD_NANOPROBE_DEFAULT_2026-10-27.md).
@@ -527,28 +497,19 @@ legacy-field topology results do not qualify the shared-potential executor.
 
 The scan-routing, gun-exit, validation and reference-label repairs do not retune
 the stored lens strengths, change apertures, alter source sampling or change the
-integration accuracy. They preserve these control roles and make reference
-claims explicit. A separate optical qualification is still required before
-declaring the present finite-field preset compliant with the topology contract.
+integration accuracy. The October maintenance record documents that preset
+and the scope of its topology checks.
 
 ## Fixed-target geometric probe correction
 
-For the particle-only atomic imaging study requested on 2026-11-01, select the
-specimen upper surface as both entrance and target. Compare absolute current
-inside a fixed, axis-centered 50 pm radius with D50 and D95 about the actual
-current centroid. The disk has a 100 pm diameter. Its mean current density is
-the enclosed current divided by its area. The finite sample does not define a
-pointwise maximum current density without specifying a spatial estimator.
-Maintain the 100 um C2 aperture, the Normal Nanoprobe branch, 30 mrad alpha95
-and the reference transmitted current. Record measured angle and losses for
-every branch. Use the actual electrodes, lenses and finite hexapoles.
-
-Retain the historical D95-waist and RMS observations and their separate
-executed brackets. The fixed-target concentration study has its own selection
-criteria. A narrow D95 at another plane cannot qualify the target. A brighter
-core with a wider D95 is an explicit performance tradeoff. Report the best
-observed core-current and diameter planes independently and check source-count
-and integration-step sensitivity before assigning a preferred working point.
+Use the specimen upper surface as the physical target. At that plane, report
+the full-beam D95 and absolute current within the fixed-axis 50 nm radius
+disk. Label any additional centroid-centered disk. Compute each disk current
+by summing the weights of its arriving electrons. Record the center, beam
+centroid, and total transmitted
+current so a centroid shift can be distinguished from a change in diameter.
+The [November 1 particle calibration](development/PROBE_CORRECTOR_PARTICLE_CALIBRATION_2026-11-01.md)
+records the measurement conventions used for that archived experiment.
 
 Use `scripts/measure_crossover_cs.py` with a complete vacuum instrument
 snapshot for an independent geometric pencil and finite-source waist survey.
@@ -561,49 +522,29 @@ gun-to-exit accelerating region requires its own valid emission-angle chart.
 
 ### Joint central-current and D95 calibration
 
-The subsequent particle-calibration request selects D95 as the primary
-diameter. At fixed specimen entrance and fixed optical axis, maximize the
-absolute current in the 50 pm disk and minimize the native D95. D50 is
-reported for context. Keep the emitted source, its absolute weights and the
-Normal Nanoprobe branch, impose 29.7–30.3 mrad alpha95 and preserve
-transmitted current. State the numerical search domain when comparing
-operating points.
-
-In a constant-control through-focus scan, report all executed planes that
-attain the disk-current maximum and all that attain the D95 minimum. Check
-the target's membership in each set. Record the fractional performance loss
-separately if they do not coincide. A 1% near-focus allowance on each
-observable describes engineering proximity only. Refine both the integration
-step and observation grid, and repeat with more original particles before
-claiming robust placement.
-
-Use the absolute separation between bounded RMS-radius and D95 minima as a
-secondary objective among competitive settings. Report its signed value and
-the difference interval from the native brackets. No zero-separation gate
-applies. An unbounded minimum or changing population cannot support a precise
-longitudinal displacement. The separation alone does not identify Cs. The
-reference-pencil response to the physical main sextupoles is a separate
-measurement.
-
-The CLI `scripts/probe_correction_assessment.py` defaults to this D95 focus
-criterion. Pass `--diameter d50` to reproduce the earlier D50 focus policy.
+For each corrector setting, use the objective supply to minimize native
+full-beam D95 at the same specimen surface. Compare disk currents and D50
+there using the same emitted population and the same disk definitions. In a
+through-focus plot, label the axial positions of the D95 and RMS minima and
+the disk-current maxima separately. Give the axial sampling and brackets for
+resolved extrema. Determine the sign of the physical sextupoles' spherical
+aberration contribution with a separate reference-pencil measurement.
 
 ### Fixed-source HP tuning
 
-For the current HP drive calibration, compare all candidate settings using
-the same 2,000 original positive-current source particles. Keep IDs, weights,
-initial phase space, energy and clocks identical. Use main-pair off/on and
-small paired-strength perturbations to measure effective negative specimen
-Cs. Report D95 and absolute central current on the fixed surface alongside
-the coefficient. Do not increase particle count as a substitute for tuning
-excitation or treat a fitted zero total C3 as a probe-performance pass.
+Use the common 100,000-particle source for the current Nanoprobe comparison.
+Keep its IDs, weights, initial phase space, energy and clocks identical
+across settings. For a separate measurement of the main pair's contribution
+to specimen Cs, compare HP1/HP2 off and on with the other supplies fixed.
+Report the fitted coefficient separately from the objective-refocused size
+and currents used to compare probe settings.
 
 ### Mini Condenser and Objective joint focus
 
-During corrector adjustment, find the freely located finite two-dimensional
-waist downstream of the Mini Condenser in the complete combined magnetic
-field. Measure D95, RMS radius and fixed-axis 50 pm disk current at that
-waist and separately at the physical specimen entrance. Record the radial
+During corrector adjustment, hold Mini Condenser excitation fixed and find
+the finite two-dimensional waist downstream in the combined field. Measure
+D95, RMS radius and the fixed-axis 50 nm disk current at that waist and separately
+at the specimen upper surface. Record the radial
 bracket, directional extent, through-focus extrema, convergence angle and
 absolute transmitted current. A separate bounded waist upstream of the
 intended image invalidates direct placement on this branch.

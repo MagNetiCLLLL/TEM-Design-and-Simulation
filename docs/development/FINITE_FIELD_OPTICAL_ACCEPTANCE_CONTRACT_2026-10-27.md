@@ -1,52 +1,15 @@
-# Optical acceptance before joint excitation and geometry tuning
+# Archived optical acceptance study, October 27–28, 2026
 
-> Later clarification, 2026-10-28: for the current probe target, both width
-> and waist position use **native D95**. Require D95(z)'s observed minimum
-> at the specimen upper surface (declared numerical placement budget) and
-> report its actual size. The latest instruction removes the former
-> D95(surface) < 0.7 nm hard limit. RMS and covariance-waist estimates are auxiliary
-> diagnostics, not focus or convergence gates for this target. Earlier
-> mixed-metric reports remain historical evidence. See the
-> [unified D95 waist definition](../OPTICAL_CONTROL_ROLES.md#unified-d95-probe-waist-definition).
+For present Nanoprobe Normal settings, follow the
+[crossover and specimen-focus rules](../NANOPROBE_NORMAL_CROSSOVERS.md#conditions-to-preserve-while-tuning).
 
-> Target update, 2026-10-28: the user explicitly selected specimen-surface
-> **alpha95 = 30 mrad**, **100 um C2 aperture diameter**, and the **D95 waist
-> at the sample**, with no hard D95 size cap or transmitted-current lower
-> bound. Energy, gun precision and field-model attribution precede resuming
-> joint tuning. This supersedes the physical
-> pupil-edge 30 mrad fitting objective below for new work. The physical edge
-> remains a separate diagnostic. The topology, original-weight current
-> accounting, field/source provenance, numerical convergence, and scan checks
-> remain applicable. Historical results below keep their original definitions.
+The procedures and proposed budgets below document the October 27 physical-pupil
+study. A separate October 28 search targeted the current-weighted angular 95th
+percentile and evaluated native D95 at the specimen. Keep the original observable
+when reproducing either experiment. [October 27 particle measurements](FINITE_FIELD_PARTICLE_VALIDATION_2026-10-27.md)
+and [October 28 angular-percentile search](FINITE_FIELD_ALPHA95_SEARCH_2026-10-28.md).
 
-> Topology clarification, 2026-10-28: retain the Normal entrance, with the
-> C2-C3 crossover and no additional crossover from C3 to the next optical
-> element. C3 stays active; its finite field and the following optics jointly
-> form the next crossover. Require exactly one resolved two-dimensional
-> source-image waist between TL22/TL21 and one inside the AC coil pair, and
-> account for every other observed waist and unresolved interval. Component
-> naming need not match CEOS labels. The 1208.15 mm TL geometric midpoint is
-> not a verified optical symmetry plane or an OEM position specification.
-> Follow the [current physical control contract](../OPTICAL_CONTROL_ROLES.md).
-
-> Downstream clarification, 2026-10-28: Mini Condenser plus Upper Objective
-> must focus directly at the specimen upper surface. No distinct intermediate
-> crossover is allowed between Mini Condenser and that surface. The final
-> focus bracket and its numerical tolerance must be distinguished from an
-> additional upstream waist. A small final D95 does not waive this condition.
-
-Executed follow-up: [historical comparison, particle counts and crossover validation](FINITE_FIELD_PARTICLE_VALIDATION_2026-10-27.md).
-Subject to the target update above, the contract below remains the acceptance
-definition; additional observations do not automatically promote a working
-point to qualified status.
-
-Date: 2026-10-27. Scope: the current C3 + Probe Corrector assembly in
-Finite-Field Optics, STEM Nanoprobe Normal. This document defines the next
-qualification work. It does not install a working point, change geometry, or
-certify the existing preset. All newly proposed numerical budgets below are
-engineering starting points, not manufacturer specifications.
-
-## 1. Confirmed requirements and the target observable
+## 1. October 27 requirements and target observable
 
 - The specimen convergence semi-angle is **30 mrad at the physical pupil / the
   calibrated diffraction-disk edge**. The user explicitly selected this

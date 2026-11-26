@@ -18,10 +18,16 @@ def groups(bias):
             "objective":[k for k in keys if k.startswith("objective_lens/")],
             "mini":[k for k in keys if k.startswith("mini_condenser/")],
             "c3":[k for k in keys if k.startswith("condenser_lens_3/")],
+            **{label:[key] for label,key in (
+                ("hp1","probe_hp1_hexapole"), ("hp2","probe_hp2_hexapole"),
+                ("hpx","probe_hpol_hexapole_x"), ("hpy","probe_hpol_hexapole_y"),
+                ("hpcx","probe_hpc_hexapole_x"), ("hpcy","probe_hpc_hexapole_y"),
+            ) if "probe_hpc_hexapole_x" in bias and key in bias},
             **{k.replace("/","_"):[k] for k in keys if k.startswith("ac/")}}
 
 
 def solve(model, path, selected=None):
+    model.verify_hpc_loads()
     import cupy as cp
     from cupyx.scipy.sparse import csr_matrix
     from nvmath.sparse.advanced import DirectSolver, DirectSolverMatrixType, DirectSolverMatrixViewType, ExecutionCUDA
@@ -133,4 +139,6 @@ if __name__=="__main__":
     p.add_argument("solution",type=Path)
     p.add_argument("--keys",nargs="+")
     args=p.parse_args()
-    solve(Global(9),args.solution,args.keys)
+    with np.load(args.solution) as saved:
+        coils=json.loads(str(saved["report"]))["excitation"]
+    solve(Global(9, include_hpc="probe_hpc_hexapole_x" in coils), args.solution, args.keys)

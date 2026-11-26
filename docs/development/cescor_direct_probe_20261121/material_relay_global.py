@@ -54,12 +54,15 @@ def impressed(row,pts,order=6):
 
 
 class Global:
-    def __init__(self,pitch):
+    def __init__(self,pitch, *, include_hpc=False):
         src=json.loads((WORK/"assembly.json").read_text())
         self.recipe,self.bias=src["recipe"],src["drives"]
         info=json.loads((WORK/f"mesh-{pitch:g}.json").read_text())
         self.mesh_id=info["mesh_id"]
         if digest(self.recipe)!=info["recipe"]: raise ValueError("Material or shape changed after meshing")
+        if include_hpc:
+            from material_relay_hpc import add_hpc_windings
+            self.hpc_geometry = add_hpc_windings(self.recipe, self.bias)
         with np.load(WORK/"meshes"/(self.mesh_id+".npz")) as f:
             xyz,tet,names,labels,far=(f[k] for k in ("xyz","tet","names","index","far"))
         self.original_names=names
@@ -71,7 +74,18 @@ class Global:
         self.out=WORK/"loads"/self.mesh_id
         self.out.mkdir(parents=True,exist_ok=True)
 
-    def sources(self):
+    def verify_hpc_loads(self):
+        if not hasattr(self, "hpc_geometry"):
+            return
+        for key in ("probe_hpc_hexapole_x", "probe_hpc_hexapole_y"):
+            row = self.recipe["sources"][key]
+            file = self.out / (key + ".npy")
+            rec = json.loads(file.with_suffix(".json").read_text())
+            if (not file.is_file() or rec.get("source_sha256") != digest(row)
+                    or rec["relative_peak_error"] >= .005):
+                raise ValueError(f"Rebuild the material-edge load for {key}")
+
+    def sources(self, selected=None):
         xyz,_,_,_=self.mesh
         cells=self.cells
         directed=np.stack(np.broadcast_arrays(cells[:,:1],cells[:,1:]),axis=-1)
@@ -80,10 +94,16 @@ class Global:
         inverse=np.linalg.inv(xyz[cells[:,1:]]-xyz[cells[:,:1]])
         p0=xyz[pairs[:,0]];dl=xyz[pairs[:,1]]-p0
         for key,row in self.recipe["sources"].items():
+            if selected is not None and key not in selected:
+                continue
             dest=self.out/(key.replace("/","__")+".npy")
             receipt=dest.with_suffix(".json")
-            if dest.is_file() and receipt.is_file() and json.loads(receipt.read_text())["relative_peak_error"]<.005:
-                continue
+            if dest.is_file() and receipt.is_file():
+                stored = json.loads(receipt.read_text())
+                if stored["relative_peak_error"] < .005 and (
+                    not key.startswith("probe_hpc_hexapole_") or stored.get("source_sha256") == digest(row)
+                ):
+                    continue
             total=np.zeros(len(pairs))
             # R-Z interpolation for a round winding preserves azimuth and signed NI.
             # Check edge integration against direct Biot-Savart on distributed material edges.
@@ -151,7 +171,7 @@ class Global:
                     total[sl]+=.5*w*np.einsum("ij,ij->i",fn(p0[sl]+.5*(t+1)*dl[sl]),dl[sl])/mu_0
             field=np.einsum("ijk,ik->ij",inverse,total[index.reshape(sign.shape)]*sign)
             np.save(dest,field)
-            write(dest.with_suffix(".json"),dict(relative_peak_error=abs_relative,
+            write(dest.with_suffix(".json"),dict(relative_peak_error=abs_relative,source_sha256=digest(row),
                 peak_T_per_A=float(np.max(reference)),check_points=len(qs),edge_order=4))
             print("Prepared",key,abs_relative,flush=True)
 

@@ -14,9 +14,13 @@ branch only at the user's explicit request.
 - Preserve the microscope meaning of C1 spot size; do not replace it with a
   literal specimen-plane spot radius. Keep C3 Normal/Large angle selection
   distinct from Mini Condenser Nanoprobe/Microprobe selection.
-- A tuned Nanoprobe working point must satisfy the selected C2-C3 and C3-ADL
-  crossover requirements as well as convergence, focus and current criteria.
-  Stored reference values or tests of another field model are not qualification.
+- For three-condenser Nanoprobe Normal, use the current
+  [crossover and specimen-focus rules](docs/NANOPROBE_NORMAL_CROSSOVERS.md).
+  Keep one crossover between the C2 and C3 lenses and zero between the C3 lens
+  and ADL. Either sign of the C3 exit envelope slope is admissible.
+  Rank probe settings by full-beam D95 at the specimen upper surface after
+  objective-only refocus. Report the angular distribution and absolute current.
+  Apply numerical angle or current targets only when requested for that study.
 - For Finite-Field Nanoprobe tuning, Mini Condenser and Upper Objective must
   focus directly onto the specimen upper surface. Reject a distinct additional
   pre-specimen crossover; a small final probe does not make that branch valid.

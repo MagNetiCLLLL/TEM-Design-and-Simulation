@@ -1,7 +1,9 @@
 """Reassemble the common-circuit Newton system on CUDA for small commissioning offsets."""
 import argparse
 import json
+import os
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 import cupy as cp
 from cupyx.scipy.sparse import csr_matrix
@@ -15,6 +17,23 @@ from material_relay_fields import WORK,digest
 from material_relay_global import Global
 from material_relay_response import groups
 from temsim.physics import probe_corrector_fem as fem
+
+
+def validate_saved_field(path, model, drives):
+    """Check identity and convergence before reusing an immutable field archive."""
+    if not path.is_file():
+        return False
+    with np.load(path) as data:
+        report = json.loads(str(data["report"]))
+        required = {"corners_m", "moments_Am2", "free_potential_a"}
+        if (not required <= set(data.files) or report["mesh_id"] != model.mesh_id
+                or report["excitation"] != drives or report["currents_A"] != drives
+                or json.loads(str(data["recipe"])) != model.recipe
+                or report["circuit_sha256"] != digest(model.recipe)
+                or report["turns"] != {k:s["turns"] for k,s in model.recipe["sources"].items()}
+                or not 0. <= report["residual"] < 2e-8):
+            raise ValueError(f"Incompatible saved material field: {path}")
+    return True
 
 
 @njit(cache=True)
@@ -109,6 +128,7 @@ class Circuit:
         return rhs,float(energy),mat
 
     def solve(self,q,reference,path,*,cold=False,predictor=None,proportional_seed=False):
+        self.geo.verify_hpc_loads()
         h=cp.zeros((len(self.v),3))
         for key,current in q.items():
             if current:
@@ -133,7 +153,12 @@ class Circuit:
             u *= ratio
         if cold:
             u.fill(0)
-        dif={k:q[k]-previous[k] for k in q}
+        if set(q) != set(self.geo.recipe["sources"]):
+            raise ValueError("The excitation vector must cover the assembled physical windings")
+        added = q.keys() - previous.keys()
+        if previous.keys() - q.keys() or not added <= {"probe_hpc_hexapole_x", "probe_hpc_hexapole_y"}:
+            raise ValueError("The reference has incompatible winding sources")
+        dif={k:q[k]-previous.get(k, 0.) for k in q}
         linearization=predictor if predictor is not None else reference
         resp=linearization.parent/(linearization.stem+"-responses")
         if predictor is not None:
@@ -203,17 +228,34 @@ class Circuit:
             if factor is not None:factor.free()
         moments,peaks=self.assemble(u,h,"moments")
         report=dict(orig,excitation=q,currents_A=q,material_peaks=peaks,residual=residual,iterations=i,
+                    circuit_sha256=digest(self.geo.recipe),
+                    turns={k:s["turns"] for k,s in self.geo.recipe["sources"].items()},
                     solver="CUDA P1 energy Newton",iteration_residuals=history)
         if q==previous and not cold:
             with np.load(reference) as data:
                 ref=data["moments_Am2"]
                 np.testing.assert_allclose(moments,ref,rtol=2e-8,atol=2e-11)
             print("Verified native moments and signed residual on the same mesh",flush=True)
-        else:
-            pending=path.with_name(path.stem+"-writing.npz")
+            if path.resolve() == Path(reference).resolve():
+                return
+        if validate_saved_field(path, self.geo, q):
+            if cold:
+                with np.load(path) as saved:
+                    original=saved["moments_Am2"]
+                relative=np.linalg.norm(moments-original)/max(np.linalg.norm(original),1e-30)
+                print("Independent cold solve relative moment difference:", relative, flush=True)
+            return
+        with NamedTemporaryFile(prefix=path.stem+"-", suffix=".npz", dir=path.parent, delete=False) as staged:
+            pending=Path(staged.name)
+        try:
             np.savez_compressed(pending,corners_m=self.corner,moments_Am2=moments,free_potential_a=u.get(),
                                 report=json.dumps(report),recipe=json.dumps(self.geo.recipe))
-            pending.replace(path)
+            try:
+                os.link(pending, path)
+            except FileExistsError:
+                validate_saved_field(path, self.geo, q)
+        finally:
+            pending.unlink(missing_ok=True)
 
 
 if __name__=="__main__":
@@ -221,19 +263,32 @@ if __name__=="__main__":
     p.add_argument("--pair",action="store_true");p.add_argument("--cold",action="store_true")
     p.add_argument("--pair-seed",type=Path);p.add_argument("--predictor",type=Path)
     p.add_argument("--pair-predictor",type=Path)
-    for k in ("tl","objective","mini","c3"):p.add_argument("--"+k,type=float)
-    a=p.parse_args();g=Global(9)
+    controls = ("tl","objective","mini","c3","hp1","hp2","hpcx","hpcy","hpx","hpy")
+    for k in controls:
+        p.add_argument("--" + k, type=float, help="Signed winding current in amperes")
+    a=p.parse_args()
     with np.load(a.seed) as old:q=json.loads(str(old["report"]))["excitation"]
-    for label,keys in groups(q).items():
+    mapping=groups(q)
+    missing=[k for k in controls if getattr(a,k) is not None and k not in mapping]
+    if missing:
+        p.error("Use the HPC-enabled joint reference generated by material_relay_hpc.py for " + ", ".join(missing))
+    g=Global(9,include_hpc="probe_hpc_hexapole_x" in q)
+    for label,keys in mapping.items():
         val=getattr(a,label,None)
         if val is not None:
             for key in keys:q[key]=val
     if a.pair:q={k:(v if k.startswith(("objective_lens/","mini_condenser/")) else 0.) for k,v in q.items()}
     dest=WORK/("global-"+digest(q)[:16]+".npz")
-    solver=Circuit(g)
-    solver.solve(q,a.seed,dest,cold=a.cold,predictor=a.predictor)
+    solver=None
+    if a.cold or not validate_saved_field(dest,g,q):
+        solver=Circuit(g)
+        solver.solve(q,a.seed,dest,cold=a.cold,predictor=a.predictor)
+    else:
+        print("Reusing verified material field", dest, flush=True)
     if a.pair_seed is not None:
         pair={k:v if k.startswith(("objective_lens/","mini_condenser/")) else 0. for k,v in q.items()}
         output=WORK/("global-"+digest(pair)[:16]+".npz")
-        if not output.is_file():
+        if not validate_saved_field(output,g,pair):
+            if solver is None:
+                solver=Circuit(g)
             solver.solve(pair,a.pair_seed,output,predictor=a.pair_predictor)
