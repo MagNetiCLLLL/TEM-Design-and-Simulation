@@ -1,0 +1,201 @@
+{
+  "profile": "Nanoprobe Normal | joint HP1, HP2, HPC and HPol correction",
+  "field_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+  "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "field_tables": {
+    "gun_electric": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+    "gun_magnetic": "5d06001fd16a37d19ebf95ad8ee7eb03a689059d4dae10652f3884fb0929a561",
+    "column_magnetic": "978fc10ab94703eaaa302133b49e49c2b6435423231c5e51c8691d02616ac067",
+    "tracking": "633a115c76a8037c43341248a80ad266a1314a7f5380cc8d25b2a7059e060f82"
+  },
+  "matched_field_receipts": 10,
+  "materials": [
+    "armco_pure_iron",
+    "permenorm_5000_h2"
+  ],
+  "material_regions": 94,
+  "currents_A": {
+    "probe_hp1_hexapole": -2.631749,
+    "probe_hp2_hexapole": 0.036981,
+    "probe_hpol_hexapole_x": -1.145727,
+    "probe_hpol_hexapole_y": -11.582695,
+    "probe_tl21_lens": 356.657098,
+    "probe_tl22_lens": -89.2,
+    "condenser_lens_1/physical-pack-0": -21.25,
+    "condenser_lens_2/physical-pack-1": -14.85,
+    "condenser_lens_3/physical-pack-2": 5.49,
+    "mini_condenser/physical-pack-3": 358.913895,
+    "objective_lens/physical-pack-4": -14.420793,
+    "objective_lens/physical-pack-5": -14.420793,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": -114.15,
+    "probe_tl12_lens": -135.04871,
+    "probe_hpc_hexapole_x": 69.869465,
+    "probe_hpc_hexapole_y": -90.968633
+  },
+  "tetrahedra": 6841872,
+  "gun_lens_V": 50,
+  "c2_aperture_um": 100,
+  "emitted": 100000,
+  "gun_exit": 6442,
+  "sample": 1780,
+  "effective_count": 269.70163246900614,
+  "gun_exit_nA": 271.3469421386718,
+  "sample_nA": 5.867065429687497,
+  "specimen_z_mm": 1599.1999974999999,
+  "D95_um": 0.24299344144065402,
+  "condenser_relay": {
+    "interlens_interval_mm": [
+      545.0,
+      560.0
+    ],
+    "gun_object_z_mm": 25.259465687994684,
+    "angular_step_urad": 1.0,
+    "position_step_um": 0.1,
+    "source_images": [
+      {
+        "z_mm": 549.2609311958189,
+        "principal_magnifications": [
+          0.2761112312886741,
+          0.2761112290682281
+        ],
+        "residual_nm_per_urad": [
+          0.0008887581413480536,
+          0.0008887579817850102
+        ]
+      },
+      {
+        "z_mm": 752.4394051748793,
+        "principal_magnifications": [
+          0.2769441364586572,
+          0.2769441364586572
+        ],
+        "residual_nm_per_urad": [
+          0.0008716594322567474,
+          0.0008716586700102532
+        ]
+      }
+    ],
+    "C2_foil_exit_z_mm": 765.1,
+    "C2_transmitted": 1780,
+    "C2_transmitted_nA": 5.867065429687497,
+    "C2_bundle_waists_mm": {
+      "x": [
+        549.2949311762123,
+        752.467604342688
+      ],
+      "y": [
+        549.2945005400363,
+        752.4662978594918
+      ],
+      "r": [
+        549.2947200178057,
+        752.4669453493955
+      ]
+    },
+    "all_live_waists_mm": {
+      "x": [
+        523.4364190639133,
+        580.7240661456601,
+        760.9315685290084
+      ],
+      "y": [
+        524.1209728732528,
+        580.0497552209432,
+        761.5206842818678
+      ],
+      "r": [
+        523.7806575243676,
+        580.3819686183717,
+        761.2226570676379
+      ]
+    }
+  },
+  "full_column_source_images": [
+    {
+      "z_mm": 549.2609311958189,
+      "principal_magnifications": [
+        0.2761112312886741,
+        0.2761112290682281
+      ],
+      "residual_nm_per_urad": [
+        0.0008887581413480536,
+        0.0008887579817850102
+      ]
+    },
+    {
+      "z_mm": 752.4394051748793,
+      "principal_magnifications": [
+        0.2769441364586572,
+        0.2769441364586572
+      ],
+      "residual_nm_per_urad": [
+        0.0008716594322567474,
+        0.0008716586700102532
+      ]
+    },
+    {
+      "z_mm": 1220.2295170235168,
+      "principal_magnifications": [
+        0.184909102629624,
+        0.18490909782143822
+      ],
+      "residual_nm_per_urad": [
+        0.0009623159561520692,
+        0.0009623127709635195
+      ]
+    },
+    {
+      "z_mm": 1440.781482744658,
+      "principal_magnifications": [
+        0.41377872390030096,
+        0.4137787152206761
+      ],
+      "residual_nm_per_urad": [
+        0.0011047547536806464,
+        0.0011047531907473099
+      ]
+    },
+    {
+      "z_mm": 1599.1724328792727,
+      "principal_magnifications": [
+        0.4398932338670639,
+        0.43989322714833107
+      ],
+      "residual_nm_per_urad": [
+        0.0014176019472659641,
+        0.0014176019472659641
+      ]
+    }
+  ],
+  "column_live_waists_mm": {
+    "x": [
+      523.4364190639133,
+      580.7240661456601,
+      760.9315685290084,
+      1220.2391380797117,
+      1440.8278273755757
+    ],
+    "y": [
+      524.1209728732528,
+      580.0497552209432,
+      761.5206842818678,
+      1220.0685365331547,
+      1440.824023157375
+    ],
+    "r": [
+      523.7806575243676,
+      580.3819686183717,
+      761.2226570676379,
+      1220.1535771350818,
+      1440.8259221113963
+    ]
+  }
+}

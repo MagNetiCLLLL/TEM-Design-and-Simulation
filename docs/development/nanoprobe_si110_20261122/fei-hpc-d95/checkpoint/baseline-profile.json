@@ -1,0 +1,366 @@
+{
+  "name": "Nanoprobe Normal | HPol A2 trim and objective-only refocus",
+  "gun_lens_V": 50,
+  "extractor_V": 4000,
+  "anode_V": 4000,
+  "gun_aperture_mm": 4,
+  "source_current_uA": 15,
+  "accelerating_kV": 300,
+  "c2_aperture_um": 100,
+  "source_count": 100000,
+  "specimen_z_mm": 1599.1999975,
+  "excitation_A": {
+    "probe_hp1_hexapole": 0.30825,
+    "probe_hp2_hexapole": -0.058,
+    "probe_hpol_hexapole_x": 0.06451,
+    "probe_hpol_hexapole_y": -12.035705,
+    "probe_tl21_lens": 356.657098,
+    "probe_tl22_lens": -89.2,
+    "condenser_lens_1/physical-pack-0": -21.25,
+    "condenser_lens_2/physical-pack-1": -14.85,
+    "condenser_lens_3/physical-pack-2": 5.49,
+    "mini_condenser/physical-pack-3": 358.913895,
+    "objective_lens/physical-pack-4": -14.54319,
+    "objective_lens/physical-pack-5": -14.54319,
+    "diffraction_lens/physical-pack-6": 28.96289606194065,
+    "intermediate_lens/physical-pack-7": 0.06188894277520134,
+    "projector_lens_1/physical-pack-8": 32.8252695494996,
+    "projector_lens_2/physical-pack-9": 7.514137300316783,
+    "ac/0/x": 0.0,
+    "ac/0/y": 0.0,
+    "ac/1/x": 0.0,
+    "ac/1/y": 0.0,
+    "adapter_lens": -114.15,
+    "probe_tl12_lens": -135.04871
+  },
+  "solution_sha256": "aa315daf144c1e530604e08d117cbe2ff2ad6123cc4b0bb25d820b05c27a8be8",
+  "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+  "materials": [
+    "armco_pure_iron",
+    "permenorm_5000_h2"
+  ],
+  "material_regions": 94,
+  "tetrahedra": 6841872,
+  "electric_sha": "bcf1169a15189f697e50fcf9bd53128d363fc3cdf0d33be1109d70346199a268",
+  "minimum_ring_bore_m": 0.00025,
+  "gun_stops": [
+    {
+      "key": "extractor",
+      "start_m": 0.00030000000000000003,
+      "stop_m": 0.00075,
+      "inner_m": 0.002,
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0
+    },
+    {
+      "key": "extractor",
+      "start_m": 0.00075,
+      "stop_m": 0.0013000000000000002,
+      "inner_m": 0.00025,
+      "outer_m": 0.01,
+      "potential_rise_v": 4000.0
+    },
+    {
+      "key": "electrostatic_lens",
+      "start_m": 0.014000000000000002,
+      "stop_m": 0.022000000000000002,
+      "inner_m": 0.004,
+      "outer_m": 0.03,
+      "potential_rise_v": 50.0
+    },
+    {
+      "key": "accelerator:0",
+      "start_m": 0.0415,
+      "stop_m": 0.0425,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 33600.0
+    },
+    {
+      "key": "accelerator:1",
+      "start_m": 0.07705555555555556,
+      "stop_m": 0.07805555555555556,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 63200.0
+    },
+    {
+      "key": "accelerator:2",
+      "start_m": 0.11261111111111112,
+      "stop_m": 0.11361111111111112,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 92800.0
+    },
+    {
+      "key": "accelerator:3",
+      "start_m": 0.1481666666666667,
+      "stop_m": 0.1491666666666667,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 122400.0
+    },
+    {
+      "key": "accelerator:4",
+      "start_m": 0.18372222222222223,
+      "stop_m": 0.18472222222222223,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 152000.0
+    },
+    {
+      "key": "accelerator:5",
+      "start_m": 0.21927777777777777,
+      "stop_m": 0.22027777777777777,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 181600.0
+    },
+    {
+      "key": "accelerator:6",
+      "start_m": 0.25483333333333336,
+      "stop_m": 0.25583333333333336,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 211200.0
+    },
+    {
+      "key": "accelerator:7",
+      "start_m": 0.2903888888888889,
+      "stop_m": 0.2913888888888889,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 240800.0
+    },
+    {
+      "key": "accelerator:8",
+      "start_m": 0.3259444444444445,
+      "stop_m": 0.3269444444444445,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 270400.0
+    },
+    {
+      "key": "accelerator:9",
+      "start_m": 0.3615,
+      "stop_m": 0.3625,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:14",
+      "start_m": 0.37,
+      "stop_m": 0.398,
+      "inner_m": 0.0025,
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:15",
+      "start_m": 0.398,
+      "stop_m": 0.422,
+      "inner_m": 0.005,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:16",
+      "start_m": 0.422,
+      "stop_m": 0.427,
+      "inner_m": 0.0025,
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:17",
+      "start_m": 0.427,
+      "stop_m": 0.439,
+      "inner_m": 0.005,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:18",
+      "start_m": 0.439,
+      "stop_m": 0.444,
+      "inner_m": 0.0025,
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:19",
+      "start_m": 0.444,
+      "stop_m": 0.446,
+      "inner_m": 0.003,
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:20",
+      "start_m": 0.446,
+      "stop_m": 0.45,
+      "inner_m": 0.0025,
+      "outer_m": 0.00275,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet:21",
+      "start_m": 0.45,
+      "stop_m": 0.5,
+      "inner_m": 0.0028799999999999997,
+      "outer_m": 0.0096,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:0",
+      "start_m": 0.398,
+      "stop_m": 0.398,
+      "inner_m": 0.0025,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:1",
+      "start_m": 0.422,
+      "stop_m": 0.422,
+      "inner_m": 0.0025,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:2",
+      "start_m": 0.427,
+      "stop_m": 0.427,
+      "inner_m": 0.0025,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:3",
+      "start_m": 0.439,
+      "stop_m": 0.439,
+      "inner_m": 0.0025,
+      "outer_m": 0.00525,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:4",
+      "start_m": 0.444,
+      "stop_m": 0.444,
+      "inner_m": 0.0025,
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:5",
+      "start_m": 0.446,
+      "stop_m": 0.446,
+      "inner_m": 0.0025,
+      "outer_m": 0.0032500000000000003,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "grounded_outlet_joint:6",
+      "start_m": 0.45,
+      "stop_m": 0.45,
+      "inner_m": 0.0025,
+      "outer_m": 0.0096,
+      "potential_rise_v": 300000.0
+    },
+    {
+      "key": "feg_emitter_enclosure",
+      "start_m": -0.0018000000000000002,
+      "stop_m": -0.0015,
+      "inner_m": 0.0003,
+      "outer_m": 0.01,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "feg_cathode_holder",
+      "start_m": -0.005,
+      "stop_m": -0.004,
+      "inner_m": 0.0003,
+      "outer_m": 0.0015,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "gun_aperture",
+      "start_m": 0.023899999999999998,
+      "stop_m": 0.024100000000000003,
+      "inner_m": 0.002,
+      "outer_m": 0.0175,
+      "potential_rise_v": 4000.0
+    },
+    {
+      "key": "exit_anode",
+      "start_m": 0.0315,
+      "stop_m": 0.0365,
+      "inner_m": 0.0045000000000000005,
+      "outer_m": 0.05,
+      "potential_rise_v": 4000.0
+    },
+    {
+      "key": "C1_aperture",
+      "start_m": 0.44489999999999996,
+      "stop_m": 0.44510000000000005,
+      "inner_m": 0.0005,
+      "outer_m": 0.0225,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "accelerator_bore",
+      "start_m": 0.03,
+      "stop_m": 0.37,
+      "inner_m": 0.005,
+      "outer_m": 0.15,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "gun_deflector_bore",
+      "start_m": 0.398,
+      "stop_m": 0.422,
+      "inner_m": 0.005,
+      "outer_m": 0.045,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "gun_stigmator_bore",
+      "start_m": 0.427,
+      "stop_m": 0.439,
+      "inner_m": 0.005,
+      "outer_m": 0.045,
+      "potential_rise_v": 0.0
+    },
+    {
+      "key": "outside_outlet_entrance",
+      "start_m": 0.37,
+      "stop_m": 0.37,
+      "inner_m": 0.00275,
+      "outer_m": 0.15
+    }
+  ],
+  "assets": {
+    "gun_electric": {
+      "path": "docs/development/nanoprobe_si110_20261122/fei-output-relay/field-replay/anode-mesh15-50V.npz",
+      "sha256": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4"
+    },
+    "gun_magnetic": {
+      "path": "docs/development/nanoprobe_si110_20261122/fei-hpc-d95/checkpoint/baseline-gun-field.npz",
+      "sha256": "9f8129149dc8592a9d2ca507066750e10a301f4ebfbae020433cc48e53a98e1e"
+    },
+    "column_magnetic": {
+      "path": "docs/development/nanoprobe_si110_20261122/fei-hpc-d95/checkpoint/baseline-column-field.npz",
+      "sha256": "120d624c52f77bf39af898704fea2c3d5c8a02dfdca328b21cb0852b880c6d72"
+    },
+    "tracking": {
+      "path": "docs/development/nanoprobe_si110_20261122/fei-hpc-d95/checkpoint/tip-and-tracking-100000.npz",
+      "sha256": "633a115c76a8037c43341248a80ad266a1314a7f5380cc8d25b2a7059e060f82"
+    }
+  },
+  "c1_interlens_interval_mm": [
+    545.0,
+    560.0
+  ],
+  "calibration_scope": "Fixed 100 um C2 aperture, current-weighted full-beam D95 on the specimen upper surface, 100,000 original source primaries."
+}

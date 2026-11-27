@@ -1,0 +1,509 @@
+{
+  "study": "Nanoprobe Normal, HP1/HP2/HPC/HPol joint material field and objective-only refocus",
+  "baseline": "global-ce65fd820f587f73",
+  "selected": "global-495554de9660806e",
+  "packet_budget": 100000,
+  "source_and_currents": {
+    "before": {
+      "folder": "checkpoint",
+      "solution_sha256": "aa315daf144c1e530604e08d117cbe2ff2ad6123cc4b0bb25d820b05c27a8be8",
+      "winding_sources": 22,
+      "field_receipts": 10,
+      "emitted": 100000,
+      "gun_exit": 6442,
+      "c2_passed": 1780,
+      "arrived": 1780,
+      "effective_particles": 269.70163246900614,
+      "sample_plane_mm": 1599.1999974999999,
+      "D95_um": 1.7428849682020642,
+      "rms_um": 0.6164545938649537,
+      "centroid_um": [
+        0.020429125157986606,
+        -0.04074637402031487
+      ],
+      "fixed_axis_50nm_pA": 99.09667968749999,
+      "fixed_axis_50nm_arrivals": 31,
+      "centroid_50nm_pA": 141.7236328125,
+      "specimen_current_nA": 5.867065429687497,
+      "profile": "checkpoint/baseline-profile.json",
+      "run_id": "global-ce65fd820f587f73"
+    },
+    "after": {
+      "folder": "checkpoint",
+      "solution_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+      "winding_sources": 24,
+      "field_receipts": 10,
+      "emitted": 100000,
+      "gun_exit": 6442,
+      "c2_passed": 1780,
+      "arrived": 1780,
+      "effective_particles": 269.70163246900614,
+      "sample_plane_mm": 1599.1999974999999,
+      "D95_um": 0.24299344144065402,
+      "rms_um": 0.06965493884081776,
+      "centroid_um": [
+        0.0015662072401537316,
+        -0.004926163268972414
+      ],
+      "fixed_axis_50nm_pA": 2786.718749999999,
+      "fixed_axis_50nm_arrivals": 1304,
+      "centroid_50nm_pA": 2714.3005371093745,
+      "specimen_current_nA": 5.867065429687497,
+      "profile": "checkpoint/profile.json",
+      "run_id": "global-495554de9660806e"
+    },
+    "same_mesh": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "same_tracking": "633a115c76a8037c43341248a80ad266a1314a7f5380cc8d25b2a7059e060f82",
+    "unchanged_electrostatics": "a4dfcdeaf97c7309377fac3320e02709ac629ca056bd9d17849dd38496cc96a4",
+    "source_charge_preserved": true,
+    "same_sample_ids": true,
+    "same_c2_ids": true,
+    "shared_arrivals": 1780,
+    "raw_currents_A": {
+      "objective_lens/physical-pack-4": [
+        -14.54319,
+        -14.420793
+      ],
+      "objective_lens/physical-pack-5": [
+        -14.54319,
+        -14.420793
+      ],
+      "probe_hp1_hexapole": [
+        0.30825,
+        -2.631749
+      ],
+      "probe_hp2_hexapole": [
+        -0.058,
+        0.036981
+      ],
+      "probe_hpc_hexapole_x": [
+        0.0,
+        69.869465
+      ],
+      "probe_hpc_hexapole_y": [
+        0.0,
+        -90.968633
+      ],
+      "probe_hpol_hexapole_x": [
+        0.06451,
+        -1.145727
+      ],
+      "probe_hpol_hexapole_y": [
+        -12.035705,
+        -11.582695
+      ]
+    },
+    "D95_reduction_percent": 86.05797594942123
+  },
+  "working_point": {
+    "baseline": "global-ce65fd820f587f73",
+    "selected": "global-495554de9660806e",
+    "D95_ratio_improvement": 7.172559711360468,
+    "fixed_axis_50nm_current_ratio": 28.121212121212118,
+    "directions_and_waists": {
+      "before": {
+        "rms_radius_um": 0.6164545938649537,
+        "current_weighted_alpha95_mrad": 2.4141080517121796,
+        "current_weighted_alpha_rms_mrad": 1.770401625018096,
+        "D95_focus_offset_mm": 0.0,
+        "D95_focus_step_mm": 0.001,
+        "RMS_focus_offset_mm": 0.027000000000043656,
+        "corrector_and_postscan_waists_mm": {
+          "x": [
+            1220.168262932539,
+            1439.8580962261194
+          ],
+          "y": [
+            1220.0723485685155,
+            1439.8098785664356
+          ],
+          "r": [
+            1220.1202881789634,
+            1439.8339845365015
+          ]
+        },
+        "pre_specimen_radial_waists_mm": []
+      },
+      "after": {
+        "rms_radius_um": 0.06965493884081776,
+        "current_weighted_alpha95_mrad": 2.401617158950002,
+        "current_weighted_alpha_rms_mrad": 1.7618004686007642,
+        "D95_focus_offset_mm": 0.0,
+        "D95_focus_step_mm": 0.001,
+        "RMS_focus_offset_mm": 0.009000000000014552,
+        "corrector_and_postscan_waists_mm": {
+          "x": [
+            1220.2391380797117,
+            1440.8278273755757
+          ],
+          "y": [
+            1220.0685365331547,
+            1440.824023157375
+          ],
+          "r": [
+            1220.1535771350818,
+            1440.8259221113963
+          ]
+        },
+        "pre_specimen_radial_waists_mm": []
+      }
+    },
+    "source_and_currents": "evidence.json#source_and_currents",
+    "selection": "Full-beam current-weighted D95 on the fixed specimen upper surface. Local search, unconstrained nominal steady-state winding currents; no equipment current ratings or thermal qualification.",
+    "field_integration": "checkpoint/hpc-zero.json",
+    "images": [
+      "figures/full-column.png",
+      "figures/sample-probe.png"
+    ]
+  },
+  "full_column_and_specimen": {
+    "baseline": {
+      "case": "global-ce65fd820f587f73",
+      "raw_trace_sha256": "d0e1e71a4292cf4bf2b42030acba697be395d316b6f5164823c65885c9dc439c",
+      "tracking_sha256": "633a115c76a8037c43341248a80ad266a1314a7f5380cc8d25b2a7059e060f82",
+      "field_sha256": "aa315daf144c1e530604e08d117cbe2ff2ad6123cc4b0bb25d820b05c27a8be8",
+      "emitted": 100000,
+      "gun_survivors": 6442,
+      "passing_C2": 1780,
+      "specimen_arrivals": 1780,
+      "effective_arrivals": 269.70163246900614,
+      "D95_um": 1.7428849682020642,
+      "RMS_um": 0.6164545938649537,
+      "centroid_um": [
+        0.020429125157986606,
+        -0.04074637402031487
+      ],
+      "disk_radius_nm": 50,
+      "disk_currents": {
+        "axis": {
+          "pA": 99.09667968749999,
+          "packets": 31,
+          "effective_packets": 4.289799035292067
+        },
+        "centroid": {
+          "pA": 141.7236328125,
+          "packets": 34,
+          "effective_packets": 5.899247335778995
+        }
+      },
+      "current_nA": 5.867065429687497,
+      "specimen_z_mm": 1599.1999974999999,
+      "waists_mm": {
+        "x": {
+          "TL22_TL21": [
+            1220.1682629303584
+          ],
+          "postscan": [
+            1439.858096227256
+          ]
+        },
+        "y": {
+          "TL22_TL21": [
+            1220.0723485663868
+          ],
+          "postscan": [
+            1439.8098785687553
+          ]
+        },
+        "r": {
+          "TL22_TL21": [
+            1220.1202881810832
+          ],
+          "postscan": [
+            1439.8339845382727
+          ]
+        }
+      },
+      "through_focus": {
+        "D95": {
+          "z_mm": 1599.1999974999999,
+          "offset_from_specimen_mm": 0.0,
+          "sampled_minimum_um": 1.7428849682020642,
+          "sampled_z_mm": 1599.1999974999999,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.1989975000001,
+            1599.1999974999999,
+            1599.2009974999999
+          ]
+        },
+        "r": {
+          "z_mm": 1599.2270210842057,
+          "offset_from_specimen_mm": 0.027023584205835505,
+          "sampled_minimum_um": 0.6145952834686589,
+          "sampled_z_mm": 1599.2269975,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.2259975,
+            1599.2269975,
+            1599.2279975
+          ]
+        },
+        "x": {
+          "z_mm": 1599.254688520561,
+          "offset_from_specimen_mm": 0.0546910205612221,
+          "sampled_minimum_um": 0.43874274906075783,
+          "sampled_z_mm": 1599.2549975,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.2539975,
+            1599.2549975,
+            1599.2559975
+          ]
+        },
+        "y": {
+          "z_mm": 1599.1995899868698,
+          "offset_from_specimen_mm": -0.00040751313008513534,
+          "sampled_minimum_um": 0.4276140565427459,
+          "sampled_z_mm": 1599.1999974999999,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.1989975000001,
+            1599.1999974999999,
+            1599.2009974999999
+          ]
+        }
+      },
+      "objective_A": -14.54319,
+      "objective_in_common_supply": true
+    },
+    "adjusted": {
+      "case": "global-495554de9660806e",
+      "raw_trace_sha256": "5369d0c1fe9120b22655bf015a0c01f3e935390ae8a0daa455e5252c85ad5d42",
+      "tracking_sha256": "633a115c76a8037c43341248a80ad266a1314a7f5380cc8d25b2a7059e060f82",
+      "field_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+      "emitted": 100000,
+      "gun_survivors": 6442,
+      "passing_C2": 1780,
+      "specimen_arrivals": 1780,
+      "effective_arrivals": 269.70163246900614,
+      "D95_um": 0.24299344144065402,
+      "RMS_um": 0.06965493884081776,
+      "centroid_um": [
+        0.0015662072401537316,
+        -0.004926163268972414
+      ],
+      "disk_radius_nm": 50,
+      "disk_currents": {
+        "axis": {
+          "pA": 2786.718749999999,
+          "packets": 1304,
+          "effective_packets": 168.14032260251625
+        },
+        "centroid": {
+          "pA": 2714.3005371093745,
+          "packets": 1262,
+          "effective_packets": 163.8876363253988
+        }
+      },
+      "current_nA": 5.867065429687497,
+      "specimen_z_mm": 1599.1999974999999,
+      "waists_mm": {
+        "x": {
+          "TL22_TL21": [
+            1220.2391381605496
+          ],
+          "postscan": [
+            1440.8278273751112
+          ]
+        },
+        "y": {
+          "TL22_TL21": [
+            1220.0685365316094
+          ],
+          "postscan": [
+            1440.8240231578823
+          ]
+        },
+        "r": {
+          "TL22_TL21": [
+            1220.1535771664899
+          ],
+          "postscan": [
+            1440.8259221114206
+          ]
+        }
+      },
+      "through_focus": {
+        "D95": {
+          "z_mm": 1599.1999974999999,
+          "offset_from_specimen_mm": 0.0,
+          "sampled_minimum_um": 0.24299344144065402,
+          "sampled_z_mm": 1599.1999974999999,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.1989975000001,
+            1599.1999974999999,
+            1599.2009974999999
+          ]
+        },
+        "r": {
+          "z_mm": 1599.208634636186,
+          "offset_from_specimen_mm": 0.008637136186052885,
+          "sampled_minimum_um": 0.06797548874150394,
+          "sampled_z_mm": 1599.2089975,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.2079975,
+            1599.2089975,
+            1599.2099975
+          ]
+        },
+        "x": {
+          "z_mm": 1599.2113039872675,
+          "offset_from_specimen_mm": 0.011306487267574994,
+          "sampled_minimum_um": 0.050669738248396955,
+          "sampled_z_mm": 1599.2109974999998,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.2099975,
+            1599.2109974999998,
+            1599.2119974999998
+          ]
+        },
+        "y": {
+          "z_mm": 1599.205998575381,
+          "offset_from_specimen_mm": 0.006001075381163901,
+          "sampled_minimum_um": 0.04506816925946444,
+          "sampled_z_mm": 1599.2059975,
+          "bracketed": true,
+          "bracket_mm": [
+            1599.2049975,
+            1599.2059975,
+            1599.2069975000002
+          ]
+        }
+      },
+      "objective_A": -14.420793,
+      "objective_in_common_supply": true
+    },
+    "identical_tracking_inputs": true,
+    "identical_survivor_ids": {
+      "gun": true,
+      "c2": true,
+      "sample": true
+    },
+    "changed_currents_A": {
+      "objective_lens/physical-pack-4": [
+        -14.54319,
+        -14.420793
+      ],
+      "objective_lens/physical-pack-5": [
+        -14.54319,
+        -14.420793
+      ],
+      "probe_hp1_hexapole": [
+        0.30825,
+        -2.631749
+      ],
+      "probe_hp2_hexapole": [
+        -0.058,
+        0.036981
+      ],
+      "probe_hpc_hexapole_x": [
+        0.0,
+        69.869465
+      ],
+      "probe_hpc_hexapole_y": [
+        0.0,
+        -90.968633
+      ],
+      "probe_hpol_hexapole_x": [
+        0.06451,
+        -1.145727
+      ],
+      "probe_hpol_hexapole_y": [
+        -12.035705,
+        -11.582695
+      ]
+    },
+    "D95_reduction_percent": 86.05797594942123,
+    "axis_disk_delta_pA": 2687.622070312499,
+    "matched_source_block_sensitivity": {
+      "groups": 20,
+      "block_size_emitted_ids": 5000,
+      "D95_delta_min_max_um": [
+        -1.525937160654487,
+        -1.4909233061969962
+      ],
+      "axis_current_delta_min_max_pA": [
+        2468.9025878906245,
+        2652.4841308593745
+      ],
+      "groups_with_lower_D95": 20,
+      "groups_with_higher_axis_current": 20
+    }
+  },
+  "field_sampling": {
+    "bore_radius_mm": 0.7,
+    "windows_mm": [
+      [
+        1124.0,
+        1165.0
+      ],
+      [
+        1184.0,
+        1220.0
+      ],
+      [
+        1279.0,
+        1336.0
+      ]
+    ],
+    "native_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+    "covered_current_fraction": {
+      "1144.5": 1.0,
+      "1200.8": 1.0,
+      "1300.85": 1.0,
+      "1312.55": 1.0
+    },
+    "minimum_covered_current_fraction": {
+      "1124-1165": 0.9999999999999889,
+      "1184-1220": 0.9999999999999889,
+      "1279-1336": 0.9999999999999889
+    },
+    "production": {
+      "native_D95_um": 0.24299344144065402,
+      "fixed50_pA": 2786.718749999999,
+      "arrivals": 1780
+    },
+    "retained_fit": {
+      "native_D95_um": 0.24299344144047755,
+      "fixed50_pA": 2786.718749999999,
+      "arrivals": 1780,
+      "same_source_ids": true
+    },
+    "pitch100": {
+      "native_D95_um": 0.24314830773450744,
+      "fixed50_pA": 2782.324218749999,
+      "arrivals": 1780,
+      "same_source_ids": true
+    },
+    "pitch50": {
+      "native_D95_um": 0.2431482471078812,
+      "fixed50_pA": 2782.324218749999,
+      "arrivals": 1780,
+      "same_source_ids": true
+    }
+  },
+  "native_material_reconstruction_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+  "material_mesh": "../fei-output-relay/field-replay/material-mesh.npz",
+  "final_profile": "checkpoint/profile.json",
+  "baseline_profile": "checkpoint/baseline-profile.json",
+  "scope": "Compared simulated full-beam current with fixed positive weights. No hardware thermal, supply or scan calibration qualification.",
+  "direct_fem_on_HPC_ray_samples": {
+    "case": "global-495554de9660806e",
+    "field_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+    "evaluation": "Direct symmetric material plus winding field vs. tracking interpolation on specimen-arriving rays inside the nominal HPC axial interval",
+    "points": 1200,
+    "z_from_tip_mm": [
+      1194.0,
+      1208.0
+    ],
+    "max_radius_um": 157.63445200796804,
+    "sampled_B_peak_T": 0.026195230758664246,
+    "sampled_peak_abs_error_T": 9.834542378911985e-12,
+    "sampled_p95_abs_error_T": 7.089552364748762e-12,
+    "peak_scaled_error": 3.754325537162579e-10
+  }
+}

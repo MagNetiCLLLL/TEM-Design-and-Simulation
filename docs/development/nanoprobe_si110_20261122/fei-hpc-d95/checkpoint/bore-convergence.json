@@ -1,0 +1,52 @@
+{
+  "bore_radius_mm": 0.7,
+  "windows_mm": [
+    [
+      1124.0,
+      1165.0
+    ],
+    [
+      1184.0,
+      1220.0
+    ],
+    [
+      1279.0,
+      1336.0
+    ]
+  ],
+  "native_sha256": "6e41ed2bc4e6a7a657f77996a9f61c2c8593538a0589006034fd8205daef30ac",
+  "covered_current_fraction": {
+    "1144.5": 1.0,
+    "1200.8": 1.0,
+    "1300.85": 1.0,
+    "1312.55": 1.0
+  },
+  "minimum_covered_current_fraction": {
+    "1124-1165": 0.9999999999999889,
+    "1184-1220": 0.9999999999999889,
+    "1279-1336": 0.9999999999999889
+  },
+  "production": {
+    "native_D95_um": 0.24299344144065402,
+    "fixed50_pA": 2786.718749999999,
+    "arrivals": 1780
+  },
+  "retained_fit": {
+    "native_D95_um": 0.24299344144047755,
+    "fixed50_pA": 2786.718749999999,
+    "arrivals": 1780,
+    "same_source_ids": true
+  },
+  "pitch100": {
+    "native_D95_um": 0.24314830773450744,
+    "fixed50_pA": 2782.324218749999,
+    "arrivals": 1780,
+    "same_source_ids": true
+  },
+  "pitch50": {
+    "native_D95_um": 0.2431482471078812,
+    "fixed50_pA": 2782.324218749999,
+    "arrivals": 1780,
+    "same_source_ids": true
+  }
+}

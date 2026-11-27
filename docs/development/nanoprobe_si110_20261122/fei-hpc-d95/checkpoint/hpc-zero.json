@@ -1,0 +1,82 @@
+{
+  "full_replay_of_original_phase_space": true,
+  "emitted": 100000,
+  "arrived": 1780,
+  "D95_um": 1.7428849682020642,
+  "all_saved_trajectory_arrays_identical": true,
+  "zero_field_proof": {
+    "original_sha256": "aa315daf144c1e530604e08d117cbe2ff2ad6123cc4b0bb25d820b05c27a8be8",
+    "field_sha256": "51178a2a2a02a9412220f0344d2c9c7d5a9fce853bc1919d8966375e91d9021c",
+    "mesh_id": "1795e1050e5548770235f425c4a8e393842fe2722781e91280bc03ef851724ed",
+    "source_recipe_sha256": "fd9ae0641b70d9b1f7eab5d6be70f6c1173f64b199f6254226307906abc0d4e0",
+    "geometry": {
+      "channels": {
+        "x": {
+          "azimuth_deg": [
+            0.0,
+            60.0,
+            120.0,
+            180.0,
+            240.0,
+            300.0
+          ],
+          "current_sign": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        "y": {
+          "azimuth_deg": [
+            30.0,
+            90.0,
+            150.0,
+            210.0,
+            270.0,
+            330.0
+          ],
+          "current_sign": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        }
+      },
+      "turns_per_coil": 384,
+      "sleeve": "probe_hpc_hexapole_return_sleeve/body",
+      "sleeve_material": "armco_pure_iron",
+      "material_source_sha256": "b3306c48e295f80ad1c63e93854d495338682906665850121159a7e4e4c8a0e9",
+      "winding_center_in_mesh_mm": 750.85,
+      "host_status": "unverified",
+      "geometry_status": "engineering_reconstruction_not_oem"
+    },
+    "source_loads": {
+      "probe_hpc_hexapole_x": {
+        "relative_peak_error": 0.002211084436375256,
+        "source_sha256": "46f9105ee2cbab74b7f0bdcbbec91e133926eeadf1baca7e7edb1e8b9ba08079",
+        "peak_T_per_A": 0.003888732511477399,
+        "check_points": 2048,
+        "edge_order": 4
+      },
+      "probe_hpc_hexapole_y": {
+        "relative_peak_error": 0.0005060446069852613,
+        "source_sha256": "fd4d79a7d31e4d340689da606a6c08dfc4967b1cd7615bfa03db61a63f22fade",
+        "peak_T_per_A": 0.004967254626405292,
+        "check_points": 2048,
+        "edge_order": 4
+      }
+    },
+    "field_comparison": {
+      "moments_Am2_max_abs_delta": 0.0,
+      "free_potential_a_max_abs_delta": 0.0
+    },
+    "relative_residual": 4.575977600852624e-09
+  },
+  "field_table_reuse": "Exact coefficient arrays reused only after checking identity of all original excited sources, geometry, free potential and all element moments. The regular tracker then relaunched from the physical tip."
+}
